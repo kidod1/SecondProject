@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MonsterPatrol : MonoBehaviour
 {
+    [SerializeField]
+    private MonsterData stat;
     public Transform[] waypoints; // Waypoints 배열
     public float speed = 2.0f; // 이동 속도
     private int currentWaypointIndex = 0; // 현재 목표 Waypoint 인덱스
@@ -24,6 +26,19 @@ public class MonsterPatrol : MonoBehaviour
         if (direction != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Vector2 knockbackDirection = (collision.transform.position - transform.position).normalized;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(stat.contectDamage, knockbackDirection); // 플레이어에게 데미지 입힘
+            }
         }
     }
 }

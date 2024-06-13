@@ -7,4 +7,5 @@ public class PlayerData : ScriptableObject
     public float projectileSpeed = 10;
     public float projectileRange = 2;
     public int projectileType = 0;
+    public int MaxHP = 100;
 }
