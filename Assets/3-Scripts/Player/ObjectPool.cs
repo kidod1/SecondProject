@@ -5,14 +5,13 @@ public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private GameObject[] objectPrefabs;
     [SerializeField] private int poolSize = 10;
-    [SerializeField] private Transform poolParent; // Parent transform for all pooled objects
+    [SerializeField] private Transform poolParent;
 
     private List<List<GameObject>> pools = new List<List<GameObject>>();
     private List<int> currentIndexes = new List<int>();
 
     private void Awake()
     {
-        // If no parent is assigned, create a new empty GameObject as the parent
         if (poolParent == null)
         {
             poolParent = new GameObject("ObjectPoolParent").transform;
@@ -23,12 +22,12 @@ public class ObjectPool : MonoBehaviour
             List<GameObject> pool = new List<GameObject>();
             for (int i = 0; i < poolSize; i++)
             {
-                GameObject obj = Instantiate(prefab, poolParent); // Instantiate with parent
+                GameObject obj = Instantiate(prefab, poolParent);
                 obj.SetActive(false);
                 pool.Add(obj);
             }
             pools.Add(pool);
-            currentIndexes.Add(0); // Initialize the index for this pool
+            currentIndexes.Add(0);
         }
     }
 

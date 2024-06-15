@@ -55,10 +55,8 @@ public class UIManager : MonoBehaviour
 #endif
     }
 
-    // 설정 탭으로 이동하는 메서드 추가
     public void OpenSettings()
     {
-        // 설정 탭으로 이동하는 로직 추가 (여기서는 설정 씬 인덱스를 1로 가정)
-        ChangeScene(1);
+        ChangeScene(2);
     }
 }

@@ -7,13 +7,13 @@ public class RotatingObject : MonoBehaviour
     public float rotationSpeed = 50.0f; // 회전 속도 (도/초)
     private float angle = 0.0f;
 
-    private PlayerShooting playerShooting;
+    private Player playerShooting;
 
-    void Start()
+    private void Start()
     {
         if (player != null)
         {
-            playerShooting = player.GetComponent<PlayerShooting>();
+            playerShooting = player.GetComponent<Player>();
             if (playerShooting != null)
             {
                 playerShooting.OnShoot.AddListener(FollowAttack);
@@ -21,7 +21,7 @@ public class RotatingObject : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (player != null)
         {
@@ -40,16 +40,14 @@ public class RotatingObject : MonoBehaviour
         }
     }
 
-    void FollowAttack(Vector2 direction, int prefabIndex)
+    private void FollowAttack(Vector2 direction, int prefabIndex)
     {
-        // 플레이어의 공격을 따라하기 위한 로직
-        Debug.Log("Rotating Object Attack!");
         GameObject projectile = playerShooting.objectPool.GetObject(prefabIndex);
         projectile.transform.position = transform.position;
         projectile.GetComponent<Projectile>().SetDirection(direction);
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         if (playerShooting != null)
         {

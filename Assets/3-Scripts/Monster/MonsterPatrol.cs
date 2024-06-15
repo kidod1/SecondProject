@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class MonsterPatrol : MonoBehaviour
+public class MonsterPatrol : Monster
 {
-    [SerializeField]
-    private MonsterData stat;
     public Transform[] waypoints; // Waypoints 배열
-    public float speed = 2.0f; // 이동 속도
+    public float patrolSpeed = 2.0f; // 패트롤 이동 속도
     private int currentWaypointIndex = 0; // 현재 목표 Waypoint 인덱스
 
-    void Update()
+    private void Update()
+    {
+        Patrol();
+    }
+
+    private void Patrol()
     {
         if (waypoints.Length == 0) return;
 
         Transform targetWaypoint = waypoints[currentWaypointIndex];
         Vector3 direction = targetWaypoint.position - transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, patrolSpeed * Time.deltaTime);
 
         // 목표 Waypoint에 도달했는지 확인
         if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
@@ -29,15 +32,15 @@ public class MonsterPatrol : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         Vector2 knockbackDirection = (collision.transform.position - transform.position).normalized;
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            Player player = collision.gameObject.GetComponent<Player>();
+            if (player != null)
             {
-                playerHealth.TakeDamage(stat.contectDamage, knockbackDirection); // 플레이어에게 데미지 입힘
+                player.TakeDamage(stat.contectDamage, knockbackDirection);
             }
         }
     }
