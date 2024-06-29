@@ -5,7 +5,6 @@ public class Projectile : MonoBehaviour
     private Vector2 direction;
     [SerializeField]
     private PlayerData stat;
-    public int damage = 10; // 발사체가 줄 데미지
 
     private void OnEnable()
     {
@@ -34,21 +33,18 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 충돌한 객체의 태그가 Wall인 경우
         if (collision.CompareTag("Wall"))
         {
-            gameObject.SetActive(false); // 발사체 비활성화
+            gameObject.SetActive(false);
         }
-        // 충돌한 객체가 Monster인 경우
         else if (collision.GetComponent<Monster>() != null)
         {
-            // Monster의 TakeDamage 메서드 호출
             Monster monster = collision.GetComponent<Monster>();
             if (monster != null)
             {
-                monster.TakeDamage(damage); // 데미지 주기
+                monster.TakeDamage(stat.playerDamage);
             }
-            gameObject.SetActive(false); // 발사체 비활성화
+            gameObject.SetActive(false);
         }
     }
 }

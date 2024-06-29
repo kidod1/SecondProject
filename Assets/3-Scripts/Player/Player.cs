@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -34,6 +35,9 @@ public class Player : MonoBehaviour
     // Shooting 이벤트
     public UnityEvent<Vector2, int> OnShoot;
 
+    // 능력 관련 변수
+    private List<Ability> acquiredAbilities = new List<Ability>();
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -48,7 +52,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        currentHP = stat.MaxHP;
+        InitializePlayer();
     }
 
     private void OnEnable()
@@ -139,7 +143,6 @@ public class Player : MonoBehaviour
         projectile.transform.position = transform.position;
         projectile.GetComponent<Projectile>().SetDirection(direction);
 
-        // 공격 이벤트 발생
         OnShoot.Invoke(direction, prefabIndex);
     }
 
@@ -186,11 +189,71 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void IncreaseAttack(int amount)
+    {
+        stat.playerDamage += amount;
+    }
+
+    public void IncreaseRange(int amount)
+    {
+        stat.projectileRange += amount;
+    }
+
+    public void IncreaseAttackSpeed(float amount)
+    {
+        stat.knockbackSpeed += amount;
+    }
+
+    // 새로운 능력 추가 메서드
+    public void IncreasePride(int amount)
+    {
+        // 오만 로직
+    }
+
+    public void IncreaseWrath(int amount)
+    {
+        stat.playerDamage += amount; // 분노 - 공격력 증가 로직
+    }
+
+    public void IncreaseGluttony(int amount)
+    {
+        // 식탐 로직
+    }
+
+    public void IncreaseGreed(int amount)
+    {
+        // 탐욕 로직
+    }
+
+    public void IncreaseSloth(int amount)
+    {
+        // 나태 로직
+    }
+
+    public void IncreaseEnvy(int amount)
+    {
+        // 질투 로직
+    }
+
+    public void IncreaseLust(int amount)
+    {
+        // 색욕 로직
+    }
+
+    // 프로젝타일 변경시
+    public void ChangeProjectile(int newProjectileType)
+    {
+        stat.projectileType = newProjectileType;
+        Debug.Log("프로젝타일 변경 " + newProjectileType);
+    }
+
+    // 플레이어 회복
     public int GetCurrentHP()
     {
         return currentHP;
     }
 
+    // 피격시 넉백
     private IEnumerator KnockbackCoroutine(Vector2 direction)
     {
         float timer = 0;
@@ -203,6 +266,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // 피격시 깜빡
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
@@ -218,4 +282,169 @@ public class Player : MonoBehaviour
         spriteRenderer.enabled = true;
         isInvincible = false;
     }
+
+    // 플레이어 초기화 함수
+    private void InitializePlayer()
+    {
+        stat.InitializeStats();
+        currentHP = stat.MaxHP;
+    }
+
+    public void AddAbility(Ability ability)
+    {
+        acquiredAbilities.Add(ability);
+        ability.Apply(this);
+
+        if (ability is IncreasePride || ability is IncreaseAttack || ability is IncreaseRange || ability is IncreaseAttackSpeed)
+        {
+            UpdateAbilityTreeProgress("Pride");
+        }
+        else if (ability is IncreaseWrath || ability is IncreaseSuperWrath || ability is IncreaseUltraWrath)  // 분노 능력 적용
+        {
+            UpdateAbilityTreeProgress("Wrath");
+        }
+        else if (ability is IncreaseGluttony)
+        {
+            UpdateAbilityTreeProgress("Gluttony");
+        }
+        else if (ability is IncreaseGreed)
+        {
+            UpdateAbilityTreeProgress("Greed");
+        }
+        else if (ability is IncreaseSloth)
+        {
+            UpdateAbilityTreeProgress("Sloth");
+        }
+        else if (ability is IncreaseEnvy)
+        {
+            UpdateAbilityTreeProgress("Envy");
+        }
+        else if (ability is IncreaseLust)
+        {
+            UpdateAbilityTreeProgress("Lust");
+        }
+    }
+
+    private void UpdateAbilityTreeProgress(string treeName)
+    {
+        if (abilityTreeProgress.ContainsKey(treeName))
+        {
+            abilityTreeProgress[treeName]++;
+            CheckForSpecialAbility(treeName);
+        }
+    }
+
+    private void CheckForSpecialAbility(string treeName)
+    {
+        int progress = abilityTreeProgress[treeName];
+
+        // 진행도가 3일 때 특수 능력 추가
+        if (progress == 3)
+        {
+            switch (treeName)
+            {
+                case "Pride":
+                    AddSpecialAbility(new SpecialAbilityPride());
+                    break;
+                case "Wrath":
+                    AddSpecialAbility(new SpecialAbilityWrath());
+                    break;
+                case "Gluttony":
+                    AddSpecialAbility(new SpecialAbilityGluttony());
+                    break;
+                case "Greed":
+                    AddSpecialAbility(new SpecialAbilityGreed());
+                    break;
+                case "Sloth":
+                    AddSpecialAbility(new SpecialAbilitySloth());
+                    break;
+                case "Envy":
+                    AddSpecialAbility(new SpecialAbilityEnvy());
+                    break;
+                case "Lust":
+                    AddSpecialAbility(new SpecialAbilityLust());
+                    break;
+            }
+        }
+        // 진행도가 5일 때 특수 능력 추가
+        else if (progress == 5)
+        {
+            switch (treeName)
+            {
+                case "Pride":
+                    AddSpecialAbility(new SpecialAbilitySuperPride());
+                    break;
+                case "Wrath":
+                    AddSpecialAbility(new SpecialAbilitySuperWrath());
+                    break;
+                case "Gluttony":
+                    // AddSuperSpecialAbility(new SpecialAbilitySuperGluttony());
+                    break;
+                case "Greed":
+                    // AddSuperSpecialAbility(new SpecialAbilitySuperGreed());
+                    break;
+                case "Sloth":
+                    // AddSuperSpecialAbility(new SpecialAbilitySuperSloth());
+                    break;
+                case "Envy":
+                    // AddSuperSpecialAbility(new SpecialAbilitySuperEnvy());
+                    break;
+                case "Lust":
+                    // AddSuperSpecialAbility(new SpecialAbilitySuperLust());
+                    break;
+            }
+        }
+        // 진행도가 7일 때 특수 능력 추가
+        else if (progress == 7)
+        {
+            switch (treeName)
+            {
+                case "Pride":
+                    AddSpecialAbility(new SpecialAbilityUltraPride());
+                    break;
+                case "Wrath":
+                    AddSpecialAbility(new SpecialAbilityUltraWrath());
+                    break;
+                case "Gluttony":
+                    // AddUltraSpecialAbility(new SpecialAbilityUltraGluttony());
+                    break;
+                case "Greed":
+                    // AddUltraSpecialAbility(new SpecialAbilityUltraGreed());
+                    break;
+                case "Sloth":
+                    // AddUltraSpecialAbility(new SpecialAbilityUltraSloth());
+                    break;
+                case "Envy":
+                    // AddUltraSpecialAbility(new SpecialAbilityUltraEnvy());
+                    break;
+                case "Lust":
+                    // AddUltraSpecialAbility(new SpecialAbilityUltraLust());
+                    break;
+            }
+        }
+    }
+
+    private void AddSpecialAbility(SpecialAbility specialAbility)
+    {
+        acquiredAbilities.Add(specialAbility);
+        specialAbility.Apply(this);
+    }
+
+    // 획득한 능력의 수를 반환하는 함수
+    public int GetAcquiredAbilityCount()
+    {
+        return acquiredAbilities.Count;
+    }
+    // 테크트리 진행도
+    private Dictionary<string, int> abilityTreeProgress = new Dictionary<string, int>
+{
+    {"Pride", 0},
+    {"Wrath", 0},
+    {"Gluttony", 0},
+    {"Greed", 0},
+    {"Sloth", 0},
+    {"Envy", 0},
+    {"Lust", 0}
+};
+
 }
