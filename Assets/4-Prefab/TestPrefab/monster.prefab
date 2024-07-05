@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6517096750926622395}
   - component: {fileID: 5631434525725251818}
   - component: {fileID: 44751166639237868}
-  - component: {fileID: 1616819599625780464}
+  - component: {fileID: 5728533474648722463}
   m_Layer: 0
   m_Name: monster
   m_TagString: Enemy
@@ -149,7 +149,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &1616819599625780464
+--- !u!114 &5728533474648722463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,12 +158,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1679207361480904236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aa0a9939aebfcc40b958ebc641d71f1, type: 3}
+  m_Script: {fileID: 11500000, guid: f4a1c29a57d93e942971c7ca8c6ec86f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: 720ec0b4c8e131a4cb0368a5fe512b5b, type: 2}
-  waypoints:
+  invincibilityDuration: 0.5
+  blinkInterval: 0.1
+  patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   speed: 2
+  detectionRange: 3
+  explosionDelay: 1
+  explosionRadius: 5
+  damage: 8

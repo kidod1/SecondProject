@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager Instance { get; private set; }
+
     [SerializeField]
     private GameObject dialoguePanel;
     [SerializeField]
@@ -13,22 +15,52 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     private TMP_Text dialogueText;
     [SerializeField]
-    private Animator animator;
+    private Animator dialogueAnimator;
+    [SerializeField]
+    private Animator imageAnimator;
     [SerializeField]
     private Image background;
 
     private Queue<string> sentences;
-    private Queue<Sprite> backgrounds; // 배경 스프라이트 큐
+    private Queue<Sprite> backgrounds;
 
-    void Start()
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
     {
         sentences = new Queue<string>();
         backgrounds = new Queue<Sprite>();
         dialoguePanel.SetActive(false); // 시작할 때 다이얼로그 패널 비활성화
         background.gameObject.SetActive(false); // 시작할 때 배경 이미지 비활성화
+
+        // animator가 null인지 확인하고, null이면 할당
+        if (dialogueAnimator == null)
+        {
+            dialogueAnimator = dialoguePanel.GetComponent<Animator>();
+        }
+
+        if (dialogueAnimator == null)
+        {
+            Debug.LogError("Animator component not found on the dialogue panel.");
+        }
+        else if (dialogueAnimator.runtimeAnimatorController == null)
+        {
+            Debug.LogError("Animator does not have a runtimeAnimatorController assigned.");
+        }
     }
 
-    void Update()
+    private void Update()
     {
         if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
         {
@@ -36,10 +68,31 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDialogue(Dialogue dialogue, bool autoClose = false)
     {
-        dialoguePanel.SetActive(true); // 다이얼로그 패널 활성화
-        animator.SetBool("IsOpen", true);
+        if (dialogueAnimator == null)
+        {
+            Debug.LogError("Animator is not assigned!");
+            return;
+        }
+
+        if (!dialogueAnimator.isActiveAndEnabled)
+        {
+            dialoguePanel.SetActive(true); // 패널을 활성화
+            dialogueAnimator.enabled = true;
+        }
+
+        if (dialogueAnimator.runtimeAnimatorController == null)
+        {
+            Debug.LogError("Animator does not have a runtimeAnimatorController assigned!");
+            return;
+        }
+
+        dialogueAnimator.Rebind(); // Animator를 리셋하여 재생 가능한 상태로 만듭니다.
+        dialogueAnimator.Update(0); // Animator 상태를 업데이트합니다.
+
+        dialoguePanel.SetActive(true);
+        dialogueAnimator.SetTrigger("In");
 
         nameText.text = dialogue.characterName;
 
@@ -57,6 +110,11 @@ public class DialogueManager : MonoBehaviour
         }
 
         DisplayNextSentence();
+
+        if (autoClose)
+        {
+            StartCoroutine(AutoCloseDialogue());
+        }
     }
 
     public void DisplayNextSentence()
@@ -77,16 +135,16 @@ public class DialogueManager : MonoBehaviour
             if (bg != null)
             {
                 background.sprite = bg;
-                background.gameObject.SetActive(true); // 배경 이미지 활성화
+                background.gameObject.SetActive(true);
             }
             else
             {
-                background.gameObject.SetActive(false); // 배경 이미지 비활성화
+                background.gameObject.SetActive(false);
             }
         }
     }
 
-    IEnumerator TypeSentence(string sentence)
+    private IEnumerator TypeSentence(string sentence)
     {
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
@@ -96,11 +154,24 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    void EndDialogue()
+    private void EndDialogue()
     {
-        animator.SetBool("IsOpen", false);
-        dialoguePanel.SetActive(false); // 다이얼로그 패널 비활성화
-        background.gameObject.SetActive(false); // 배경 이미지 비활성화
+        imageAnimator.SetTrigger("Out");
+        dialogueAnimator.SetTrigger("Out");
+        StartCoroutine(DeactivatePanelAfterAnimation());
+    }
+
+    private IEnumerator DeactivatePanelAfterAnimation()
+    {
+        yield return new WaitForSeconds(1f);
+        dialoguePanel.SetActive(false);
+        background.gameObject.SetActive(false);
         Debug.Log("End of conversation.");
+    }
+
+    private IEnumerator AutoCloseDialogue()
+    {
+        yield return new WaitForSeconds(5);
+        EndDialogue();
     }
 }

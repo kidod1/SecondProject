@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 
 public class Player : MonoBehaviour
@@ -12,16 +14,29 @@ public class Player : MonoBehaviour
     private PlayerData stat;
     public ObjectPool objectPool;
 
+    // UI 관련 변수
+    [SerializeField]
+    private Transform healthPanel;
+    [SerializeField]
+    private GameObject healthHeartPrefab;
+    [SerializeField]
+    private GameObject shieldHeartPrefab;
+    [SerializeField]
+    private Sprite halfHeartSprite;
+
     // Movement 관련 변수
     private Vector2 moveInput;
     private Rigidbody2D rb;
 
     // Health 관련 변수
     private int currentHP;
+    private int currentShield;
     private bool isInvincible = false;
     private SpriteRenderer spriteRenderer;
 
     // Shooting 관련 변수
+    private int baseAttack;
+
     private float shootCooldown = 0.5f;
     private float lastShootTime;
     private bool isShooting = false;
@@ -38,6 +53,18 @@ public class Player : MonoBehaviour
     // 능력 관련 변수
     private List<Ability> acquiredAbilities = new List<Ability>();
 
+    private bool isShieldOnLowHPEnabled = false;
+
+    private bool isShieldRefillEnabled = false;
+    private float shieldRefillInterval = 10f;
+
+    private bool isAttackBoostWithShieldEnabled = false;
+    private SpecialAbility currentSpecialAbility;
+
+    // Save System
+    private string saveFilePath;
+    private Dictionary<string, Func<Ability>> abilityTypeRegistry;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -48,11 +75,17 @@ public class Player : MonoBehaviour
         {
             OnShoot = new UnityEvent<Vector2, int>();
         }
+
+        saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
     }
 
     private void Start()
     {
+        Debug.Log("Save File Path: " + saveFilePath);
         InitializePlayer();
+        LoadPlayerData();
+        UpdateHealthUI();
+        RegisterAbilityTypes();
     }
 
     private void OnEnable()
@@ -63,6 +96,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.started += OnShootStarted;
         playerInput.Player.Shoot.performed += OnShootPerformed;
         playerInput.Player.Shoot.canceled += OnShootCanceled;
+        playerInput.Player.SpecialAbility.performed += OnSpecialAbilityPerformed;
     }
 
     private void OnDisable()
@@ -73,6 +107,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.started -= OnShootStarted;
         playerInput.Player.Shoot.performed -= OnShootPerformed;
         playerInput.Player.Shoot.canceled -= OnShootCanceled;
+        playerInput.Player.SpecialAbility.performed -= OnSpecialAbilityPerformed;
     }
 
     private void Update()
@@ -137,6 +172,19 @@ public class Player : MonoBehaviour
         isShooting = false;
     }
 
+    private void OnSpecialAbilityPerformed(InputAction.CallbackContext context)
+    {
+        if (currentSpecialAbility != null)
+        {
+            currentSpecialAbility.Activate(this);
+        }
+    }
+
+    public void SetSpecialAbility(SpecialAbility specialAbility)
+    {
+        currentSpecialAbility = specialAbility;
+    }
+
     private void Shoot(Vector2 direction, int prefabIndex)
     {
         GameObject projectile = objectPool.GetObject(prefabIndex);
@@ -158,11 +206,47 @@ public class Player : MonoBehaviour
             .Start();
     }
 
-    public void TakeDamage(int damage, Vector2 knockbackDirection)
+    public void TakeHP(int damage, Vector2 knockbackDirection)
     {
         if (isInvincible) return;
 
         currentHP -= damage;
+
+        CheckHPForShield();
+        UpdateAttackBoost(); // 실드 상태 변경 시 공격력 부스트 업데이트
+        StartCoroutine(InvincibilityCoroutine());
+        StartCoroutine(KnockbackCoroutine(knockbackDirection));
+
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            Die();
+        }
+
+        UpdateHealthUI(); // UI 업데이트
+    }
+
+    public void TakeDamage(int damage, Vector2 knockbackDirection)
+    {
+        if (isInvincible) return;
+
+        if (currentShield > 0)
+        {
+            int remainingDamage = damage - currentShield;
+            currentShield = Mathf.Max(currentShield - damage, 0);
+
+            if (remainingDamage > 0)
+            {
+                currentHP -= remainingDamage;
+            }
+        }
+        else
+        {
+            currentHP -= damage;
+        }
+
+        CheckHPForShield(); // 실드 체크 추가
+        UpdateAttackBoost(); // 실드 상태 변경 시 공격력 부스트 업데이트
 
         StartCoroutine(KnockbackCoroutine(knockbackDirection));
         StartCoroutine(InvincibilityCoroutine());
@@ -172,26 +256,138 @@ public class Player : MonoBehaviour
             currentHP = 0;
             Die();
         }
+
+        UpdateHealthUI(); // UI 업데이트
+    }
+
+    // 피격시 넉백
+    private IEnumerator KnockbackCoroutine(Vector2 direction)
+    {
+        float timer = 0;
+
+        while (timer < stat.knockbackDuration)
+        {
+            timer += Time.deltaTime;
+            transform.Translate(direction * stat.knockbackSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    // 피격시 깜빡
+    private IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true;
+        float invincibilityDuration = 0.5f;
+        float blinkInterval = 0.1f;
+
+        for (float i = 0; i < invincibilityDuration; i += blinkInterval)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+            yield return new WaitForSeconds(blinkInterval);
+        }
+
+        spriteRenderer.enabled = true;
+        isInvincible = false;
     }
 
     private void Die()
     {
         Debug.Log("Player Died!");
         // 플레이어 죽음 처리 로직 추가 (예: 게임 오버 화면 표시, 재시작 등)
+        ResetPlayerData();
     }
 
     public void Heal(int amount)
     {
         currentHP += amount;
-        if (currentHP > stat.MaxHP)
+        if (currentHP > stat.maxHP)
         {
-            currentHP = stat.MaxHP;
+            currentHP = stat.maxHP;
+        }
+
+        UpdateHealthUI(); // UI 업데이트
+    }
+
+    public void IncreaseShield(int amount)
+    {
+        currentShield += amount;
+        UpdateHealthUI(); // UI 업데이트
+    }
+
+    private void CheckHPForShield()
+    {
+        if (isShieldOnLowHPEnabled && currentHP == 2)
+        {
+            currentShield += 2;
+        }
+    }
+
+    public void EnableShieldOnLowHP()
+    {
+        isShieldOnLowHPEnabled = true;
+    }
+
+    public void ReduceMaxHPAndStartShieldRefill()
+    {
+        stat.maxHP -= 2;
+        if (currentHP > stat.maxHP)
+        {
+            currentHP = stat.maxHP;
+        }
+        isShieldRefillEnabled = true;
+        StartCoroutine(ShieldRefillCoroutine());
+    }
+
+    private IEnumerator ShieldRefillCoroutine()
+    {
+        while (isShieldRefillEnabled)
+        {
+            yield return new WaitForSeconds(shieldRefillInterval);
+            if (currentShield <= 0)
+            {
+                IncreaseShield(2);
+            }
+        }
+    }
+
+    public void ReduceMaxHPAndIncreaseAttack()
+    {
+        stat.maxHP -= 2;
+        if (currentHP > stat.maxHP)
+        {
+            currentHP = stat.maxHP;
+        }
+        IncreaseAttack(10);
+    }
+
+    public void EnableAttackBoostWithShield()
+    {
+        isAttackBoostWithShieldEnabled = true;
+        baseAttack = stat.playerDamage;
+        UpdateAttackBoost();
+    }
+
+    private void UpdateAttackBoost()
+    {
+        if (isAttackBoostWithShieldEnabled)
+        {
+            if (currentShield > 0)
+            {
+                stat.playerDamage = baseAttack + 10;
+                Debug.Log("실드 존재 - 공격력 증가");
+            }
+            else
+            {
+                stat.playerDamage = baseAttack;
+                Debug.Log("실드 없음 - 기본 공격력");
+            }
         }
     }
 
     public void IncreaseAttack(int amount)
     {
         stat.playerDamage += amount;
+        baseAttack = stat.playerDamage;
     }
 
     public void IncreaseRange(int amount)
@@ -253,41 +449,16 @@ public class Player : MonoBehaviour
         return currentHP;
     }
 
-    // 피격시 넉백
-    private IEnumerator KnockbackCoroutine(Vector2 direction)
-    {
-        float timer = 0;
-
-        while (timer < stat.knockbackDuration)
-        {
-            timer += Time.deltaTime;
-            transform.Translate(direction * stat.knockbackSpeed * Time.deltaTime);
-            yield return null;
-        }
-    }
-
-    // 피격시 깜빡
-    private IEnumerator InvincibilityCoroutine()
-    {
-        isInvincible = true;
-        float invincibilityDuration = 0.5f;
-        float blinkInterval = 0.1f;
-
-        for (float i = 0; i < invincibilityDuration; i += blinkInterval)
-        {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
-            yield return new WaitForSeconds(blinkInterval);
-        }
-
-        spriteRenderer.enabled = true;
-        isInvincible = false;
-    }
-
     // 플레이어 초기화 함수
     private void InitializePlayer()
     {
         stat.InitializeStats();
-        currentHP = stat.MaxHP;
+        currentShield = stat.defaultShield;
+        currentHP = stat.maxHP;
+        currentShield = 0;
+        isShieldOnLowHPEnabled = false;
+        baseAttack = stat.playerDamage;
+        currentSpecialAbility = null;
     }
 
     public void AddAbility(Ability ability)
@@ -295,11 +466,11 @@ public class Player : MonoBehaviour
         acquiredAbilities.Add(ability);
         ability.Apply(this);
 
-        if (ability is IncreasePride || ability is IncreaseAttack || ability is IncreaseRange || ability is IncreaseAttackSpeed)
+        if (ability is IncreasePride || ability is IncreaseAttack || ability is IncreaseRange)
         {
             UpdateAbilityTreeProgress("Pride");
         }
-        else if (ability is IncreaseWrath || ability is IncreaseSuperWrath || ability is IncreaseUltraWrath)  // 분노 능력 적용
+        else if (ability is ShieldOnLowHP || ability is ReduceMaxHPAndRefillShield || ability is ReduceMaxHPIncreaseAttack || ability is IncreaseAttackWithShield || ability is IncreaseAttackSpeed)  // 분노 능력 적용
         {
             UpdateAbilityTreeProgress("Wrath");
         }
@@ -376,6 +547,7 @@ public class Player : MonoBehaviour
                     break;
                 case "Wrath":
                     AddSpecialAbility(new SpecialAbilitySuperWrath());
+                    currentSpecialAbility = new SpecialAbilitySuperWrath();
                     break;
                 case "Gluttony":
                     // AddSuperSpecialAbility(new SpecialAbilitySuperGluttony());
@@ -404,6 +576,7 @@ public class Player : MonoBehaviour
                     break;
                 case "Wrath":
                     AddSpecialAbility(new SpecialAbilityUltraWrath());
+                    currentSpecialAbility = new SpecialAbilityUltraWrath();
                     break;
                 case "Gluttony":
                     // AddUltraSpecialAbility(new SpecialAbilityUltraGluttony());
@@ -430,21 +603,207 @@ public class Player : MonoBehaviour
         specialAbility.Apply(this);
     }
 
-    // 획득한 능력의 수를 반환하는 함수
     public int GetAcquiredAbilityCount()
     {
         return acquiredAbilities.Count;
     }
-    // 테크트리 진행도
-    private Dictionary<string, int> abilityTreeProgress = new Dictionary<string, int>
-{
-    {"Pride", 0},
-    {"Wrath", 0},
-    {"Gluttony", 0},
-    {"Greed", 0},
-    {"Sloth", 0},
-    {"Envy", 0},
-    {"Lust", 0}
-};
 
+    private Dictionary<string, int> abilityTreeProgress = new Dictionary<string, int>
+    {
+        {"Pride", 0},
+        {"Wrath", 0},
+        {"Gluttony", 0},
+        {"Greed", 0},
+        {"Sloth", 0},
+        {"Envy", 0},
+        {"Lust", 0}
+    };
+
+    public bool HasAbility(Ability ability)
+    {
+        return acquiredAbilities.Contains(ability);
+    }
+
+    private void UpdateHealthUI()
+    {
+        foreach (Transform child in healthPanel)
+        {
+            Destroy(child.gameObject);
+        }
+
+        int fullHearts = currentHP / 2;
+        bool hasHalfHeart = (currentHP % 2) != 0;
+
+        for (int i = 0; i < fullHearts; i++)
+        {
+            Instantiate(healthHeartPrefab, healthPanel);
+        }
+
+        if (hasHalfHeart)
+        {
+            var halfHeart = Instantiate(healthHeartPrefab, healthPanel);
+            halfHeart.GetComponent<Image>().sprite = halfHeartSprite;
+        }
+
+        for (int i = 0; i < currentShield / 2; i++)
+        {
+            Instantiate(shieldHeartPrefab, healthPanel);
+        }
+    }
+
+    public void SavePlayerData()
+    {
+        PlayerDataToJson data = new PlayerDataToJson
+        {
+            maxHP = stat.maxHP,
+            currentHP = currentHP,
+            currentShield = currentShield,
+            playerDamage = stat.playerDamage,
+            projectileRange = stat.projectileRange,
+            knockbackSpeed = stat.knockbackSpeed,
+            acquiredAbilities = new List<string>(),
+            abilityTreeProgress = new Dictionary<string, int>(abilityTreeProgress)
+        };
+
+        foreach (var ability in acquiredAbilities)
+        {
+            data.acquiredAbilities.Add(ability.Name);
+        }
+
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(saveFilePath, json);
+    }
+
+    public void LoadPlayerData()
+    {
+        if (File.Exists(saveFilePath))
+        {
+            string json = File.ReadAllText(saveFilePath);
+            PlayerDataToJson data = JsonUtility.FromJson<PlayerDataToJson>(json);
+
+            stat.maxHP = data.maxHP;
+            currentHP = data.currentHP;
+            currentShield = data.currentShield;
+            stat.playerDamage = data.playerDamage;
+            stat.projectileRange = data.projectileRange;
+            stat.knockbackSpeed = data.knockbackSpeed;
+            acquiredAbilities.Clear();
+            foreach (var abilityName in data.acquiredAbilities)
+            {
+                Ability ability = CreateAbilityByName(abilityName);
+                if (ability != null)
+                {
+                    acquiredAbilities.Add(ability);
+                    ability.Apply(this);
+                }
+            }
+            if (data.abilityTreeProgress == null)
+            {
+                data.abilityTreeProgress = new Dictionary<string, int>
+                {
+                    {"Pride", 0},
+                    {"Wrath", 0},
+                    {"Gluttony", 0},
+                    {"Greed", 0},
+                    {"Sloth", 0},
+                    {"Envy", 0},
+                    {"Lust", 0}
+                };
+            }
+            abilityTreeProgress = new Dictionary<string, int>(data.abilityTreeProgress);
+        }
+    }
+
+    public void ResetPlayerData()
+    {
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
+        }
+
+        PlayerDataToJson data = new PlayerDataToJson();
+        data.InitializeDefaultValues();
+        ApplyPlayerData(data);
+    }
+
+    private void ApplyPlayerData(PlayerDataToJson data)
+    {
+        stat.maxHP = data.maxHP;
+        currentHP = data.currentHP;
+        currentShield = data.currentShield;
+        stat.playerDamage = data.playerDamage;
+        stat.projectileRange = data.projectileRange;
+        stat.knockbackSpeed = data.knockbackSpeed;
+        acquiredAbilities.Clear();
+        abilityTreeProgress = new Dictionary<string, int>(data.abilityTreeProgress);
+        UpdateHealthUI();
+    }
+
+    private Ability CreateAbilityByName(string name)
+    {
+        if (abilityTypeRegistry.ContainsKey(name))
+        {
+            return abilityTypeRegistry[name]();
+        }
+        return null;
+    }
+
+    private void RegisterAbilityTypes()
+    {
+        abilityTypeRegistry = new Dictionary<string, Func<Ability>>
+    {
+        { "IncreasePride", () => new IncreasePride() },
+        { "IncreaseGluttony", () => new IncreaseGluttony() },
+        { "IncreaseGreed", () => new IncreaseGreed() },
+        { "IncreaseSloth", () => new IncreaseSloth() },
+        { "IncreaseEnvy", () => new IncreaseEnvy() },
+        { "IncreaseLust", () => new IncreaseLust() },
+        { "IncreaseAttack", () => new IncreaseAttack() },
+        { "IncreaseRange", () => new IncreaseRange() },
+        { "IncreaseAttackSpeed", () => new IncreaseAttackSpeed() },
+        { "ShieldOnLowHP", () => new ShieldOnLowHP() },
+        { "ReduceMaxHPIncreaseAttack", () => new ReduceMaxHPIncreaseAttack() },
+        { "ReduceMaxHPAndRefillShield", () => new ReduceMaxHPAndRefillShield() },
+        { "IncreaseAttackWithShield", () => new IncreaseAttackWithShield() }
+    };
+    }
+
+    private void OnApplicationQuit()
+    {
+        SavePlayerData();
+    }
+}
+
+[System.Serializable]
+public class PlayerDataToJson
+{
+    public int maxHP;
+    public int currentHP;
+    public int currentShield;
+    public int playerDamage;
+    public float knockbackSpeed;
+    public float projectileRange;
+    public List<string> acquiredAbilities;
+    public Dictionary<string, int> abilityTreeProgress;
+
+    public void InitializeDefaultValues()
+    {
+        maxHP = 10;
+        currentHP = maxHP;
+        currentShield = 0;
+        playerDamage = 5;
+        knockbackSpeed = 5.0f;
+        projectileRange = 2;
+        acquiredAbilities = new List<string>();
+        abilityTreeProgress = new Dictionary<string, int>
+        {
+            {"Pride", 0},
+            {"Wrath", 0},
+            {"Gluttony", 0},
+            {"Greed", 0},
+            {"Sloth", 0},
+            {"Envy", 0},
+            {"Lust", 0}
+        };
+    }
 }

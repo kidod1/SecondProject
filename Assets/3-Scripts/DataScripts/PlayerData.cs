@@ -10,7 +10,8 @@ public class PlayerData : ScriptableObject
     public float defaultProjectileSpeed = 10;
     public float defaultProjectileRange = 2;
     public int defaultProjectileType = 0;
-    public int defaultMaxHP = 20;
+    public int defaultMaxHP = 10;
+    public int defaultShield = 0;
 
     public float playerSpeed;
     public int playerDamage;
@@ -19,7 +20,8 @@ public class PlayerData : ScriptableObject
     public float projectileSpeed;
     public float projectileRange;
     public int projectileType;
-    public int MaxHP;
+    public int maxHP;
+    public int currentShield;
     public void InitializeStats()
     {
         playerSpeed = defaultPlayerSpeed;
@@ -29,6 +31,6 @@ public class PlayerData : ScriptableObject
         projectileSpeed = defaultProjectileSpeed;
         projectileRange = defaultProjectileRange;
         projectileType = defaultProjectileType;
-        MaxHP = defaultMaxHP;
+        maxHP = defaultMaxHP;
     }
 }

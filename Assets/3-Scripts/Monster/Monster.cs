@@ -9,7 +9,6 @@ public class Monster : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     protected bool isInvincible = false;
 
-    // 깜빡임 효과를 위한 변수
     [SerializeField]
     private float invincibilityDuration = 0.5f; // 무적 상태 지속 시간
     [SerializeField]
@@ -40,7 +39,7 @@ public class Monster : MonoBehaviour
 
     protected virtual void Die()
     {
-        // 몬스터 죽음 처리 로직 (여기서는 오브젝트를 비활성화합니다)
+        // 몬스터 죽음 처리 로직
         gameObject.SetActive(false);
     }
 

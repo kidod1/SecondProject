@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SpecialAbilityPride : SpecialAbility
 {
@@ -65,15 +66,31 @@ public class SpecialAbilitySuperWrath : SpecialAbility
 {
     public SpecialAbilitySuperWrath()
     {
-        Name = "초 궁극 분노";
-        Description = "분노 능력을 5개 모아 초 궁극 분노를 획득합니다.";
+        Name = "슈퍼 분노";
+        Description = "Q키를 눌러 특수한 능력을 발동합니다.";
         RequiredAbilityCount = 5;
+        CooldownTime = 10f; // 예시로 10초 쿨타임 설정
+    }
+
+    protected override void ApplyEffect(Player player)
+    {
+        player.StartCoroutine(SuperWrathCoroutine(player));
+    }
+
+    private IEnumerator SuperWrathCoroutine(Player player)
+    {
+        player.IncreaseAttack(50); // 공격력 증가
+        Debug.Log("슈퍼 분노 발동!");
+
+        yield return new WaitForSeconds(10f); // 10초 동안 지속
+
+        player.IncreaseAttack(-50); // 공격력 원상복구
+        Debug.Log("슈퍼 분노 종료");
     }
 
     public override void Apply(Player player)
     {
-        player.IncreaseAttack(30); // 예시로 30만큼 공격력 증가
-        Debug.Log("분노 능력을 5개 모아 시너지 - 초 궁극 분노를 획득합니다.");
+        Debug.Log("분노 능력을 5개 모아 시너지 스킬 - 초 궁극 분노를 획득합니다.");
     }
 }
 

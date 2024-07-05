@@ -33,7 +33,7 @@ public class TestMonster : Monster
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (isChasingPlayer)
         {
@@ -56,7 +56,7 @@ public class TestMonster : Monster
         }
     }
 
-    void Patrol()
+    private void Patrol()
     {
         if (patrolPoints.Length == 0)
             return;
@@ -70,13 +70,13 @@ public class TestMonster : Monster
         }
     }
 
-    void MoveTowards(Vector3 target)
+    private void MoveTowards(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    IEnumerator BlinkAndExplode()
+    private IEnumerator BlinkAndExplode()
     {
         if (speed == 0)
             yield break;
@@ -107,7 +107,7 @@ public class TestMonster : Monster
         Destroy(gameObject);
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);

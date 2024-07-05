@@ -23,7 +23,7 @@ public class AbilityTree
 
         int acquiredAbilityCount = player.GetAcquiredAbilityCount();
 
-        if (acquiredAbilityCount >= SpecialAbility.RequiredAbilityCount)
+        if (acquiredAbilityCount >= SpecialAbility.RequiredAbilityCount && !player.HasAbility(SpecialAbility))
         {
             player.AddAbility(SpecialAbility);
         }

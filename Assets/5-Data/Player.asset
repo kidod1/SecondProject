@@ -12,11 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0d650b76f067040bd0315989f8dcdc, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
+  defaultPlayerSpeed: 5
+  defaultPlayerDamage: 5
+  defaultKnockbackDuration: 0.1
+  defaultKnockbackSpeed: 5
+  defaultProjectileSpeed: 10
+  defaultProjectileRange: 2
+  defaultProjectileType: 0
+  defaultMaxHP: 10
+  defaultShield: 0
   playerSpeed: 5
   playerDamage: 5
   knockbackDuration: 0.1
-  knockbackSpeed: 5.2
+  knockbackSpeed: 5
   projectileSpeed: 10
-  projectileRange: 6
-  projectileType: 1
-  MaxHP: 20
+  projectileRange: 2
+  projectileType: 0
+  maxHP: 10
+  currentShield: 0
