@@ -24,6 +24,11 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     private Queue<Sprite> backgrounds;
 
+    [SerializeField]
+    private Sprite defaultBackground;
+    [SerializeField]
+    private Sprite zoomedBackground;
+
     private void Awake()
     {
         if (Instance == null)

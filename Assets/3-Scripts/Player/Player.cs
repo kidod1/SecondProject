@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -10,19 +11,40 @@ using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerData stat;
+    public PlayerData stat;
     public ObjectPool objectPool;
 
     // UI 관련 변수
     [SerializeField]
-    private Transform healthPanel;
+    private Transform smallHealthPanel;
+    [SerializeField]
+    private Transform largeHealthPanel;
     [SerializeField]
     private GameObject healthHeartPrefab;
     [SerializeField]
     private GameObject shieldHeartPrefab;
     [SerializeField]
     private Sprite halfHeartSprite;
+    [SerializeField]
+    private TMP_Text experienceText;
+    [SerializeField]
+    private TMP_Text levelText;
+    [SerializeField]
+    private Scrollbar experienceScrollbar;
+
+    // UI 리소스 변수
+    [SerializeField]
+    private Sprite smallHealthHeartSprite;
+    [SerializeField]
+    private Sprite largeHealthHeartSprite;
+    [SerializeField]
+    private Sprite smallShieldHeartSprite;
+    [SerializeField]
+    private Sprite largeShieldHeartSprite;
+    [SerializeField]
+    private Sprite smallEmptyHeartSprite;
+    [SerializeField]
+    private Sprite largeEmptyHeartSprite;
 
     // Movement 관련 변수
     private Vector2 moveInput;
@@ -44,29 +66,32 @@ public class Player : MonoBehaviour
     private Vector2 nextShootDirection;
     private bool hasNextShootDirection = false;
 
+    // 경험치 및 레벨 관련 변수
+    private int experience;
+    private int level;
+    private Coroutine experienceBarCoroutine;
+
+    // 능력 관련 변수
+    private List<Ability> abilities = new List<Ability>();
+    private List<Ability> availableAbilities = new List<Ability>();
+    private SynergyAbility synergyAbility;
+    private bool hasSynergyAbility = false;
+
     // Input System
     private PlayerInput playerInput;
 
-    // Shooting 이벤트
+    // 이벤트
     public UnityEvent<Vector2, int> OnShoot;
-
-    // 능력 관련 변수
-    private List<Ability> acquiredAbilities = new List<Ability>();
-
-    private bool isShieldOnLowHPEnabled = false;
-
-    private bool isShieldRefillEnabled = false;
-    private float shieldRefillInterval = 10f;
-
-    private bool isAttackBoostWithShieldEnabled = false;
-    private SpecialAbility currentSpecialAbility;
+    public UnityEvent OnLevelUp;
 
     // Save System
     private string saveFilePath;
-    private Dictionary<string, Func<Ability>> abilityTypeRegistry;
+
+    public Vector2 PlayerPosition => transform.position; // 위치 정보를 제공하는 프로퍼티
 
     private void Awake()
     {
+        LoadAvailableAbilities();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerInput = new PlayerInput();
@@ -85,7 +110,7 @@ public class Player : MonoBehaviour
         InitializePlayer();
         LoadPlayerData();
         UpdateHealthUI();
-        RegisterAbilityTypes();
+        ResetPlayerData();
     }
 
     private void OnEnable()
@@ -96,7 +121,6 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.started += OnShootStarted;
         playerInput.Player.Shoot.performed += OnShootPerformed;
         playerInput.Player.Shoot.canceled += OnShootCanceled;
-        playerInput.Player.SpecialAbility.performed += OnSpecialAbilityPerformed;
     }
 
     private void OnDisable()
@@ -107,7 +131,6 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.started -= OnShootStarted;
         playerInput.Player.Shoot.performed -= OnShootPerformed;
         playerInput.Player.Shoot.canceled -= OnShootCanceled;
-        playerInput.Player.SpecialAbility.performed -= OnSpecialAbilityPerformed;
     }
 
     private void Update()
@@ -172,19 +195,6 @@ public class Player : MonoBehaviour
         isShooting = false;
     }
 
-    private void OnSpecialAbilityPerformed(InputAction.CallbackContext context)
-    {
-        if (currentSpecialAbility != null)
-        {
-            currentSpecialAbility.Activate(this);
-        }
-    }
-
-    public void SetSpecialAbility(SpecialAbility specialAbility)
-    {
-        currentSpecialAbility = specialAbility;
-    }
-
     private void Shoot(Vector2 direction, int prefabIndex)
     {
         GameObject projectile = objectPool.GetObject(prefabIndex);
@@ -211,11 +221,9 @@ public class Player : MonoBehaviour
         if (isInvincible) return;
 
         currentHP -= damage;
+        StartCoroutine(ShowLargeHealthUI()); // 체력 UI 확대 효과 시작
 
-        CheckHPForShield();
-        UpdateAttackBoost(); // 실드 상태 변경 시 공격력 부스트 업데이트
         StartCoroutine(InvincibilityCoroutine());
-        StartCoroutine(KnockbackCoroutine(knockbackDirection));
 
         if (currentHP <= 0)
         {
@@ -226,7 +234,8 @@ public class Player : MonoBehaviour
         UpdateHealthUI(); // UI 업데이트
     }
 
-    public void TakeDamage(int damage, Vector2 knockbackDirection)
+    // 데미지를 받았을 때 호출되는 함수
+    public void TakeDamage(int damage)
     {
         if (isInvincible) return;
 
@@ -245,10 +254,7 @@ public class Player : MonoBehaviour
             currentHP -= damage;
         }
 
-        CheckHPForShield(); // 실드 체크 추가
-        UpdateAttackBoost(); // 실드 상태 변경 시 공격력 부스트 업데이트
-
-        StartCoroutine(KnockbackCoroutine(knockbackDirection));
+        StartCoroutine(ShowLargeHealthUI()); // 체력 UI 확대 효과 시작
         StartCoroutine(InvincibilityCoroutine());
 
         if (currentHP <= 0)
@@ -258,19 +264,6 @@ public class Player : MonoBehaviour
         }
 
         UpdateHealthUI(); // UI 업데이트
-    }
-
-    // 피격시 넉백
-    private IEnumerator KnockbackCoroutine(Vector2 direction)
-    {
-        float timer = 0;
-
-        while (timer < stat.knockbackDuration)
-        {
-            timer += Time.deltaTime;
-            transform.Translate(direction * stat.knockbackSpeed * Time.deltaTime);
-            yield return null;
-        }
     }
 
     // 피격시 깜빡
@@ -314,342 +307,271 @@ public class Player : MonoBehaviour
         UpdateHealthUI(); // UI 업데이트
     }
 
-    private void CheckHPForShield()
-    {
-        if (isShieldOnLowHPEnabled && currentHP == 2)
-        {
-            currentShield += 2;
-        }
-    }
-
-    public void EnableShieldOnLowHP()
-    {
-        isShieldOnLowHPEnabled = true;
-    }
-
-    public void ReduceMaxHPAndStartShieldRefill()
-    {
-        stat.maxHP -= 2;
-        if (currentHP > stat.maxHP)
-        {
-            currentHP = stat.maxHP;
-        }
-        isShieldRefillEnabled = true;
-        StartCoroutine(ShieldRefillCoroutine());
-    }
-
-    private IEnumerator ShieldRefillCoroutine()
-    {
-        while (isShieldRefillEnabled)
-        {
-            yield return new WaitForSeconds(shieldRefillInterval);
-            if (currentShield <= 0)
-            {
-                IncreaseShield(2);
-            }
-        }
-    }
-
-    public void ReduceMaxHPAndIncreaseAttack()
-    {
-        stat.maxHP -= 2;
-        if (currentHP > stat.maxHP)
-        {
-            currentHP = stat.maxHP;
-        }
-        IncreaseAttack(10);
-    }
-
-    public void EnableAttackBoostWithShield()
-    {
-        isAttackBoostWithShieldEnabled = true;
-        baseAttack = stat.playerDamage;
-        UpdateAttackBoost();
-    }
-
-    private void UpdateAttackBoost()
-    {
-        if (isAttackBoostWithShieldEnabled)
-        {
-            if (currentShield > 0)
-            {
-                stat.playerDamage = baseAttack + 10;
-                Debug.Log("실드 존재 - 공격력 증가");
-            }
-            else
-            {
-                stat.playerDamage = baseAttack;
-                Debug.Log("실드 없음 - 기본 공격력");
-            }
-        }
-    }
-
-    public void IncreaseAttack(int amount)
-    {
-        stat.playerDamage += amount;
-        baseAttack = stat.playerDamage;
-    }
-
-    public void IncreaseRange(int amount)
-    {
-        stat.projectileRange += amount;
-    }
-
-    public void IncreaseAttackSpeed(float amount)
-    {
-        stat.knockbackSpeed += amount;
-    }
-
-    // 새로운 능력 추가 메서드
-    public void IncreasePride(int amount)
-    {
-        // 오만 로직
-    }
-
-    public void IncreaseWrath(int amount)
-    {
-        stat.playerDamage += amount; // 분노 - 공격력 증가 로직
-    }
-
-    public void IncreaseGluttony(int amount)
-    {
-        // 식탐 로직
-    }
-
-    public void IncreaseGreed(int amount)
-    {
-        // 탐욕 로직
-    }
-
-    public void IncreaseSloth(int amount)
-    {
-        // 나태 로직
-    }
-
-    public void IncreaseEnvy(int amount)
-    {
-        // 질투 로직
-    }
-
-    public void IncreaseLust(int amount)
-    {
-        // 색욕 로직
-    }
-
-    // 프로젝타일 변경시
     public void ChangeProjectile(int newProjectileType)
     {
         stat.projectileType = newProjectileType;
         Debug.Log("프로젝타일 변경 " + newProjectileType);
     }
 
-    // 플레이어 회복
     public int GetCurrentHP()
     {
         return currentHP;
     }
 
-    // 플레이어 초기화 함수
+
+    private void LoadAvailableAbilities()
+    {
+        // 예시: Resources 폴더에서 능력 로드
+        availableAbilities.AddRange(Resources.LoadAll<Ability>("Abilities"));
+    }
+
+    // 경험치를 얻는 함수
+    public void GainExperience(int amount)
+    {
+        experience += amount;
+        if (experienceBarCoroutine != null)
+        {
+            StopCoroutine(experienceBarCoroutine);
+        }
+        experienceBarCoroutine = StartCoroutine(AnimateExperienceBar());
+        CheckLevelUp();
+    }
+
+    private IEnumerator AnimateExperienceBar()
+    {
+        float currentExp = experienceScrollbar.size * stat.experienceThresholds[level];
+        float targetExp = experience;
+        float duration = 1f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newExp = Mathf.Lerp(currentExp, targetExp, elapsed / duration);
+            experienceScrollbar.size = newExp / stat.experienceThresholds[level];
+            yield return null;
+        }
+
+        experienceScrollbar.size = targetExp / stat.experienceThresholds[level];
+        UpdateExperienceUI();
+    }
+
+    private void CheckLevelUp()
+    {
+        if (level < stat.experienceThresholds.Length && experience >= stat.experienceThresholds[level])
+        {
+            level++;
+            OnLevelUp.Invoke();
+            UpdateExperienceUI();
+        }
+    }
+
+    private void UpdateExperienceUI()
+    {
+        levelText.text = "Level: " + level;
+        experienceText.text = "EXP: " + experience + " / " + stat.experienceThresholds[level];
+
+        float expRatio = (float)experience / stat.experienceThresholds[level];
+        experienceScrollbar.size = expRatio;
+    }
+
+
+    // 능력을 선택하는 함수
+    public void SelectAbility(Ability ability)
+    {
+        if (ability.currentLevel == 0)
+        {
+            ability.currentLevel = 1;
+            abilities.Add(ability);
+        }
+        else
+        {
+            ability.Upgrade(); // 능력 업그레이드
+        }
+
+        if (ability.currentLevel >= 5)
+        {
+            availableAbilities.Remove(ability);
+        }
+
+        ability.Apply(this); // 능력 적용
+        CheckForSynergy(); // 시너지 능력 체크
+    }
+
+    // 시너지 능력을 체크하는 함수
+    private void CheckForSynergy()
+    {
+        if (hasSynergyAbility) return;
+
+        // 각 능력 분류의 총 레벨을 체크
+        var abilityCategories = new Dictionary<string, int>
+    {
+        { "Attack", 0 },
+        { "Defense", 0 },
+        { "Speed", 0 },
+        { "Health", 0 },
+        { "Magic", 0 },
+        { "Support", 0 },
+        { "Utility", 0 }
+    };
+
+        foreach (var ability in abilities)
+        {
+            abilityCategories[ability.category] += ability.currentLevel;
+        }
+
+        foreach (var category in abilityCategories)
+        {
+            // 현재 능력 분류와 해당 분류의 총 레벨을 출력
+            Debug.Log($"Category: {category.Key}, Total Level: {category.Value}");
+            if (category.Value >= 15) // 5, 10, 15 레벨 달성 확인
+            {
+                AssignSynergyAbility(category.Key);
+                break;
+            }
+        }
+    }
+
+    // 시너지 능력을 할당하는 함수
+    private void AssignSynergyAbility(string category)
+    {
+        hasSynergyAbility = true;
+        // 예시: Resources 폴더에서 시너지 능력 로드
+        synergyAbility = Resources.Load<SynergyAbility>($"SynergyAbilities/{category}Synergy");
+        synergyAbility.Apply(this);
+    }
+    public List<Ability> GetAvailableAbilities()
+    {
+        return availableAbilities;
+    }
+
     private void InitializePlayer()
     {
         stat.InitializeStats();
         currentShield = stat.defaultShield;
         currentHP = stat.maxHP;
         currentShield = 0;
-        isShieldOnLowHPEnabled = false;
         baseAttack = stat.playerDamage;
-        currentSpecialAbility = null;
+        UpdateExperienceUI();
     }
 
-    public void AddAbility(Ability ability)
+    // 작은 하트 UI 업데이트
+    private void UpdateSmallHealthUI()
     {
-        acquiredAbilities.Add(ability);
-        ability.Apply(this);
+        Debug.Log("Updating small health UI.");
 
-        if (ability is IncreasePride || ability is IncreaseAttack || ability is IncreaseRange)
-        {
-            UpdateAbilityTreeProgress("Pride");
-        }
-        else if (ability is ShieldOnLowHP || ability is ReduceMaxHPAndRefillShield || ability is ReduceMaxHPIncreaseAttack || ability is IncreaseAttackWithShield || ability is IncreaseAttackSpeed)  // 분노 능력 적용
-        {
-            UpdateAbilityTreeProgress("Wrath");
-        }
-        else if (ability is IncreaseGluttony)
-        {
-            UpdateAbilityTreeProgress("Gluttony");
-        }
-        else if (ability is IncreaseGreed)
-        {
-            UpdateAbilityTreeProgress("Greed");
-        }
-        else if (ability is IncreaseSloth)
-        {
-            UpdateAbilityTreeProgress("Sloth");
-        }
-        else if (ability is IncreaseEnvy)
-        {
-            UpdateAbilityTreeProgress("Envy");
-        }
-        else if (ability is IncreaseLust)
-        {
-            UpdateAbilityTreeProgress("Lust");
-        }
-    }
+        smallHealthPanel.gameObject.SetActive(true);
+        largeHealthPanel.gameObject.SetActive(false);
 
-    private void UpdateAbilityTreeProgress(string treeName)
-    {
-        if (abilityTreeProgress.ContainsKey(treeName))
-        {
-            abilityTreeProgress[treeName]++;
-            CheckForSpecialAbility(treeName);
-        }
-    }
-
-    private void CheckForSpecialAbility(string treeName)
-    {
-        int progress = abilityTreeProgress[treeName];
-
-        // 진행도가 3일 때 특수 능력 추가
-        if (progress == 3)
-        {
-            switch (treeName)
-            {
-                case "Pride":
-                    AddSpecialAbility(new SpecialAbilityPride());
-                    break;
-                case "Wrath":
-                    AddSpecialAbility(new SpecialAbilityWrath());
-                    break;
-                case "Gluttony":
-                    AddSpecialAbility(new SpecialAbilityGluttony());
-                    break;
-                case "Greed":
-                    AddSpecialAbility(new SpecialAbilityGreed());
-                    break;
-                case "Sloth":
-                    AddSpecialAbility(new SpecialAbilitySloth());
-                    break;
-                case "Envy":
-                    AddSpecialAbility(new SpecialAbilityEnvy());
-                    break;
-                case "Lust":
-                    AddSpecialAbility(new SpecialAbilityLust());
-                    break;
-            }
-        }
-        // 진행도가 5일 때 특수 능력 추가
-        else if (progress == 5)
-        {
-            switch (treeName)
-            {
-                case "Pride":
-                    AddSpecialAbility(new SpecialAbilitySuperPride());
-                    break;
-                case "Wrath":
-                    AddSpecialAbility(new SpecialAbilitySuperWrath());
-                    currentSpecialAbility = new SpecialAbilitySuperWrath();
-                    break;
-                case "Gluttony":
-                    // AddSuperSpecialAbility(new SpecialAbilitySuperGluttony());
-                    break;
-                case "Greed":
-                    // AddSuperSpecialAbility(new SpecialAbilitySuperGreed());
-                    break;
-                case "Sloth":
-                    // AddSuperSpecialAbility(new SpecialAbilitySuperSloth());
-                    break;
-                case "Envy":
-                    // AddSuperSpecialAbility(new SpecialAbilitySuperEnvy());
-                    break;
-                case "Lust":
-                    // AddSuperSpecialAbility(new SpecialAbilitySuperLust());
-                    break;
-            }
-        }
-        // 진행도가 7일 때 특수 능력 추가
-        else if (progress == 7)
-        {
-            switch (treeName)
-            {
-                case "Pride":
-                    AddSpecialAbility(new SpecialAbilityUltraPride());
-                    break;
-                case "Wrath":
-                    AddSpecialAbility(new SpecialAbilityUltraWrath());
-                    currentSpecialAbility = new SpecialAbilityUltraWrath();
-                    break;
-                case "Gluttony":
-                    // AddUltraSpecialAbility(new SpecialAbilityUltraGluttony());
-                    break;
-                case "Greed":
-                    // AddUltraSpecialAbility(new SpecialAbilityUltraGreed());
-                    break;
-                case "Sloth":
-                    // AddUltraSpecialAbility(new SpecialAbilityUltraSloth());
-                    break;
-                case "Envy":
-                    // AddUltraSpecialAbility(new SpecialAbilityUltraEnvy());
-                    break;
-                case "Lust":
-                    // AddUltraSpecialAbility(new SpecialAbilityUltraLust());
-                    break;
-            }
-        }
-    }
-
-    private void AddSpecialAbility(SpecialAbility specialAbility)
-    {
-        acquiredAbilities.Add(specialAbility);
-        specialAbility.Apply(this);
-    }
-
-    public int GetAcquiredAbilityCount()
-    {
-        return acquiredAbilities.Count;
-    }
-
-    private Dictionary<string, int> abilityTreeProgress = new Dictionary<string, int>
-    {
-        {"Pride", 0},
-        {"Wrath", 0},
-        {"Gluttony", 0},
-        {"Greed", 0},
-        {"Sloth", 0},
-        {"Envy", 0},
-        {"Lust", 0}
-    };
-
-    public bool HasAbility(Ability ability)
-    {
-        return acquiredAbilities.Contains(ability);
-    }
-
-    private void UpdateHealthUI()
-    {
-        foreach (Transform child in healthPanel)
+        foreach (Transform child in smallHealthPanel)
         {
             Destroy(child.gameObject);
         }
 
         int fullHearts = currentHP / 2;
         bool hasHalfHeart = (currentHP % 2) != 0;
+        int totalHearts = stat.maxHP / 2;
 
-        for (int i = 0; i < fullHearts; i++)
+        for (int i = 0; i < totalHearts; i++)
         {
-            Instantiate(healthHeartPrefab, healthPanel);
-        }
+            GameObject heart = Instantiate(healthHeartPrefab, smallHealthPanel);
+            Image heartImage = heart.GetComponent<Image>();
+            RectTransform heartRectTransform = heart.GetComponent<RectTransform>();
+            heartRectTransform.sizeDelta = new Vector2(30, 30); // 작은 하트 크기 조정
 
-        if (hasHalfHeart)
-        {
-            var halfHeart = Instantiate(healthHeartPrefab, healthPanel);
-            halfHeart.GetComponent<Image>().sprite = halfHeartSprite;
+            if (i < fullHearts)
+            {
+                heartImage.sprite = smallHealthHeartSprite;
+            }
+            else if (i == fullHearts && hasHalfHeart)
+            {
+                heartImage.sprite = halfHeartSprite;
+            }
+            else
+            {
+                heartImage.sprite = smallEmptyHeartSprite;
+            }
         }
 
         for (int i = 0; i < currentShield / 2; i++)
         {
-            Instantiate(shieldHeartPrefab, healthPanel);
+            GameObject shield = Instantiate(shieldHeartPrefab, smallHealthPanel);
+            Image shieldImage = shield.GetComponent<Image>();
+            RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
+            shieldRectTransform.sizeDelta = new Vector2(30, 30); // 작은 실드 크기 조정
+            shieldImage.sprite = smallShieldHeartSprite;
+            Debug.Log("Added small shield heart.");
         }
     }
+
+    // 큰 하트 UI 업데이트
+    private void UpdateLargeHealthUI()
+    {
+        Debug.Log("Updating large health UI.");
+
+        smallHealthPanel.gameObject.SetActive(false);
+        largeHealthPanel.gameObject.SetActive(true);
+
+        foreach (Transform child in largeHealthPanel)
+        {
+            Destroy(child.gameObject);
+        }
+
+        int fullHearts = currentHP / 2;
+        bool hasHalfHeart = (currentHP % 2) != 0;
+        int totalHearts = stat.maxHP / 2;
+
+        for (int i = 0; i < totalHearts; i++)
+        {
+            GameObject heart = Instantiate(healthHeartPrefab, largeHealthPanel);
+            Image heartImage = heart.GetComponent<Image>();
+            RectTransform heartRectTransform = heart.GetComponent<RectTransform>();
+            heartRectTransform.sizeDelta = new Vector2(55, 55); // 큰 하트 크기 조정
+
+            if (i < fullHearts)
+            {
+                heartImage.sprite = largeHealthHeartSprite;
+            }
+            else if (i == fullHearts && hasHalfHeart)
+            {
+                heartImage.sprite = halfHeartSprite;
+            }
+            else
+            {
+                heartImage.sprite = largeEmptyHeartSprite;
+            }
+        }
+
+        for (int i = 0; i < currentShield / 2; i++)
+        {
+            GameObject shield = Instantiate(shieldHeartPrefab, largeHealthPanel);
+            Image shieldImage = shield.GetComponent<Image>();
+            RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
+            shieldRectTransform.sizeDelta = new Vector2(55, 55); // 큰 실드 크기 조정
+            shieldImage.sprite = largeShieldHeartSprite;
+        }
+    }
+
+    // 큰 하트 UI를 잠시 보여주는 코루틴
+    private IEnumerator ShowLargeHealthUI()
+    {
+        Debug.Log("Showing large health UI.");
+        UpdateLargeHealthUI();
+
+        yield return new WaitForSeconds(2f);
+
+        Debug.Log("Hiding large health UI.");
+        largeHealthPanel.gameObject.SetActive(false);
+        UpdateSmallHealthUI();  // 작은 하트 UI 업데이트
+    }
+
+    // 전체 체력 UI 업데이트
+    public void UpdateHealthUI()
+    {
+        UpdateSmallHealthUI();
+        StartCoroutine(ShowLargeHealthUI());
+    }
+
 
     public void SavePlayerData()
     {
@@ -660,15 +582,8 @@ public class Player : MonoBehaviour
             currentShield = currentShield,
             playerDamage = stat.playerDamage,
             projectileRange = stat.projectileRange,
-            knockbackSpeed = stat.knockbackSpeed,
-            acquiredAbilities = new List<string>(),
-            abilityTreeProgress = new Dictionary<string, int>(abilityTreeProgress)
+            knockbackSpeed = stat.knockbackSpeed
         };
-
-        foreach (var ability in acquiredAbilities)
-        {
-            data.acquiredAbilities.Add(ability.Name);
-        }
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(saveFilePath, json);
@@ -687,30 +602,6 @@ public class Player : MonoBehaviour
             stat.playerDamage = data.playerDamage;
             stat.projectileRange = data.projectileRange;
             stat.knockbackSpeed = data.knockbackSpeed;
-            acquiredAbilities.Clear();
-            foreach (var abilityName in data.acquiredAbilities)
-            {
-                Ability ability = CreateAbilityByName(abilityName);
-                if (ability != null)
-                {
-                    acquiredAbilities.Add(ability);
-                    ability.Apply(this);
-                }
-            }
-            if (data.abilityTreeProgress == null)
-            {
-                data.abilityTreeProgress = new Dictionary<string, int>
-                {
-                    {"Pride", 0},
-                    {"Wrath", 0},
-                    {"Gluttony", 0},
-                    {"Greed", 0},
-                    {"Sloth", 0},
-                    {"Envy", 0},
-                    {"Lust", 0}
-                };
-            }
-            abilityTreeProgress = new Dictionary<string, int>(data.abilityTreeProgress);
         }
     }
 
@@ -734,38 +625,7 @@ public class Player : MonoBehaviour
         stat.playerDamage = data.playerDamage;
         stat.projectileRange = data.projectileRange;
         stat.knockbackSpeed = data.knockbackSpeed;
-        acquiredAbilities.Clear();
-        abilityTreeProgress = new Dictionary<string, int>(data.abilityTreeProgress);
         UpdateHealthUI();
-    }
-
-    private Ability CreateAbilityByName(string name)
-    {
-        if (abilityTypeRegistry.ContainsKey(name))
-        {
-            return abilityTypeRegistry[name]();
-        }
-        return null;
-    }
-
-    private void RegisterAbilityTypes()
-    {
-        abilityTypeRegistry = new Dictionary<string, Func<Ability>>
-    {
-        { "IncreasePride", () => new IncreasePride() },
-        { "IncreaseGluttony", () => new IncreaseGluttony() },
-        { "IncreaseGreed", () => new IncreaseGreed() },
-        { "IncreaseSloth", () => new IncreaseSloth() },
-        { "IncreaseEnvy", () => new IncreaseEnvy() },
-        { "IncreaseLust", () => new IncreaseLust() },
-        { "IncreaseAttack", () => new IncreaseAttack() },
-        { "IncreaseRange", () => new IncreaseRange() },
-        { "IncreaseAttackSpeed", () => new IncreaseAttackSpeed() },
-        { "ShieldOnLowHP", () => new ShieldOnLowHP() },
-        { "ReduceMaxHPIncreaseAttack", () => new ReduceMaxHPIncreaseAttack() },
-        { "ReduceMaxHPAndRefillShield", () => new ReduceMaxHPAndRefillShield() },
-        { "IncreaseAttackWithShield", () => new IncreaseAttackWithShield() }
-    };
     }
 
     private void OnApplicationQuit()
@@ -777,33 +637,19 @@ public class Player : MonoBehaviour
 [System.Serializable]
 public class PlayerDataToJson
 {
-    public int maxHP;
+    public int maxHP = 10;
     public int currentHP;
     public int currentShield;
     public int playerDamage;
     public float knockbackSpeed;
     public float projectileRange;
-    public List<string> acquiredAbilities;
-    public Dictionary<string, int> abilityTreeProgress;
 
     public void InitializeDefaultValues()
     {
-        maxHP = 10;
         currentHP = maxHP;
         currentShield = 0;
         playerDamage = 5;
         knockbackSpeed = 5.0f;
         projectileRange = 2;
-        acquiredAbilities = new List<string>();
-        abilityTreeProgress = new Dictionary<string, int>
-        {
-            {"Pride", 0},
-            {"Wrath", 0},
-            {"Gluttony", 0},
-            {"Greed", 0},
-            {"Sloth", 0},
-            {"Envy", 0},
-            {"Lust", 0}
-        };
     }
 }

@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7830138363668230166}
   - component: {fileID: 2179610003863932489}
+  - component: {fileID: 5884513831875480101}
+  - component: {fileID: 1099919919815183396}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44,4 +46,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e75f8cc8690a04f8a3938c441095c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySelection: {fileID: 0}
+--- !u!114 &5884513831875480101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9061210660560196682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed2d5a0e46f7d5748b6261d6d17ca628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  abilitySelectionPanel: {fileID: 0}
+  abilityButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityNameTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityDescriptionTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  rerollButton: {fileID: 0}
+--- !u!114 &1099919919815183396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9061210660560196682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025e8ceb251af8943974df23e59a929d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
