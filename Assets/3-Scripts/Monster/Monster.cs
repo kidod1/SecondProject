@@ -13,6 +13,7 @@ public abstract class Monster : MonoBehaviour
     public MonsterData monsterBaseStat;
     protected int currentHP;
     protected SpriteRenderer spriteRenderer;
+    protected MeshRenderer meshRenderer; // MeshRenderer 추가
     protected bool isInvincible = false;
     protected Player player;
     [SerializeField]
@@ -32,6 +33,7 @@ public abstract class Monster : MonoBehaviour
     {
         currentHP = monsterBaseStat.maxHP;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>(); // MeshRenderer 초기화
         player = FindObjectOfType<Player>();
         if (player == null)
         {
@@ -101,11 +103,26 @@ public abstract class Monster : MonoBehaviour
 
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
+            if (spriteRenderer != null) // SpriteRenderer가 있는 경우 깜빡임 효과 적용
+            {
+                spriteRenderer.enabled = !spriteRenderer.enabled;
+            }
+            else if (meshRenderer != null) // MeshRenderer가 있는 경우 깜빡임 효과 적용
+            {
+                meshRenderer.enabled = !meshRenderer.enabled;
+            }
             yield return new WaitForSeconds(blinkInterval);
         }
 
-        spriteRenderer.enabled = true;
+        if (spriteRenderer != null) // SpriteRenderer가 있는 경우 원래 상태로 복원
+        {
+            spriteRenderer.enabled = true;
+        }
+        else if (meshRenderer != null) // MeshRenderer가 있는 경우 원래 상태로 복원
+        {
+            meshRenderer.enabled = true;
+        }
+
         isInvincible = false;
     }
 

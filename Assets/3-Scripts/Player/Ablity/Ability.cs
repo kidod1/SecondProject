@@ -26,4 +26,10 @@ public abstract class Ability : ScriptableObject
 
     public abstract void Apply(Player player);
     public abstract void Upgrade();
+
+    // 능력을 초기화하는 메서드
+    public virtual void ResetLevel()
+    {
+        currentLevel = 0;
+    }
 }

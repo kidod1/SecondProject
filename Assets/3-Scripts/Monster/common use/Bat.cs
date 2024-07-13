@@ -1,24 +1,35 @@
 using System.Collections;
 using UnityEngine;
+using Spine.Unity;
 
 public class Bat : Monster
 {
     [SerializeField]
     private BatMonsterData stat;
 
-    private float attackCooldownTimer;
+    [SpineAnimation] public string idleAnimation;
+
+    private SkeletonAnimation skeletonAnimation;
 
     protected override void Start()
     {
         base.Start();
-        attackCooldownTimer = monsterBaseStat.attackDelay;
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        if (skeletonAnimation == null)
+        {
+            Debug.LogError("SkeletonAnimation component is missing.");
+        }
+        else
+        {
+            PlayAnimation(idleAnimation, true); // Start 시에 Idle 애니메이션 재생
+        }
     }
 
     protected override void InitializeStates()
     {
         idleState = new IdleState(this);
         chaseState = new ChaseState(this);
-        attackState = new AttackState(this);
+        attackState = new ExplodeAttackState(this);
         cooldownState = new CooldownState(this);
         currentState = idleState;
         currentState.EnterState();
@@ -26,46 +37,58 @@ public class Bat : Monster
 
     private void Update()
     {
-        attackCooldownTimer -= Time.deltaTime;
         currentState?.UpdateState();
     }
 
     public override void Attack()
     {
-        if (attackCooldownTimer <= 0)
-        {
-            StartCoroutine(SkillDash());
-            attackCooldownTimer = monsterBaseStat.attackDelay;
-        }
-        else
-        {
-            TransitionToState(cooldownState);
-        }
+        StartCoroutine(Explode());
     }
 
-    private IEnumerator SkillDash()
+    private IEnumerator Explode()
     {
-        Debug.Log("플레이어를 향해 돌진중");
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        float dashDuration = 1f;
-        float elapsed = 0f;
-        bool hasDamagedPlayer = false;
+        Debug.Log("플레이어에게 접근 중");
 
-        while (elapsed < dashDuration)
+        while (Vector3.Distance(transform.position, player.transform.position) > 0.5f)
         {
-            Debug.Log("플레이어를 향해 돌진중");
+            Vector3 direction = (player.transform.position - transform.position).normalized;
             transform.position += direction * stat.skillDashSpeed * Time.deltaTime;
-            elapsed += Time.deltaTime;
-
-            if (!hasDamagedPlayer && Vector3.Distance(transform.position, player.transform.position) < 0.5f)
-            {
-                player.TakeDamage(stat.attackDamage);
-                hasDamagedPlayer = true;
-            }
-
             yield return null;
         }
 
-        TransitionToState(cooldownState);
+        // 자폭하여 플레이어에게 피해를 줌
+        Debug.Log("자폭!");
+        player.TakeDamage(stat.attackDamage);
+
+        // 몬스터를 파괴
+        Die();
+    }
+
+    public void PlayAnimation(string animationName, bool loop)
+    {
+        if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
+        {
+            skeletonAnimation.state.SetAnimation(0, animationName, loop);
+        }
+    }
+}
+
+public class ExplodeAttackState : MonsterState
+{
+    public ExplodeAttackState(Monster monster) : base(monster) { }
+
+    public override void EnterState()
+    {
+        monster.Attack();
+    }
+
+    public override void UpdateState()
+    {
+        // 자폭할 때는 다른 상태로 전환하지 않음
+    }
+
+    public override void ExitState()
+    {
+        Debug.Log("Exiting Attack State");
     }
 }

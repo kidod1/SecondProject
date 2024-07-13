@@ -195,13 +195,18 @@ public class Player : MonoBehaviour
         isShooting = false;
     }
 
-    private void Shoot(Vector2 direction, int prefabIndex)
+    public void Shoot(Vector2 direction, int prefabIndex)
     {
         GameObject projectile = objectPool.GetObject(prefabIndex);
         projectile.transform.position = transform.position;
-        projectile.GetComponent<Projectile>().SetDirection(direction);
+
+        Projectile projScript = projectile.GetComponent<Projectile>();
+        projScript.Initialize(stat);
+        projScript.SetDirection(direction);
 
         OnShoot.Invoke(direction, prefabIndex);
+
+        Debug.Log($"Shoot called with direction: {direction}, prefabIndex: {prefabIndex}");
     }
 
     public void RebindMoveKey(Action<RebindingOperation> callback)
@@ -270,8 +275,8 @@ public class Player : MonoBehaviour
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
-        float invincibilityDuration = 0.5f;
-        float blinkInterval = 0.1f;
+        float invincibilityDuration = 1f; // 무적 시간 1초
+        float blinkInterval = 0.1f; // 깜빡이는 간격
 
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
@@ -323,6 +328,14 @@ public class Player : MonoBehaviour
     {
         // 예시: Resources 폴더에서 능력 로드
         availableAbilities.AddRange(Resources.LoadAll<Ability>("Abilities"));
+        ResetAllAbilities();
+    }
+    private void ResetAllAbilities()
+    {
+        foreach (var ability in availableAbilities)
+        {
+            ability.ResetLevel();
+        }
     }
 
     // 경험치를 얻는 함수
@@ -375,13 +388,15 @@ public class Player : MonoBehaviour
         experienceScrollbar.size = expRatio;
     }
 
-
-    // 능력을 선택하는 함수
     public void SelectAbility(Ability ability)
     {
+        Debug.Log($"Selecting ability: {ability.abilityName}");
+        ability.Apply(this); // 능력 적용
+
         if (ability.currentLevel == 0)
         {
             ability.currentLevel = 1;
+            Debug.Log($"{ability.abilityName} initialized to level 1");
             abilities.Add(ability);
         }
         else
@@ -394,7 +409,6 @@ public class Player : MonoBehaviour
             availableAbilities.Remove(ability);
         }
 
-        ability.Apply(this); // 능력 적용
         CheckForSynergy(); // 시너지 능력 체크
     }
 
@@ -452,6 +466,7 @@ public class Player : MonoBehaviour
         currentHP = stat.maxHP;
         currentShield = 0;
         baseAttack = stat.playerDamage;
+        ResetAbilities();
         UpdateExperienceUI();
     }
 
@@ -616,7 +631,14 @@ public class Player : MonoBehaviour
         data.InitializeDefaultValues();
         ApplyPlayerData(data);
     }
-
+    public void ResetAbilities()
+    {
+        foreach (var ability in abilities)
+        {
+            ability.ResetLevel();
+        }
+        abilities.Clear();
+    }
     private void ApplyPlayerData(PlayerDataToJson data)
     {
         stat.maxHP = data.maxHP;

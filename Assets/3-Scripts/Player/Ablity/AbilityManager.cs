@@ -30,6 +30,12 @@ public class AbilityManager : MonoBehaviour
         player.OnLevelUp.RemoveListener(ShowAbilitySelection);
     }
 
+    private void Start()
+    {
+        // 게임 시작 시 능력 초기화
+        player.ResetAbilities();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
@@ -40,6 +46,7 @@ public class AbilityManager : MonoBehaviour
 
     public void ShowAbilitySelection()
     {
+        Time.timeScale = 0f; // 게임 일시정지
         abilitySelectionPanel.SetActive(true);
         availableAbilities = player.GetAvailableAbilities();
 
@@ -69,14 +76,15 @@ public class AbilityManager : MonoBehaviour
     {
         player.SelectAbility(ability);
         abilitySelectionPanel.SetActive(false);
-        rerollButton.gameObject.SetActive(false); // 리롤 버튼 비활성화
+        rerollButton.gameObject.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     private void RerollAbilities()
     {
         Debug.Log("Rerolling abilities...");
-        availableAbilities = player.GetAvailableAbilities(); // 가능한 능력 다시 가져오기
-        ShuffleAbilities(); // 리스트 섞기
+        availableAbilities = player.GetAvailableAbilities();
+        ShuffleAbilities();
 
         for (int i = 0; i < abilityButtons.Length; i++)
         {
@@ -87,15 +95,13 @@ public class AbilityManager : MonoBehaviour
                 abilityDescriptionTexts[i].text = ability.GetDescription();
                 abilityButtons[i].onClick.RemoveAllListeners();
                 abilityButtons[i].onClick.AddListener(() => SelectAbility(ability));
-                abilityButtons[i].gameObject.SetActive(true); // 버튼 활성화
+                abilityButtons[i].gameObject.SetActive(true);
             }
             else
             {
                 abilityButtons[i].gameObject.SetActive(false);
             }
         }
-
-        rerollButton.gameObject.SetActive(false); // 리롤 버튼 비활성화
     }
 
     private void ShuffleAbilities()

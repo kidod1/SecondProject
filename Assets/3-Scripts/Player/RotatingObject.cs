@@ -7,7 +7,8 @@ public class RotatingObject : MonoBehaviour
     public float rotationSpeed = 50.0f; // 회전 속도 (도/초)
     private float angle = 0.0f;
 
-    private Player playerShooting;
+    public Player playerShooting; // 플레이어 슈팅 스크립트
+    public float damageMultiplier = 0.3f; // 분신체의 피해 배율
 
     private void Start()
     {
@@ -44,7 +45,10 @@ public class RotatingObject : MonoBehaviour
     {
         GameObject projectile = playerShooting.objectPool.GetObject(prefabIndex);
         projectile.transform.position = transform.position;
-        projectile.GetComponent<Projectile>().SetDirection(direction);
+
+        Projectile projScript = projectile.GetComponent<Projectile>();
+        projScript.Initialize(playerShooting.stat, true, damageMultiplier); // Projectile을 초기화합니다.
+        projScript.SetDirection(direction);
     }
 
     private void OnDestroy()
