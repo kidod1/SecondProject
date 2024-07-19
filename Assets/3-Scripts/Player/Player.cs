@@ -74,6 +74,8 @@ public class Player : MonoBehaviour
     // 능력 관련 변수
     private List<Ability> abilities = new List<Ability>();
     private List<Ability> availableAbilities = new List<Ability>();
+    private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
+    private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
     private SynergyAbility synergyAbility;
     private bool hasSynergyAbility = false;
 
@@ -106,11 +108,26 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Save File Path: " + saveFilePath);
         InitializePlayer();
         LoadPlayerData();
         UpdateHealthUI();
         ResetPlayerData();
+
+        synergyAbilityAcquired.Add("Attack", false);
+        synergyAbilityAcquired.Add("Defense", false);
+        synergyAbilityAcquired.Add("Speed", false);
+        synergyAbilityAcquired.Add("Health", false);
+        synergyAbilityAcquired.Add("Magic", false);
+        synergyAbilityAcquired.Add("Support", false);
+        synergyAbilityAcquired.Add("Utility", false);
+
+        synergyLevels.Add("Attack", 0);
+        synergyLevels.Add("Defense", 0);
+        synergyLevels.Add("Speed", 0);
+        synergyLevels.Add("Health", 0);
+        synergyLevels.Add("Magic", 0);
+        synergyLevels.Add("Support", 0);
+        synergyLevels.Add("Utility", 0);
     }
 
     private void OnEnable()
@@ -166,16 +183,19 @@ public class Player : MonoBehaviour
 
     private void OnShootStarted(InputAction.CallbackContext context)
     {
-        Vector2 newDirection = context.ReadValue<Vector2>();
-        if (newDirection != Vector2.zero)
+        if (context.control != null)
         {
-            shootDirection = newDirection;
-            isShooting = true;
-
-            if (Time.time >= lastShootTime + shootCooldown)
+            Vector2 newDirection = context.ReadValue<Vector2>();
+            if (newDirection != Vector2.zero)
             {
-                Shoot(shootDirection, stat.projectileType);
-                lastShootTime = Time.time;
+                shootDirection = newDirection;
+                isShooting = true;
+
+                if (Time.time >= lastShootTime + shootCooldown)
+                {
+                    Shoot(shootDirection, stat.projectileType);
+                    lastShootTime = Time.time;
+                }
             }
         }
     }
@@ -205,8 +225,6 @@ public class Player : MonoBehaviour
         projScript.SetDirection(direction);
 
         OnShoot.Invoke(direction, prefabIndex);
-
-        Debug.Log($"Shoot called with direction: {direction}, prefabIndex: {prefabIndex}");
     }
 
     public void RebindMoveKey(Action<RebindingOperation> callback)
@@ -290,7 +308,6 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player Died!");
         // 플레이어 죽음 처리 로직 추가 (예: 게임 오버 화면 표시, 재시작 등)
         ResetPlayerData();
     }
@@ -315,7 +332,6 @@ public class Player : MonoBehaviour
     public void ChangeProjectile(int newProjectileType)
     {
         stat.projectileType = newProjectileType;
-        Debug.Log("프로젝타일 변경 " + newProjectileType);
     }
 
     public int GetCurrentHP()
@@ -330,12 +346,14 @@ public class Player : MonoBehaviour
         availableAbilities.AddRange(Resources.LoadAll<Ability>("Abilities"));
         ResetAllAbilities();
     }
-    private void ResetAllAbilities()
+    public void ResetAllAbilities()
     {
         foreach (var ability in availableAbilities)
         {
             ability.ResetLevel();
         }
+        abilities.Clear();
+        OnShoot.RemoveAllListeners();
     }
 
     // 경험치를 얻는 함수
@@ -390,13 +408,11 @@ public class Player : MonoBehaviour
 
     public void SelectAbility(Ability ability)
     {
-        Debug.Log($"Selecting ability: {ability.abilityName}");
         ability.Apply(this); // 능력 적용
 
         if (ability.currentLevel == 0)
         {
             ability.currentLevel = 1;
-            Debug.Log($"{ability.abilityName} initialized to level 1");
             abilities.Add(ability);
         }
         else
@@ -409,51 +425,52 @@ public class Player : MonoBehaviour
             availableAbilities.Remove(ability);
         }
 
-        CheckForSynergy(); // 시너지 능력 체크
+        CheckForSynergy(ability.category); // 시너지 능력 체크
     }
 
     // 시너지 능력을 체크하는 함수
-    private void CheckForSynergy()
+    private void CheckForSynergy(string category)
     {
-        if (hasSynergyAbility) return;
+        if (synergyAbilityAcquired[category]) return;
 
-        // 각 능력 분류의 총 레벨을 체크
-        var abilityCategories = new Dictionary<string, int>
-    {
-        { "Attack", 0 },
-        { "Defense", 0 },
-        { "Speed", 0 },
-        { "Health", 0 },
-        { "Magic", 0 },
-        { "Support", 0 },
-        { "Utility", 0 }
-    };
+        int totalLevel = 0;
 
         foreach (var ability in abilities)
         {
-            abilityCategories[ability.category] += ability.currentLevel;
-        }
-
-        foreach (var category in abilityCategories)
-        {
-            // 현재 능력 분류와 해당 분류의 총 레벨을 출력
-            Debug.Log($"Category: {category.Key}, Total Level: {category.Value}");
-            if (category.Value >= 15) // 5, 10, 15 레벨 달성 확인
+            if (ability.category == category)
             {
-                AssignSynergyAbility(category.Key);
-                break;
+                totalLevel += ability.currentLevel;
             }
         }
+
+        if (totalLevel >= 15 && synergyLevels[category] < 15)
+        {
+            AssignSynergyAbility(category, 15);
+            synergyLevels[category] = 15;
+        }
+        else if (totalLevel >= 10 && synergyLevels[category] < 10)
+        {
+            AssignSynergyAbility(category, 10);
+            synergyLevels[category] = 10;
+        }
+        else if (totalLevel >= 5 && synergyLevels[category] < 5)
+        {
+            AssignSynergyAbility(category, 5);
+            synergyLevels[category] = 5;
+        }
+    }
+    // 시너지 능력을 할당하는 함수
+    private void AssignSynergyAbility(string category, int level)
+    {
+        string synergyAbilityName = $"{category}Synergy{level}";
+        SynergyAbility synergyAbility = Resources.Load<SynergyAbility>($"SynergyAbilities/{synergyAbilityName}");
+        if (synergyAbility != null)
+        {
+            synergyAbility.Apply(this);
+            synergyAbilityAcquired[category] = true;
+        }
     }
 
-    // 시너지 능력을 할당하는 함수
-    private void AssignSynergyAbility(string category)
-    {
-        hasSynergyAbility = true;
-        // 예시: Resources 폴더에서 시너지 능력 로드
-        synergyAbility = Resources.Load<SynergyAbility>($"SynergyAbilities/{category}Synergy");
-        synergyAbility.Apply(this);
-    }
     public List<Ability> GetAvailableAbilities()
     {
         return availableAbilities;
@@ -473,8 +490,6 @@ public class Player : MonoBehaviour
     // 작은 하트 UI 업데이트
     private void UpdateSmallHealthUI()
     {
-        Debug.Log("Updating small health UI.");
-
         smallHealthPanel.gameObject.SetActive(true);
         largeHealthPanel.gameObject.SetActive(false);
 
@@ -515,15 +530,12 @@ public class Player : MonoBehaviour
             RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
             shieldRectTransform.sizeDelta = new Vector2(30, 30); // 작은 실드 크기 조정
             shieldImage.sprite = smallShieldHeartSprite;
-            Debug.Log("Added small shield heart.");
         }
     }
 
     // 큰 하트 UI 업데이트
     private void UpdateLargeHealthUI()
     {
-        Debug.Log("Updating large health UI.");
-
         smallHealthPanel.gameObject.SetActive(false);
         largeHealthPanel.gameObject.SetActive(true);
 
@@ -570,12 +582,10 @@ public class Player : MonoBehaviour
     // 큰 하트 UI를 잠시 보여주는 코루틴
     private IEnumerator ShowLargeHealthUI()
     {
-        Debug.Log("Showing large health UI.");
         UpdateLargeHealthUI();
 
         yield return new WaitForSeconds(2f);
 
-        Debug.Log("Hiding large health UI.");
         largeHealthPanel.gameObject.SetActive(false);
         UpdateSmallHealthUI();  // 작은 하트 UI 업데이트
     }

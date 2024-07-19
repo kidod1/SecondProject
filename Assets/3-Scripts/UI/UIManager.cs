@@ -34,6 +34,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // Esc 키가 눌렸을 때 게임 종료
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            QuitGame();
+        }
+    }
+
     public void ChangeScene(int sceneIndex)
     {
         if (sceneIndex >= 0 && sceneIndex < SceneManager.sceneCountInBuildSettings)

@@ -45,7 +45,6 @@ public class ObjectPool : MonoBehaviour
         GameObject obj = pool[currentIndex];
         obj.SetActive(true);
 
-        // Move to the next index, and wrap around if necessary
         currentIndexes[prefabIndex] = (currentIndex + 1) % poolSize;
 
         return obj;

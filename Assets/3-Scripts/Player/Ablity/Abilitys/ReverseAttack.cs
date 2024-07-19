@@ -9,9 +9,13 @@ public class ReverseAttack : Ability
 
     public override void Apply(Player player)
     {
-        playerInstance = player;
+        // 중복 등록 방지
+        if (playerInstance != null)
+        {
+            playerInstance.OnShoot.RemoveListener(OnShoot);
+        }
 
-        // 레벨에 상관없이 항상 이벤트 리스너를 추가
+        playerInstance = player;
         player.OnShoot.AddListener(OnShoot);
 
         if (currentLevel == 1)
@@ -20,7 +24,6 @@ public class ReverseAttack : Ability
         }
         else if (currentLevel > 1)
         {
-            // 레벨 2 이상: 플레이어의 공격 증가
             player.stat.playerDamage += attackIncreases[currentLevel - 1];
         }
 
@@ -50,8 +53,18 @@ public class ReverseAttack : Ability
     {
         GameObject projectile = player.objectPool.GetObject(prefabIndex);
         projectile.transform.position = player.transform.position;
-        projectile.GetComponent<Projectile>().SetDirection(direction);
-        Debug.Log($"ShootReverse called with direction: {direction}");
+
+        Projectile projScript = projectile.GetComponent<Projectile>();
+        if (projScript != null)
+        {
+            projScript.Initialize(player.stat);
+            projScript.SetDirection(direction);
+            Debug.Log($"ShootReverse called with direction: {direction}");
+        }
+        else
+        {
+            Debug.LogError("Projectile script is missing on the projectile.");
+        }
     }
 
     private void OnShoot(Vector2 direction, int prefabIndex)

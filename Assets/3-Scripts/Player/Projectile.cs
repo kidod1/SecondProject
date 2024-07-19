@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
     private float damageMultiplier = 1.0f;
     private PlayerData stat;
     private bool isCloneProjectile = false;
-    private Rigidbody2D rb; // Rigidbody2D를 추가
+    private Rigidbody2D rb;
 
     private void Awake()
     {
@@ -22,14 +22,14 @@ public class Projectile : MonoBehaviour
         if (stat != null)
         {
             Invoke(nameof(Deactivate), stat.projectileRange);
-            rb.velocity = direction * stat.projectileSpeed; // 초기 속도 설정
+            rb.velocity = direction * stat.projectileSpeed;
         }
     }
 
     private void OnDisable()
     {
         CancelInvoke();
-        rb.velocity = Vector2.zero; // 비활성화 시 속도 초기화
+        rb.velocity = Vector2.zero;
     }
 
     public void SetDirection(Vector2 newDirection)
@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
         direction = newDirection.normalized;
         if (rb != null)
         {
-            rb.velocity = direction * stat.projectileSpeed; // 방향 설정 시 속도도 설정
+            rb.velocity = direction * stat.projectileSpeed;
         }
     }
 
@@ -46,6 +46,11 @@ public class Projectile : MonoBehaviour
         stat = playerStat;
         isCloneProjectile = isClone;
         damageMultiplier = multiplier;
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero; // 초기화 시 속도를 0으로 설정
+        }
     }
 
     private void Deactivate()

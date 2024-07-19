@@ -6,7 +6,7 @@ public class SpotlightAttack : Ability
     public GameObject spotlightPrefab; // 스포트라이트 프리팹
     private SpotlightEffect spotlightInstance; // 스포트라이트 인스턴스
 
-    private int[] damageValues = { 20, 20, 25, 25, 30 };
+    private int[] damageValues = { 3, 5, 7, 10, 15 };
     private float[] rangeValues = { 2f, 2.5f, 2.5f, 2.5f, 3f };
     private float[] intervalValues = { 1f, 1f, 1f, 0.75f, 0.75f };
 
@@ -23,6 +23,7 @@ public class SpotlightAttack : Ability
                 spotlightInstance.damageAmount = damageValues[currentLevel];
                 spotlightInstance.damageRadius = rangeValues[currentLevel];
                 spotlightInstance.damageInterval = intervalValues[currentLevel];
+                spotlightInstance.currentLevel = currentLevel + 1; // 현재 레벨 설정
             }
             else
             {
@@ -37,6 +38,7 @@ public class SpotlightAttack : Ability
                 spotlightInstance.damageAmount = damageValues[currentLevel];
                 spotlightInstance.damageRadius = rangeValues[currentLevel];
                 spotlightInstance.damageInterval = intervalValues[currentLevel];
+                spotlightInstance.currentLevel = currentLevel + 1; // 현재 레벨 설정
             }
             else
             {

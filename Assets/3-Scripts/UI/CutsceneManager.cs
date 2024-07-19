@@ -51,7 +51,7 @@ public class CutsceneManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(loadSceneNum);
         }
 
         isTransitioning = false;

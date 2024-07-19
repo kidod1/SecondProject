@@ -9,14 +9,14 @@ public class Bullet : MonoBehaviour
         attackDamage = damage;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Player>().TakeDamage(attackDamage);
+            collision.GetComponent<Player>().TakeDamage(attackDamage);
             Destroy(gameObject);
         }
-        else if (collision.gameObject.CompareTag("Obstacle"))
+        else if (collision.CompareTag("Wall"))
         {
             Destroy(gameObject);
         }

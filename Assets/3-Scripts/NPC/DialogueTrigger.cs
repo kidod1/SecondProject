@@ -1,19 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class DialogueEntry
+{
+    public string name;
+    public Dialogue dialogue;
+    public bool autoClose = false;
+}
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public Dialogue dialogue;
-    public bool autoClose = false; // ÀÚµ¿ ´ÝÈû ¿©ºÎ
+    public List<DialogueEntry> dialogues;
 
-    public void TriggerDialogue()
+    public void TriggerDialogueByName(string name)
     {
-        if (DialogueManager.Instance != null)
+        DialogueEntry entry = dialogues.Find(d => d.name == name);
+        if (entry != null && DialogueManager.Instance != null)
         {
-            DialogueManager.Instance.StartDialogue(dialogue, autoClose);
+            Debug.Log($"Triggering dialogue by name: {name}");
+            DialogueManager.Instance.StartDialogue(entry.dialogue, entry.autoClose);
         }
         else
         {
-            Debug.LogError("DialogueManager not found in the scene.");
+            Debug.LogError($"Dialogue with name {name} not found or DialogueManager not found in the scene.");
         }
     }
 }

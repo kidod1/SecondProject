@@ -7,6 +7,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private LayerMask npcLayer;
 
+    private string dialogueNameToTrigger;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -27,9 +29,10 @@ public class PlayerInteraction : MonoBehaviour
         foreach (var hit in hits)
         {
             DialogueTrigger dialogueTrigger = hit.GetComponent<DialogueTrigger>();
-            if (dialogueTrigger != null)
+            if (dialogueTrigger != null && !string.IsNullOrEmpty(dialogueNameToTrigger))
             {
-                dialogueTrigger.TriggerDialogue();
+                Debug.Log($"Attempting to trigger dialogue: {dialogueNameToTrigger}");
+                dialogueTrigger.TriggerDialogueByName(dialogueNameToTrigger);
                 break;
             }
         }
@@ -42,5 +45,17 @@ public class PlayerInteraction : MonoBehaviour
         // 예시: 특정 아이템을 획득했는지 확인하는 로직
         // return Inventory.HasItem("SpecialItem");
         return false;
+    }
+
+    public void SetDialogueNameToTrigger(string name)
+    {
+        Debug.Log($"Set dialogue name to trigger: {name}");
+        dialogueNameToTrigger = name;
+
+        // 다이얼로그를 즉시 트리거
+        if (!string.IsNullOrEmpty(dialogueNameToTrigger))
+        {
+            DialogueManager.Instance.TriggerDialogueByName(dialogueNameToTrigger);
+        }
     }
 }

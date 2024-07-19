@@ -29,6 +29,11 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     private Sprite zoomedBackground;
 
+    private bool isDialogueActive = false;
+    private bool firstDialogueShown = false;
+
+    private Dictionary<string, Dialogue> dialogueDictionary = new Dictionary<string, Dialogue>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -39,6 +44,27 @@ public class DialogueManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+
+        InitializeDialogueDictionary();
+    }
+
+    private void InitializeDialogueDictionary()
+    {
+        DialogueTrigger[] triggers = FindObjectsOfType<DialogueTrigger>();
+        foreach (DialogueTrigger trigger in triggers)
+        {
+            foreach (var entry in trigger.dialogues)
+            {
+                if (!dialogueDictionary.ContainsKey(entry.name))
+                {
+                    dialogueDictionary.Add(entry.name, entry.dialogue);
+                }
+                else
+                {
+                    Debug.LogWarning($"Duplicate dialogue name found: {entry.name}");
+                }
+            }
         }
     }
 
@@ -63,27 +89,65 @@ public class DialogueManager : MonoBehaviour
         {
             Debug.LogError("Animator does not have a runtimeAnimatorController assigned.");
         }
+
+        // 처음 로드됐을 때 다이얼로그 트리거
+        TriggerInitialDialogue();
     }
 
     private void Update()
     {
-        if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
+        if (isDialogueActive && Input.GetKeyDown(KeyCode.Space))
         {
             DisplayNextSentence();
         }
     }
 
+    private void TriggerInitialDialogue()
+    {
+        if (!firstDialogueShown)
+        {
+            var initialDialogueTrigger = FindObjectOfType<DialogueTrigger>();
+            if (initialDialogueTrigger != null)
+            {
+                initialDialogueTrigger.TriggerDialogueByName("StartDialogue");
+                firstDialogueShown = true;
+            }
+        }
+    }
+
+    public void TriggerDialogueByName(string name)
+    {
+        Debug.Log($"Attempting to trigger dialogue with name: {name}");
+        if (dialogueDictionary.ContainsKey(name))
+        {
+            StartDialogue(dialogueDictionary[name]);
+        }
+        else
+        {
+            Debug.LogWarning($"Dialogue with name {name} not found.");
+        }
+    }
+
     public void StartDialogue(Dialogue dialogue, bool autoClose = false)
     {
+        Debug.Log("Starting dialogue...");
+        if (isDialogueActive)
+        {
+            Debug.LogWarning("Dialogue is already active!");
+            return;
+        }
+
         if (dialogueAnimator == null)
         {
             Debug.LogError("Animator is not assigned!");
             return;
         }
 
+        dialoguePanel.SetActive(true); // 패널을 활성화
+        Debug.Log("Dialogue panel activated.");
+
         if (!dialogueAnimator.isActiveAndEnabled)
         {
-            dialoguePanel.SetActive(true); // 패널을 활성화
             dialogueAnimator.enabled = true;
         }
 
@@ -96,10 +160,19 @@ public class DialogueManager : MonoBehaviour
         dialogueAnimator.Rebind(); // Animator를 리셋하여 재생 가능한 상태로 만듭니다.
         dialogueAnimator.Update(0); // Animator 상태를 업데이트합니다.
 
-        dialoguePanel.SetActive(true);
+        // 애니메이터를 Unscaled Time으로 설정
+        dialogueAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        if (imageAnimator != null)
+        {
+            imageAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        }
+
         dialogueAnimator.SetTrigger("In");
+        Debug.Log("Animator trigger set to 'In'.");
 
         nameText.text = dialogue.characterName;
+        dialogueText.text = ""; // 텍스트를 초기화
+        Debug.Log($"Character name set to: {dialogue.characterName}");
 
         sentences.Clear();
         backgrounds.Clear();
@@ -120,6 +193,9 @@ public class DialogueManager : MonoBehaviour
         {
             StartCoroutine(AutoCloseDialogue());
         }
+
+        isDialogueActive = true;
+        Time.timeScale = 0f; // 게임 시간을 멈춤
     }
 
     public void DisplayNextSentence()
@@ -168,15 +244,25 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator DeactivatePanelAfterAnimation()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f); // 실제 시간 기준으로 대기
         dialoguePanel.SetActive(false);
         background.gameObject.SetActive(false);
         Debug.Log("End of conversation.");
+
+        isDialogueActive = false;
+        Time.timeScale = 1f; // 게임 시간을 다시 흐르게 함
+
+        // 애니메이터 업데이트 모드를 다시 Normal로 설정
+        dialogueAnimator.updateMode = AnimatorUpdateMode.Normal;
+        if (imageAnimator != null)
+        {
+            imageAnimator.updateMode = AnimatorUpdateMode.Normal;
+        }
     }
 
     private IEnumerator AutoCloseDialogue()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSecondsRealtime(5); // 실제 시간 기준으로 대기
         EndDialogue();
     }
 }

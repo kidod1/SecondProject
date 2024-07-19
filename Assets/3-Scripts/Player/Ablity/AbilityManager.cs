@@ -16,6 +16,8 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private TMP_Text[] abilityDescriptionTexts;
     [SerializeField]
+    private Image[] abilityIcons;
+    [SerializeField]
     private Button rerollButton; // 리롤 버튼 추가
 
     private List<Ability> availableAbilities;
@@ -50,21 +52,23 @@ public class AbilityManager : MonoBehaviour
         abilitySelectionPanel.SetActive(true);
         availableAbilities = player.GetAvailableAbilities();
 
-        for (int i = 0; i < abilityButtons.Length; i++)
+        int abilitiesToShow = Mathf.Min(abilityButtons.Length, availableAbilities.Count);
+
+        for (int i = 0; i < abilitiesToShow; i++)
         {
-            if (i < availableAbilities.Count)
-            {
-                var ability = availableAbilities[i];
-                abilityNameTexts[i].text = ability.abilityName;
-                abilityDescriptionTexts[i].text = ability.GetDescription();
-                abilityButtons[i].onClick.RemoveAllListeners();
-                abilityButtons[i].onClick.AddListener(() => SelectAbility(ability));
-                abilityButtons[i].gameObject.SetActive(true); // 버튼 활성화
-            }
-            else
-            {
-                abilityButtons[i].gameObject.SetActive(false);
-            }
+            var ability = availableAbilities[i];
+            abilityNameTexts[i].text = ability.abilityName;
+            abilityDescriptionTexts[i].text = ability.GetDescription();
+            abilityIcons[i].sprite = ability.abilityIcon;
+            abilityButtons[i].onClick.RemoveAllListeners();
+            abilityButtons[i].onClick.AddListener(() => SelectAbility(ability));
+            abilityButtons[i].gameObject.SetActive(true); // 버튼 활성화
+        }
+
+        // 나머지 버튼 비활성화
+        for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
+        {
+            abilityButtons[i].gameObject.SetActive(false);
         }
 
         rerollButton.gameObject.SetActive(true); // 리롤 버튼 활성화
@@ -86,21 +90,23 @@ public class AbilityManager : MonoBehaviour
         availableAbilities = player.GetAvailableAbilities();
         ShuffleAbilities();
 
-        for (int i = 0; i < abilityButtons.Length; i++)
+        int abilitiesToShow = Mathf.Min(abilityButtons.Length, availableAbilities.Count);
+
+        for (int i = 0; i < abilitiesToShow; i++)
         {
-            if (i < availableAbilities.Count)
-            {
-                var ability = availableAbilities[i];
-                abilityNameTexts[i].text = ability.abilityName;
-                abilityDescriptionTexts[i].text = ability.GetDescription();
-                abilityButtons[i].onClick.RemoveAllListeners();
-                abilityButtons[i].onClick.AddListener(() => SelectAbility(ability));
-                abilityButtons[i].gameObject.SetActive(true);
-            }
-            else
-            {
-                abilityButtons[i].gameObject.SetActive(false);
-            }
+            var ability = availableAbilities[i];
+            abilityNameTexts[i].text = ability.abilityName;
+            abilityDescriptionTexts[i].text = ability.GetDescription();
+            abilityIcons[i].sprite = ability.abilityIcon;
+            abilityButtons[i].onClick.RemoveAllListeners();
+            abilityButtons[i].onClick.AddListener(() => SelectAbility(ability));
+            abilityButtons[i].gameObject.SetActive(true);
+        }
+
+        // 나머지 버튼 비활성화
+        for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
+        {
+            abilityButtons[i].gameObject.SetActive(false);
         }
     }
 
