@@ -23,7 +23,8 @@ public class PlayerData : ScriptableObject
     public int maxHP;
     public int currentShield;
 
-    public int[] experienceThresholds = { 100, 200, 400, 800, 1600 }; // 레벨업을 위한 경험치 기준값
+    [Tooltip("경험치 테이블")]
+    public int[] experienceThresholds = { 100, 200, 400, 800, 1600 };
 
     public void InitializeStats()
     {

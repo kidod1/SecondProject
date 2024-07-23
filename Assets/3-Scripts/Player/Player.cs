@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
     // Save System
     private string saveFilePath;
 
-    public Vector2 PlayerPosition => transform.position; // 위치 정보를 제공하는 프로퍼티
+    public Vector2 PlayerPosition => transform.position;
 
     private void Awake()
     {
@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
         if (isInvincible) return;
 
         currentHP -= damage;
-        StartCoroutine(ShowLargeHealthUI()); // 체력 UI 확대 효과 시작
+        StartCoroutine(ShowLargeHealthUI());
 
         StartCoroutine(InvincibilityCoroutine());
 
@@ -254,10 +254,9 @@ public class Player : MonoBehaviour
             Die();
         }
 
-        UpdateHealthUI(); // UI 업데이트
+        UpdateHealthUI();
     }
 
-    // 데미지를 받았을 때 호출되는 함수
     public void TakeDamage(int damage)
     {
         if (isInvincible) return;
@@ -277,7 +276,7 @@ public class Player : MonoBehaviour
             currentHP -= damage;
         }
 
-        StartCoroutine(ShowLargeHealthUI()); // 체력 UI 확대 효과 시작
+        StartCoroutine(ShowLargeHealthUI());
         StartCoroutine(InvincibilityCoroutine());
 
         if (currentHP <= 0)
@@ -286,15 +285,15 @@ public class Player : MonoBehaviour
             Die();
         }
 
-        UpdateHealthUI(); // UI 업데이트
+        UpdateHealthUI();
     }
 
     // 피격시 깜빡
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
-        float invincibilityDuration = 1f; // 무적 시간 1초
-        float blinkInterval = 0.1f; // 깜빡이는 간격
+        float invincibilityDuration = 1f;
+        float blinkInterval = 0.1f;
 
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
@@ -308,7 +307,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        // 플레이어 죽음 처리 로직 추가 (예: 게임 오버 화면 표시, 재시작 등)
+        // 플레이어 죽음 처리 로직 추가
         ResetPlayerData();
     }
 
@@ -320,13 +319,13 @@ public class Player : MonoBehaviour
             currentHP = stat.maxHP;
         }
 
-        UpdateHealthUI(); // UI 업데이트
+        UpdateHealthUI();
     }
 
     public void IncreaseShield(int amount)
     {
         currentShield += amount;
-        UpdateHealthUI(); // UI 업데이트
+        UpdateHealthUI();
     }
 
     public void ChangeProjectile(int newProjectileType)
@@ -342,7 +341,7 @@ public class Player : MonoBehaviour
 
     private void LoadAvailableAbilities()
     {
-        // 예시: Resources 폴더에서 능력 로드
+        // Resources 폴더에서 능력 로드
         availableAbilities.AddRange(Resources.LoadAll<Ability>("Abilities"));
         ResetAllAbilities();
     }
@@ -356,7 +355,6 @@ public class Player : MonoBehaviour
         OnShoot.RemoveAllListeners();
     }
 
-    // 경험치를 얻는 함수
     public void GainExperience(int amount)
     {
         experience += amount;
@@ -408,7 +406,7 @@ public class Player : MonoBehaviour
 
     public void SelectAbility(Ability ability)
     {
-        ability.Apply(this); // 능력 적용
+        ability.Apply(this);
 
         if (ability.currentLevel == 0)
         {
@@ -417,7 +415,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            ability.Upgrade(); // 능력 업그레이드
+            ability.Upgrade();
         }
 
         if (ability.currentLevel >= 5)
@@ -425,10 +423,9 @@ public class Player : MonoBehaviour
             availableAbilities.Remove(ability);
         }
 
-        CheckForSynergy(ability.category); // 시너지 능력 체크
+        CheckForSynergy(ability.category);
     }
 
-    // 시너지 능력을 체크하는 함수
     private void CheckForSynergy(string category)
     {
         if (synergyAbilityAcquired[category]) return;
@@ -459,7 +456,6 @@ public class Player : MonoBehaviour
             synergyLevels[category] = 5;
         }
     }
-    // 시너지 능력을 할당하는 함수
     private void AssignSynergyAbility(string category, int level)
     {
         string synergyAbilityName = $"{category}Synergy{level}";
@@ -487,7 +483,6 @@ public class Player : MonoBehaviour
         UpdateExperienceUI();
     }
 
-    // 작은 하트 UI 업데이트
     private void UpdateSmallHealthUI()
     {
         smallHealthPanel.gameObject.SetActive(true);
@@ -507,7 +502,7 @@ public class Player : MonoBehaviour
             GameObject heart = Instantiate(healthHeartPrefab, smallHealthPanel);
             Image heartImage = heart.GetComponent<Image>();
             RectTransform heartRectTransform = heart.GetComponent<RectTransform>();
-            heartRectTransform.sizeDelta = new Vector2(30, 30); // 작은 하트 크기 조정
+            heartRectTransform.sizeDelta = new Vector2(30, 30);
 
             if (i < fullHearts)
             {
@@ -528,7 +523,7 @@ public class Player : MonoBehaviour
             GameObject shield = Instantiate(shieldHeartPrefab, smallHealthPanel);
             Image shieldImage = shield.GetComponent<Image>();
             RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
-            shieldRectTransform.sizeDelta = new Vector2(30, 30); // 작은 실드 크기 조정
+            shieldRectTransform.sizeDelta = new Vector2(30, 30);
             shieldImage.sprite = smallShieldHeartSprite;
         }
     }
@@ -553,7 +548,7 @@ public class Player : MonoBehaviour
             GameObject heart = Instantiate(healthHeartPrefab, largeHealthPanel);
             Image heartImage = heart.GetComponent<Image>();
             RectTransform heartRectTransform = heart.GetComponent<RectTransform>();
-            heartRectTransform.sizeDelta = new Vector2(55, 55); // 큰 하트 크기 조정
+            heartRectTransform.sizeDelta = new Vector2(55, 55);
 
             if (i < fullHearts)
             {
@@ -574,12 +569,11 @@ public class Player : MonoBehaviour
             GameObject shield = Instantiate(shieldHeartPrefab, largeHealthPanel);
             Image shieldImage = shield.GetComponent<Image>();
             RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
-            shieldRectTransform.sizeDelta = new Vector2(55, 55); // 큰 실드 크기 조정
+            shieldRectTransform.sizeDelta = new Vector2(55, 55);
             shieldImage.sprite = largeShieldHeartSprite;
         }
     }
 
-    // 큰 하트 UI를 잠시 보여주는 코루틴
     private IEnumerator ShowLargeHealthUI()
     {
         UpdateLargeHealthUI();
@@ -587,10 +581,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         largeHealthPanel.gameObject.SetActive(false);
-        UpdateSmallHealthUI();  // 작은 하트 UI 업데이트
+        UpdateSmallHealthUI();
     }
 
-    // 전체 체력 UI 업데이트
     public void UpdateHealthUI()
     {
         UpdateSmallHealthUI();

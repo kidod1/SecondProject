@@ -5,7 +5,7 @@ public class ReverseAttack : Ability
 {
     public int[] attackIncreases;
 
-    private Player playerInstance; // 이벤트 리스너를 제거하기 위해 Player 인스턴스를 저장
+    private Player playerInstance;
 
     public override void Apply(Player player)
     {
@@ -20,14 +20,14 @@ public class ReverseAttack : Ability
 
         if (currentLevel == 1)
         {
-            Debug.Log("ReverseAttack Level 1 Applied");
+            Debug.Log("반전 공격 Lv 1");
         }
         else if (currentLevel > 1)
         {
             player.stat.playerDamage += attackIncreases[currentLevel - 1];
         }
 
-        Debug.Log($"ReverseAttack applied. Current level: {currentLevel}");
+        Debug.Log($"반전 공격이 적용되었습니다. 현재 레벨 Lv: {currentLevel}");
     }
 
     public override void Upgrade()
@@ -37,7 +37,7 @@ public class ReverseAttack : Ability
             currentLevel++;
         }
 
-        Debug.Log($"ReverseAttack upgraded. New level: {currentLevel}");
+        Debug.Log($"반전 공격 업그레이드. 현재 레벨 : {currentLevel}");
     }
 
     protected override int GetNextLevelIncrease()
@@ -59,11 +59,11 @@ public class ReverseAttack : Ability
         {
             projScript.Initialize(player.stat);
             projScript.SetDirection(direction);
-            Debug.Log($"ShootReverse called with direction: {direction}");
+            Debug.Log($"반대 방향을 지정. 위칫값 : {direction}");
         }
         else
         {
-            Debug.LogError("Projectile script is missing on the projectile.");
+            Debug.LogError("프로젝타일 스크립트가 없습니다..");
         }
     }
 
@@ -73,7 +73,7 @@ public class ReverseAttack : Ability
         {
             Vector2 reverseDirection = -direction;
             ShootReverse(playerInstance, reverseDirection, prefabIndex);
-            Debug.Log($"OnShoot called with direction: {direction}, reverse direction: {reverseDirection}");
+            Debug.Log($"반대 방향을 지정. 위칫값: {direction}, 반대 공격의 위칫값 : {reverseDirection}");
         }
     }
 

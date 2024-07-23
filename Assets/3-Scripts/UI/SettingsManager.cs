@@ -85,24 +85,19 @@ public class SettingsManager : MonoBehaviour
     // 음악 볼륨 설정
     public void SetMusicVolume(float volume)
     {
-        // 음악 볼륨 조정 로직 (예: AudioManager 사용)
     }
 
     // 효과음 볼륨 설정
     public void SetSFXVolume(float volume)
     {
-        // 효과음 볼륨 조정 로직 (예: AudioManager 사용)
     }
 
     // 음성 볼륨 설정
     public void SetVoiceVolume(float volume)
     {
-        // 음성 볼륨 조정 로직 (예: AudioManager 사용)
     }
 
-    // 마우스 감도 설정
     public void SetMouseSensitivity(float sensitivity)
     {
-        // 마우스 감도 조정 로직
     }
 }

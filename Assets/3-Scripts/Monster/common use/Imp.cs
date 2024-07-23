@@ -14,7 +14,7 @@ public class Imp : Monster
 
     private SkeletonAnimation skeletonAnimation;
 
-    [SerializeField] private Transform firePoint; // 총알 발사 피벗 위치
+    [SerializeField] private Transform firePoint;
 
     protected override void Start()
     {
@@ -22,17 +22,16 @@ public class Imp : Monster
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         if (skeletonAnimation == null)
         {
-            Debug.LogError("SkeletonAnimation component is missing.");
+            Debug.LogError("스켈레톤 애니메이션 is null");
         }
         else
         {
-            PlayAnimation(idleAnimation, true); // Start 시에 Idle 애니메이션 재생
+            PlayAnimation(idleAnimation, true);
         }
 
-        // firePoint가 설정되지 않은 경우 기본 위치로 초기화
         if (firePoint == null)
         {
-            Debug.LogWarning("FirePoint is not set. Using default position.");
+            Debug.LogWarning("공격 위치가 설정되지 않았습니다.");
             firePoint = transform;
         }
     }
@@ -53,17 +52,17 @@ public class Imp : Monster
 
     private IEnumerator AttackCoroutine()
     {
-        PlayAnimation(attackAnimation, false); // 공격 애니메이션 재생
+        PlayAnimation(attackAnimation, false);
         FireBullet();
-        yield return new WaitForSpineAnimationComplete(skeletonAnimation); // 공격 애니메이션이 끝날 때까지 대기
-        PlayAnimation(idleAnimation, true); // Idle 애니메이션 재생
-        TransitionToState(cooldownState); // 쿨다운 상태로 전환
+        yield return new WaitForSpineAnimationComplete(skeletonAnimation);
+        PlayAnimation(idleAnimation, true);
+        TransitionToState(cooldownState);
     }
 
     private void FireBullet()
     {
-        Vector3 direction = (player.transform.position - firePoint.position).normalized; // firePoint 기준으로 방향 계산
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity); // firePoint 위치에서 총알 발사
+        Vector3 direction = (player.transform.position - firePoint.position).normalized;
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().velocity = direction * stat.attackSpeed;
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -88,7 +87,6 @@ public class ImpIdleState : MonsterState
 
     public override void EnterState()
     {
-        Debug.Log("Entering Idle State");
         (monster as Imp)?.PlayAnimation((monster as Imp).idleAnimation, true);
     }
 
@@ -102,7 +100,6 @@ public class ImpIdleState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Idle State");
     }
 }
 
@@ -125,8 +122,7 @@ public class ImpAttackState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Attack State");
-        (monster as Imp)?.PlayAnimation((monster as Imp).idleAnimation, true); // 공격 상태를 빠져나올 때 Idle 애니메이션 재생
+        (monster as Imp)?.PlayAnimation((monster as Imp).idleAnimation, true);
     }
 }
 
@@ -142,7 +138,6 @@ public class ImpCooldownState : MonsterState
     {
         cooldownTimer = monster.monsterBaseStat.attackDelay;
         monster.isInCooldown = true;
-        Debug.Log("Entering Cooldown State");
     }
 
     public override void UpdateState()
@@ -157,7 +152,6 @@ public class ImpCooldownState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Cooldown State");
     }
 }
 

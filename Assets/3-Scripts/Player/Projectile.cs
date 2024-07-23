@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
-            Debug.LogError("Rigidbody2D component is missing on the projectile.");
+            Debug.LogError("Rigibody2d가 없습니다.");
         }
     }
 
@@ -49,7 +49,7 @@ public class Projectile : MonoBehaviour
 
         if (rb != null)
         {
-            rb.velocity = Vector2.zero; // 초기화 시 속도를 0으로 설정
+            rb.velocity = Vector2.zero;
         }
     }
 

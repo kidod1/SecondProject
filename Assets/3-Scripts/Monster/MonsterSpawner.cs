@@ -15,13 +15,13 @@ public class MonsterSpawner : MonoBehaviour
     public class Wave
     {
         public List<SpawnInfo> spawnInfos;
-        public float spawnInterval = 1.0f; // 몬스터 스폰 간격
+        public float spawnInterval = 1.0f;
     }
 
     public List<Wave> waves;
-    public Transform[] spawnPoints; // 스폰 지점들
-    public string endDialogueName; // 종료 다이얼로그 이름
-    public PlayerInteraction playerInteraction; // PlayerInteraction 스크립트 참조
+    public Transform[] spawnPoints;
+    public string endDialogueName;
+    public PlayerInteraction playerInteraction;
 
     private List<GameObject> spawnedMonsters = new List<GameObject>();
     private int currentWaveIndex = 0;
@@ -49,17 +49,14 @@ public class MonsterSpawner : MonoBehaviour
                 }
             }
 
-            // 모든 몬스터가 죽을 때까지 대기
             yield return new WaitUntil(() => AreAllMonstersDead());
 
-            // 다음 웨이브로 이동
             currentWaveIndex++;
         }
 
-        // 모든 웨이브 완료 후 종료 다이얼로그 트리거
         if (!string.IsNullOrEmpty(endDialogueName) && playerInteraction != null)
         {
-            Debug.Log($"Setting end dialogue name in PlayerInteraction: {endDialogueName}");
+            Debug.Log($"종료 대화명 설정: {endDialogueName}");
             playerInteraction.SetDialogueNameToTrigger(endDialogueName);
         }
     }
@@ -81,7 +78,6 @@ public class MonsterSpawner : MonoBehaviour
 
     private void Update()
     {
-        // 모든 몬스터가 죽었는지 확인
         spawnedMonsters.RemoveAll(monster => monster == null || !monster.activeInHierarchy);
     }
 

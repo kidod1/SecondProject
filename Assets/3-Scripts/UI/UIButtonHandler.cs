@@ -5,7 +5,7 @@ public class UIButtonHandler : MonoBehaviour
 {
     public Button changeSceneButton;
     public Button quitGameButton;
-    public Button settingsButton; // 설정 버튼 추가
+    public Button settingsButton;
     public int sceneIndexToLoad;
 
     void Start()

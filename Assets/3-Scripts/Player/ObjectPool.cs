@@ -35,7 +35,7 @@ public class ObjectPool : MonoBehaviour
     {
         if (prefabIndex < 0 || prefabIndex >= pools.Count)
         {
-            Debug.LogError("Invalid prefab index");
+            Debug.LogError("Àß¸øµÈ ÇÁ¸®ÆÕ ÀÎµ¦½º");
             return null;
         }
 
@@ -54,7 +54,7 @@ public class ObjectPool : MonoBehaviour
     {
         if (prefabIndex < 0 || prefabIndex >= pools.Count)
         {
-            Debug.LogError("Invalid prefab index");
+            Debug.LogError("Àß¸øµÈ ÇÁ¸®ÆÕ ÀÎµ¦½º");
             return;
         }
 

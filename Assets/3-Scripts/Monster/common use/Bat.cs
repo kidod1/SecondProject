@@ -17,11 +17,11 @@ public class Bat : Monster
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         if (skeletonAnimation == null)
         {
-            Debug.LogError("SkeletonAnimation component is missing.");
+            Debug.LogError("스켈레톤 애니메이션 is null");
         }
         else
         {
-            PlayAnimation(idleAnimation, true); // Start 시에 Idle 애니메이션 재생
+            PlayAnimation(idleAnimation, true);
         }
     }
 
@@ -56,11 +56,9 @@ public class Bat : Monster
             yield return null;
         }
 
-        // 자폭하여 플레이어에게 피해를 줌
         Debug.Log("자폭!");
         player.TakeDamage(stat.attackDamage);
 
-        // 몬스터를 파괴
         Die();
     }
 
@@ -84,7 +82,6 @@ public class ExplodeAttackState : MonsterState
 
     public override void UpdateState()
     {
-        // 자폭할 때는 다른 상태로 전환하지 않음
     }
 
     public override void ExitState()

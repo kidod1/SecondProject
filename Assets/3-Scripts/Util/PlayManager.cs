@@ -9,11 +9,10 @@ public class PlayManager : MonoBehaviour
 
     private void Awake()
     {
-        // 싱글톤 인스턴스 설정
         if (I == null)
         {
             I = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않도록 설정
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -23,7 +22,6 @@ public class PlayManager : MonoBehaviour
 
     private void Start()
     {
-        // 플레이어 객체 참조 가져오기
         player = FindObjectOfType<Player>();
 
         if (player == null)

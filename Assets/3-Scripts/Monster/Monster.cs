@@ -13,13 +13,13 @@ public abstract class Monster : MonoBehaviour
     public MonsterData monsterBaseStat;
     protected int currentHP;
     protected SpriteRenderer spriteRenderer;
-    protected MeshRenderer meshRenderer; // MeshRenderer 추가
+    protected MeshRenderer meshRenderer;
     protected bool isInvincible = false;
     protected Player player;
     [SerializeField]
-    private float invincibilityDuration = 0.5f; // 무적 상태 지속 시간
+    private float invincibilityDuration = 0.5f;
     [SerializeField]
-    private float blinkInterval = 0.1f; // 깜빡임 간격
+    private float blinkInterval = 0.1f;
 
     public bool isInCooldown = false;
 
@@ -33,7 +33,7 @@ public abstract class Monster : MonoBehaviour
     {
         currentHP = monsterBaseStat.maxHP;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        meshRenderer = GetComponent<MeshRenderer>(); // MeshRenderer 초기화
+        meshRenderer = GetComponent<MeshRenderer>();
         player = FindObjectOfType<Player>();
         if (player == null)
         {
@@ -53,7 +53,7 @@ public abstract class Monster : MonoBehaviour
     {
         if (isInCooldown && newState != cooldownState)
         {
-            return; // 쿨다운 중에는 다른 상태로 전환하지 않음
+            return;
         }
 
         currentState?.ExitState();
@@ -97,28 +97,30 @@ public abstract class Monster : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
+    // 타격감을 위한 깜빡임
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
 
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
-            if (spriteRenderer != null) // SpriteRenderer가 있는 경우 깜빡임 효과 적용
+            if (spriteRenderer != null)
             {
                 spriteRenderer.enabled = !spriteRenderer.enabled;
             }
-            else if (meshRenderer != null) // MeshRenderer가 있는 경우 깜빡임 효과 적용
+            else if (meshRenderer != null)
             {
                 meshRenderer.enabled = !meshRenderer.enabled;
             }
             yield return new WaitForSeconds(blinkInterval);
         }
 
-        if (spriteRenderer != null) // SpriteRenderer가 있는 경우 원래 상태로 복원
+        if (spriteRenderer != null)
         {
             spriteRenderer.enabled = true;
         }
-        else if (meshRenderer != null) // MeshRenderer가 있는 경우 원래 상태로 복원
+        else if (meshRenderer != null)
         {
             meshRenderer.enabled = true;
         }

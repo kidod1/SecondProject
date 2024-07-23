@@ -10,7 +10,6 @@ public abstract class Ability : ScriptableObject
     public int currentLevel;
     public Sprite abilityIcon;
 
-    // 다음 레벨에 따른 설명을 반환하는 메서드
     public virtual string GetDescription()
     {
         if (currentLevel < maxLevel)
@@ -22,14 +21,11 @@ public abstract class Ability : ScriptableObject
             return $"{baseDescription}{Environment.NewLine}(Max Level)";
         }
     }
-
-    // 다음 레벨에서 증가하는 수치를 반환하는 추상 메서드
     protected abstract int GetNextLevelIncrease();
 
     public abstract void Apply(Player player);
     public abstract void Upgrade();
 
-    // 능력을 초기화하는 메서드
     public virtual void ResetLevel()
     {
         currentLevel = 0;

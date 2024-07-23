@@ -18,11 +18,11 @@ public class Dog : Monster
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         if (skeletonAnimation == null)
         {
-            Debug.LogError("SkeletonAnimation component is missing.");
+            Debug.LogError("스켈레톤 애니메이션 is null");
         }
         else
         {
-            DogAnimationPlay(idleAnimation, true); // Start 시에 Idle 애니메이션 재생
+            DogAnimationPlay(idleAnimation, true);
         }
     }
 
@@ -31,7 +31,7 @@ public class Dog : Monster
         idleState = new IdleState(this);
         chaseState = new ChaseState(this);
         attackState = new AttackState(this);
-        cooldownState = new DogCooldownState(this); // DogCooldownState 사용
+        cooldownState = new DogCooldownState(this);
         currentState = idleState;
         currentState.EnterState();
     }
@@ -45,13 +45,12 @@ public class Dog : Monster
     {
         Debug.Log("플레이어에게 공격");
         DogAnimationPlay(attackAnimation, false);
-        // 플레이어에게 닿으면 데미지를 입힘
         if (Vector3.Distance(transform.position, player.transform.position) <= monsterBaseStat.attackRange)
         {
             player.TakeDamage(monsterBaseStat.attackDamage);
         }
-        yield return new WaitForSeconds(0.1f); // 짧은 시간 대기하여 공격 애니메이션이 보여지도록 함
-        TransitionToState(cooldownState); // 공격 후 쿨다운 상태로 전환
+        yield return new WaitForSeconds(0.1f);
+        TransitionToState(cooldownState);
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
@@ -62,7 +61,7 @@ public class Dog : Monster
             if (player != null)
             {
                 player.TakeDamage(monsterBaseStat.attackDamage);
-                TransitionToState(cooldownState); // 공격 후 쿨다운 상태로 전환
+                TransitionToState(cooldownState);
             }
         }
     }
@@ -79,7 +78,6 @@ public class Dog : Monster
     {
         currentState?.UpdateState();
 
-        // 쿨다운 상태일 때만 애니메이션을 멈춤
         if (skeletonAnimation != null && currentState == cooldownState)
         {
             skeletonAnimation.AnimationName = null;
@@ -88,7 +86,6 @@ public class Dog : Monster
 
     private void OnEnable()
     {
-        // 쿨다운 상태가 끝난 후 다시 Idle 애니메이션 재생
         currentState?.EnterState();
     }
 }
@@ -119,6 +116,6 @@ public class DogCooldownState : MonsterState
     public override void ExitState()
     {
         Debug.Log("Exiting Cooldown State");
-        (monster as Dog)?.DogAnimationPlay((monster as Dog)?.idleAnimation, true); // Idle 애니메이션 재생
+        (monster as Dog)?.DogAnimationPlay((monster as Dog)?.idleAnimation, true);
     }
 }

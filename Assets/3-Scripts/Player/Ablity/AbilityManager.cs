@@ -18,7 +18,7 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private Image[] abilityIcons;
     [SerializeField]
-    private Button rerollButton; // 리롤 버튼 추가
+    private Button rerollButton;
 
     private List<Ability> availableAbilities;
 
@@ -34,7 +34,6 @@ public class AbilityManager : MonoBehaviour
 
     private void Start()
     {
-        // 게임 시작 시 능력 초기화
         player.ResetAbilities();
     }
 
@@ -48,7 +47,7 @@ public class AbilityManager : MonoBehaviour
 
     public void ShowAbilitySelection()
     {
-        Time.timeScale = 0f; // 게임 일시정지
+        Time.timeScale = 0f;
         abilitySelectionPanel.SetActive(true);
         availableAbilities = player.GetAvailableAbilities();
 
@@ -62,16 +61,15 @@ public class AbilityManager : MonoBehaviour
             abilityIcons[i].sprite = ability.abilityIcon;
             abilityButtons[i].onClick.RemoveAllListeners();
             abilityButtons[i].onClick.AddListener(() => SelectAbility(ability));
-            abilityButtons[i].gameObject.SetActive(true); // 버튼 활성화
+            abilityButtons[i].gameObject.SetActive(true);
         }
 
-        // 나머지 버튼 비활성화
         for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
         {
             abilityButtons[i].gameObject.SetActive(false);
         }
 
-        rerollButton.gameObject.SetActive(true); // 리롤 버튼 활성화
+        rerollButton.gameObject.SetActive(true);
         rerollButton.onClick.RemoveAllListeners();
         rerollButton.onClick.AddListener(RerollAbilities);
     }
@@ -86,7 +84,7 @@ public class AbilityManager : MonoBehaviour
 
     private void RerollAbilities()
     {
-        Debug.Log("Rerolling abilities...");
+        Debug.Log("능력 리롤!");
         availableAbilities = player.GetAvailableAbilities();
         ShuffleAbilities();
 
@@ -103,7 +101,6 @@ public class AbilityManager : MonoBehaviour
             abilityButtons[i].gameObject.SetActive(true);
         }
 
-        // 나머지 버튼 비활성화
         for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
         {
             abilityButtons[i].gameObject.SetActive(false);

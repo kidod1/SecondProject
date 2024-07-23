@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class SpotlightEffect : MonoBehaviour
 {
-    public float damageInterval = 1f; // 피해 간격
-    public float damageRadius = 0f; // 범위
-    public int damageAmount = 0; // 피해량
+    public float damageInterval = 1f;
+    public float damageRadius = 0f;
+    public int damageAmount = 0;
     public Player player;
-    public int currentLevel = 0; // 현재 레벨
+    public int currentLevel = 0;
     private Collider2D[] hits;
 
     [SerializeField]
-    private SpriteRenderer spriteRenderer; // 스프라이트 렌더러
-    private Animator animator; // 애니메이터
+    private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        hits = new Collider2D[10]; // 초기 크기 설정
+        hits = new Collider2D[10];
         StartCoroutine(DamageCoroutine());
     }
 
@@ -25,14 +25,12 @@ public class SpotlightEffect : MonoBehaviour
     {
         while (true)
         {
-            // 스프라이트 깜빡이기 효과
-            spriteRenderer.enabled = true; // 스프라이트 표시
-            yield return new WaitForSeconds(0.1f); // 잠시 대기
-            spriteRenderer.enabled = false; // 스프라이트 숨기기
-            yield return new WaitForSeconds(0.1f); // 잠시 대기
-            spriteRenderer.enabled = true; // 스프라이트 다시 표시
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.enabled = true;
 
-            // 데미지 주기
             int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, damageRadius, hits);
             for (int i = 0; i < hitCount; i++)
             {
@@ -43,7 +41,7 @@ public class SpotlightEffect : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(damageInterval - 0.2f); // 데미지 간격 대기 (깜빡이는 시간 제외)
+            yield return new WaitForSeconds(damageInterval - 0.2f);
         }
     }
 
@@ -52,10 +50,8 @@ public class SpotlightEffect : MonoBehaviour
         if (player != null)
         {
             transform.position = player.transform.position;
-            UpdateScale(); // Scale 업데이트
+            UpdateScale();
         }
-
-        // 애니메이션 트리거
         animator.SetTrigger("Activate");
     }
 

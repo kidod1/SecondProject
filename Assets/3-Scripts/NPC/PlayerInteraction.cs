@@ -31,7 +31,7 @@ public class PlayerInteraction : MonoBehaviour
             DialogueTrigger dialogueTrigger = hit.GetComponent<DialogueTrigger>();
             if (dialogueTrigger != null && !string.IsNullOrEmpty(dialogueNameToTrigger))
             {
-                Debug.Log($"Attempting to trigger dialogue: {dialogueNameToTrigger}");
+                Debug.Log($"다이얼로그 트리거 시도: {dialogueNameToTrigger}");
                 dialogueTrigger.TriggerDialogueByName(dialogueNameToTrigger);
                 break;
             }
@@ -49,10 +49,9 @@ public class PlayerInteraction : MonoBehaviour
 
     public void SetDialogueNameToTrigger(string name)
     {
-        Debug.Log($"Set dialogue name to trigger: {name}");
+        Debug.Log($"다음과 같은 이름의 다이얼로그를 트리거 시도 합니다.: {name}");
         dialogueNameToTrigger = name;
 
-        // 다이얼로그를 즉시 트리거
         if (!string.IsNullOrEmpty(dialogueNameToTrigger))
         {
             DialogueManager.Instance.TriggerDialogueByName(dialogueNameToTrigger);

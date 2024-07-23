@@ -22,7 +22,6 @@ public class IdleState : MonsterState
 
     public override void EnterState()
     {
-        Debug.Log("Entering Idle State");
     }
 
     public override void UpdateState()
@@ -35,7 +34,6 @@ public class IdleState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Idle State");
     }
 }
 
@@ -45,7 +43,6 @@ public class ChaseState : MonsterState
 
     public override void EnterState()
     {
-        Debug.Log("Entering Chase State");
     }
 
     public override void UpdateState()
@@ -62,7 +59,6 @@ public class ChaseState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Chase State");
     }
 }
 
@@ -85,7 +81,6 @@ public class AttackState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Attack State");
     }
 }
 public class CooldownState : MonsterState
@@ -100,7 +95,6 @@ public class CooldownState : MonsterState
     {
         cooldownTimer = monster.monsterBaseStat.attackDelay;
         monster.isInCooldown = true;
-        Debug.Log("Entering Cooldown State");
     }
 
     public override void UpdateState()
@@ -115,6 +109,5 @@ public class CooldownState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Cooldown State");
     }
 }
