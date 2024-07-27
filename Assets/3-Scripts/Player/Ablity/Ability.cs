@@ -21,6 +21,7 @@ public abstract class Ability : ScriptableObject
             return $"{baseDescription}{Environment.NewLine}(Max Level)";
         }
     }
+
     protected abstract int GetNextLevelIncrease();
 
     public abstract void Apply(Player player);

@@ -57,9 +57,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     // Shooting 관련 변수
-    private int baseAttack;
-
-    private float shootCooldown = 0.5f;
+    public float shootCooldown = 0.5f;
     private float lastShootTime;
     private bool isShooting = false;
     private Vector2 shootDirection;
@@ -76,6 +74,7 @@ public class Player : MonoBehaviour
     private List<Ability> availableAbilities = new List<Ability>();
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
+    private Coroutine buffCoroutine;
     private SynergyAbility synergyAbility;
     private bool hasSynergyAbility = false;
 
@@ -85,6 +84,7 @@ public class Player : MonoBehaviour
     // 이벤트
     public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
+    public UnityEvent<Collider2D> OnMonsterEnter;
 
     // Save System
     private string saveFilePath;
@@ -101,6 +101,10 @@ public class Player : MonoBehaviour
         if (OnShoot == null)
         {
             OnShoot = new UnityEvent<Vector2, int>();
+        }
+        if (OnMonsterEnter == null)
+        {
+            OnMonsterEnter = new UnityEvent<Collider2D>();
         }
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
@@ -169,6 +173,11 @@ public class Player : MonoBehaviour
     {
         Vector2 movement = moveInput * stat.playerSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        OnMonsterEnter.Invoke(other);
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
@@ -338,13 +347,19 @@ public class Player : MonoBehaviour
         return currentHP;
     }
 
-
     private void LoadAvailableAbilities()
     {
-        // Resources 폴더에서 능력 로드
-        availableAbilities.AddRange(Resources.LoadAll<Ability>("Abilities"));
-        ResetAllAbilities();
+        // Resources 폴더에서 모든 능력을 로드
+        Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
+        availableAbilities.AddRange(loadedAbilities); // 수정: availableAbilities에 추가
+
+        // 각 능력을 불러올 때 디버그 로그 출력
+        foreach (var ability in loadedAbilities)
+        {
+            Debug.Log($"Loaded ability: {ability.abilityName}");
+        }
     }
+
     public void ResetAllAbilities()
     {
         foreach (var ability in availableAbilities)
@@ -462,9 +477,19 @@ public class Player : MonoBehaviour
         SynergyAbility synergyAbility = Resources.Load<SynergyAbility>($"SynergyAbilities/{synergyAbilityName}");
         if (synergyAbility != null)
         {
-            synergyAbility.Apply(this);
+            Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
+            StartCoroutine(ShowSynergyAbilityWithDelay(synergyAbility, 0.5f));
             synergyAbilityAcquired[category] = true;
         }
+    }
+    private IEnumerator ShowSynergyAbilityWithDelay(SynergyAbility synergyAbility, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        FindObjectOfType<AbilityManager>().ShowSynergyAbility(synergyAbility);
+    }
+    public void ApplySynergyAbility(SynergyAbility synergyAbility)
+    {
+        synergyAbility.Apply(this);
     }
 
     public List<Ability> GetAvailableAbilities()
@@ -478,10 +503,10 @@ public class Player : MonoBehaviour
         currentShield = stat.defaultShield;
         currentHP = stat.maxHP;
         currentShield = 0;
-        baseAttack = stat.playerDamage;
         ResetAbilities();
         UpdateExperienceUI();
     }
+
 
     private void UpdateSmallHealthUI()
     {
@@ -528,7 +553,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 큰 하트 UI 업데이트
     private void UpdateLargeHealthUI()
     {
         smallHealthPanel.gameObject.SetActive(false);
@@ -590,7 +614,6 @@ public class Player : MonoBehaviour
         StartCoroutine(ShowLargeHealthUI());
     }
 
-
     public void SavePlayerData()
     {
         PlayerDataToJson data = new PlayerDataToJson
@@ -634,14 +657,17 @@ public class Player : MonoBehaviour
         data.InitializeDefaultValues();
         ApplyPlayerData(data);
     }
+
     public void ResetAbilities()
     {
-        foreach (var ability in abilities)
+        foreach (var ability in availableAbilities)
         {
             ability.ResetLevel();
         }
         abilities.Clear();
+        OnShoot.RemoveAllListeners();
     }
+
     private void ApplyPlayerData(PlayerDataToJson data)
     {
         stat.maxHP = data.maxHP;
@@ -658,6 +684,7 @@ public class Player : MonoBehaviour
         SavePlayerData();
     }
 }
+
 
 [System.Serializable]
 public class PlayerDataToJson
