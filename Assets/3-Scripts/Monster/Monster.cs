@@ -22,6 +22,7 @@ public abstract class Monster : MonoBehaviour
     private float blinkInterval = 0.1f;
 
     public bool isInCooldown = false;
+    private bool isDead = false;
 
     public IMonsterState currentState;
     public IMonsterState idleState;
@@ -74,7 +75,7 @@ public abstract class Monster : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
-        if (isInvincible) return;
+        if (isDead) return;
 
         currentHP -= damage;
 
@@ -93,10 +94,13 @@ public abstract class Monster : MonoBehaviour
 
     protected virtual void Die()
     {
+        if (isDead) return;
+
+        isDead = true;
+        Debug.Log("∏ÛΩ∫≈Õ ªÁ∏¡");
         player.GainExperience(monsterBaseStat.experiencePoints);
         gameObject.SetActive(false);
     }
-
 
     // ≈∏∞›∞®¿ª ¿ß«— ±Ù∫˝¿”
     private IEnumerator InvincibilityCoroutine()

@@ -9,9 +9,14 @@ public class ElectricField : SynergyAbility
     public float damageInterval = 0.25f;
     public int damageAmount = 10;
     public float effectRadius = 5f;
+    public float cooldownDuration = 10f;
 
     private Player playerInstance;
     private Coroutine damageCoroutine;
+    private Coroutine cooldownCoroutine;
+    private GameObject activeDamageField;
+    private ParticleSystem particleSystem;
+    private bool isCooldown = false;
 
     public override void Apply(Player player)
     {
@@ -22,11 +27,17 @@ public class ElectricField : SynergyAbility
 
         playerInstance = player;
         playerInstance.OnMonsterEnter.AddListener(OnMonsterEnter);
+        Debug.Log("어플라이 일렉트로닉 필드");
+
+        if (activeDamageField != null)
+        {
+            activeDamageField.SetActive(false);
+        }
     }
 
     private void OnMonsterEnter(Collider2D collider)
     {
-        if (collider.CompareTag("Monster"))
+        if (collider.CompareTag("Monster") && !isCooldown)
         {
             if (damageCoroutine != null)
             {
@@ -38,12 +49,38 @@ public class ElectricField : SynergyAbility
 
     private IEnumerator SpawnDamageField()
     {
-        GameObject damageField = Instantiate(damageFieldPrefab, playerInstance.transform.position, Quaternion.identity);
-        damageField.transform.SetParent(playerInstance.transform);
-        DamageField damageFieldScript = damageField.GetComponent<DamageField>();
-        damageFieldScript.Initialize(damageAmount, damageInterval);
+        if (activeDamageField == null)
+        {
+            activeDamageField = Instantiate(damageFieldPrefab, playerInstance.transform.position, Quaternion.identity);
+            activeDamageField.transform.SetParent(playerInstance.transform);
+            DamageField damageFieldScript = activeDamageField.GetComponent<DamageField>();
+            damageFieldScript.Initialize(damageAmount, damageInterval);
+            particleSystem = activeDamageField.GetComponent<ParticleSystem>();
+        }
+
+        activeDamageField.SetActive(true);
+        particleSystem?.Play();
+
         yield return new WaitForSeconds(damageFieldDuration);
-        Destroy(damageField);
+
+        if (activeDamageField != null)
+        {
+            particleSystem?.Stop();
+            activeDamageField.SetActive(false);
+        }
+
+        if (cooldownCoroutine != null)
+        {
+            playerInstance.StopCoroutine(cooldownCoroutine);
+        }
+        cooldownCoroutine = playerInstance.StartCoroutine(CooldownCoroutine());
+    }
+
+    private IEnumerator CooldownCoroutine()
+    {
+        isCooldown = true;
+        yield return new WaitForSeconds(cooldownDuration);
+        isCooldown = false;
     }
 
     public override void Upgrade()

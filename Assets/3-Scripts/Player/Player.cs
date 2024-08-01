@@ -16,35 +16,15 @@ public class Player : MonoBehaviour
 
     // UI 관련 변수
     [SerializeField]
-    private Transform smallHealthPanel;
-    [SerializeField]
-    private Transform largeHealthPanel;
-    [SerializeField]
-    private GameObject healthHeartPrefab;
-    [SerializeField]
-    private GameObject shieldHeartPrefab;
-    [SerializeField]
-    private Sprite halfHeartSprite;
-    [SerializeField]
     private TMP_Text experienceText;
     [SerializeField]
     private TMP_Text levelText;
     [SerializeField]
     private Scrollbar experienceScrollbar;
-
-    // UI 리소스 변수
     [SerializeField]
-    private Sprite smallHealthHeartSprite;
+    private Slider healthBar; // HP 바를 나타내는 변수
     [SerializeField]
-    private Sprite largeHealthHeartSprite;
-    [SerializeField]
-    private Sprite smallShieldHeartSprite;
-    [SerializeField]
-    private Sprite largeShieldHeartSprite;
-    [SerializeField]
-    private Sprite smallEmptyHeartSprite;
-    [SerializeField]
-    private Sprite largeEmptyHeartSprite;
+    private TMP_Text healthText; // 체력을 나타내는 TextMeshPro 변수
 
     // Movement 관련 변수
     private Vector2 moveInput;
@@ -52,7 +32,6 @@ public class Player : MonoBehaviour
 
     // Health 관련 변수
     private int currentHP;
-    private int currentShield;
     private bool isInvincible = false;
     private SpriteRenderer spriteRenderer;
 
@@ -248,44 +227,11 @@ public class Player : MonoBehaviour
             .Start();
     }
 
-    public void TakeHP(int damage, Vector2 knockbackDirection)
-    {
-        if (isInvincible) return;
-
-        currentHP -= damage;
-        StartCoroutine(ShowLargeHealthUI());
-
-        StartCoroutine(InvincibilityCoroutine());
-
-        if (currentHP <= 0)
-        {
-            currentHP = 0;
-            Die();
-        }
-
-        UpdateHealthUI();
-    }
-
     public void TakeDamage(int damage)
     {
         if (isInvincible) return;
 
-        if (currentShield > 0)
-        {
-            int remainingDamage = damage - currentShield;
-            currentShield = Mathf.Max(currentShield - damage, 0);
-
-            if (remainingDamage > 0)
-            {
-                currentHP -= remainingDamage;
-            }
-        }
-        else
-        {
-            currentHP -= damage;
-        }
-
-        StartCoroutine(ShowLargeHealthUI());
+        currentHP -= damage;
         StartCoroutine(InvincibilityCoroutine());
 
         if (currentHP <= 0)
@@ -328,12 +274,6 @@ public class Player : MonoBehaviour
             currentHP = stat.maxHP;
         }
 
-        UpdateHealthUI();
-    }
-
-    public void IncreaseShield(int amount)
-    {
-        currentShield += amount;
         UpdateHealthUI();
     }
 
@@ -383,7 +323,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator AnimateExperienceBar()
     {
-        float currentExp = experienceScrollbar.size * stat.experienceThresholds[level];
+        float currentExp = experienceScrollbar.size * stat.experienceThresholds[Mathf.Clamp(level, 0, stat.experienceThresholds.Length - 1)];
         float targetExp = experience;
         float duration = 1f;
         float elapsed = 0f;
@@ -392,17 +332,17 @@ public class Player : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float newExp = Mathf.Lerp(currentExp, targetExp, elapsed / duration);
-            experienceScrollbar.size = newExp / stat.experienceThresholds[level];
+            experienceScrollbar.size = newExp / stat.experienceThresholds[Mathf.Clamp(level, 0, stat.experienceThresholds.Length - 1)];
             yield return null;
         }
 
-        experienceScrollbar.size = targetExp / stat.experienceThresholds[level];
+        experienceScrollbar.size = targetExp / stat.experienceThresholds[Mathf.Clamp(level, 0, stat.experienceThresholds.Length - 1)];
         UpdateExperienceUI();
     }
 
     private void CheckLevelUp()
     {
-        if (level < stat.experienceThresholds.Length && experience >= stat.experienceThresholds[level])
+        while (level < stat.experienceThresholds.Length && experience >= stat.experienceThresholds[level])
         {
             level++;
             OnLevelUp.Invoke();
@@ -500,118 +440,16 @@ public class Player : MonoBehaviour
     private void InitializePlayer()
     {
         stat.InitializeStats();
-        currentShield = stat.defaultShield;
         currentHP = stat.maxHP;
-        currentShield = 0;
         ResetAbilities();
         UpdateExperienceUI();
     }
 
-
-    private void UpdateSmallHealthUI()
+    private void UpdateHealthUI()
     {
-        smallHealthPanel.gameObject.SetActive(true);
-        largeHealthPanel.gameObject.SetActive(false);
-
-        foreach (Transform child in smallHealthPanel)
-        {
-            Destroy(child.gameObject);
-        }
-
-        int fullHearts = currentHP / 2;
-        bool hasHalfHeart = (currentHP % 2) != 0;
-        int totalHearts = stat.maxHP / 2;
-
-        for (int i = 0; i < totalHearts; i++)
-        {
-            GameObject heart = Instantiate(healthHeartPrefab, smallHealthPanel);
-            Image heartImage = heart.GetComponent<Image>();
-            RectTransform heartRectTransform = heart.GetComponent<RectTransform>();
-            heartRectTransform.sizeDelta = new Vector2(30, 30);
-
-            if (i < fullHearts)
-            {
-                heartImage.sprite = smallHealthHeartSprite;
-            }
-            else if (i == fullHearts && hasHalfHeart)
-            {
-                heartImage.sprite = halfHeartSprite;
-            }
-            else
-            {
-                heartImage.sprite = smallEmptyHeartSprite;
-            }
-        }
-
-        for (int i = 0; i < currentShield / 2; i++)
-        {
-            GameObject shield = Instantiate(shieldHeartPrefab, smallHealthPanel);
-            Image shieldImage = shield.GetComponent<Image>();
-            RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
-            shieldRectTransform.sizeDelta = new Vector2(30, 30);
-            shieldImage.sprite = smallShieldHeartSprite;
-        }
-    }
-
-    private void UpdateLargeHealthUI()
-    {
-        smallHealthPanel.gameObject.SetActive(false);
-        largeHealthPanel.gameObject.SetActive(true);
-
-        foreach (Transform child in largeHealthPanel)
-        {
-            Destroy(child.gameObject);
-        }
-
-        int fullHearts = currentHP / 2;
-        bool hasHalfHeart = (currentHP % 2) != 0;
-        int totalHearts = stat.maxHP / 2;
-
-        for (int i = 0; i < totalHearts; i++)
-        {
-            GameObject heart = Instantiate(healthHeartPrefab, largeHealthPanel);
-            Image heartImage = heart.GetComponent<Image>();
-            RectTransform heartRectTransform = heart.GetComponent<RectTransform>();
-            heartRectTransform.sizeDelta = new Vector2(55, 55);
-
-            if (i < fullHearts)
-            {
-                heartImage.sprite = largeHealthHeartSprite;
-            }
-            else if (i == fullHearts && hasHalfHeart)
-            {
-                heartImage.sprite = halfHeartSprite;
-            }
-            else
-            {
-                heartImage.sprite = largeEmptyHeartSprite;
-            }
-        }
-
-        for (int i = 0; i < currentShield / 2; i++)
-        {
-            GameObject shield = Instantiate(shieldHeartPrefab, largeHealthPanel);
-            Image shieldImage = shield.GetComponent<Image>();
-            RectTransform shieldRectTransform = shield.GetComponent<RectTransform>();
-            shieldRectTransform.sizeDelta = new Vector2(55, 55);
-            shieldImage.sprite = largeShieldHeartSprite;
-        }
-    }
-
-    private IEnumerator ShowLargeHealthUI()
-    {
-        UpdateLargeHealthUI();
-
-        yield return new WaitForSeconds(2f);
-
-        largeHealthPanel.gameObject.SetActive(false);
-        UpdateSmallHealthUI();
-    }
-
-    public void UpdateHealthUI()
-    {
-        UpdateSmallHealthUI();
-        StartCoroutine(ShowLargeHealthUI());
+        healthBar.maxValue = stat.maxHP;
+        healthBar.value = currentHP;
+        healthText.text = $"{currentHP} / {stat.maxHP}";
     }
 
     public void SavePlayerData()
@@ -620,7 +458,6 @@ public class Player : MonoBehaviour
         {
             maxHP = stat.maxHP,
             currentHP = currentHP,
-            currentShield = currentShield,
             playerDamage = stat.playerDamage,
             projectileRange = stat.projectileRange,
             knockbackSpeed = stat.knockbackSpeed
@@ -639,7 +476,6 @@ public class Player : MonoBehaviour
 
             stat.maxHP = data.maxHP;
             currentHP = data.currentHP;
-            currentShield = data.currentShield;
             stat.playerDamage = data.playerDamage;
             stat.projectileRange = data.projectileRange;
             stat.knockbackSpeed = data.knockbackSpeed;
@@ -672,7 +508,6 @@ public class Player : MonoBehaviour
     {
         stat.maxHP = data.maxHP;
         currentHP = data.currentHP;
-        currentShield = data.currentShield;
         stat.playerDamage = data.playerDamage;
         stat.projectileRange = data.projectileRange;
         stat.knockbackSpeed = data.knockbackSpeed;
@@ -689,9 +524,8 @@ public class Player : MonoBehaviour
 [System.Serializable]
 public class PlayerDataToJson
 {
-    public int maxHP = 10;
+    public int maxHP = 100;
     public int currentHP;
-    public int currentShield;
     public int playerDamage;
     public float knockbackSpeed;
     public float projectileRange;
@@ -699,7 +533,6 @@ public class PlayerDataToJson
     public void InitializeDefaultValues()
     {
         currentHP = maxHP;
-        currentShield = 0;
         playerDamage = 5;
         knockbackSpeed = 5.0f;
         projectileRange = 2;

@@ -10,7 +10,7 @@ public class PlayerData : ScriptableObject
     public float defaultProjectileSpeed = 10;
     public float defaultProjectileRange = 2;
     public int defaultProjectileType = 0;
-    public int defaultMaxHP = 10;
+    public int defaultMaxHP = 100;
     public int defaultShield = 0;
 
     public float playerSpeed;

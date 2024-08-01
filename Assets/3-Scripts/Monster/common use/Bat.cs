@@ -47,7 +47,6 @@ public class Bat : Monster
 
     private IEnumerator Explode()
     {
-        Debug.Log("플레이어에게 접근 중");
 
         while (Vector3.Distance(transform.position, player.transform.position) > 0.5f)
         {
@@ -86,6 +85,5 @@ public class ExplodeAttackState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Attack State");
     }
 }

@@ -21,7 +21,15 @@ public class MonsterSpawner : MonoBehaviour
     public List<Wave> waves;
     public Transform[] spawnPoints;
     public string endDialogueName;
+    public string waveDialogueName;
+    public int dialogueTriggerWaveIndex = 1;
     public PlayerInteraction playerInteraction;
+
+    public bool slothMapGimmick = false;
+    // 다른 기믹들을 위한 Bool 변수 추가
+    // public bool gimmick2 = false;
+    // public bool gimmick3 = false;
+    // ...
 
     private List<GameObject> spawnedMonsters = new List<GameObject>();
     private int currentWaveIndex = 0;
@@ -52,12 +60,44 @@ public class MonsterSpawner : MonoBehaviour
             yield return new WaitUntil(() => AreAllMonstersDead());
 
             currentWaveIndex++;
+
+            if (currentWaveIndex == dialogueTriggerWaveIndex && !string.IsNullOrEmpty(waveDialogueName) && playerInteraction != null)
+            {
+                Debug.Log($"웨이브 {dialogueTriggerWaveIndex}가 클리어되었습니다. 다이얼로그를 트리거합니다: {waveDialogueName}");
+                playerInteraction.SetDialogueNameToTrigger(waveDialogueName);
+                ExecuteGimmick();
+            }
         }
 
-        if (!string.IsNullOrEmpty(endDialogueName) && playerInteraction != null)
+        if (currentWaveIndex >= waves.Count && !string.IsNullOrEmpty(endDialogueName) && playerInteraction != null)
         {
-            Debug.Log($"종료 대화명 설정: {endDialogueName}");
+            Debug.Log($"모든 웨이브가 끝났습니다. 종료 다이얼로그를 트리거합니다: {endDialogueName}");
             playerInteraction.SetDialogueNameToTrigger(endDialogueName);
+        }
+    }
+
+    private void ExecuteGimmick()
+    {
+        if (slothMapGimmick)
+        {
+            Debug.Log("나태 맵 기믹이 실행되었습니다.");
+            ExecuteSlothMapGimmick();
+        }
+        // 다른 기믹들을 여기에 추가
+        // if (gimmick2) { ExecuteGimmick2(); }
+        // if (gimmick3) { ExecuteGimmick3(); }
+        // ...
+    }
+
+    private void ExecuteSlothMapGimmick()
+    {
+        // 나태 맵 기믹 실행 로직
+        // 시계방향으로 돌던 전기줄을 반시계방향으로 빠르게 돌게 만드는 로직
+        ElectricWire[] electricWires = FindObjectsOfType<ElectricWire>();
+        foreach (var wire in electricWires)
+        {
+            wire.ReverseRotation();
+            wire.IncreaseSpeed();
         }
     }
 

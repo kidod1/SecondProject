@@ -6,20 +6,33 @@ public class DamageField : MonoBehaviour
 {
     private int damageAmount;
     private float damageInterval;
-    private List<Collider2D> monstersInRange = new List<Collider2D>();
+    private HashSet<Monster> monstersInRange = new HashSet<Monster>();
 
     public void Initialize(int damage, float interval)
     {
         damageAmount = damage;
         damageInterval = interval;
-        StartCoroutine(DamageOverTime());
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(DealDamage());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Monster"))
         {
-            monstersInRange.Add(other);
+            Monster monster = other.GetComponent<Monster>();
+            if (monster != null)
+            {
+                monstersInRange.Add(monster);
+            }
         }
     }
 
@@ -27,18 +40,21 @@ public class DamageField : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            monstersInRange.Remove(other);
+            Monster monster = other.GetComponent<Monster>();
+            if (monster != null)
+            {
+                monstersInRange.Remove(monster);
+            }
         }
     }
 
-    private IEnumerator DamageOverTime()
+    private IEnumerator DealDamage()
     {
         while (true)
         {
             foreach (var monster in monstersInRange)
             {
-                // 몬스터에게 데미지 주기
-                // monster.GetComponent<Monster>().TakeDamage(damageAmount);
+                monster.TakeDamage(damageAmount);
             }
             yield return new WaitForSeconds(damageInterval);
         }

@@ -43,7 +43,6 @@ public class Dog : Monster
 
     private IEnumerator PerformAttack()
     {
-        Debug.Log("플레이어에게 공격");
         DogAnimationPlay(attackAnimation, false);
         if (Vector3.Distance(transform.position, player.transform.position) <= monsterBaseStat.attackRange)
         {
@@ -100,7 +99,6 @@ public class DogCooldownState : MonsterState
     {
         cooldownTimer = monster.monsterBaseStat.attackDelay;
         monster.isInCooldown = true;
-        Debug.Log("Entering Cooldown State");
     }
 
     public override void UpdateState()
@@ -115,7 +113,6 @@ public class DogCooldownState : MonsterState
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Cooldown State");
         (monster as Dog)?.DogAnimationPlay((monster as Dog)?.idleAnimation, true);
     }
 }
