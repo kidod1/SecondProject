@@ -15,14 +15,15 @@ public abstract class Monster : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     protected MeshRenderer meshRenderer;
     protected bool isInvincible = false;
-    protected Player player;
+    protected bool isDead = false;
+    protected internal Player player;
+
     [SerializeField]
     private float invincibilityDuration = 0.5f;
     [SerializeField]
     private float blinkInterval = 0.1f;
 
     public bool isInCooldown = false;
-    private bool isDead = false;
 
     public IMonsterState currentState;
     public IMonsterState idleState;
@@ -102,7 +103,6 @@ public abstract class Monster : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // Å¸°Ý°¨À» À§ÇÑ ±ôºýÀÓ
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
