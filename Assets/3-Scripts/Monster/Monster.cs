@@ -12,7 +12,6 @@ public abstract class Monster : MonoBehaviour
 {
     public MonsterData monsterBaseStat;
     protected int currentHP;
-    protected SpriteRenderer spriteRenderer;
     protected MeshRenderer meshRenderer;
     protected bool isInvincible = false;
     protected bool isDead = false;
@@ -22,6 +21,10 @@ public abstract class Monster : MonoBehaviour
     private float invincibilityDuration = 0.5f;
     [SerializeField]
     private float blinkInterval = 0.1f;
+    [SerializeField]
+    private GameObject deathEffectPrefab;
+    [SerializeField]
+    private float deathEffectDuration = 0.4f; // 사망 이펙트가 지속될 시간
 
     public bool isInCooldown = false;
 
@@ -34,7 +37,6 @@ public abstract class Monster : MonoBehaviour
     protected virtual void Start()
     {
         currentHP = monsterBaseStat.maxHP;
-        spriteRenderer = GetComponent<SpriteRenderer>();
         meshRenderer = GetComponent<MeshRenderer>();
         player = FindObjectOfType<Player>();
         if (player == null)
@@ -99,6 +101,13 @@ public abstract class Monster : MonoBehaviour
 
         isDead = true;
         Debug.Log("몬스터 사망");
+
+        if (deathEffectPrefab != null)
+        {
+            GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(deathEffect, deathEffectDuration);
+        }
+
         player.GainExperience(monsterBaseStat.experiencePoints);
         gameObject.SetActive(false);
     }
@@ -109,22 +118,14 @@ public abstract class Monster : MonoBehaviour
 
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
-            if (spriteRenderer != null)
-            {
-                spriteRenderer.enabled = !spriteRenderer.enabled;
-            }
-            else if (meshRenderer != null)
+            if (meshRenderer != null)
             {
                 meshRenderer.enabled = !meshRenderer.enabled;
             }
             yield return new WaitForSeconds(blinkInterval);
         }
 
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = true;
-        }
-        else if (meshRenderer != null)
+        if (meshRenderer != null)
         {
             meshRenderer.enabled = true;
         }

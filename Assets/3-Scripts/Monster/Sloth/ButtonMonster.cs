@@ -3,19 +3,17 @@ using UnityEngine;
 using Spine.Unity;
 using Spine;
 
-public class Drone : Monster
+public class ButtonMonster : Monster
 {
-    public GameObject bulletPrefab;
     [SerializeField]
-    private DroneMonsterData stat;
-
+    private ButtonMonsterData stat;
+    [SerializeField]
+    private GameObject attackEffect;
     [SpineAnimation] public string summonAnimation;
-    [SpineAnimation] public string idleMoveAnimation;
+    [SpineAnimation] public string idleAnimation;
     [SpineAnimation] public string attackAnimation;
 
     private SkeletonAnimation skeletonAnimation;
-
-    [SerializeField] private Transform firePoint;
 
     protected override void Start()
     {
@@ -23,17 +21,11 @@ public class Drone : Monster
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         if (skeletonAnimation == null)
         {
-            Debug.LogError("스켈레톤 애니메이션 is null");
+            Debug.LogError("Skeleton Animation is null");
         }
         else
         {
             StartCoroutine(SummonAnimationCoroutine());
-        }
-
-        if (firePoint == null)
-        {
-            Debug.LogWarning("공격 위치가 설정되지 않았습니다.");
-            firePoint = transform;
         }
     }
 
@@ -46,10 +38,10 @@ public class Drone : Monster
 
     protected override void InitializeStates()
     {
-        idleState = new DroneIdleState(this);
-        chaseState = new DroneChaseState(this);
-        attackState = new DroneAttackState(this);
-        cooldownState = new DroneCooldownState(this);
+        idleState = new ButtonIdleState(this);
+        chaseState = new ButtonChaseState(this);
+        attackState = new ButtonAttackState(this);
+        cooldownState = new ButtonCooldownState(this);
         currentState = idleState;
     }
 
@@ -61,27 +53,41 @@ public class Drone : Monster
     private IEnumerator AttackCoroutine()
     {
         PlayAnimation(attackAnimation, false);
-        FireBullet();
-        TransitionToState(cooldownState);
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
+        ExecuteAttack();
+        TransitionToState(cooldownState);
     }
 
-    private void FireBullet()
+    private void ExecuteAttack()
     {
-        Vector3 direction = (player.transform.position - firePoint.position).normalized;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(new Vector3(0, 0, angle)));
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * stat.attackSpeed;
-
-        Bullet bulletScript = bullet.GetComponent<Bullet>();
-        if (bulletScript != null)
+        if (attackEffect != null)
         {
-            bulletScript.SetAttackDamage(monsterBaseStat.attackDamage);
+            GameObject effect = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
+            effect.SetActive(true);
+            // attackEffect의 애니메이션이 끝난 후 비활성화
+            StartCoroutine(DeactivateAfterAnimation(effect));
+        }
+
+        // 범위 내의 적에게 데미지를 입히는 로직
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, stat.buttonMosnterAttackRange);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Player"))
+            {
+                Player player = hitCollider.GetComponent<Player>();
+                if (player != null)
+                {
+                    player.TakeDamage(monsterBaseStat.attackDamage);
+                }
+            }
         }
     }
 
+    private IEnumerator DeactivateAfterAnimation(GameObject effect)
+    {
+        yield return new WaitForSeconds(1f);
+        effect.SetActive(false);
+    }
 
     public void PlayAnimation(string animationName, bool loop)
     {
@@ -90,15 +96,22 @@ public class Drone : Monster
             skeletonAnimation.state.SetAnimation(0, animationName, loop);
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        // 공격 범위를 기즈모로 표시
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stat.buttonMosnterAttackRange);
+    }
 }
 
-public class DroneIdleState : MonsterState
+public class ButtonIdleState : MonsterState
 {
-    public DroneIdleState(Monster monster) : base(monster) { }
+    public ButtonIdleState(Monster monster) : base(monster) { }
 
     public override void EnterState()
     {
-        (monster as Drone)?.PlayAnimation((monster as Drone).idleMoveAnimation, true);
+        (monster as ButtonMonster)?.PlayAnimation((monster as ButtonMonster).idleAnimation, true);
     }
 
     public override void UpdateState()
@@ -112,9 +125,9 @@ public class DroneIdleState : MonsterState
     public override void ExitState() { }
 }
 
-public class DroneChaseState : MonsterState
+public class ButtonChaseState : MonsterState
 {
-    public DroneChaseState(Monster monster) : base(monster) { }
+    public ButtonChaseState(Monster monster) : base(monster) { }
 
     public override void EnterState() { }
 
@@ -126,16 +139,16 @@ public class DroneChaseState : MonsterState
         }
         else
         {
-            monster.MoveTowards(PlayManager.I.GetPlayerPosition());
+            monster.MoveTowards(monster.player.transform.position);
         }
     }
 
     public override void ExitState() { }
 }
 
-public class DroneAttackState : MonsterState
+public class ButtonAttackState : MonsterState
 {
-    public DroneAttackState(Monster monster) : base(monster) { }
+    public ButtonAttackState(Monster monster) : base(monster) { }
 
     public override void EnterState()
     {
@@ -153,15 +166,15 @@ public class DroneAttackState : MonsterState
     public override void ExitState() { }
 }
 
-public class DroneCooldownState : MonsterState
+public class ButtonCooldownState : MonsterState
 {
     private float cooldownTimer;
 
-    public DroneCooldownState(Monster monster) : base(monster) { }
+    public ButtonCooldownState(Monster monster) : base(monster) { }
 
     public override void EnterState()
     {
-        cooldownTimer = (monster.monsterBaseStat as DroneMonsterData).attackCooldown;
+        cooldownTimer = (monster.monsterBaseStat as ButtonMonsterData).attackDelay;
         monster.isInCooldown = true;
     }
 

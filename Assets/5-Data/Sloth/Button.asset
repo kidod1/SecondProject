@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61052c0ebe761b040a226e6921df6cbb, type: 3}
-  m_Name: Drone
+  m_Script: {fileID: 11500000, guid: f3883c2c15b46fe46b312262d0edcc7f, type: 3}
+  m_Name: Button
   m_EditorClassIdentifier: 
   monsterSpeed: 2
-  maxHP: 30
+  maxHP: 25
   contectDamage: 3
-  attackDamage: 5
-  experiencePoints: 200
-  detectionRange: 15
-  attackRange: 5
+  attackDamage: 3
+  experiencePoints: 100
+  detectionRange: 10
+  attackRange: 2
   attackDelay: 3
-  attackCooldown: 3
-  attackSpeed: 2
+  buttonMosnterAttackRange: 2

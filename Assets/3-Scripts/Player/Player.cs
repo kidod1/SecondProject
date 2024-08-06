@@ -22,9 +22,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Scrollbar experienceScrollbar;
     [SerializeField]
-    private Slider healthBar; // HP 바를 나타내는 변수
+    private Slider healthBar;
     [SerializeField]
-    private TMP_Text healthText; // 체력을 나타내는 TextMeshPro 변수
+    private TMP_Text healthText;
 
     // Movement 관련 변수
     private Vector2 moveInput;
