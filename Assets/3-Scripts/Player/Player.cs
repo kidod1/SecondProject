@@ -37,7 +37,6 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     // Shooting 관련 변수
-    public float shootCooldown = 0.5f;
     private float lastShootTime;
     private bool isShooting = false;
     private Vector2 shootDirection;
@@ -97,21 +96,23 @@ public class Player : MonoBehaviour
         UpdateHealthUI();
         ResetPlayerData();
 
-        synergyAbilityAcquired.Add("Attack", false);
-        synergyAbilityAcquired.Add("Defense", false);
-        synergyAbilityAcquired.Add("Speed", false);
-        synergyAbilityAcquired.Add("Health", false);
-        synergyAbilityAcquired.Add("Magic", false);
-        synergyAbilityAcquired.Add("Support", false);
-        synergyAbilityAcquired.Add("Utility", false);
+        synergyAbilityAcquired.Add("Lust", false);
+        synergyAbilityAcquired.Add("Envy", false);
+        synergyAbilityAcquired.Add("Sloth", false);
+        synergyAbilityAcquired.Add("Gluttony", false);
+        synergyAbilityAcquired.Add("Greed", false);
+        synergyAbilityAcquired.Add("Wrath", false);
+        synergyAbilityAcquired.Add("Pride", false);
+        synergyAbilityAcquired.Add("Null", false);
 
-        synergyLevels.Add("Attack", 0);
-        synergyLevels.Add("Defense", 0);
-        synergyLevels.Add("Speed", 0);
-        synergyLevels.Add("Health", 0);
-        synergyLevels.Add("Magic", 0);
-        synergyLevels.Add("Support", 0);
-        synergyLevels.Add("Utility", 0);
+        synergyLevels.Add("Lust", 0);
+        synergyLevels.Add("Envy", 0);
+        synergyLevels.Add("Sloth", 0);
+        synergyLevels.Add("Gluttony", 0);
+        synergyLevels.Add("Greed", 0);
+        synergyLevels.Add("Wrath", 0);
+        synergyLevels.Add("Pride", 0);
+        synergyLevels.Add("Null", 0);
 
         // MapBoundary 클래스 참조 설정
         mapBoundary = FindObjectOfType<MapBoundary>();
@@ -143,7 +144,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isShooting && Time.time >= lastShootTime + shootCooldown)
+        if (isShooting && Time.time >= lastShootTime + stat.ShotCooldown)
         {
             Shoot(shootDirection, stat.projectileType);
             lastShootTime = Time.time;
@@ -194,7 +195,7 @@ public class Player : MonoBehaviour
                 shootDirection = newDirection;
                 isShooting = true;
 
-                if (Time.time >= lastShootTime + shootCooldown)
+                if (Time.time >= lastShootTime + stat.ShotCooldown)
                 {
                     Shoot(shootDirection, stat.projectileType);
                     lastShootTime = Time.time;
@@ -246,7 +247,8 @@ public class Player : MonoBehaviour
     {
         if (isInvincible) return;
 
-        currentHP -= damage;
+        int finalDamage = Mathf.Max(0, damage - stat.defense);
+        currentHP -= finalDamage;
         StartCoroutine(InvincibilityCoroutine());
 
         if (currentHP <= 0)
@@ -398,6 +400,8 @@ public class Player : MonoBehaviour
 
     private void CheckForSynergy(string category)
     {
+        if (category == "Null") return;
+
         if (synergyAbilityAcquired[category]) return;
 
         int totalLevel = 0;

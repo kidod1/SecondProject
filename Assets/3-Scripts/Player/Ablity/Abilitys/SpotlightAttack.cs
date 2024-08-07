@@ -6,8 +6,11 @@ public class SpotlightAttack : Ability
     public GameObject spotlightPrefab;
     private SpotlightEffect spotlightInstance;
 
+    [SerializeField]
     private int[] damageValues = { 3, 5, 7, 10, 15 };
+    [SerializeField]
     private float[] rangeValues = { 2f, 2.5f, 2.5f, 2.5f, 3f };
+    [SerializeField]
     private float[] intervalValues = { 1f, 1f, 1f, 0.75f, 0.75f };
 
     public override void Apply(Player player)

@@ -60,6 +60,7 @@ public class AbilityManager : MonoBehaviour
         Time.timeScale = 0f;
         abilitySelectionPanel.SetActive(true);
         availableAbilities = player.GetAvailableAbilities();
+        ShuffleAbilities(); // 능력들을 무작위로 섞음
 
         int abilitiesToShow = Mathf.Min(abilityButtons.Length, availableAbilities.Count);
 

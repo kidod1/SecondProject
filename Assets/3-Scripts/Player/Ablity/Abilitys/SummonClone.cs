@@ -6,7 +6,7 @@ public class SummonClone : Ability
     public GameObject clonePrefab;
     private GameObject cloneInstance;
     private RotatingObject rotatingObject;
-    private float[] damageMultipliers = { 0.3f, 0.5f, 0.7f, 1.0f, 1.2f };
+    public float[] damageMultipliers = { 0.3f, 0.5f, 0.7f, 1.0f, 1.2f };
 
     public override void Apply(Player player)
     {

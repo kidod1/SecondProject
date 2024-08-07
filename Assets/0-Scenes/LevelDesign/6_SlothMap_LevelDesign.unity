@@ -729,6 +729,20 @@ MonoBehaviour:
   waves:
   - spawnInfos:
     - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
+      count: 3
+    - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      count: 4
+    - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
+      count: 5
+    - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
+      count: 3
+    - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      count: 4
+    - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
+      count: 4
+    spawnInterval: 1
+  - spawnInfos:
+    - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
       count: 1
     spawnInterval: 1
   spawnPoints:
@@ -1570,11 +1584,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3955230978460404740, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.01
+      value: -0.46
       objectReference: {fileID: 0}
     - target: {fileID: 3955230978460404740, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.26
+      value: -0.97
       objectReference: {fileID: 0}
     - target: {fileID: 3955230978460404740, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1619,6 +1633,10 @@ PrefabInstance:
     - target: {fileID: 5624682597444370977, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
       propertyPath: m_Offset.x
       value: 0.05376646
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565413552051417229, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
+      propertyPath: m_BodyType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7128182965916948290, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
       propertyPath: m_SortingLayer
@@ -1996,6 +2014,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2703314135734974813, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3599909797997660943, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: dialogues.Array.data[0].dialogue.sentences.Array.data[0]
       value: "\uB098\uD0DC \uC9C0\uC5ED \uD14C\uC2A4\uD2B8\uB97C \uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
@@ -2058,9 +2080,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6343942467758311421, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6343942467758311421, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8040013582061067769, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: m_Name
-      value: TestNPC
+      value: Dialogue
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

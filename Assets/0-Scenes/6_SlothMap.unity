@@ -1625,6 +1625,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7128182965916948290, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
+      propertyPath: m_SortingOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7128182965916948290, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
       propertyPath: m_SortingLayerID
       value: 0
       objectReference: {fileID: 0}
@@ -1996,6 +2000,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2703314135734974813, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3599909797997660943, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: dialogues.Array.data[0].dialogue.sentences.Array.data[0]
       value: "\uB098\uD0DC \uC9C0\uC5ED \uD14C\uC2A4\uD2B8\uB97C \uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
@@ -2056,6 +2064,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6272406008262728500, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6343942467758311421, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6343942467758311421, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8040013582061067769, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
