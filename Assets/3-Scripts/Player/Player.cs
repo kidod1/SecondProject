@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 {
     public PlayerData stat;
     public ObjectPool objectPool;
+    private MapBoundary mapBoundary;
 
     // UI 관련 변수
     [SerializeField]
@@ -111,6 +112,13 @@ public class Player : MonoBehaviour
         synergyLevels.Add("Magic", 0);
         synergyLevels.Add("Support", 0);
         synergyLevels.Add("Utility", 0);
+
+        // MapBoundary 클래스 참조 설정
+        mapBoundary = FindObjectOfType<MapBoundary>();
+        if (mapBoundary == null)
+        {
+            Debug.LogError("MapBoundary 오브젝트를 찾을 수 없습니다.");
+        }
     }
 
     private void OnEnable()
@@ -151,7 +159,14 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 movement = moveInput * stat.playerSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + movement);
+        Vector2 newPosition = rb.position + movement;
+
+        if (mapBoundary != null)
+        {
+            newPosition = mapBoundary.ClampPosition(newPosition);
+        }
+
+        rb.MovePosition(newPosition);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -519,6 +534,7 @@ public class Player : MonoBehaviour
         SavePlayerData();
     }
 }
+
 
 
 [System.Serializable]

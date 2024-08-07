@@ -143,14 +143,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86cf59cb947a452479dbea8ceebea1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    characterName: "* \uACFC\uC81C\uC758 \uC545\uB9C8 *"
-    sentences:
-    - "\uC548\uB155? \uB098\uB294 \uACFC\uC81C\uC758 \uC545\uB9C8\uC57C!"
-    - "\uC624\uB298\uC758 \uACFC\uC81C\uB294 \uBA87 \uAC1C\uC77C\uC9C0 \uAD81\uAE08\uD558\uC9C0
-      \uC54A\uC544?!"
-    - "\uAD81\uAE08\uD558\uC9C0 \uC54A\uB2E4\uACE0? \uADF8\uB798\uB3C4 \uBC1B\uC544!!!"
-    backgrounds:
-    - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
-    - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
-    - {fileID: 21300000, guid: cd1b6e288da141844931291ad809e6b5, type: 3}
+  dialogues:
+  - name: StartDialogue
+    dialogue:
+      characterName: "*\uACFC\uC81C\uC758 \uC545\uB9C8*"
+      sentences:
+      - "\uBE4C\uB4DC \uBC84\uC804 \uD50C\uB808\uC774\uB97C \uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
+        \uC52C\uC774\uC57C!"
+      - "\uBAB0\uB824\uC624\uB294 \uBAAC\uC2A4\uD130\uB97C \uBB3C\uB9AC\uCCD0\uC918!"
+      backgrounds:
+      - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
+      - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
+      autoDisappear: 0
+    autoClose: 0
+  - name: EndDialogue
+    dialogue:
+      characterName: "*\uACFC\uC81C\uC758 \uC545\uB9C8*"
+      sentences:
+      - "\uC798\uD588\uC5B4! \uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uB97C \uBB3C\uB9AC\uCCE4\uAD6C\uB098!"
+      - "\uB2E4\uC74C \uC5C5\uB370\uC774\uD2B8\uB97C \uAE30\uB2E4\uB824\uC918!"
+      backgrounds:
+      - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
+      - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
+      autoDisappear: 0
+    autoClose: 0
+  - name: WaveDialogue
+    dialogue:
+      characterName: "*\uACFC\uC81C\uC758 \uC545\uB9C8*"
+      sentences:
+      - "\uACBD\uACE0! \uACBD\uACE0!"
+      - "\uACFC\uC81C\uC758 \uC545\uB9C8\uAC00 \uBD84\uB178\uD55C \uAC83 \uAC19\uC544!"
+      backgrounds:
+      - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
+      - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
+      autoDisappear: 0
+    autoClose: 0
