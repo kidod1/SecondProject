@@ -5,8 +5,6 @@ public class PlayerData : ScriptableObject
 {
     public float defaultPlayerSpeed = 5;
     public int defaultPlayerDamage = 5;
-    public float defaultKnockbackDuration = 0.1f;
-    public float defaultKnockbackSpeed = 5.0f;
     public float defaultProjectileSpeed = 10;
     public float defaultProjectileRange = 2;
     public int defaultProjectileType = 0;
@@ -34,8 +32,6 @@ public class PlayerData : ScriptableObject
     {
         playerSpeed = defaultPlayerSpeed;
         playerDamage = defaultPlayerDamage;
-        knockbackDuration = defaultKnockbackDuration;
-        knockbackSpeed = defaultKnockbackSpeed;
         projectileSpeed = defaultProjectileSpeed;
         projectileRange = defaultProjectileRange;
         projectileType = defaultProjectileType;

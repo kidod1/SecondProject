@@ -7,5 +7,4 @@ public class Dialogue
     [TextArea(3, 10)]
     public string[] sentences;
     public Sprite[] backgrounds;
-    public bool autoDisappear;
 }
