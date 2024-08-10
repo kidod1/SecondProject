@@ -728,18 +728,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - spawnInfos:
-    - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 4915e7dcab84d1349999a44ebc63f019, type: 3}
       count: 3
-    - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
-      count: 4
-    - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 4915e7dcab84d1349999a44ebc63f019, type: 3}
       count: 5
-    - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
-      count: 3
-    - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
-      count: 4
-    - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
-      count: 4
+    - monsterPrefab: {fileID: 5257169338272492925, guid: ed0c08f9e805bcf42a80c698469e3d7b, type: 3}
+      count: 5
+    - monsterPrefab: {fileID: 5257169338272492925, guid: ed0c08f9e805bcf42a80c698469e3d7b, type: 3}
+      count: 5
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 4915e7dcab84d1349999a44ebc63f019, type: 3}
+      count: 7
+    - monsterPrefab: {fileID: 5951554319984575952, guid: f63e63d2b0d25f84b87a156ae6bf649c, type: 3}
+      count: 9
+    - monsterPrefab: {fileID: 5257169338272492925, guid: ed0c08f9e805bcf42a80c698469e3d7b, type: 3}
+      count: 12
     spawnInterval: 1
   - spawnInfos:
     - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
@@ -2019,13 +2021,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3599909797997660943, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
+      propertyPath: dialogues.Array.data[0].dialogue.characterName
+      value: "\uB098\uD0DC\uC758 \uC545\uB9C8 \uBCA8\uD398\uACE0\uB974"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3599909797997660943, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: dialogues.Array.data[0].dialogue.sentences.Array.data[0]
-      value: "\uB098\uD0DC \uC9C0\uC5ED \uD14C\uC2A4\uD2B8\uB97C \uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
-        \uBE4C\uB4DC\uC57C."
+      value: "\uBB50 \uBB50\uC58F! \uC5B8\uC81C \uC5EC\uAE30\uAE4C\uC9C0 \uB4E4\uC5B4\uC628\uAC70\uC9C0?"
       objectReference: {fileID: 0}
     - target: {fileID: 3599909797997660943, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: dialogues.Array.data[0].dialogue.sentences.Array.data[1]
-      value: "\uB808\uC774\uC800\uC5D0 \uB2FF\uC73C\uBA74 \uC544\uD50C \uAC83 \uAC19\uC740\uAC78?"
+      value: "\uB2F9\uC7A5 \uBC29\uC5B4 \uC2DC\uC2A4\uD15C\uC744 \uAC00\uB3D9\uC2DC\uCF1C\uC57C\uACA0\uC5B4!"
       objectReference: {fileID: 0}
     - target: {fileID: 3599909797997660943, guid: 06d914987b2f3544c94f0827add900fe, type: 3}
       propertyPath: dialogues.Array.data[1].dialogue.sentences.Array.data[1]
