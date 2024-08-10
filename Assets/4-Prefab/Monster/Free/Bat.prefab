@@ -180,7 +180,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.013529062, y: 1.268504}
@@ -201,6 +201,8 @@ MonoBehaviour:
   monsterBaseStat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
   invincibilityDuration: 0.5
   blinkInterval: 0.1
+  deathEffectPrefab: {fileID: 0}
+  deathEffectDuration: 2
   isInCooldown: 0
   stat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
   idleAnimation: idle
