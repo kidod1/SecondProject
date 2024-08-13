@@ -52,7 +52,10 @@ public class DamageField : MonoBehaviour
     {
         while (true)
         {
-            foreach (var monster in monstersInRange)
+            // HashSet을 안전하게 순회하기 위해 복사본 사용
+            var monstersSnapshot = new List<Monster>(monstersInRange);
+
+            foreach (var monster in monstersSnapshot)
             {
                 monster.TakeDamage(damageAmount);
             }

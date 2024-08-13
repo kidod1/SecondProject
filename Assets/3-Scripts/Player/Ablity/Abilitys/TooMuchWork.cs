@@ -1,0 +1,151 @@
+using System.Collections;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Abilities/TooMuchWork")]
+public class TooMuchWork : Ability
+{
+    public float maxAttackSpeedMultiplier = 3.0f; // 최대 공격 속도 배수
+    public float baseTimeToMaxSpeed = 5.0f; // 기본적으로 최대 공격 속도에 도달하는 시간
+    public float overheatDuration = 5.0f; // 과열 시 공격 불가능 상태 지속 시간
+    private const float minAttackCooldown = 0.15f; // 최소 공격 속도 (쿨다운)
+
+    private Coroutine overheatCoroutine;
+    private Coroutine attackSpeedCoroutine;
+    private Player playerInstance;
+    private bool isOverheated = false;
+
+    public override void Apply(Player player)
+    {
+        playerInstance = player;
+
+        if (currentLevel == 0)
+        {
+            player.OnShoot.AddListener(HandleShooting);
+            player.OnShootCanceled.AddListener(HandleShootCanceled); // 리스너 추가
+        }
+
+        // 레벨에 따른 효과 적용
+        switch (currentLevel)
+        {
+            case 1:
+                baseTimeToMaxSpeed = 4.0f;
+                break;
+            case 2:
+                overheatDuration = 3.0f;
+                break;
+            case 3:
+                baseTimeToMaxSpeed = 3.0f;
+                break;
+        }
+
+        currentLevel++;
+    }
+
+    protected override int GetNextLevelIncrease()
+    {
+        return currentLevel + 1;
+    }
+
+    private void HandleShooting(Vector2 direction, int prefabIndex)
+    {
+        if (isOverheated) return;
+
+        if (attackSpeedCoroutine != null)
+        {
+            playerInstance.StopCoroutine(attackSpeedCoroutine);
+        }
+
+        attackSpeedCoroutine = playerInstance.StartCoroutine(IncreaseAttackSpeed());
+    }
+
+    private void HandleShootCanceled()
+    {
+        if (attackSpeedCoroutine != null)
+        {
+            playerInstance.StopCoroutine(attackSpeedCoroutine);
+            attackSpeedCoroutine = null;
+        }
+
+        playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
+    }
+
+    private IEnumerator IncreaseAttackSpeed()
+    {
+        float elapsedTime = 0f;
+        float originalCooldown = playerInstance.stat.ShotCooldown;
+
+        while (elapsedTime < baseTimeToMaxSpeed)
+        {
+            if (!playerInstance.isShooting)
+            {
+                playerInstance.stat.ShotCooldown = originalCooldown;
+                yield break;
+            }
+
+            elapsedTime += Time.deltaTime;
+            float newCooldown = Mathf.Lerp(originalCooldown, originalCooldown / maxAttackSpeedMultiplier, elapsedTime / baseTimeToMaxSpeed);
+
+            // 공격 속도가 최소값에 도달하면 과열 상태로 전환
+            if (newCooldown <= minAttackCooldown)
+            {
+                playerInstance.stat.ShotCooldown = minAttackCooldown;
+                TriggerOverheat(); // 과열 상태로 전환
+                yield break;
+            }
+
+            playerInstance.stat.ShotCooldown = newCooldown;
+
+            yield return null;
+        }
+    }
+
+    private void TriggerOverheat()
+    {
+        if (overheatCoroutine != null)
+        {
+            playerInstance.StopCoroutine(overheatCoroutine);
+        }
+        overheatCoroutine = playerInstance.StartCoroutine(Overheat());
+    }
+
+    private IEnumerator Overheat()
+    {
+        isOverheated = true;
+        Debug.Log("Weapon overheated! Can't attack for " + overheatDuration + " seconds.");
+        playerInstance.stat.ShotCooldown = Mathf.Infinity;
+
+        yield return new WaitForSeconds(overheatDuration);
+
+        isOverheated = false;
+        playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
+        Debug.Log("Weapon cooled down. You can attack again.");
+    }
+
+    public override void Upgrade()
+    {
+        Apply(playerInstance);
+    }
+
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+
+        if (playerInstance != null)
+        {
+            if (overheatCoroutine != null)
+            {
+                playerInstance.StopCoroutine(overheatCoroutine);
+                overheatCoroutine = null;
+            }
+            if (attackSpeedCoroutine != null)
+            {
+                playerInstance.StopCoroutine(attackSpeedCoroutine);
+                attackSpeedCoroutine = null;
+            }
+
+            playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
+        }
+
+        isOverheated = false;
+    }
+}

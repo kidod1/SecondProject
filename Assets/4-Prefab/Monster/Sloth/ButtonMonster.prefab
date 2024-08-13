@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 3882559983277356392}
   - component: {fileID: -1364121930078075561}
   - component: {fileID: 8817472352269252538}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: ButtonMonster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -157,7 +157,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 4395618813426290027}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e1e29a12706160c45a518168ee9ba766, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -177,7 +177,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.022793055, y: 0.55159986}
@@ -231,6 +231,10 @@ PrefabInstance:
     - target: {fileID: 650294903325016426, guid: b8c4136af4649e54e97d5b107206f585, type: 3}
       propertyPath: m_Name
       value: ButtonMonsterAttackEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 650294903325016426, guid: b8c4136af4649e54e97d5b107206f585, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 785624878300407599, guid: b8c4136af4649e54e97d5b107206f585, type: 3}
       propertyPath: m_LocalPosition.x

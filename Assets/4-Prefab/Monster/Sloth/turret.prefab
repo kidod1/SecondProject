@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8509312286314539964}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FirePointR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,9 +46,9 @@ GameObject:
   - component: {fileID: 8063736617677437427}
   - component: {fileID: 4457303775279968565}
   - component: {fileID: 6591827058462512117}
-  m_Layer: 0
-  m_Name: Turret
-  m_TagString: Untagged
+  m_Layer: 12
+  m_Name: turret
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,7 +197,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 4370629814598732172}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e1e29a12706160c45a518168ee9ba766, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -217,7 +217,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.21071541, y: 1.208445}
@@ -269,7 +269,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 814760329991142954}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FirePointL
   m_TagString: Untagged
   m_Icon: {fileID: 0}

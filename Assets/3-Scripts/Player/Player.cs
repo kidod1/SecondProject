@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
 
     // Shooting 관련 변수
     private float lastShootTime;
-    private bool isShooting = false;
+    public bool isShooting = false;
     private Vector2 shootDirection;
     private Vector2 nextShootDirection;
     private bool hasNextShootDirection = false;
@@ -64,6 +64,7 @@ public class Player : MonoBehaviour
     public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
+    public UnityEvent OnShootCanceled; // 새로운 UnityEvent 추가
 
     // Save System
     private string saveFilePath;
@@ -85,10 +86,13 @@ public class Player : MonoBehaviour
         {
             OnMonsterEnter = new UnityEvent<Collider2D>();
         }
+        if (OnShootCanceled == null)
+        {
+            OnShootCanceled = new UnityEvent();
+        }
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
     }
-
     private void Start()
     {
         InitializePlayer();
@@ -121,7 +125,6 @@ public class Player : MonoBehaviour
             Debug.LogError("MapBoundary 오브젝트를 찾을 수 없습니다.");
         }
     }
-
     private void OnEnable()
     {
         playerInput.Player.Enable();
@@ -129,7 +132,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Move.canceled += OnMoveCanceled;
         playerInput.Player.Shoot.started += OnShootStarted;
         playerInput.Player.Shoot.performed += OnShootPerformed;
-        playerInput.Player.Shoot.canceled += OnShootCanceled;
+        playerInput.Player.Shoot.canceled += OnShootCanceledInputAction; // 이벤트 바인딩
     }
 
     private void OnDisable()
@@ -139,7 +142,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Move.canceled -= OnMoveCanceled;
         playerInput.Player.Shoot.started -= OnShootStarted;
         playerInput.Player.Shoot.performed -= OnShootPerformed;
-        playerInput.Player.Shoot.canceled -= OnShootCanceled;
+        playerInput.Player.Shoot.canceled -= OnShootCanceledInputAction; // 이벤트 바인딩 해제
     }
 
     private void Update()
@@ -214,9 +217,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnShootCanceled(InputAction.CallbackContext context)
+    private void OnShootCanceledInputAction(InputAction.CallbackContext context)
     {
         isShooting = false;
+        OnShootCanceled.Invoke(); // 공격 중단 이벤트 호출
     }
 
     public void Shoot(Vector2 direction, int prefabIndex)
@@ -329,7 +333,9 @@ public class Player : MonoBehaviour
 
     public void GainExperience(int amount)
     {
-        experience += amount;
+        int adjustedAmount = Mathf.RoundToInt(amount * stat.experienceMultiplier);
+        experience += adjustedAmount;
+
         if (experienceBarCoroutine != null)
         {
             StopCoroutine(experienceBarCoroutine);

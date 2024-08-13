@@ -28,6 +28,9 @@ public class PlayerData : ScriptableObject
     [Tooltip("경험치 테이블")]
     public int[] experienceThresholds = { 100, 200, 400, 800, 1600 };
 
+    [Tooltip("경험치 획득량 배수 (기본값 1.0 = 100%)")]
+    public float experienceMultiplier = 1.0f;
+
     public void InitializeStats()
     {
         playerSpeed = defaultPlayerSpeed;
