@@ -115,7 +115,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -148,33 +148,31 @@ MonoBehaviour:
     dialogue:
       characterName: "*\uACFC\uC81C\uC758 \uC545\uB9C8*"
       sentences:
-      - "\uBE4C\uB4DC \uBC84\uC804 \uD50C\uB808\uC774\uB97C \uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
-        \uC52C\uC774\uC57C!"
-      - "\uBAB0\uB824\uC624\uB294 \uBAAC\uC2A4\uD130\uB97C \uBB3C\uB9AC\uCCD0\uC918!"
+      - "\uB098\uD0DC \uC9C0\uC5ED \uD14C\uC2A4\uD2B8\uB97C \uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
+        \uBE4C\uB4DC\uC57C."
+      - "\uB808\uC774\uC800\uC5D0 \uB2FF\uC73C\uBA74 \uC544\uD50C \uAC83 \uAC19\uC740\uAC78?"
       backgrounds:
       - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
       - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
-      autoDisappear: 0
     autoClose: 0
   - name: EndDialogue
     dialogue:
       characterName: "*\uACFC\uC81C\uC758 \uC545\uB9C8*"
       sentences:
       - "\uC798\uD588\uC5B4! \uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uB97C \uBB3C\uB9AC\uCCE4\uAD6C\uB098!"
-      - "\uB2E4\uC74C \uC5C5\uB370\uC774\uD2B8\uB97C \uAE30\uB2E4\uB824\uC918!"
+      - "\uB098\uD0DC \uC9C0\uC5ED \uC644\uC131\uC774\uC57C."
       backgrounds:
       - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
       - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
-      autoDisappear: 0
     autoClose: 0
   - name: WaveDialogue
     dialogue:
       characterName: "*\uACFC\uC81C\uC758 \uC545\uB9C8*"
       sentences:
-      - "\uACBD\uACE0! \uACBD\uACE0!"
-      - "\uACFC\uC81C\uC758 \uC545\uB9C8\uAC00 \uBD84\uB178\uD55C \uAC83 \uAC19\uC544!"
+      - "\uB098\uD0DC\uC758 \uC545\uB9C8\uAC00 \uBD84\uB178\uD55C \uAC83 \uAC19\uC544!"
+      - "\uC870\uC2EC\uD574! \uB808\uC774\uC800\uAC00 \uBC18\uB300\uB85C \uB3CC\uAE30
+        \uC2DC\uC791\uD588\uC5B4!"
       backgrounds:
       - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
       - {fileID: 21300000, guid: 293375fb3eb1e1f4c9ee4105dcc7045d, type: 3}
-      autoDisappear: 0
     autoClose: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7077287781012051402}
   - component: {fileID: 4695583773178598537}
   - component: {fileID: 7175011438703921822}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Imp
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.09394431, y: 2.354252}
@@ -219,7 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3745594369458847291}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GameObject
   m_TagString: Enemy
   m_Icon: {fileID: 0}

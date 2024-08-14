@@ -17,7 +17,13 @@ public class ElectricBeam : SynergyAbility
     {
         playerInstance = player;
 
-        if (activeBeam == null)
+        if (beamPrefab == null)
+        {
+            Debug.LogError("Beam prefab is not assigned.");
+            return;
+        }
+
+        if (activeBeam == null && playerInstance != null)
         {
             activeBeam = Instantiate(beamPrefab, playerInstance.transform.position, Quaternion.identity);
             activeBeam.transform.SetParent(playerInstance.transform);
@@ -30,7 +36,7 @@ public class ElectricBeam : SynergyAbility
     {
         while (true)
         {
-            if (activeBeam != null)
+            if (activeBeam != null && playerInstance != null)
             {
                 activeBeam.transform.RotateAround(playerInstance.transform.position, Vector3.forward, rotationSpeed * Time.deltaTime);
 
@@ -47,6 +53,11 @@ public class ElectricBeam : SynergyAbility
                         }
                     }
                 }
+            }
+            else
+            {
+                Debug.LogWarning("Active beam or player instance is null. Stopping rotation.");
+                yield break;
             }
 
             yield return null;

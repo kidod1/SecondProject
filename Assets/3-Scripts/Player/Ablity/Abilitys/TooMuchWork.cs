@@ -18,6 +18,12 @@ public class TooMuchWork : Ability
     {
         playerInstance = player;
 
+        if (playerInstance == null)
+        {
+            Debug.LogError("Player instance is null. Cannot apply TooMuchWork ability.");
+            return;
+        }
+
         if (currentLevel == 0)
         {
             player.OnShoot.AddListener(HandleShooting);
@@ -37,18 +43,16 @@ public class TooMuchWork : Ability
                 baseTimeToMaxSpeed = 3.0f;
                 break;
         }
-
-        currentLevel++;
     }
 
     protected override int GetNextLevelIncrease()
     {
-        return currentLevel + 1;
+        return currentLevel < maxLevel ? currentLevel + 1 : 0;
     }
 
     private void HandleShooting(Vector2 direction, int prefabIndex)
     {
-        if (isOverheated) return;
+        if (isOverheated || playerInstance == null) return;
 
         if (attackSpeedCoroutine != null)
         {
@@ -60,17 +64,25 @@ public class TooMuchWork : Ability
 
     private void HandleShootCanceled()
     {
-        if (attackSpeedCoroutine != null)
+        if (attackSpeedCoroutine != null && playerInstance != null)
         {
             playerInstance.StopCoroutine(attackSpeedCoroutine);
             attackSpeedCoroutine = null;
         }
 
-        playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
+        if (playerInstance != null)
+        {
+            playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
+        }
     }
 
     private IEnumerator IncreaseAttackSpeed()
     {
+        if (playerInstance == null)
+        {
+            yield break;
+        }
+
         float elapsedTime = 0f;
         float originalCooldown = playerInstance.stat.ShotCooldown;
 
@@ -101,6 +113,12 @@ public class TooMuchWork : Ability
 
     private void TriggerOverheat()
     {
+        if (playerInstance == null)
+        {
+            Debug.LogError("Player instance is null. Cannot trigger overheat.");
+            return;
+        }
+
         if (overheatCoroutine != null)
         {
             playerInstance.StopCoroutine(overheatCoroutine);
@@ -110,20 +128,28 @@ public class TooMuchWork : Ability
 
     private IEnumerator Overheat()
     {
+        if (playerInstance == null)
+        {
+            yield break;
+        }
+
         isOverheated = true;
         Debug.Log("Weapon overheated! Can't attack for " + overheatDuration + " seconds.");
         playerInstance.stat.ShotCooldown = Mathf.Infinity;
 
         yield return new WaitForSeconds(overheatDuration);
 
-        isOverheated = false;
-        playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
-        Debug.Log("Weapon cooled down. You can attack again.");
+        if (playerInstance != null)
+        {
+            isOverheated = false;
+            playerInstance.stat.ShotCooldown = playerInstance.stat.defalutShotCooldown;
+            Debug.Log("Weapon cooled down. You can attack again.");
+        }
     }
 
     public override void Upgrade()
     {
-        Apply(playerInstance);
+        currentLevel++; // 레벨을 증가시킵니다.
     }
 
     public override void ResetLevel()

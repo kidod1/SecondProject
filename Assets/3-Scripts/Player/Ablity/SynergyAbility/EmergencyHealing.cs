@@ -13,12 +13,24 @@ public class EmergencyHealing : SynergyAbility
     {
         playerInstance = player;
 
+        if (playerInstance == null)
+        {
+            Debug.LogError("Player instance is null. Cannot apply EmergencyHealing.");
+            return;
+        }
+
         // 플레이어의 OnTakeDamage 이벤트에 리스너 추가
         player.OnTakeDamage.AddListener(CheckAndHealPlayer);
     }
 
     private void CheckAndHealPlayer()
     {
+        if (playerInstance == null)
+        {
+            Debug.LogError("Player instance is null. Cannot check and heal player.");
+            return;
+        }
+
         // 체력이 10% 이하로 떨어졌는지 확인
         if (playerInstance.GetCurrentHP() <= playerInstance.stat.maxHP * 0.1f)
         {
@@ -32,6 +44,12 @@ public class EmergencyHealing : SynergyAbility
 
     private void HealPlayer()
     {
+        if (playerInstance == null)
+        {
+            Debug.LogError("Player instance is null. Cannot heal player.");
+            return;
+        }
+
         // 체력의 30%를 회복
         int healAmount = Mathf.RoundToInt(playerInstance.stat.maxHP * 0.3f);
         playerInstance.Heal(healAmount);
@@ -40,8 +58,19 @@ public class EmergencyHealing : SynergyAbility
         if (healingDronePrefab != null)
         {
             GameObject healingDrone = Instantiate(healingDronePrefab, playerInstance.transform.position, Quaternion.identity);
-            healingDrone.transform.SetParent(playerInstance.transform);
-            Destroy(healingDrone, 2f); // 치유 드론은 2초 후에 사라짐
+            if (healingDrone != null)
+            {
+                healingDrone.transform.SetParent(playerInstance.transform);
+                Destroy(healingDrone, 2f); // 치유 드론은 2초 후에 사라짐
+            }
+            else
+            {
+                Debug.LogError("Failed to instantiate healing drone prefab.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Healing drone prefab is null. No visual effect will be created.");
         }
 
         // 쿨타임 시작
@@ -50,6 +79,12 @@ public class EmergencyHealing : SynergyAbility
 
     private IEnumerator Cooldown()
     {
+        if (cooldownDuration <= 0f)
+        {
+            Debug.LogWarning("Cooldown duration is set to 0 or a negative value. Skipping cooldown.");
+            yield break;
+        }
+
         yield return new WaitForSeconds(cooldownDuration);
         cooldownCoroutine = null; // 쿨타임이 끝나면 초기화
     }

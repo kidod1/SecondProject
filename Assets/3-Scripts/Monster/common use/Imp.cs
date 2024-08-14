@@ -39,6 +39,7 @@ public class Imp : Monster
     protected override void InitializeStates()
     {
         idleState = new ImpIdleState(this);
+        chaseState = new ImpChaseState(this); // ChaseState 추가
         attackState = new ImpAttackState(this);
         cooldownState = new ImpCooldownState(this);
         currentState = idleState;
@@ -54,9 +55,9 @@ public class Imp : Monster
     {
         PlayAnimation(attackAnimation, false);
         FireBullet();
+        TransitionToState(cooldownState);
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
         PlayAnimation(idleAnimation, true);
-        TransitionToState(cooldownState);
     }
 
     private void FireBullet()
@@ -92,9 +93,35 @@ public class ImpIdleState : MonsterState
 
     public override void UpdateState()
     {
-        if (monster.IsPlayerInRange(monster.monsterBaseStat.attackRange) && !monster.isInCooldown)
+        if (monster.IsPlayerInRange(monster.monsterBaseStat.detectionRange))
+        {
+            monster.TransitionToState(monster.chaseState);
+        }
+    }
+
+    public override void ExitState()
+    {
+    }
+}
+
+public class ImpChaseState : MonsterState
+{
+    public ImpChaseState(Monster monster) : base(monster) { }
+
+    public override void EnterState()
+    {
+        // 추가적인 초기화가 필요하다면 여기에 작성
+    }
+
+    public override void UpdateState()
+    {
+        if (monster.IsPlayerInRange(monster.monsterBaseStat.attackRange))
         {
             monster.TransitionToState(monster.attackState);
+        }
+        else
+        {
+            monster.MoveTowards(PlayManager.I.GetPlayerPosition());
         }
     }
 
@@ -116,7 +143,7 @@ public class ImpAttackState : MonsterState
     {
         if (!monster.IsPlayerInRange(monster.monsterBaseStat.attackRange))
         {
-            monster.TransitionToState(monster.idleState);
+            monster.TransitionToState(monster.chaseState);
         }
     }
 

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilities/PushAway")]
@@ -9,8 +8,11 @@ public class PushAway : Ability
     private Player playerInstance;
     private Coroutine pushCoroutine;
 
+    [SerializeField]
     private float[] cooldownTimes = { 20f, 15f, 15f, 10f, 10f }; // 각 레벨별 쿨타임
+    [SerializeField]
     private int[] damageValues = { 10, 10, 10, 10, 20 }; // 각 레벨별 피해량
+    [SerializeField]
     private float[] pushRanges = { 200f, 200f, 250f, 250f, 300f }; // 각 레벨별 범위
 
     public override void Apply(Player player)
@@ -21,13 +23,11 @@ public class PushAway : Ability
         {
             StartPushAway();
         }
-
-        currentLevel++;
     }
 
     protected override int GetNextLevelIncrease()
     {
-        return currentLevel + 1;
+        return currentLevel < maxLevel ? currentLevel + 1 : 0;
     }
 
     private void StartPushAway()
@@ -42,7 +42,8 @@ public class PushAway : Ability
     {
         while (true)
         {
-            if (currentLevel - 1 >= 0 && currentLevel - 1 < cooldownTimes.Length)
+            // currentLevel이 유효한 범위 내에 있는지 확인
+            if (currentLevel > 0 && currentLevel <= cooldownTimes.Length)
             {
                 yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
 
@@ -61,35 +62,63 @@ public class PushAway : Ability
 
     private void PerformPushAway()
     {
-        // 범위 내의 몬스터들을 찾음
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(playerInstance.transform.position, pushRanges[currentLevel - 1]);
-
-        foreach (Collider2D hitCollider in hitColliders)
+        if (playerInstance == null)
         {
-            if (hitCollider.CompareTag("Monster"))
-            {
-                Monster monster = hitCollider.GetComponent<Monster>();
-                if (monster != null)
-                {
-                    monster.TakeDamage(damageValues[currentLevel - 1]);
-
-                    Vector2 pushDirection = (monster.transform.position - playerInstance.transform.position).normalized;
-                    monster.GetComponent<Rigidbody2D>().AddForce(pushDirection * 1000f);
-                }
-            }
+            Debug.LogError("Player instance is null. Cannot perform PushAway.");
+            return;
         }
 
-        if (shockwavePrefab != null)
+        // currentLevel이 유효한 범위 내에 있는지 확인
+        if (currentLevel > 0 && currentLevel <= pushRanges.Length && currentLevel <= damageValues.Length)
         {
-            GameObject shockwave = Instantiate(shockwavePrefab, playerInstance.transform.position, Quaternion.identity);
-            shockwave.transform.localScale = Vector3.one * pushRanges[currentLevel - 1] / 100f;
-            Destroy(shockwave, 1f);
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(playerInstance.transform.position, pushRanges[currentLevel - 1]);
+
+            foreach (Collider2D hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("Monster"))
+                {
+                    Monster monster = hitCollider.GetComponent<Monster>();
+                    if (monster != null)
+                    {
+                        monster.TakeDamage(damageValues[currentLevel - 1]);
+
+                        Rigidbody2D monsterRb = monster.GetComponent<Rigidbody2D>();
+                        if (monsterRb != null)
+                        {
+                            Vector2 pushDirection = (monster.transform.position - playerInstance.transform.position).normalized;
+                            monsterRb.AddForce(pushDirection * 1000f);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Monster does not have a Rigidbody2D component. Cannot apply force.");
+                        }
+                    }
+                }
+            }
+
+            if (shockwavePrefab != null)
+            {
+                GameObject shockwave = Instantiate(shockwavePrefab, playerInstance.transform.position, Quaternion.identity);
+                shockwave.transform.localScale = Vector3.one * pushRanges[currentLevel - 1] / 100f;
+                Destroy(shockwave, 1f);
+            }
+            else
+            {
+                Debug.LogWarning("Shockwave prefab is null. Cannot create visual effect.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Current level is out of bounds for pushRanges or damageValues array.");
         }
     }
 
     public override void Upgrade()
     {
-        Apply(playerInstance);
+        if (currentLevel < maxLevel)
+        {
+            currentLevel++;
+        }
     }
 
     public override void ResetLevel()

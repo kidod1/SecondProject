@@ -9,6 +9,7 @@ public class Barrier : Ability
     private Player playerInstance;
     private Coroutine cooldownCoroutine;
 
+    [SerializeField]
     private float[] cooldownTimes = { 30f, 25f, 20f, 15f, 10f }; // 각 레벨별 쿨타임
 
     public override void Apply(Player player)
@@ -20,25 +21,26 @@ public class Barrier : Ability
             player.OnTakeDamage.AddListener(ActivateBarrier);
             ActivateBarrierVisual();
         }
-
-        currentLevel++;
     }
 
     protected override int GetNextLevelIncrease()
     {
-        return currentLevel + 1;
+        return currentLevel < maxLevel ? currentLevel + 1 : 0;
     }
 
     private void ActivateBarrierVisual()
     {
-        if (activeShield == null)
+        if (shieldPrefab != null)
         {
-            activeShield = Instantiate(shieldPrefab, playerInstance.transform);
-            activeShield.transform.SetParent(playerInstance.transform);
-        }
-        else
-        {
-            activeShield.SetActive(true);
+            if (activeShield == null)
+            {
+                activeShield = Instantiate(shieldPrefab, playerInstance.transform);
+                activeShield.transform.SetParent(playerInstance.transform);
+            }
+            else
+            {
+                activeShield.SetActive(true);
+            }
         }
     }
 
@@ -84,7 +86,7 @@ public class Barrier : Ability
 
     public override void Upgrade()
     {
-        Apply(playerInstance);
+        currentLevel++;
     }
 
     public override void ResetLevel()
