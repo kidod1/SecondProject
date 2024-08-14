@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     private Slider healthBar;
     [SerializeField]
     private TMP_Text healthText;
+    [SerializeField]
+    private TMP_Text currencyText;
 
     // Movement 관련 변수
     private Vector2 moveInput;
@@ -56,6 +58,9 @@ public class Player : MonoBehaviour
     private Coroutine buffCoroutine;
     private SynergyAbility synergyAbility;
     private bool hasSynergyAbility = false;
+
+    // 재화 관련 변수
+    private int currentCurrency = 0;
 
     // Input System
     private PlayerInput playerInput;
@@ -105,6 +110,8 @@ public class Player : MonoBehaviour
         LoadPlayerData();
         UpdateHealthUI();
         ResetPlayerData();
+        UpdateCurrencyUI();
+
 
         synergyAbilityAcquired.Add("Lust", false);
         synergyAbilityAcquired.Add("Envy", false);
@@ -296,8 +303,8 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        // 플레이어 죽음 처리 로직 추가
-        ResetPlayerData();
+        SavePlayerData();
+        InitializePlayer();
     }
 
     public void Heal(int amount)
@@ -490,6 +497,18 @@ public class Player : MonoBehaviour
         healthText.text = $"{currentHP} / {stat.maxHP}";
     }
 
+    private void UpdateCurrencyUI()
+    {
+        currencyText.text = "현재 재화: " + currentCurrency;
+    }
+
+    public void AddCurrency(int amount)
+    {
+        currentCurrency += amount;
+        UpdateCurrencyUI();
+    }
+
+
     public void SavePlayerData()
     {
         PlayerDataToJson data = new PlayerDataToJson
@@ -498,12 +517,14 @@ public class Player : MonoBehaviour
             currentHP = currentHP,
             playerDamage = stat.playerDamage,
             projectileRange = stat.projectileRange,
-            knockbackSpeed = stat.knockbackSpeed
+            knockbackSpeed = stat.knockbackSpeed,
+            currency = currentCurrency
         };
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(saveFilePath, json);
     }
+
 
     public void LoadPlayerData()
     {
@@ -517,19 +538,28 @@ public class Player : MonoBehaviour
             stat.playerDamage = data.playerDamage;
             stat.projectileRange = data.projectileRange;
             stat.knockbackSpeed = data.knockbackSpeed;
+            currentCurrency = data.currency;
+            UpdateCurrencyUI();
         }
     }
+
 
     public void ResetPlayerData()
     {
         if (File.Exists(saveFilePath))
         {
-            File.Delete(saveFilePath);
+            string json = File.ReadAllText(saveFilePath);
+            PlayerDataToJson data = JsonUtility.FromJson<PlayerDataToJson>(json);
+            data.InitializeDefaultValues();
+            data.currency = currentCurrency;
+            ApplyPlayerData(data);
         }
-
-        PlayerDataToJson data = new PlayerDataToJson();
-        data.InitializeDefaultValues();
-        ApplyPlayerData(data);
+        else
+        {
+            PlayerDataToJson data = new PlayerDataToJson();
+            data.InitializeDefaultValues();
+            ApplyPlayerData(data);
+        }
     }
 
     public void ResetAbilities()
@@ -549,7 +579,9 @@ public class Player : MonoBehaviour
         stat.playerDamage = data.playerDamage;
         stat.projectileRange = data.projectileRange;
         stat.knockbackSpeed = data.knockbackSpeed;
+        currentCurrency = data.currency;
         UpdateHealthUI();
+        UpdateCurrencyUI();
     }
 
     private void OnApplicationQuit()
@@ -557,8 +589,6 @@ public class Player : MonoBehaviour
         SavePlayerData();
     }
 }
-
-
 
 [System.Serializable]
 public class PlayerDataToJson
@@ -568,6 +598,7 @@ public class PlayerDataToJson
     public int playerDamage;
     public float knockbackSpeed;
     public float projectileRange;
+    public int currency;
 
     public void InitializeDefaultValues()
     {
@@ -575,5 +606,6 @@ public class PlayerDataToJson
         playerDamage = 5;
         knockbackSpeed = 5.0f;
         projectileRange = 2;
+        currency = 0;
     }
 }

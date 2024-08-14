@@ -108,7 +108,12 @@ public abstract class Monster : MonoBehaviour
             Destroy(deathEffect, deathEffectDuration);
         }
 
+        // 경험치 지급
         player.GainExperience(monsterBaseStat.experiencePoints);
+
+        // 재화 지급
+        player.AddCurrency(monsterBaseStat.rewardCurrency);
+
         gameObject.SetActive(false);
     }
 

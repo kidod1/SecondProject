@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilities/ElectricField")]
+[CreateAssetMenu(menuName = "SynergyAbilities/ElectricField")]
 public class ElectricField : SynergyAbility
 {
     public GameObject damageFieldPrefab;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilities/SynergyAbility")]
+[CreateAssetMenu(menuName = "SynergyAbilities/SynergyAbility")]
 public class SynergyAbility : Ability
 {
     public override void Apply(Player player)

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 161e50b71ae642141b596af7f15710b7, type: 3}
+  m_Name: EmergencyHealing
+  m_EditorClassIdentifier: 
+  abilityName: "\uD790\uB9C1 \uB4DC\uB860"
+  baseDescription: "\uCCB4\uB825\uC774 10% \uC774\uD558\uB85C \uB5A8\uC5B4\uC84C\uC744
+    \uB54C \uB4DC\uB860\uC744 \uC18C\uD658\uD558\uC5EC \uCCB4\uB825\uC744 \uD68C\uBCF5\uC2DC\uD0B5\uB2C8\uB2E4."
+  category: Null
+  maxLevel: 5
+  currentLevel: 0
+  abilityIcon: {fileID: 21300000, guid: 3e8b0c82225f9084c87e3beb9861a570, type: 3}
+  healingDronePrefab: {fileID: 0}
+  cooldownDuration: 20

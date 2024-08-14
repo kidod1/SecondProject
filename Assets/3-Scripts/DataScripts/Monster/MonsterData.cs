@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "MonsterData/MonsterData")]
 public class MonsterData : ScriptableObject
 {
     public int monsterSpeed;
@@ -11,4 +11,7 @@ public class MonsterData : ScriptableObject
     public float detectionRange;
     public float attackRange;
     public float attackDelay;
+
+    [Tooltip("몬스터를 처치했을 때 플레이어가 얻는 재화")]
+    public int rewardCurrency;
 }

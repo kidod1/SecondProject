@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilities/RockEvent")]
+[CreateAssetMenu(menuName = "SynergyAbilities/RockEvent")]
 public class RockEvent : SynergyAbility
 {
     public GameObject effectPrefab;

@@ -52,7 +52,7 @@ public class Barrier : Ability
 
     private void ActivateBarrier()
     {
-        if (cooldownCoroutine == null)
+        if (cooldownCoroutine == null && playerInstance != null)
         {
             playerInstance.SetInvincibility(true); // 플레이어를 무적 상태로 설정
             DeactivateBarrierVisual(); // 배리어 비주얼 비활성화
@@ -63,11 +63,23 @@ public class Barrier : Ability
 
     private IEnumerator BarrierCooldown()
     {
-        yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
+        if (currentLevel - 1 >= 0 && currentLevel - 1 < cooldownTimes.Length)
+        {
+            yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
+        }
+        else
+        {
+            Debug.LogError("Current level is out of bounds for cooldownTimes array.");
+            yield break;
+        }
 
-        playerInstance.SetInvincibility(false); // 무적 상태 해제
-        ActivateBarrierVisual(); // 배리어 비주얼 활성화
-        cooldownCoroutine = null; // 쿨타임 코루틴 초기화
+        if (playerInstance != null)
+        {
+            playerInstance.SetInvincibility(false);
+            ActivateBarrierVisual();
+        }
+
+        cooldownCoroutine = null;
     }
 
     public override void Upgrade()
@@ -79,13 +91,17 @@ public class Barrier : Ability
     {
         base.ResetLevel();
 
-        if (cooldownCoroutine != null)
+        if (cooldownCoroutine != null && playerInstance != null)
         {
             playerInstance.StopCoroutine(cooldownCoroutine);
             cooldownCoroutine = null;
         }
 
-        playerInstance.SetInvincibility(false);
+        if (playerInstance != null)
+        {
+            playerInstance.SetInvincibility(false);
+        }
+
         DeactivateBarrierVisual();
     }
 }
