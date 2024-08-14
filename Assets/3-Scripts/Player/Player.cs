@@ -64,7 +64,8 @@ public class Player : MonoBehaviour
     public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
-    public UnityEvent OnShootCanceled; // 새로운 UnityEvent 추가
+    public UnityEvent OnShootCanceled;
+    public UnityEvent OnTakeDamage;
 
     // Save System
     private string saveFilePath;
@@ -90,6 +91,11 @@ public class Player : MonoBehaviour
         {
             OnShootCanceled = new UnityEvent();
         }
+        if (OnTakeDamage == null)
+        {
+            OnTakeDamage = new UnityEvent();
+        }
+
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
     }
@@ -172,6 +178,10 @@ public class Player : MonoBehaviour
 
         rb.MovePosition(newPosition);
     }
+    public void SetInvincibility(bool value)
+    {
+        isInvincible = value;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -253,6 +263,9 @@ public class Player : MonoBehaviour
 
         int finalDamage = Mathf.Max(0, damage - stat.defense);
         currentHP -= finalDamage;
+
+        OnTakeDamage.Invoke();
+
         StartCoroutine(InvincibilityCoroutine());
 
         if (currentHP <= 0)

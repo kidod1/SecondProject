@@ -1,0 +1,91 @@
+using System.Collections;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Abilities/Barrier")]
+public class Barrier : Ability
+{
+    public GameObject shieldPrefab; // 배리어 표시를 위한 프리팹
+    private GameObject activeShield;
+    private Player playerInstance;
+    private Coroutine cooldownCoroutine;
+
+    private float[] cooldownTimes = { 30f, 25f, 20f, 15f, 10f }; // 각 레벨별 쿨타임
+
+    public override void Apply(Player player)
+    {
+        playerInstance = player;
+
+        if (currentLevel == 0)
+        {
+            player.OnTakeDamage.AddListener(ActivateBarrier);
+            ActivateBarrierVisual();
+        }
+
+        currentLevel++;
+    }
+
+    protected override int GetNextLevelIncrease()
+    {
+        return currentLevel + 1;
+    }
+
+    private void ActivateBarrierVisual()
+    {
+        if (activeShield == null)
+        {
+            activeShield = Instantiate(shieldPrefab, playerInstance.transform);
+            activeShield.transform.SetParent(playerInstance.transform);
+        }
+        else
+        {
+            activeShield.SetActive(true);
+        }
+    }
+
+    private void DeactivateBarrierVisual()
+    {
+        if (activeShield != null)
+        {
+            activeShield.SetActive(false);
+        }
+    }
+
+    private void ActivateBarrier()
+    {
+        if (cooldownCoroutine == null)
+        {
+            playerInstance.SetInvincibility(true); // 플레이어를 무적 상태로 설정
+            DeactivateBarrierVisual(); // 배리어 비주얼 비활성화
+
+            cooldownCoroutine = playerInstance.StartCoroutine(BarrierCooldown());
+        }
+    }
+
+    private IEnumerator BarrierCooldown()
+    {
+        yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
+
+        playerInstance.SetInvincibility(false); // 무적 상태 해제
+        ActivateBarrierVisual(); // 배리어 비주얼 활성화
+        cooldownCoroutine = null; // 쿨타임 코루틴 초기화
+    }
+
+    public override void Upgrade()
+    {
+        Apply(playerInstance);
+    }
+
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+
+        if (cooldownCoroutine != null)
+        {
+            playerInstance.StopCoroutine(cooldownCoroutine);
+            cooldownCoroutine = null;
+        }
+
+        playerInstance.SetInvincibility(false);
+        DeactivateBarrierVisual();
+    }
+}
