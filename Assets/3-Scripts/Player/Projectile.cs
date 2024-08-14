@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
-            Debug.LogError("Rigibody2d가 없습니다.");
+            Debug.LogError("Rigidbody2D가 없습니다.");
         }
     }
 
@@ -21,7 +21,8 @@ public class Projectile : MonoBehaviour
     {
         if (stat != null)
         {
-            Invoke(nameof(Deactivate), stat.projectileRange);
+            float lifetime = stat.projectileRange / stat.projectileSpeed; // 사거리에서 속도를 나누어 수명 계산
+            Invoke(nameof(Deactivate), lifetime);
             rb.velocity = direction * stat.projectileSpeed;
         }
     }
