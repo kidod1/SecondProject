@@ -428,10 +428,9 @@ public class Player : MonoBehaviour
     {
         if (category == "Null") return;
 
-        if (synergyAbilityAcquired[category]) return;
-
         int totalLevel = 0;
 
+        // 카테고리의 총 레벨을 계산
         foreach (var ability in abilities)
         {
             if (ability.category == category)
@@ -440,24 +439,33 @@ public class Player : MonoBehaviour
             }
         }
 
+        Debug.Log($"Category: {category}, Total Level: {totalLevel}");
+
+        // 15레벨 시너지 능력 할당
         if (totalLevel >= 15 && synergyLevels[category] < 15)
         {
             AssignSynergyAbility(category, 15);
-            synergyLevels[category] = 15;
+            synergyLevels[category] = 15; // 15레벨 시너지 능력 획득 기록
         }
+        // 10레벨 시너지 능력 할당
         else if (totalLevel >= 10 && synergyLevels[category] < 10)
         {
             AssignSynergyAbility(category, 10);
-            synergyLevels[category] = 10;
+            synergyLevels[category] = 10; // 10레벨 시너지 능력 획득 기록
         }
+        // 5레벨 시너지 능력 할당
         else if (totalLevel >= 5 && synergyLevels[category] < 5)
         {
             AssignSynergyAbility(category, 5);
-            synergyLevels[category] = 5;
+            synergyLevels[category] = 5; // 5레벨 시너지 능력 획득 기록
         }
     }
+
+
+
     private void AssignSynergyAbility(string category, int level)
     {
+        Debug.Log($"Assigning Synergy Ability for {category} at level {level}");
         string synergyAbilityName = $"{category}Synergy{level}";
         SynergyAbility synergyAbility = Resources.Load<SynergyAbility>($"SynergyAbilities/{synergyAbilityName}");
         if (synergyAbility != null)
@@ -465,6 +473,39 @@ public class Player : MonoBehaviour
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
             StartCoroutine(ShowSynergyAbilityWithDelay(synergyAbility, 0.5f));
             synergyAbilityAcquired[category] = true;
+            ApplyAuraEffect(category, level);
+        }
+        else
+        {
+            Debug.LogError($"Failed to load Synergy Ability: {synergyAbilityName}");
+        }
+    }
+
+    private void ApplyAuraEffect(string category, int level)
+    {
+        // 기존 오오라 제거
+        RemoveCurrentAura();
+
+        // 새로운 오오라 이펙트 로드
+        string auraEffectPath = $"Effects/{category}Synergy{level}";
+        GameObject auraEffectPrefab = Resources.Load<GameObject>(auraEffectPath);
+
+        if (auraEffectPrefab != null)
+        {
+            // 오오라 이펙트 생성 및 플레이어에게 붙이기
+            GameObject auraEffect = Instantiate(auraEffectPrefab, transform);
+            auraEffect.name = $"{category}SynergyAura"; // 생성된 오오라 이름 지정
+        }
+    }
+    private void RemoveCurrentAura()
+    {
+        // 기존에 붙어있던 오오라 이펙트 제거
+        foreach (Transform child in transform)
+        {
+            if (child.name.Contains("SynergyAura"))
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
     private IEnumerator ShowSynergyAbilityWithDelay(SynergyAbility synergyAbility, float delay)
