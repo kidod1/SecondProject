@@ -112,32 +112,15 @@ public class Player : MonoBehaviour
         ResetPlayerData();
         UpdateCurrencyUI();
 
+        InitializeSynergyDictionaries(); // 시너지 딕셔너리 초기화
 
-        synergyAbilityAcquired.Add("Lust", false);
-        synergyAbilityAcquired.Add("Envy", false);
-        synergyAbilityAcquired.Add("Sloth", false);
-        synergyAbilityAcquired.Add("Gluttony", false);
-        synergyAbilityAcquired.Add("Greed", false);
-        synergyAbilityAcquired.Add("Wrath", false);
-        synergyAbilityAcquired.Add("Pride", false);
-        synergyAbilityAcquired.Add("Null", false);
-
-        synergyLevels.Add("Lust", 0);
-        synergyLevels.Add("Envy", 0);
-        synergyLevels.Add("Sloth", 0);
-        synergyLevels.Add("Gluttony", 0);
-        synergyLevels.Add("Greed", 0);
-        synergyLevels.Add("Wrath", 0);
-        synergyLevels.Add("Pride", 0);
-        synergyLevels.Add("Null", 0);
-
-        // MapBoundary 클래스 참조 설정
         mapBoundary = FindObjectOfType<MapBoundary>();
         if (mapBoundary == null)
         {
             Debug.LogError("MapBoundary 오브젝트를 찾을 수 없습니다.");
         }
     }
+
     private void OnEnable()
     {
         playerInput.Player.Enable();
@@ -395,7 +378,7 @@ public class Player : MonoBehaviour
 
     private void UpdateExperienceUI()
     {
-        levelText.text = "Level: " + level;
+        levelText.text = "Lv. " + level;
         experienceText.text = "EXP: " + experience + " / " + stat.experienceThresholds[level];
 
         float expRatio = (float)experience / stat.experienceThresholds[level];
@@ -424,9 +407,44 @@ public class Player : MonoBehaviour
         CheckForSynergy(ability.category);
     }
 
+    // 시너지 딕셔너리 초기화 메서드
+    private void InitializeSynergyDictionaries()
+    {
+        // 시너지 능력 초기화
+        synergyAbilityAcquired = new Dictionary<string, bool>
+    {
+        { "Lust", false },
+        { "Envy", false },
+        { "Sloth", false },
+        { "Gluttony", false },
+        { "Greed", false },
+        { "Wrath", false },
+        { "Pride", false },
+        { "Null", false }
+    };
+
+        // 시너지 레벨 초기화
+        synergyLevels = new Dictionary<string, int>
+    {
+        { "Lust", 0 },
+        { "Envy", 0 },
+        { "Sloth", 0 },
+        { "Gluttony", 0 },
+        { "Greed", 0 },
+        { "Wrath", 0 },
+        { "Pride", 0 },
+        { "Null", 0 }
+    };
+    }
+
     private void CheckForSynergy(string category)
     {
-        if (category == "Null") return;
+        // 딕셔너리에서 키 존재 여부 확인
+        if (!synergyAbilityAcquired.ContainsKey(category) || !synergyLevels.ContainsKey(category))
+        {
+            Debug.LogError($"Category '{category}' not found in synergyAbilityAcquired or synergyLevels dictionary");
+            return;
+        }
 
         int totalLevel = 0;
 
@@ -463,6 +481,7 @@ public class Player : MonoBehaviour
 
 
 
+
     private void AssignSynergyAbility(string category, int level)
     {
         Debug.Log($"Assigning Synergy Ability for {category} at level {level}");
@@ -472,7 +491,6 @@ public class Player : MonoBehaviour
         {
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
             StartCoroutine(ShowSynergyAbilityWithDelay(synergyAbility, 0.5f));
-            synergyAbilityAcquired[category] = true;
             ApplyAuraEffect(category, level);
         }
         else
@@ -540,7 +558,14 @@ public class Player : MonoBehaviour
 
     private void UpdateCurrencyUI()
     {
-        currencyText.text = "현재 재화: " + currentCurrency;
+        if (currencyText != null)
+        {
+            currencyText.text = "현재 재화: " + currentCurrency;
+        }
+        else
+        {
+            Debug.LogWarning("currencyText is not assigned in the inspector.");
+        }
     }
 
     public void AddCurrency(int amount)
@@ -580,7 +605,12 @@ public class Player : MonoBehaviour
             stat.projectileRange = data.projectileRange;
             stat.knockbackSpeed = data.knockbackSpeed;
             currentCurrency = data.currency;
-            UpdateCurrencyUI();
+
+            UpdateCurrencyUI(); // LoadPlayerData 호출 후 UI 업데이트
+        }
+        else
+        {
+            Debug.LogWarning("Save file not found, using default player data.");
         }
     }
 
