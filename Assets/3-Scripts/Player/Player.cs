@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -23,7 +24,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Scrollbar experienceScrollbar;
     [SerializeField]
-    private Slider healthBar;
+    private RectTransform maskRectTransform;
+    [SerializeField]
+    private Image healthFillImage;
     [SerializeField]
     private TMP_Text healthText;
     [SerializeField]
@@ -110,7 +113,7 @@ public class Player : MonoBehaviour
         LoadPlayerData();
         UpdateHealthUI();
         ResetPlayerData();
-        UpdateCurrencyUI();
+        //UpdateCurrencyUI();
 
         InitializeSynergyDictionaries(); // 시너지 딕셔너리 초기화
 
@@ -143,7 +146,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isShooting && Time.time >= lastShootTime + stat.ShotCooldown)
+        if (isShooting && Time.time >= lastShootTime + stat.shotCooldown)
         {
             Shoot(shootDirection, stat.projectileType);
             lastShootTime = Time.time;
@@ -198,7 +201,7 @@ public class Player : MonoBehaviour
                 shootDirection = newDirection;
                 isShooting = true;
 
-                if (Time.time >= lastShootTime + stat.ShotCooldown)
+                if (Time.time >= lastShootTime + stat.shotCooldown)
                 {
                     Shoot(shootDirection, stat.projectileType);
                     lastShootTime = Time.time;
@@ -548,12 +551,19 @@ public class Player : MonoBehaviour
         ResetAbilities();
         UpdateExperienceUI();
     }
-
     private void UpdateHealthUI()
     {
-        healthBar.maxValue = stat.maxHP;
-        healthBar.value = currentHP;
-        healthText.text = $"{currentHP} / {stat.maxHP}";
+        // HP 비율 계산
+        float healthPercentage = (float)currentHP / stat.maxHP;
+
+        // Right 패딩을 HP 비율에 맞게 조정 (체력 비율에 따라 240씩 증가하도록)
+        float rightPadding = (1 - healthPercentage) * 240 * 4; // 240으로 수정
+
+        // RectMask2D가 적용된 부모 오브젝트의 offsetMax 값 조정
+        maskRectTransform.offsetMax = new Vector2(-rightPadding, maskRectTransform.offsetMax.y);
+
+        // HP 비율 텍스트 업데이트
+        healthText.text = $"{healthPercentage * 100:F0}%"; // 백분율로 표시
     }
 
     private void UpdateCurrencyUI()

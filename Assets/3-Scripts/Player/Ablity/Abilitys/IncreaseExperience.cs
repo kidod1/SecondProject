@@ -11,7 +11,7 @@ public class IncreaseExperience : Ability
     {
         if (currentLevel > 0)
         {
-            player.stat.experienceMultiplier += experienceMultipliers[currentLevel - 1];
+            player.stat.experienceMultiplier += experienceMultipliers[currentLevel];
         }
     }
 
