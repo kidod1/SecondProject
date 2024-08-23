@@ -39,19 +39,32 @@ public abstract class Monster : MonoBehaviour
         currentHP = monsterBaseStat.maxHP;
         meshRenderer = GetComponent<MeshRenderer>();
         player = FindObjectOfType<Player>();
+
         if (player == null)
         {
-            Debug.LogError("플레이어 오브젝트를 찾을 수 없습니다.");
+            Debug.LogError("플레이어 오브젝트를 찾을 수 없습니다. Update 메서드에서 재시도합니다.");
         }
-        InitializeStates();
+        else
+        {
+            InitializeStates();
+        }
     }
-
-    protected abstract void InitializeStates();
 
     private void Update()
     {
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+            if (player != null)
+            {
+                InitializeStates();
+            }
+        }
+
         currentState?.UpdateState();
     }
+
+    protected abstract void InitializeStates();
 
     public void TransitionToState(IMonsterState newState)
     {
@@ -67,6 +80,13 @@ public abstract class Monster : MonoBehaviour
 
     public bool IsPlayerInRange(float range)
     {
+        // player가 null인지 확인하여 예외 방지
+        if (player == null)
+        {
+            Debug.LogWarning("Player가 설정되지 않았습니다. IsPlayerInRange 호출이 무시됩니다.");
+            return false;
+        }
+
         return Vector2.Distance(transform.position, player.transform.position) <= range;
     }
 
@@ -108,24 +128,25 @@ public abstract class Monster : MonoBehaviour
             Destroy(deathEffect, deathEffectDuration);
         }
 
-        // 경험치 지급
-        player.GainExperience(monsterBaseStat.experiencePoints);
-
-        player.stat.currentCurrency += monsterBaseStat.rewardCurrency;
+        // player가 null인지 확인하여 예외 방지
+        if (player != null)
+        {
+            player.GainExperience(monsterBaseStat.experiencePoints);
+            player.stat.currentCurrency += monsterBaseStat.rewardCurrency;
+        }
 
         PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
         if (uiManager != null)
         {
-            uiManager.UpdateCurrencyUI(player.stat.currentCurrency);
+            uiManager.UpdateCurrencyUI(player?.stat.currentCurrency ?? 0);
         }
         else
         {
             Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
         }
 
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
-
 
     private IEnumerator InvincibilityCoroutine()
     {

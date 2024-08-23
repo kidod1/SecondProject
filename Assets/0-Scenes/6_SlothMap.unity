@@ -224,23 +224,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3872035533336436121, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: levelText
-      value: 
-      objectReference: {fileID: 19760169}
-    - target: {fileID: 3872035533336436121, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+    - target: {fileID: 3395882441001531289, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: healthText
       value: 
       objectReference: {fileID: 1731704962}
-    - target: {fileID: 3872035533336436121, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+    - target: {fileID: 3395882441001531289, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+      propertyPath: experienceText
+      value: 
+      objectReference: {fileID: 19760169}
+    - target: {fileID: 3395882441001531289, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: healthFillImage
       value: 
       objectReference: {fileID: 1724303951}
-    - target: {fileID: 3872035533336436121, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+    - target: {fileID: 3395882441001531289, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: maskRectTransform
       value: 
       objectReference: {fileID: 1067253156}
-    - target: {fileID: 3872035533336436121, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+    - target: {fileID: 3395882441001531289, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: experienceScrollbar
       value: 
       objectReference: {fileID: 528843257}
@@ -253,17 +253,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
---- !u!114 &105943821 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 307576185612765331, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-  m_PrefabInstance: {fileID: 105943820}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4072145f44b158941b35a640da93f1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &168852471
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,17 +470,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &722492379 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
-  m_PrefabInstance: {fileID: 4970072152507597016}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed2d5a0e46f7d5748b6261d6d17ca628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &756143997 stripped
@@ -736,9 +714,9 @@ MonoBehaviour:
   waves:
   - spawnInfos:
     - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
-      count: 15
+      count: 1
     - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
-      count: 15
+      count: 1
     spawnInterval: 1
   spawnPoints:
   - {fileID: 1082433272}
@@ -793,28 +771,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aeb9881d1dad65742a26a6fd89337762, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1290392411 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3872035533336436121, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-  m_PrefabInstance: {fileID: 105943820}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f534ec3d2b749ff4a9bd56515cfafb60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1290392417 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7067304648938294859, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-  m_PrefabInstance: {fileID: 105943820}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a08cad02d022b0f4e89e29f61305109b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1423564946 stripped
@@ -1372,6 +1328,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1786168374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8145084222253494779, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+  m_PrefabInstance: {fileID: 105943820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e15c0c91050914dafffdab0bd96704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1786168375 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3395882441001531289, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+  m_PrefabInstance: {fileID: 105943820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7eec5adb4b9be42b0b1200867b5dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1786168378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1733992182837179825, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+  m_PrefabInstance: {fileID: 105943820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dfdf959d4c8dc48a7d99a011269c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1808819896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,23 +1983,19 @@ PrefabInstance:
     - target: {fileID: 2179610003863932489, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 105943821}
+      objectReference: {fileID: 1786168378}
     - target: {fileID: 2179610003863932489, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: uiManager
       value: 
-      objectReference: {fileID: 1290392411}
+      objectReference: {fileID: 1786168375}
     - target: {fileID: 2179610003863932489, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: abilityManager
       value: 
-      objectReference: {fileID: 1290392417}
-    - target: {fileID: 2179610003863932489, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
-      propertyPath: abilityUIManager
-      value: 
-      objectReference: {fileID: 722492379}
+      objectReference: {fileID: 1786168374}
     - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 105943821}
+      objectReference: {fileID: 1786168378}
     - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: rerollButton
       value: 
@@ -2019,10 +2004,6 @@ PrefabInstance:
       propertyPath: synergyAbilityIcon
       value: 
       objectReference: {fileID: 1539684974}
-    - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
-      propertyPath: synergyAbilityName
-      value: 
-      objectReference: {fileID: 89400377}
     - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: synergyAbilityPanel
       value: 
@@ -2039,14 +2020,6 @@ PrefabInstance:
       propertyPath: synergyAbilityNameText
       value: 
       objectReference: {fileID: 1180272211}
-    - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
-      propertyPath: synergyAbilityApplyButton
-      value: 
-      objectReference: {fileID: 1676986629}
-    - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
-      propertyPath: synergyAbilityDescription
-      value: 
-      objectReference: {fileID: 1720567029}
     - target: {fileID: 5884513831875480101, guid: 6d746f6a8a81c4240a3fa9acb7c9e98f, type: 3}
       propertyPath: abilityIcons.Array.data[0]
       value: 

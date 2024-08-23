@@ -35,7 +35,14 @@ public class AbilityManager : MonoBehaviour
 
     private void OnEnable()
     {
-        player.OnLevelUp.AddListener(ShowAbilitySelection);
+        if (player != null)
+        {
+            player.OnLevelUp.AddListener(ShowAbilitySelection);
+        }
+        else
+        {
+            Debug.LogError("Player is not assigned in AbilityManager.");
+        }
     }
 
     private void OnDisable()

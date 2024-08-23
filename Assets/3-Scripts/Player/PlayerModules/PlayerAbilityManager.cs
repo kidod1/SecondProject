@@ -5,7 +5,7 @@ public class PlayerAbilityManager : MonoBehaviour
 {
     private Player player;
 
-    private List<Ability> abilities = new List<Ability>();
+    public List<Ability> abilities = new List<Ability>();
     private List<Ability> availableAbilities = new List<Ability>();
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
@@ -16,6 +16,7 @@ public class PlayerAbilityManager : MonoBehaviour
 
         LoadAvailableAbilities();
         InitializeSynergyDictionaries();
+        ResetAllAbilities();  // 게임 시작 시 모든 능력 초기화
     }
 
     private void LoadAvailableAbilities()
@@ -55,6 +56,8 @@ public class PlayerAbilityManager : MonoBehaviour
 
         CheckForSynergy(ability.category);
     }
+
+
 
     private void InitializeSynergyDictionaries()
     {
@@ -101,6 +104,9 @@ public class PlayerAbilityManager : MonoBehaviour
             }
         }
 
+        // 디버그 메시지 출력: 카테고리 내 능력 레벨 총합 표시
+        Debug.Log($"Category: {category}, Total Level: {totalLevel}");
+
         if (totalLevel >= 15 && synergyLevels[category] < 15)
         {
             AssignSynergyAbility(category, 15);
@@ -118,6 +124,7 @@ public class PlayerAbilityManager : MonoBehaviour
         }
     }
 
+
     private void AssignSynergyAbility(string category, int level)
     {
         string synergyAbilityName = $"{category}Synergy{level}";
@@ -125,7 +132,17 @@ public class PlayerAbilityManager : MonoBehaviour
         if (synergyAbility != null)
         {
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
-            ApplySynergyAbility(synergyAbility);
+
+            // Synergy 패널을 표시하여 사용자가 선택할 수 있게 함
+            AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
+            if (abilityManager != null)
+            {
+                abilityManager.ShowSynergyAbility(synergyAbility);
+            }
+            else
+            {
+                Debug.LogError("AbilityManager not found. Cannot show synergy ability panel.");
+            }
         }
         else
         {
@@ -136,5 +153,25 @@ public class PlayerAbilityManager : MonoBehaviour
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
         synergyAbility.Apply(player);
+    }
+
+    public void ResetAllAbilities()
+    {
+        foreach (var ability in availableAbilities)
+        {
+            ability.ResetLevel();
+        }
+        abilities.Clear();
+    }
+    public T GetAbilityOfType<T>() where T : Ability
+    {
+        foreach (var ability in abilities)
+        {
+            if (ability is T)
+            {
+                return ability as T;
+            }
+        }
+        return null;
     }
 }

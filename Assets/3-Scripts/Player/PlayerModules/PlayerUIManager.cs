@@ -57,6 +57,11 @@ public class PlayerUIManager : MonoBehaviour
 
     public void UpdateExperienceUI()
     {
+        if (experienceScrollbar == null || experienceText == null || levelText == null)
+        {
+            Debug.LogError("Experience UI elements are not assigned.");
+            return;
+        }
         levelText.text = "Lv. " + player.stat.currentLevel;
         experienceText.text = "EXP: " + player.stat.currentExperience + " / " + player.stat.experienceThresholds[player.stat.currentLevel];
 

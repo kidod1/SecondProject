@@ -14,6 +14,31 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Null 체크 추가
+        if (player == null)
+        {
+            Debug.LogError("Player is not assigned in GameManager.");
+            return;
+        }
+        if (uiManager == null)
+        {
+            Debug.LogError("PlayerUIManager is not assigned in GameManager.");
+            return;
+        }
+        if (abilityManager == null)
+        {
+            Debug.LogError("PlayerAbilityManager is not assigned in GameManager.");
+            return;
+        }
+        if (abilityUIManager == null)
+        {
+            Debug.LogError("AbilityManager is not assigned in GameManager.");
+            return;
+        }
+
+        // 능력 초기화
+        abilityManager.ResetAllAbilities(); // Start 시 초기화
+
         // 플레이어 데이터 초기화 및 UI 업데이트
         player.LoadPlayerData(); // 플레이어 데이터 로드
         abilityManager.Initialize(player); // 능력 매니저 초기화

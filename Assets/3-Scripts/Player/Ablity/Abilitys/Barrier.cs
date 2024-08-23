@@ -4,13 +4,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilities/Barrier")]
 public class Barrier : Ability
 {
-    public GameObject shieldPrefab; // 배리어 표시를 위한 프리팹
+    public GameObject shieldPrefab;
+    public GameObject shieldDeactivateEffectPrefab;
+
     private GameObject activeShield;
     private Player playerInstance;
     private Coroutine cooldownCoroutine;
+    private bool isShieldActive;
 
     [SerializeField]
-    private float[] cooldownTimes = { 30f, 25f, 20f, 15f, 10f }; // 각 레벨별 쿨타임
+    private float[] cooldownTimes = { 30f, 25f, 20f, 15f, 10f };
 
     public override void Apply(Player player)
     {
@@ -18,7 +21,6 @@ public class Barrier : Ability
 
         if (currentLevel == 0)
         {
-            player.OnTakeDamage.AddListener(ActivateBarrier);
             ActivateBarrierVisual();
         }
     }
@@ -28,56 +30,61 @@ public class Barrier : Ability
         return currentLevel < maxLevel ? currentLevel + 1 : 0;
     }
 
-    private void ActivateBarrierVisual()
+    public void ActivateBarrierVisual()
     {
+        isShieldActive = true;
+
         if (shieldPrefab != null)
         {
-            if (activeShield == null)
+            if (activeShield != null)
             {
-                activeShield = Instantiate(shieldPrefab, playerInstance.transform);
-                activeShield.transform.SetParent(playerInstance.transform);
+                Destroy(activeShield);
             }
-            else
-            {
-                activeShield.SetActive(true);
-            }
+
+            activeShield = Instantiate(shieldPrefab, playerInstance.transform);
+            activeShield.transform.SetParent(playerInstance.transform);
         }
     }
 
-    private void DeactivateBarrierVisual()
+    public void DeactivateBarrierVisual()
     {
+        isShieldActive = false;
+
         if (activeShield != null)
         {
-            activeShield.SetActive(false);
+            Destroy(activeShield);
+
+            if (shieldDeactivateEffectPrefab != null)
+            {
+                Instantiate(shieldDeactivateEffectPrefab, playerInstance.transform.position, Quaternion.identity);
+            }
         }
     }
 
-    private void ActivateBarrier()
+    public bool IsShieldActive()
     {
-        if (cooldownCoroutine == null && playerInstance != null)
-        {
-            playerInstance.SetInvincibility(true); // 플레이어를 무적 상태로 설정
-            DeactivateBarrierVisual(); // 배리어 비주얼 비활성화
+        return isShieldActive;
+    }
 
+    public void StartCooldown()
+    {
+        if (cooldownCoroutine == null)
+        {
             cooldownCoroutine = playerInstance.StartCoroutine(BarrierCooldown());
         }
     }
 
     private IEnumerator BarrierCooldown()
     {
+        // 쿨타임 대기
         if (currentLevel - 1 >= 0 && currentLevel - 1 < cooldownTimes.Length)
         {
             yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
         }
-        else
-        {
-            Debug.LogError("Current level is out of bounds for cooldownTimes array.");
-            yield break;
-        }
 
+        // 쿨타임이 끝난 후 Barrier 다시 활성화
         if (playerInstance != null)
         {
-            playerInstance.SetInvincibility(false);
             ActivateBarrierVisual();
         }
 

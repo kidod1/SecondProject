@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 2740448175715484578}
   - component: {fileID: 8087105329610923461}
   - component: {fileID: 8172971083334974930}
-  - component: {fileID: 8666610384366362015}
-  - component: {fileID: 307576185612765331}
   - component: {fileID: 5084547630897805894}
-  - component: {fileID: 3872035533336436121}
-  - component: {fileID: 7067304648938294859}
+  - component: {fileID: 1733992182837179825}
+  - component: {fileID: 3395882441001531289}
+  - component: {fileID: 8145084222253494779}
+  - component: {fileID: 800454626543956108}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -214,53 +214,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8666610384366362015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980192060102233517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca0f88a5808ab44d90689d892751b69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectPrefabs:
-  - {fileID: 603568951414228764, guid: e9efe6c6a9c66cc41bbe05bfc1c18979, type: 3}
-  - {fileID: 603568951414228764, guid: 94c48a47f30fbd340922582d6f5407d8, type: 3}
-  poolSize: 10
-  poolParent: {fileID: 0}
---- !u!114 &307576185612765331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980192060102233517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4072145f44b158941b35a640da93f1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}
-  objectPool: {fileID: 8666610384366362015}
-  isShooting: 0
-  OnShoot:
-    m_PersistentCalls:
-      m_Calls: []
-  OnLevelUp:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMonsterEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  OnShootCanceled:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5084547630897805894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,7 +230,7 @@ MonoBehaviour:
   npcLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &3872035533336436121
+--- !u!114 &1733992182837179825
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -286,7 +239,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 7980192060102233517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f534ec3d2b749ff4a9bd56515cfafb60, type: 3}
+  m_Script: {fileID: 11500000, guid: 28dfdf959d4c8dc48a7d99a011269c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}
+  objectPool: {fileID: 800454626543956108}
+  abilityManager: {fileID: 8145084222253494779}
+  barrierAbility: {fileID: 11400000, guid: 4d43d418a14cc9b47a713a1e2655fb46, type: 2}
+  isShooting: 0
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLevelUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMonsterEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShootCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3395882441001531289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980192060102233517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7eec5adb4b9be42b0b1200867b5dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   experienceText: {fileID: 0}
@@ -296,7 +284,8 @@ MonoBehaviour:
   healthText: {fileID: 0}
   healthFillImage: {fileID: 0}
   currencyText: {fileID: 0}
---- !u!114 &7067304648938294859
+  deathPanel: {fileID: 0}
+--- !u!114 &8145084222253494779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,6 +294,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7980192060102233517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a08cad02d022b0f4e89e29f61305109b, type: 3}
+  m_Script: {fileID: 11500000, guid: a0e15c0c91050914dafffdab0bd96704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilities: []
+--- !u!114 &800454626543956108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980192060102233517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b435da483d5847bf4481a3cef9845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectPrefabs:
+  - {fileID: 603568951414228764, guid: e9efe6c6a9c66cc41bbe05bfc1c18979, type: 3}
+  - {fileID: 603568951414228764, guid: 94c48a47f30fbd340922582d6f5407d8, type: 3}
+  poolSize: 10
+  poolParent: {fileID: 0}

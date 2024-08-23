@@ -42,12 +42,18 @@ public class TooMuchWork : Ability
             case 3:
                 baseTimeToMaxSpeed = 3.0f;
                 break;
+            case 4:
+                baseTimeToMaxSpeed = 3.0f;
+                break;
+            case 5:
+                baseTimeToMaxSpeed = 3.0f;
+                break;
         }
     }
 
     protected override int GetNextLevelIncrease()
     {
-        return currentLevel < maxLevel ? currentLevel + 1 : 0;
+        return 0;
     }
 
     private void HandleShooting(Vector2 direction, int prefabIndex)

@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 {
     public PlayerData stat;
     public ObjectPool objectPool;
+    public PlayerAbilityManager abilityManager;
+    public Barrier barrierAbility;
+
     private MapBoundary mapBoundary;
 
     // Movement 관련 변수
@@ -116,21 +119,32 @@ public class Player : MonoBehaviour
     {
         isInvincible = value;
     }
-
     public void TakeDamage(int damage)
     {
-        if (isInvincible) return;
+        GameObject activeBarrier = GameObject.FindGameObjectWithTag("Barrier");
 
-        stat.TakeDamage(damage);
-        OnTakeDamage.Invoke();
-
-        StartCoroutine(InvincibilityCoroutine());
-
-        if (stat.currentHP <= 0)
+        if (activeBarrier != null)
         {
-            Die();
+            Destroy(activeBarrier);
+            barrierAbility.DeactivateBarrierVisual();
+            barrierAbility.StartCooldown();
+            return;
+        }
+
+        if (!isInvincible)
+        {
+            stat.TakeDamage(damage);
+            OnTakeDamage.Invoke();
+
+            StartCoroutine(InvincibilityCoroutine());
+
+            if (stat.currentHP <= 0)
+            {
+                Die();
+            }
         }
     }
+
 
     private IEnumerator InvincibilityCoroutine()
     {
@@ -228,12 +242,31 @@ public class Player : MonoBehaviour
 
     public void Shoot(Vector2 direction, int prefabIndex)
     {
+        if (objectPool == null)
+        {
+            Debug.LogError("objectPool is not assigned.");
+            return;
+        }
+
         GameObject projectile = objectPool.GetObject(prefabIndex);
+        if (projectile == null)
+        {
+            Debug.LogError("Projectile could not be instantiated.");
+            return;
+        }
+
         projectile.transform.position = transform.position;
 
         Projectile projScript = projectile.GetComponent<Projectile>();
-        projScript.Initialize(stat);
-        projScript.SetDirection(direction);
+        if (projScript != null)
+        {
+            projScript.Initialize(stat);
+            projScript.SetDirection(direction);
+        }
+        else
+        {
+            Debug.LogError("Projectile does not have a Projectile component.");
+        }
 
         OnShoot.Invoke(direction, prefabIndex);
     }
