@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PlayerData : ScriptableObject
 {
+    // Default stats
     public float defaultPlayerSpeed = 5;
     public int defaultPlayerDamage = 5;
     public float defaultProjectileSpeed = 10;
@@ -13,6 +14,7 @@ public class PlayerData : ScriptableObject
     public float defalutShotCooldown = 0.5f;
     public int defalutDefense = 0;
 
+    // Current stats
     public float currentPlayerSpeed;
     public int currentPlayerDamage;
     public float currentProjectileSpeed;
@@ -33,8 +35,6 @@ public class PlayerData : ScriptableObject
     public float experienceMultiplier;
 
     public float defalutExperienceMultiplier = 1.0f;
-
-    // 플레이어의 현재 레벨
     public int currentLevel;
 
     public void InitializeStats()
@@ -67,22 +67,25 @@ public class PlayerData : ScriptableObject
             currentHP = currentMaxHP;
         }
     }
-    public void GainExperience(int amount)
+
+    public bool GainExperience(int amount)
     {
-        // 경험치 획득량 배수 적용
         int adjustedAmount = Mathf.RoundToInt(amount * experienceMultiplier);
         currentExperience += adjustedAmount;
-
-        // 레벨업 체크
-        CheckLevelUp();
+        return CheckLevelUp();
     }
 
-    private void CheckLevelUp()
+    private bool CheckLevelUp()
     {
+        bool leveledUp = false;
+
         while (currentLevel < experienceThresholds.Length && currentExperience >= experienceThresholds[currentLevel])
         {
             currentExperience -= experienceThresholds[currentLevel];
             currentLevel++;
+            leveledUp = true;
         }
+
+        return leveledUp;
     }
 }

@@ -15,11 +15,11 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text healthText;
     [SerializeField]
-    private Image healthFillImage;  // HP 이미지 필드 추가
+    private Image healthFillImage;
     [SerializeField]
     private TMP_Text currencyText;
     [SerializeField]
-    private GameObject deathPanel;  // 사망 시 표시할 패널
+    private GameObject deathPanel;
 
     private int maxHP;
     private Player player;
@@ -29,7 +29,7 @@ public class PlayerUIManager : MonoBehaviour
         this.player = player;
         player.OnTakeDamage.AddListener(UpdateHealthUI);
         player.OnLevelUp.AddListener(UpdateExperienceUI);
-        player.OnPlayerDeath.AddListener(OnPlayerDeath);  // 사망 이벤트 리스너 추가
+        player.OnPlayerDeath.AddListener(OnPlayerDeath);
         UpdateUI();
     }
 
@@ -82,10 +82,10 @@ public class PlayerUIManager : MonoBehaviour
 
         /* if (deathPanel != null)
          {
-             deathPanel.SetActive(true); // 사망 패널 활성화
+             deathPanel.SetActive(true);
          }
 
-         // 사망 시 추가 UI 업데이트 등을 여기에 추가할 수 있습니다.\
+         // 사망시 UI 업로드를 담당할 메서드. 미완
         */
     }
 }

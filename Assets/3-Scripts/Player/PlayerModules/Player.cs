@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     public UnityEvent<Collider2D> OnMonsterEnter;
     public UnityEvent OnShootCanceled;
     public UnityEvent OnTakeDamage;
-    public UnityEvent OnPlayerDeath; // 사망 이벤트 추가
+    public UnityEvent OnPlayerDeath;
 
     // Save System
     private string saveFilePath;
@@ -49,21 +49,19 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerInput = new PlayerInput();
 
-        // 이벤트 초기화
         OnShoot ??= new UnityEvent<Vector2, int>();
         OnMonsterEnter ??= new UnityEvent<Collider2D>();
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
-        OnPlayerDeath ??= new UnityEvent(); // 사망 이벤트 초기화
+        OnPlayerDeath ??= new UnityEvent();
 
-        // Save 파일 경로 설정
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
     }
 
     private void Start()
     {
         InitializePlayer();
-        SavePlayerData(); // 게임 최초 실행시 초기화 이후 세이브.
+        SavePlayerData();
     }
 
     private void OnEnable()
@@ -152,12 +150,12 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        SaveCurrencyOnly(); // 죽을 때 돈만 저장
+        SaveCurrencyOnly();
         Debug.Log("플레이어 사망");
 
-        OnPlayerDeath.Invoke(); // 사망 이벤트 호출
+        OnPlayerDeath.Invoke();
 
-        // 사망 후 플레이어 초기화 등 추가 동작을 여기에 넣을 수 있습니다.
+        // 사망 이후 동작을 추가할 메서드,
     }
 
     public void Heal(int amount)
@@ -172,12 +170,15 @@ public class Player : MonoBehaviour
 
     public void GainExperience(int amount)
     {
-        stat.GainExperience(amount);
+        if (stat.GainExperience(amount))
+        {
+            OnLevelUp?.Invoke();  // 레벨업 시 이벤트 트리거
+        }
     }
 
     private void InitializePlayer()
     {
-        stat.InitializeStats(); // 플레이어 데이터를 초기화
+        stat.InitializeStats();
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
