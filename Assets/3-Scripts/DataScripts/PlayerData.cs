@@ -13,17 +13,18 @@ public class PlayerData : ScriptableObject
     public float defalutShotCooldown = 0.5f;
     public int defalutDefense = 0;
 
-    public float playerSpeed;
-    public int playerDamage;
-    public float knockbackDuration;
-    public float knockbackSpeed;
-    public float projectileSpeed;
-    public float projectileRange;
-    public int projectileType;
-    public int maxHP;
+    public float currentPlayerSpeed;
+    public int currentPlayerDamage;
+    public float currentProjectileSpeed;
+    public float currentProjectileRange;
+    public int currentProjectileType;
+    public int currentMaxHP;
     public int currentShield;
-    public float shotCooldown;
-    public int defense;
+    public float currentShotCooldown;
+    public int currentDefense;
+    public int currentExperience;
+    public int currentHP;
+    public int currentCurrency;
 
     [Tooltip("경험치 테이블")]
     public int[] experienceThresholds = { 100, 200, 400, 800, 1600 };
@@ -33,16 +34,55 @@ public class PlayerData : ScriptableObject
 
     public float defalutExperienceMultiplier = 1.0f;
 
+    // 플레이어의 현재 레벨
+    public int currentLevel;
+
     public void InitializeStats()
     {
-        playerSpeed = defaultPlayerSpeed;
-        playerDamage = defaultPlayerDamage;
-        projectileSpeed = defaultProjectileSpeed;
-        projectileRange = defaultProjectileRange;
-        projectileType = defaultProjectileType;
-        shotCooldown = defalutShotCooldown;
-        defense = defalutDefense;
-        maxHP = defaultMaxHP;
+        currentPlayerSpeed = defaultPlayerSpeed;
+        currentPlayerDamage = defaultPlayerDamage;
+        currentProjectileSpeed = defaultProjectileSpeed;
+        currentProjectileRange = defaultProjectileRange;
+        currentProjectileType = defaultProjectileType;
+        currentShotCooldown = defalutShotCooldown;
+        currentDefense = defalutDefense;
+        currentMaxHP = defaultMaxHP;
         experienceMultiplier = defalutExperienceMultiplier;
+        currentHP = currentMaxHP;
+        currentExperience = 0;
+        currentLevel = 1;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int finalDamage = Mathf.Max(0, damage - currentDefense);
+        currentHP -= finalDamage;
+    }
+
+    public void Heal(int amount)
+    {
+        currentHP += amount;
+        if (currentHP > currentMaxHP)
+        {
+            currentHP = currentMaxHP;
+        }
+    }
+    public void GainExperience(int amount)
+    {
+        // 경험치 획득량 배수 적용
+        int adjustedAmount = Mathf.RoundToInt(amount * experienceMultiplier);
+        currentExperience += adjustedAmount;
+
+        // 레벨업 체크
+        CheckLevelUp();
+    }
+
+    private void CheckLevelUp()
+    {
+        while (currentLevel < experienceThresholds.Length && currentExperience >= experienceThresholds[currentLevel])
+        {
+            currentExperience -= experienceThresholds[currentLevel];
+            currentLevel++;
+        }
     }
 }

@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 8666610384366362015}
   - component: {fileID: 307576185612765331}
   - component: {fileID: 5084547630897805894}
+  - component: {fileID: 3872035533336436121}
+  - component: {fileID: 7067304648938294859}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -243,12 +245,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}
   objectPool: {fileID: 8666610384366362015}
-  experienceText: {fileID: 0}
-  levelText: {fileID: 0}
-  experienceScrollbar: {fileID: 0}
-  healthBar: {fileID: 0}
-  healthText: {fileID: 0}
-  currencyText: {fileID: 0}
   isShooting: 0
   OnShoot:
     m_PersistentCalls:
@@ -281,3 +277,34 @@ MonoBehaviour:
   npcLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &3872035533336436121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980192060102233517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f534ec3d2b749ff4a9bd56515cfafb60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  experienceText: {fileID: 0}
+  levelText: {fileID: 0}
+  experienceScrollbar: {fileID: 0}
+  maskRectTransform: {fileID: 0}
+  healthText: {fileID: 0}
+  healthFillImage: {fileID: 0}
+  currencyText: {fileID: 0}
+--- !u!114 &7067304648938294859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980192060102233517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08cad02d022b0f4e89e29f61305109b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

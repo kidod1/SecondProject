@@ -9,7 +9,7 @@ public class IncreaseAttack : Ability
     {
         if (currentLevel > 0)
         {
-            player.stat.playerDamage += attackIncreases[currentLevel];
+            player.stat.currentPlayerDamage += attackIncreases[currentLevel];
         }
     }
 

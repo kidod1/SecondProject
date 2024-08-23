@@ -111,11 +111,21 @@ public abstract class Monster : MonoBehaviour
         // 경험치 지급
         player.GainExperience(monsterBaseStat.experiencePoints);
 
-        // 재화 지급
-        player.AddCurrency(monsterBaseStat.rewardCurrency);
+        player.stat.currentCurrency += monsterBaseStat.rewardCurrency;
+
+        PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.UpdateCurrencyUI(player.stat.currentCurrency);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
+        }
 
         gameObject.SetActive(false);
     }
+
 
     private IEnumerator InvincibilityCoroutine()
     {

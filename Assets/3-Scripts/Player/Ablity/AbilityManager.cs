@@ -10,15 +10,15 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private GameObject abilitySelectionPanel;
     [SerializeField]
-    private GameObject synergyAbilityPanel;  // 시너지 능력 설명 UI 패널
+    private GameObject synergyAbilityPanel;
     [SerializeField]
-    private TMP_Text synergyAbilityNameText;  // 시너지 능력 이름 텍스트
+    private TMP_Text synergyAbilityNameText;
     [SerializeField]
-    private TMP_Text synergyAbilityDescriptionText;  // 시너지 능력 설명 텍스트
+    private TMP_Text synergyAbilityDescriptionText;
     [SerializeField]
-    private Image synergyAbilityIcon;  // 시너지 능력 아이콘 이미지
+    private Image synergyAbilityIcon;
     [SerializeField]
-    private Button synergyAbilityButton;  // 시너지 능력 선택 버튼
+    private Button synergyAbilityButton;
     [SerializeField]
     private Button[] abilityButtons;
     [SerializeField]
@@ -30,6 +30,7 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private Button rerollButton;
 
+    private PlayerAbilityManager playerAbilityManager;
     private List<Ability> availableAbilities;
 
     private void OnEnable()
@@ -42,25 +43,18 @@ public class AbilityManager : MonoBehaviour
         player.OnLevelUp.RemoveListener(ShowAbilitySelection);
     }
 
-    private void Start()
+    public void Initialize(PlayerAbilityManager abilityManager)
     {
-        player.ResetAbilities();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            ShowAbilitySelection();
-        }
+        playerAbilityManager = abilityManager;
     }
 
     public void ShowAbilitySelection()
     {
         Time.timeScale = 0f;
         abilitySelectionPanel.SetActive(true);
-        availableAbilities = player.GetAvailableAbilities();
-        ShuffleAbilities(); // 능력들을 무작위로 섞음
+
+        availableAbilities = playerAbilityManager.GetAvailableAbilities();
+        ShuffleAbilities();
 
         int abilitiesToShow = Mathf.Min(abilityButtons.Length, availableAbilities.Count);
 
@@ -87,10 +81,7 @@ public class AbilityManager : MonoBehaviour
 
     public void ShowSynergyAbility(SynergyAbility synergyAbility)
     {
-        // 기존 능력 선택 UI를 숨김
         abilitySelectionPanel.SetActive(false);
-
-        // 시너지 능력 설명 UI를 활성화
         synergyAbilityPanel.SetActive(true);
         synergyAbilityNameText.text = synergyAbility.abilityName;
         synergyAbilityDescriptionText.text = synergyAbility.GetDescription();
@@ -99,16 +90,16 @@ public class AbilityManager : MonoBehaviour
         synergyAbilityButton.onClick.AddListener(() => ApplySynergyAbility(synergyAbility));
     }
 
-    public void ApplySynergyAbility(SynergyAbility synergyAbility)
+    private void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
-        player.ApplySynergyAbility(synergyAbility);
+        playerAbilityManager.ApplySynergyAbility(synergyAbility);
         synergyAbilityPanel.SetActive(false);
         Time.timeScale = 1f;
     }
 
-    public void SelectAbility(Ability ability)
+    private void SelectAbility(Ability ability)
     {
-        player.SelectAbility(ability);
+        playerAbilityManager.SelectAbility(ability);
         abilitySelectionPanel.SetActive(false);
         rerollButton.gameObject.SetActive(false);
         Time.timeScale = 1f;
@@ -116,8 +107,7 @@ public class AbilityManager : MonoBehaviour
 
     private void RerollAbilities()
     {
-        Debug.Log("능력 리롤!");
-        availableAbilities = player.GetAvailableAbilities();
+        availableAbilities = playerAbilityManager.GetAvailableAbilities();
         ShuffleAbilities();
 
         int abilitiesToShow = Mathf.Min(abilityButtons.Length, availableAbilities.Count);

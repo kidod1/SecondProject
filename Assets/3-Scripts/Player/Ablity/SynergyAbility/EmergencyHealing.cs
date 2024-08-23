@@ -32,7 +32,7 @@ public class EmergencyHealing : SynergyAbility
         }
 
         // 체력이 10% 이하로 떨어졌는지 확인
-        if (playerInstance.GetCurrentHP() <= playerInstance.stat.maxHP * 0.1f)
+        if (playerInstance.GetCurrentHP() <= playerInstance.stat.currentMaxHP * 0.1f)
         {
             // 쿨타임이 아닌 상태에서만 회복
             if (cooldownCoroutine == null)
@@ -51,7 +51,7 @@ public class EmergencyHealing : SynergyAbility
         }
 
         // 체력의 30%를 회복
-        int healAmount = Mathf.RoundToInt(playerInstance.stat.maxHP * 0.3f);
+        int healAmount = Mathf.RoundToInt(playerInstance.stat.currentMaxHP * 0.3f);
         playerInstance.Heal(healAmount);
 
         // 치유 드론 비주얼 효과

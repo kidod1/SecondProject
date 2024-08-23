@@ -21,9 +21,9 @@ public class Projectile : MonoBehaviour
     {
         if (stat != null)
         {
-            float lifetime = stat.projectileRange / stat.projectileSpeed; // 사거리에서 속도를 나누어 수명 계산
+            float lifetime = stat.currentProjectileRange / stat.currentProjectileSpeed; // 사거리에서 속도를 나누어 수명 계산
             Invoke(nameof(Deactivate), lifetime);
-            rb.velocity = direction * stat.projectileSpeed;
+            rb.velocity = direction * stat.currentProjectileSpeed;
         }
     }
 
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
         direction = newDirection.normalized;
         if (rb != null)
         {
-            rb.velocity = direction * stat.projectileSpeed;
+            rb.velocity = direction * stat.currentProjectileSpeed;
         }
     }
 
@@ -70,7 +70,7 @@ public class Projectile : MonoBehaviour
             Monster monster = collision.GetComponent<Monster>();
             if (monster != null)
             {
-                int damage = stat.playerDamage;
+                int damage = stat.currentPlayerDamage;
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);

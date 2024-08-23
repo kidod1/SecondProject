@@ -10,7 +10,7 @@ public class IncreaseSpeed : Ability
     {
         if (currentLevel > 0)
         {
-            player.stat.playerSpeed += speedIncreases[currentLevel];
+            player.stat.currentPlayerSpeed += speedIncreases[currentLevel];
         }
     }
 

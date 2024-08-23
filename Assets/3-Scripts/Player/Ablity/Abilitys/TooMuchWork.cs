@@ -72,7 +72,7 @@ public class TooMuchWork : Ability
 
         if (playerInstance != null)
         {
-            playerInstance.stat.shotCooldown = playerInstance.stat.defalutShotCooldown;
+            playerInstance.stat.currentShotCooldown = playerInstance.stat.defalutShotCooldown;
         }
     }
 
@@ -84,13 +84,13 @@ public class TooMuchWork : Ability
         }
 
         float elapsedTime = 0f;
-        float originalCooldown = playerInstance.stat.shotCooldown;
+        float originalCooldown = playerInstance.stat.currentShotCooldown;
 
         while (elapsedTime < baseTimeToMaxSpeed)
         {
             if (!playerInstance.isShooting)
             {
-                playerInstance.stat.shotCooldown = originalCooldown;
+                playerInstance.stat.currentShotCooldown = originalCooldown;
                 yield break;
             }
 
@@ -100,12 +100,12 @@ public class TooMuchWork : Ability
             // 공격 속도가 최소값에 도달하면 과열 상태로 전환
             if (newCooldown <= minAttackCooldown)
             {
-                playerInstance.stat.shotCooldown = minAttackCooldown;
+                playerInstance.stat.currentShotCooldown = minAttackCooldown;
                 TriggerOverheat(); // 과열 상태로 전환
                 yield break;
             }
 
-            playerInstance.stat.shotCooldown = newCooldown;
+            playerInstance.stat.currentShotCooldown = newCooldown;
 
             yield return null;
         }
@@ -135,14 +135,14 @@ public class TooMuchWork : Ability
 
         isOverheated = true;
         Debug.Log("Weapon overheated! Can't attack for " + overheatDuration + " seconds.");
-        playerInstance.stat.shotCooldown = Mathf.Infinity;
+        playerInstance.stat.currentShotCooldown = Mathf.Infinity;
 
         yield return new WaitForSeconds(overheatDuration);
 
         if (playerInstance != null)
         {
             isOverheated = false;
-            playerInstance.stat.shotCooldown = playerInstance.stat.defalutShotCooldown;
+            playerInstance.stat.currentShotCooldown = playerInstance.stat.defalutShotCooldown;
             Debug.Log("Weapon cooled down. You can attack again.");
         }
     }
@@ -169,7 +169,7 @@ public class TooMuchWork : Ability
                 attackSpeedCoroutine = null;
             }
 
-            playerInstance.stat.shotCooldown = playerInstance.stat.defalutShotCooldown;
+            playerInstance.stat.currentShotCooldown = playerInstance.stat.defalutShotCooldown;
         }
 
         isOverheated = false;

@@ -53,18 +53,18 @@ public class RockEvent : SynergyAbility
         switch (buffType)
         {
             case BuffType.Attack:
-                player.stat.playerDamage = (int)(player.stat.playerDamage * 1.5f);
-                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.playerDamage = (int)(player.stat.playerDamage / 1.5f), buffDuration));
+                player.stat.currentPlayerDamage = (int)(player.stat.currentPlayerDamage * 1.5f);
+                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.currentPlayerDamage = (int)(player.stat.currentPlayerDamage / 1.5f), buffDuration));
                 break;
 
             case BuffType.AttackSpeed:
-                player.stat.shotCooldown *= 0.5f;
-                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.shotCooldown *= 2f, buffDuration));
+                player.stat.currentShotCooldown *= 0.5f;
+                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.currentShotCooldown *= 2f, buffDuration));
                 break;
 
             case BuffType.MoveSpeed:
-                player.stat.playerSpeed *= 1.5f;
-                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.playerSpeed /= 1.5f, buffDuration));
+                player.stat.currentPlayerSpeed *= 1.5f;
+                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.currentPlayerSpeed /= 1.5f, buffDuration));
                 break;
         }
     }
