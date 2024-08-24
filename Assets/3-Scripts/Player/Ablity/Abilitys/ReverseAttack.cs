@@ -24,7 +24,7 @@ public class ReverseAttack : Ability
         }
         else if (currentLevel > 1)
         {
-            player.stat.playerDamage += attackIncreases[currentLevel - 1];
+            player.stat.currentPlayerDamage += attackIncreases[currentLevel - 1];
         }
 
         Debug.Log($"반전 공격이 적용되었습니다. 현재 레벨 Lv: {currentLevel}");

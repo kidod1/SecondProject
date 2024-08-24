@@ -9,7 +9,7 @@ public class IncreaseDefense : Ability
     {
         if (currentLevel > 0)
         {
-            player.stat.defense += defenseIncreases[currentLevel - 1];
+            player.stat.currentDefense += defenseIncreases[currentLevel];
         }
     }
 

@@ -9,10 +9,10 @@ public class IncreaseAttackSpeed : Ability
     {
         if (currentLevel > 0)
         {
-            player.stat.ShotCooldown -= cooldownReductions[currentLevel - 1];
-            if (player.stat.ShotCooldown < 0.1f)
+            player.stat.currentShotCooldown -= cooldownReductions[currentLevel];
+            if (player.stat.currentShotCooldown < 0.1f)
             {
-                player.stat.ShotCooldown = 0.1f;
+                player.stat.currentShotCooldown = 0.1f;
             }
         }
     }

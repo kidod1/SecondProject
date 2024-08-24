@@ -17,6 +17,13 @@ MonoBehaviour:
     \uB9C9\uC544\uB0C5\uB2C8\uB2E4."
   category: Sloth
   maxLevel: 5
-  currentLevel: 0
+  currentLevel: 1
   abilityIcon: {fileID: 21300000, guid: b756bc69e72c5c64a967e8b98553b3d6, type: 3}
-  shieldPrefab: {fileID: 0}
+  shieldPrefab: {fileID: 6020059291832696189, guid: dbd8e34f040c9d64094aeadc7bfd9d3c, type: 3}
+  shieldDeactivateEffectPrefab: {fileID: 6402902912094828702, guid: f8a862ad2b651a742be65285e1b5fe22, type: 3}
+  cooldownTimes:
+  - 5
+  - 25
+  - 20
+  - 15
+  - 5

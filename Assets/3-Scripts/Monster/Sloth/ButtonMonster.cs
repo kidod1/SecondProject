@@ -53,21 +53,28 @@ public class ButtonMonster : Monster
     private IEnumerator AttackCoroutine()
     {
         PlayAnimation(attackAnimation, false);
+
+        if (attackEffect != null)
+        {
+            GameObject effect = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
+            effect.SetActive(true);
+            StartCoroutine(DeactivateAfterAnimation(effect)); // 이펙트 비활성화
+
+            // 이펙트가 0.2초간 활성화된 후 데미지 입히기
+            yield return new WaitForSeconds(0.2f);
+            ExecuteAttack();
+        }
+        else
+        {
+            Debug.LogWarning("Attack effect is not assigned.");
+        }
+
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
-        ExecuteAttack();
         TransitionToState(cooldownState);
     }
 
     private void ExecuteAttack()
     {
-        if (attackEffect != null)
-        {
-            GameObject effect = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
-            effect.SetActive(true);
-            // attackEffect의 애니메이션이 끝난 후 비활성화
-            StartCoroutine(DeactivateAfterAnimation(effect));
-        }
-
         // 범위 내의 적에게 데미지를 입히는 로직
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, stat.buttonMosnterAttackRange);
         foreach (var hitCollider in hitColliders)
