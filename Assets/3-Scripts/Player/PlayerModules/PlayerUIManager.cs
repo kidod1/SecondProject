@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerUIManager : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Text experienceText;
-    [SerializeField]
     private TMP_Text levelText;
     [SerializeField]
     private Scrollbar experienceScrollbar;
@@ -57,16 +55,25 @@ public class PlayerUIManager : MonoBehaviour
 
     public void UpdateExperienceUI()
     {
-        if (experienceScrollbar == null || experienceText == null || levelText == null)
+        if (experienceScrollbar == null || levelText == null)
         {
             Debug.LogError("Experience UI elements are not assigned.");
             return;
         }
-        levelText.text = "Lv. " + player.stat.currentLevel;
-        experienceText.text = "EXP: " + player.stat.currentExperience + " / " + player.stat.experienceThresholds[player.stat.currentLevel];
 
-        float expRatio = (float)player.stat.currentExperience / player.stat.experienceThresholds[player.stat.currentLevel];
-        experienceScrollbar.size = expRatio;
+        // 경험치 최대치가 올바른지 확인
+        if (player.stat.currentLevel < player.stat.experienceThresholds.Length)
+        {
+            levelText.text = "Lv. " + player.stat.currentLevel;
+
+            // 경험치 비율 계산
+            float expRatio = (float)player.stat.currentExperience / player.stat.experienceThresholds[player.stat.currentLevel];
+            experienceScrollbar.size = Mathf.Clamp01(expRatio); // 0과 1 사이의 값으로 제한
+        }
+        else
+        {
+            Debug.LogError("Current level is out of bounds of experience thresholds.");
+        }
     }
 
     public void UpdateCurrencyUI(int currentCurrency)
@@ -85,12 +92,11 @@ public class PlayerUIManager : MonoBehaviour
     {
         Debug.Log("플레이어 사망 UI 처리");
 
-        /* if (deathPanel != null)
-         {
-             deathPanel.SetActive(true);
-         }
+        if (deathPanel != null)
+        {
+            deathPanel.SetActive(true);
+        }
 
-         // 사망시 UI 업로드를 담당할 메서드. 미완
-        */
+        // 사망시 UI 업로드를 담당할 메서드. 미완
     }
 }

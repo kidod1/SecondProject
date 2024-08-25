@@ -64,6 +64,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         InitializePlayer();
+        UpdateUI();
         SavePlayerData();
     }
 
@@ -188,8 +189,21 @@ public class Player : MonoBehaviour
         {
             OnLevelUp?.Invoke();  // 레벨업 시 이벤트 트리거
         }
+        UpdateUI(); // 경험치를 얻을 때마다 UI 업데이트
     }
-
+    private void UpdateUI()
+    {
+        PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.UpdateExperienceUI();
+            uiManager.UpdateCurrencyUI(stat.currentCurrency);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
+        }
+    }
     private void InitializePlayer()
     {
         stat.InitializeStats();
