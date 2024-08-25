@@ -98,10 +98,6 @@ public class PlayerUIManager : MonoBehaviour
         {
             deathPanel.SetActive(true);
         }
-<<<<<<< HEAD
-
         // 사망시 UI 업로드를 담당할 메서드. 미완
-=======
->>>>>>> main
     }
 }
