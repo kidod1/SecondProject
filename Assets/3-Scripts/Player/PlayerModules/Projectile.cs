@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
     {
         if (stat != null)
         {
-            float lifetime = stat.currentProjectileRange / stat.currentProjectileSpeed; // 사거리에서 속도를 나누어 수명 계산
+            float lifetime = stat.currentProjectileRange;
             Invoke(nameof(Deactivate), lifetime);
             rb.velocity = direction * stat.currentProjectileSpeed;
         }

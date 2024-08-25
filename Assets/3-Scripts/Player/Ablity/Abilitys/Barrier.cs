@@ -56,7 +56,11 @@ public class Barrier : Ability
 
             if (shieldDeactivateEffectPrefab != null)
             {
-                Instantiate(shieldDeactivateEffectPrefab, playerInstance.transform.position, Quaternion.identity);
+                // 이펙트 생성
+                GameObject effectInstance = Instantiate(shieldDeactivateEffectPrefab, playerInstance.transform.position, Quaternion.identity);
+
+                // 일정 시간 후에 이펙트 삭제 (예: 2초 후)
+                Destroy(effectInstance, 2f);
             }
         }
     }
