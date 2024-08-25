@@ -28,7 +28,9 @@ public class PlayerUIManager : MonoBehaviour
         player.OnTakeDamage.AddListener(UpdateHealthUI);
         player.OnLevelUp.AddListener(UpdateExperienceUI);
         player.OnPlayerDeath.AddListener(OnPlayerDeath);
-        UpdateUI();
+
+        maxHP = player.stat.currentMaxHP; // 최대 HP를 설정
+        UpdateUI(); // UI를 초기화하여 HP가 최대치로 설정되도록 함
     }
 
     private void UpdateUI()
@@ -96,7 +98,10 @@ public class PlayerUIManager : MonoBehaviour
         {
             deathPanel.SetActive(true);
         }
+<<<<<<< HEAD
 
         // 사망시 UI 업로드를 담당할 메서드. 미완
+=======
+>>>>>>> main
     }
 }
