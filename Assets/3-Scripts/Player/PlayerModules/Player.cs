@@ -196,7 +196,9 @@ public class Player : MonoBehaviour
         PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
         if (uiManager != null)
         {
+            uiManager.Initialize(this); // UI 매니저 초기화 호출
             uiManager.UpdateExperienceUI();
+            uiManager.UpdateHealthUI();
             uiManager.UpdateCurrencyUI(stat.currentCurrency);
         }
         else

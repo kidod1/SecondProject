@@ -6,32 +6,39 @@ public class DamageField : MonoBehaviour
 {
     private int damageAmount;
     private float damageInterval;
+    private float damageFieldDuration;
+    private float cooldownDurations;
+    private ElectricField electricField; // ElectricField 참조
     private HashSet<Monster> monstersInRange = new HashSet<Monster>();
+    private ParticleSystem particleSystem;
+    private Animator animator;
+    private bool isInitialized = false; // 초기화 여부를 확인하는 변수 추가
+    private bool isCooldown = false; // 쿨다운 상태
 
-    public void Initialize(int damage, float interval)
+    public void Initialize(ElectricField electricField, Player playerInstance)
     {
-        damageAmount = damage;
-        damageInterval = interval;
-    }
+        this.electricField = electricField;
+        damageAmount = electricField.damageAmount;
+        damageInterval = electricField.damageInterval;
+        damageFieldDuration = electricField.damageFieldDuration;
+        cooldownDurations = electricField.cooldownDurations;
 
-    private void OnEnable()
-    {
-        StartCoroutine(DealDamage());
-    }
+        particleSystem = GetComponent<ParticleSystem>();
+        animator = GetComponent<Animator>();
 
-    private void OnDisable()
-    {
-        StopAllCoroutines();
+        isInitialized = true; // 초기화 완료로 설정
+        particleSystem?.Stop();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Monster"))
+        if (other.CompareTag("Monster") && !isCooldown)
         {
             Monster monster = other.GetComponent<Monster>();
             if (monster != null)
             {
                 monstersInRange.Add(monster);
+                StartCoroutine(AttackAndCooldownRoutine());
             }
         }
     }
@@ -48,18 +55,45 @@ public class DamageField : MonoBehaviour
         }
     }
 
-    private IEnumerator DealDamage()
+    private IEnumerator AttackAndCooldownRoutine()
     {
-        while (true)
-        {
-            // HashSet을 안전하게 순회하기 위해 복사본 사용
-            var monstersSnapshot = new List<Monster>(monstersInRange);
+        if (isCooldown)
+            yield break;
 
-            foreach (var monster in monstersSnapshot)
-            {
-                monster.TakeDamage(damageAmount);
-            }
-            yield return new WaitForSeconds(damageInterval);
+        isCooldown = true;
+
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
         }
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
+        // 적에게 데미지 주기
+        var monstersSnapshot = new List<Monster>(monstersInRange);
+        foreach (var monster in monstersSnapshot)
+        {
+            monster.TakeDamage(damageAmount);
+            Debug.Log($"Monster {monster.name} took {damageAmount} damage."); // 디버그 메시지 추가
+        }
+
+        yield return new WaitForSeconds(damageFieldDuration); // 지속 시간 대기
+
+        if (particleSystem != null)
+        {
+            particleSystem.Stop();
+        }
+
+        if (animator != null)
+        {
+            animator.ResetTrigger("Attack");
+        }
+
+        yield return new WaitForSeconds(cooldownDurations); // 쿨다운 시간 대기
+
+        isCooldown = false;
     }
 }
