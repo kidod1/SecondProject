@@ -6,6 +6,8 @@ public class ElectricWire : MonoBehaviour
     private float rotationSpeed = 10f;
     [SerializeField]
     private int Damage = 1;
+    [SerializeField]
+    private float IncreaseSpeedUp = 2f;
     private bool isReversed = false;
 
     private void Update()
@@ -21,7 +23,7 @@ public class ElectricWire : MonoBehaviour
 
     public void IncreaseSpeed()
     {
-        rotationSpeed *= 2;
+        rotationSpeed *= IncreaseSpeedUp;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
