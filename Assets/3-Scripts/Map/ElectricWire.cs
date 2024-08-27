@@ -5,9 +5,7 @@ public class ElectricWire : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 10f;
     [SerializeField]
-    private int Damage = 1;
-    [SerializeField]
-    private float IncreaseSpeedUp = 2f;
+    private float increaseSpeedUp = 2f;
     private bool isReversed = false;
 
     private void Update()
@@ -23,18 +21,17 @@ public class ElectricWire : MonoBehaviour
 
     public void IncreaseSpeed()
     {
-        rotationSpeed *= IncreaseSpeedUp;
+        rotationSpeed *= increaseSpeedUp;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnDrawGizmos()
     {
-        if (other.CompareTag("Player"))
-        {
-            Player player = other.GetComponent<Player>();
-            if (player != null)
-            {
-                player.TakeDamage(Damage);
-            }
-        }
+        Gizmos.color = Color.red;
+
+        // 회전 경로를 원으로 그리기
+        Vector3 pivotPoint = transform.position; // 부모 오브젝트의 위치를 회전 축으로 사용
+        float radius = Vector3.Distance(pivotPoint, transform.GetChild(0).position); // 자식 오브젝트의 위치를 기준으로 반지름 계산
+
+        Gizmos.DrawWireSphere(pivotPoint, radius);
     }
 }

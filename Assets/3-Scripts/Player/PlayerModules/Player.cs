@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public ObjectPool objectPool;
     public PlayerAbilityManager abilityManager;
     public Barrier barrierAbility;
+    private UIShaker healthBarShaker;
 
     private MapBoundary mapBoundary;
 
@@ -63,6 +64,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        healthBarShaker = FindObjectOfType<UIShaker>();
         InitializePlayer();
         UpdateUI();
         SavePlayerData();
@@ -137,6 +139,11 @@ public class Player : MonoBehaviour
             stat.TakeDamage(damage);
             OnTakeDamage.Invoke();
 
+            if (healthBarShaker != null)
+            {
+                healthBarShaker.StartShake();
+            }
+
             StartCoroutine(InvincibilityCoroutine());
 
             if (stat.currentHP <= 0)
@@ -187,9 +194,9 @@ public class Player : MonoBehaviour
     {
         if (stat.GainExperience(amount))
         {
-            OnLevelUp?.Invoke();  // 레벨업 시 이벤트 트리거
+            OnLevelUp?.Invoke();
         }
-        UpdateUI(); // 경험치를 얻을 때마다 UI 업데이트
+        UpdateUI();
     }
     private void UpdateUI()
     {

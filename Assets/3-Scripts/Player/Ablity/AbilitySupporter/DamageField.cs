@@ -72,15 +72,13 @@ public class DamageField : MonoBehaviour
             animator.SetTrigger("Attack");
         }
 
-        // 적에게 데미지 주기
         var monstersSnapshot = new List<Monster>(monstersInRange);
         foreach (var monster in monstersSnapshot)
         {
             monster.TakeDamage(damageAmount);
-            Debug.Log($"Monster {monster.name} took {damageAmount} damage."); // 디버그 메시지 추가
         }
 
-        yield return new WaitForSeconds(damageFieldDuration); // 지속 시간 대기
+        yield return new WaitForSeconds(damageFieldDuration);
 
         if (particleSystem != null)
         {
@@ -92,7 +90,7 @@ public class DamageField : MonoBehaviour
             animator.ResetTrigger("Attack");
         }
 
-        yield return new WaitForSeconds(cooldownDurations); // 쿨다운 시간 대기
+        yield return new WaitForSeconds(cooldownDurations);
 
         isCooldown = false;
     }

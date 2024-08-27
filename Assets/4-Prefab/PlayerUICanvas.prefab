@@ -1334,7 +1334,7 @@ GameObject:
   - component: {fileID: 2362873097315617257}
   - component: {fileID: 7340142931712023731}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: HP Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1410,7 +1410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Padding: {x: 12, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!1 &2932331935346569718
 GameObject:
@@ -2025,7 +2025,7 @@ GameObject:
   - component: {fileID: 1483788553625109568}
   - component: {fileID: 4773827641395113135}
   m_Layer: 5
-  m_Name: Image
+  m_Name: HPMainBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2047,8 +2047,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -658, y: 483}
-  m_SizeDelta: {x: 588, y: 56}
+  m_AnchoredPosition: {x: -641.5, y: 484.7}
+  m_SizeDelta: {x: 628, y: 51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1483788553625109568
 CanvasRenderer:
@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bb1b60e6a60cd9448b158dc01c9e5808, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e16cb755728f6244b9ca4b15d6d0eb19, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2982,6 +2982,7 @@ GameObject:
   - component: {fileID: 993024120482846126}
   - component: {fileID: 1700885768634975630}
   - component: {fileID: 8756541688064654846}
+  - component: {fileID: 416603502451099054}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -3005,8 +3006,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -711, y: 491}
-  m_SizeDelta: {x: 455, y: 21}
+  m_AnchoredPosition: {x: -723.3, y: 495.2}
+  m_SizeDelta: {x: 457, y: 19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1700885768634975630
 CanvasRenderer:
@@ -3036,7 +3037,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fd4601341158b434cbd4dacdf340c27a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9843ce4ef3213b43a78c5f42370bed4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3046,6 +3047,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &416603502451099054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6898769799377222311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0dc5d1756d04b4aa3d76255f996e0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 0.5
+  shakeMagnitude: 5
 --- !u!1 &7706146301008025516
 GameObject:
   m_ObjectHideFlags: 0

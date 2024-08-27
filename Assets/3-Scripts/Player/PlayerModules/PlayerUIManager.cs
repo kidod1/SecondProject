@@ -21,6 +21,7 @@ public class PlayerUIManager : MonoBehaviour
 
     private int maxHP;
     private Player player;
+    private Color originalHealthTextColor; // 원래 체력 텍스트 색상 저장
 
     public void Initialize(Player player)
     {
@@ -29,8 +30,9 @@ public class PlayerUIManager : MonoBehaviour
         player.OnLevelUp.AddListener(UpdateExperienceUI);
         player.OnPlayerDeath.AddListener(OnPlayerDeath);
 
-        maxHP = player.stat.currentMaxHP; // 최대 HP를 설정
-        UpdateUI(); // UI를 초기화하여 HP가 최대치로 설정되도록 함
+        maxHP = player.stat.currentMaxHP;
+        originalHealthTextColor = healthText.color;
+        UpdateUI();
     }
 
     private void UpdateUI()
@@ -49,6 +51,8 @@ public class PlayerUIManager : MonoBehaviour
         maskRectTransform.offsetMax = new Vector2(-rightPadding, maskRectTransform.offsetMax.y);
         healthText.text = $"{healthPercentage * 100:F0}%";
 
+        healthText.color = Color.Lerp(Color.red, originalHealthTextColor, healthPercentage);
+
         if (healthFillImage != null)
         {
             healthFillImage.fillAmount = healthPercentage;
@@ -63,14 +67,12 @@ public class PlayerUIManager : MonoBehaviour
             return;
         }
 
-        // 경험치 최대치가 올바른지 확인
         if (player.stat.currentLevel < player.stat.experienceThresholds.Length)
         {
             levelText.text = "Lv. " + player.stat.currentLevel;
 
-            // 경험치 비율 계산
             float expRatio = (float)player.stat.currentExperience / player.stat.experienceThresholds[player.stat.currentLevel];
-            experienceScrollbar.size = Mathf.Clamp01(expRatio); // 0과 1 사이의 값으로 제한
+            experienceScrollbar.size = Mathf.Clamp01(expRatio);
         }
         else
         {
