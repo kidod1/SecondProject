@@ -25,18 +25,52 @@ public class PlayerUIManager : MonoBehaviour
 
     public void Initialize(Player player)
     {
+        if (player == null)
+        {
+            Debug.LogError("PlayerUIManager: 플레이어가 할당되지 않았습니다.");
+            return;
+        }
+
         this.player = player;
+
+        if (player.OnTakeDamage == null || player.OnLevelUp == null || player.OnPlayerDeath == null)
+        {
+            Debug.LogError("PlayerUIManager: 플레이어 이벤트가 초기화되지 않았습니다.");
+            return;
+        }
+
         player.OnTakeDamage.AddListener(UpdateHealthUI);
         player.OnLevelUp.AddListener(UpdateExperienceUI);
         player.OnPlayerDeath.AddListener(OnPlayerDeath);
 
         maxHP = player.stat.currentMaxHP;
-        originalHealthTextColor = healthText.color;
+
+        if (healthText != null)
+        {
+            originalHealthTextColor = healthText.color;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: 체력 텍스트가 할당되지 않았습니다.");
+        }
+
         UpdateUI();
     }
 
     private void UpdateUI()
     {
+        if (player == null)
+        {
+            Debug.LogError("PlayerUIManager: 플레이어가 할당되지 않았습니다.");
+            return;
+        }
+
+        if (player.stat == null)
+        {
+            Debug.LogError("PlayerUIManager: 플레이어의 스탯이 초기화되지 않았습니다.");
+            return;
+        }
+
         maxHP = player.stat.currentMaxHP;
         UpdateHealthUI();
         UpdateExperienceUI();
@@ -45,17 +79,41 @@ public class PlayerUIManager : MonoBehaviour
 
     public void UpdateHealthUI()
     {
+        if (player == null)
+        {
+            Debug.LogError("PlayerUIManager: 플레이어가 할당되지 않았습니다.");
+            return;
+        }
+
         float healthPercentage = (float)player.GetCurrentHP() / maxHP;
-        float rightPadding = (1 - healthPercentage) * 240 * 4;
 
-        maskRectTransform.offsetMax = new Vector2(-rightPadding, maskRectTransform.offsetMax.y);
-        healthText.text = $"{healthPercentage * 100:F0}%";
+        if (maskRectTransform != null)
+        {
+            float rightPadding = (1 - healthPercentage) * 240 * 4;
+            maskRectTransform.offsetMax = new Vector2(-rightPadding, maskRectTransform.offsetMax.y);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: Mask RectTransform이 할당되지 않았습니다.");
+        }
 
-        healthText.color = Color.Lerp(Color.red, originalHealthTextColor, healthPercentage);
+        if (healthText != null)
+        {
+            healthText.text = $"{healthPercentage * 100:F0}%";
+            healthText.color = Color.Lerp(Color.red, originalHealthTextColor, healthPercentage);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: 체력 텍스트가 할당되지 않았습니다.");
+        }
 
         if (healthFillImage != null)
         {
             healthFillImage.fillAmount = healthPercentage;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: 체력 이미지가 할당되지 않았습니다.");
         }
     }
 
@@ -63,7 +121,13 @@ public class PlayerUIManager : MonoBehaviour
     {
         if (experienceScrollbar == null || levelText == null)
         {
-            Debug.LogError("Experience UI elements are not assigned.");
+            Debug.LogError("PlayerUIManager: 경험치 UI 요소가 할당되지 않았습니다.");
+            return;
+        }
+
+        if (player == null || player.stat == null)
+        {
+            Debug.LogError("PlayerUIManager: 플레이어 또는 플레이어의 스탯이 할당되지 않았습니다.");
             return;
         }
 
@@ -76,7 +140,7 @@ public class PlayerUIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Current level is out of bounds of experience thresholds.");
+            Debug.LogError("PlayerUIManager: 현재 레벨이 경험치 임계값의 범위를 벗어났습니다.");
         }
     }
 
@@ -88,7 +152,7 @@ public class PlayerUIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("currencyText is not assigned in the inspector.");
+            Debug.LogWarning("PlayerUIManager: currencyText가 인스펙터에 할당되지 않았습니다.");
         }
     }
 
@@ -99,6 +163,10 @@ public class PlayerUIManager : MonoBehaviour
         if (deathPanel != null)
         {
             deathPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("PlayerUIManager: deathPanel이 할당되지 않았습니다.");
         }
     }
 }

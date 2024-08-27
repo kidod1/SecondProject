@@ -36,14 +36,14 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
+        // Don't use DontDestroyOnLoad; instance will be managed per scene
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Destroy this instance if one already exists
         }
 
         InitializeDialogueDictionary();
@@ -75,7 +75,6 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         background.gameObject.SetActive(false);
 
-        // animator가 null인지 확인하고, null이면 할당
         if (dialogueAnimator == null)
         {
             dialogueAnimator = dialoguePanel.GetComponent<Animator>();
@@ -108,7 +107,6 @@ public class DialogueManager : MonoBehaviour
             var initialDialogueTrigger = FindObjectOfType<DialogueTrigger>();
             if (initialDialogueTrigger != null)
             {
-                // 우선 네임을 변수로 안뺐음. 테스트 용도.
                 initialDialogueTrigger.TriggerDialogueByName("StartDialogue");
                 firstDialogueShown = true;
             }
