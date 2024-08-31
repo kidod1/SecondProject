@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Spine.Unity;
 
 public class Player : MonoBehaviour
 {
@@ -13,27 +14,38 @@ public class Player : MonoBehaviour
     public Barrier barrierAbility;
     private UIShaker healthBarShaker;
 
-    private MapBoundary mapBoundary;
+    [Header("Spine Animation")]
+    public SkeletonAnimation skeletonAnimation;
+    private Spine.Skeleton skeleton;
+    private Spine.AnimationState spineAnimationState;
 
-    // Movement 관련 변수
+    [SpineSkin] public string frontSkinName;
+    [SpineSkin] public string backSkinName;
+    [SpineSkin] public string sideSkinName;
+
+    [SpineAnimation] public string walkLowerAnimName;
+    [SpineAnimation] public string idleLowerAnimName;
+    [SpineAnimation] public string shootFrontUpperAnimName;
+    [SpineAnimation] public string shootBackUpperAnimName;
+    [SpineAnimation] public string shootSideUpperAnimName;
+    [SpineAnimation] public string idleUpperAnimName;
+
+    private bool isMoving = false;
+
     private Vector2 moveInput;
     private Rigidbody2D rb;
 
-    // Invincibility 관련 변수
     private bool isInvincible = false;
-    private SpriteRenderer spriteRenderer;
+    private MeshRenderer meshRenderer;
 
-    // Shooting 관련 변수
     private float lastShootTime;
     public bool isShooting = false;
     private Vector2 shootDirection;
     private Vector2 nextShootDirection;
     private bool hasNextShootDirection = false;
 
-    // Input System
     private PlayerInput playerInput;
 
-    // 이벤트
     public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
@@ -41,16 +53,14 @@ public class Player : MonoBehaviour
     public UnityEvent OnTakeDamage;
     public UnityEvent OnPlayerDeath;
 
-    // Save System
     private string saveFilePath;
 
-    // Util
     public Vector2 PlayerPosition => transform.position;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>();
         playerInput = new PlayerInput();
 
         OnShoot ??= new UnityEvent<Vector2, int>();
@@ -60,6 +70,14 @@ public class Player : MonoBehaviour
         OnPlayerDeath ??= new UnityEvent();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
+
+        skeleton = skeletonAnimation.Skeleton;
+        spineAnimationState = skeletonAnimation.AnimationState;
+
+        skeleton.SetSkin(frontSkinName);
+        skeleton.SetSlotsToSetupPose();
+
+        spineAnimationState.Complete += OnSpineAnimationComplete;
     }
 
     private void Start()
@@ -88,21 +106,13 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.started -= OnShootStarted;
         playerInput.Player.Shoot.performed -= OnShootPerformed;
         playerInput.Player.Shoot.canceled -= OnShootCanceledInputAction;
+
+        spineAnimationState.Complete -= OnSpineAnimationComplete;
     }
 
     private void Update()
     {
-        if (isShooting && Time.time >= lastShootTime + stat.currentShotCooldown)
-        {
-            Shoot(shootDirection, stat.currentProjectileType);
-            lastShootTime = Time.time;
-
-            if (hasNextShootDirection)
-            {
-                shootDirection = nextShootDirection;
-                hasNextShootDirection = false;
-            }
-        }
+        UpdateAnimation();
     }
 
     private void FixedUpdate()
@@ -110,18 +120,97 @@ public class Player : MonoBehaviour
         Vector2 movement = moveInput * stat.currentPlayerSpeed * Time.fixedDeltaTime;
         Vector2 newPosition = rb.position + movement;
 
-        if (mapBoundary != null)
+        rb.MovePosition(newPosition);
+    }
+
+    private void UpdateAnimation()
+    {
+        if (isShooting)
         {
-            newPosition = mapBoundary.ClampPosition(newPosition);
+            if (shootDirection.y > 0)
+            {
+                SetSkinAndAnimation(backSkinName, shootBackUpperAnimName, false);
+            }
+            else if (shootDirection.y < 0)
+            {
+                SetSkinAndAnimation(frontSkinName, shootFrontUpperAnimName, false);
+            }
+            else
+            {
+                SetSkinAndAnimation(sideSkinName, shootSideUpperAnimName, false, shootDirection.x < 0);
+            }
+        }
+        else
+        {
+            if (moveInput.y > 0)
+            {
+                SetSkinAndAnimation(backSkinName, idleUpperAnimName, true);
+            }
+            else if (moveInput.y < 0)
+            {
+                SetSkinAndAnimation(frontSkinName, idleUpperAnimName, true);
+            }
+            else if (moveInput.x != 0)
+            {
+                SetSkinAndAnimation(sideSkinName, idleUpperAnimName, true, moveInput.x < 0);
+            }
+            else
+            {
+                spineAnimationState.SetAnimation(1, idleUpperAnimName, true);
+            }
         }
 
-        rb.MovePosition(newPosition);
+        skeleton.SetSlotsToSetupPose();
+
+        if (moveInput.magnitude > 0)
+        {
+            if (!isMoving)
+            {
+                spineAnimationState.SetAnimation(0, walkLowerAnimName, true);
+                isMoving = true;
+            }
+        }
+        else
+        {
+            if (isMoving)
+            {
+                spineAnimationState.SetAnimation(0, idleLowerAnimName, true);
+                isMoving = false;
+            }
+        }
+    }
+
+    private void SetSkinAndAnimation(string skinName, string animationName, bool loop, bool flipX = false)
+    {
+        skeleton.SetSkin(skinName);
+        transform.localScale = new Vector3(flipX ? 0.1f : -0.1f, 0.1f, 0.1f);
+        spineAnimationState.SetAnimation(1, animationName, loop);
+    }
+
+    private void OnSpineAnimationComplete(Spine.TrackEntry trackEntry)
+    {
+        if (isShooting)
+        {
+            if (shootDirection.y > 0)
+            {
+                spineAnimationState.SetAnimation(1, shootBackUpperAnimName, false);
+            }
+            else if (shootDirection.y < 0)
+            {
+                spineAnimationState.SetAnimation(1, shootFrontUpperAnimName, false);
+            }
+            else
+            {
+                spineAnimationState.SetAnimation(1, shootSideUpperAnimName, false);
+            }
+        }
     }
 
     public void SetInvincibility(bool value)
     {
         isInvincible = value;
     }
+
     public void TakeDamage(int damage)
     {
         GameObject activeBarrier = GameObject.FindGameObjectWithTag("Barrier");
@@ -153,7 +242,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
@@ -162,11 +250,11 @@ public class Player : MonoBehaviour
 
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
+            meshRenderer.enabled = !meshRenderer.enabled;
             yield return new WaitForSeconds(blinkInterval);
         }
 
-        spriteRenderer.enabled = true;
+        meshRenderer.enabled = true;
         isInvincible = false;
     }
 
@@ -176,8 +264,6 @@ public class Player : MonoBehaviour
         Debug.Log("플레이어 사망");
 
         OnPlayerDeath.Invoke();
-
-        // 사망 이후 동작을 추가할 메서드,
     }
 
     public void Heal(int amount)
@@ -198,12 +284,13 @@ public class Player : MonoBehaviour
         }
         UpdateUI();
     }
+
     private void UpdateUI()
     {
         PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
         if (uiManager != null)
         {
-            uiManager.Initialize(this); // UI 매니저 초기화 호출
+            uiManager.Initialize(this);
             uiManager.UpdateExperienceUI();
             uiManager.UpdateHealthUI();
             uiManager.UpdateCurrencyUI(stat.currentCurrency);
@@ -213,6 +300,7 @@ public class Player : MonoBehaviour
             Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
         }
     }
+
     private void InitializePlayer()
     {
         stat.InitializeStats();
@@ -221,6 +309,7 @@ public class Player : MonoBehaviour
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        UpdateAnimation();  // 방향 변경 시 즉시 애니메이션 업데이트
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
@@ -233,23 +322,53 @@ public class Player : MonoBehaviour
         if (context.control != null)
         {
             Vector2 newDirection = context.ReadValue<Vector2>();
+            newDirection = ConvertToFourDirections(newDirection);
             if (newDirection != Vector2.zero)
             {
                 shootDirection = newDirection;
                 isShooting = true;
+                StartCoroutine(ShootContinuously());
+            }
+        }
+    }
 
-                if (Time.time >= lastShootTime + stat.currentShotCooldown)
+    private Vector2 ConvertToFourDirections(Vector2 direction)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            return new Vector2(Mathf.Sign(direction.x), 0);
+        }
+        else
+        {
+            return new Vector2(0, Mathf.Sign(direction.y));
+        }
+    }
+
+    private IEnumerator ShootContinuously()
+    {
+        while (isShooting)
+        {
+            if (Time.time >= lastShootTime + stat.currentShootCooldown)
+            {
+                Shoot(shootDirection, stat.currentProjectileType);
+                lastShootTime = Time.time;
+
+                UpdateAnimation();
+
+                if (hasNextShootDirection)
                 {
-                    Shoot(shootDirection, stat.currentProjectileType);
-                    lastShootTime = Time.time;
+                    shootDirection = nextShootDirection;
+                    hasNextShootDirection = false;
                 }
             }
+            yield return null;
         }
     }
 
     private void OnShootPerformed(InputAction.CallbackContext context)
     {
         Vector2 newDirection = context.ReadValue<Vector2>();
+        newDirection = ConvertToFourDirections(newDirection);
         if (newDirection != Vector2.zero)
         {
             nextShootDirection = newDirection;
@@ -317,7 +436,7 @@ public class Player : MonoBehaviour
             currentMaxHP = stat.currentMaxHP,
             currentHP = stat.currentHP,
             currentShield = stat.currentShield,
-            currentShotCooldown = stat.currentShotCooldown,
+            currentShootCooldown = stat.currentShootCooldown,
             currentDefense = stat.currentDefense,
             currentExperience = stat.currentExperience,
             currentCurrency = stat.currentCurrency,
@@ -343,7 +462,7 @@ public class Player : MonoBehaviour
             stat.currentMaxHP = data.currentMaxHP;
             stat.currentHP = data.currentHP;
             stat.currentShield = data.currentShield;
-            stat.currentShotCooldown = data.currentShotCooldown;
+            stat.currentShootCooldown = data.currentShootCooldown;
             stat.currentDefense = data.currentDefense;
             stat.currentExperience = data.currentExperience;
             stat.currentCurrency = data.currentCurrency;
@@ -360,7 +479,6 @@ public class Player : MonoBehaviour
         SavePlayerData();
     }
 }
-
 
 [System.Serializable]
 public class PlayerCurrencyToJson
@@ -379,7 +497,7 @@ public class PlayerDataToJson
     public int currentMaxHP;
     public int currentHP;
     public int currentShield;
-    public float currentShotCooldown;
+    public float currentShootCooldown;
     public int currentDefense;
     public int currentExperience;
     public int currentCurrency;

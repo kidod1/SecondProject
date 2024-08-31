@@ -117,7 +117,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -508134431
-  m_SortingLayer: 1
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &3715360063181050566
@@ -187,6 +187,7 @@ MonoBehaviour:
   firePoints:
   - {fileID: 8509312286314539964}
   - {fileID: 814760329991142954}
+  bulietQuantity: 2
   isAttacking: 0
 --- !u!61 &4457303775279968565
 BoxCollider2D:

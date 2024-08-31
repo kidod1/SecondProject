@@ -58,8 +58,8 @@ public class RockEvent : SynergyAbility
                 break;
 
             case BuffType.AttackSpeed:
-                player.stat.currentShotCooldown *= 0.5f;
-                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.currentShotCooldown *= 2f, buffDuration));
+                player.stat.currentShootCooldown *= 0.5f;
+                player.StartCoroutine(RemoveBuffAfterDuration(() => player.stat.currentShootCooldown *= 2f, buffDuration));
                 break;
 
             case BuffType.MoveSpeed:

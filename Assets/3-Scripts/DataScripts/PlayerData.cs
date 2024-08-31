@@ -22,7 +22,7 @@ public class PlayerData : ScriptableObject
     public int currentProjectileType;
     public int currentMaxHP;
     public int currentShield;
-    public float currentShotCooldown;
+    public float currentShootCooldown;
     public int currentDefense;
     public int currentExperience;
     public int currentHP;
@@ -44,7 +44,7 @@ public class PlayerData : ScriptableObject
         currentProjectileSpeed = defaultProjectileSpeed;
         currentProjectileRange = defaultProjectileRange;
         currentProjectileType = defaultProjectileType;
-        currentShotCooldown = defalutShotCooldown;
+        currentShootCooldown = defalutShotCooldown;
         currentDefense = defalutDefense;
         currentMaxHP = defaultMaxHP;
         experienceMultiplier = defalutExperienceMultiplier;
