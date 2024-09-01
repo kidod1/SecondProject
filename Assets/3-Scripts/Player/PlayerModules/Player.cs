@@ -252,6 +252,7 @@ public class Player : MonoBehaviour
     public void Heal(int amount)
     {
         stat.Heal(amount);
+        UpdateUI();
     }
 
     public int GetCurrentHP()

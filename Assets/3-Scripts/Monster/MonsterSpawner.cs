@@ -7,29 +7,46 @@ public class MonsterSpawner : MonoBehaviour
     [System.Serializable]
     public class SpawnInfo
     {
+        [Tooltip("생성할 몬스터 프리팹")]
         public GameObject monsterPrefab;
+
+        [Tooltip("생성할 몬스터 수")]
         public int count;
     }
 
     [System.Serializable]
     public class Wave
     {
+        [Tooltip("스폰 정보 리스트")]
         public List<SpawnInfo> spawnInfos;
+
+        [Tooltip("몬스터 스폰 간격")]
         public float spawnInterval = 1.0f;
+
+        [Tooltip("이 웨이브에서 사용할 스폰 지점 (선택 사항)")]
+        public Transform[] customSpawnPoints; // 웨이브별 커스텀 스폰 지점
     }
 
+    [Tooltip("스폰할 웨이브 목록")]
     public List<Wave> waves;
+
+    [Tooltip("기본 몬스터 스폰 지점")]
     public Transform[] spawnPoints;
+
+    [Tooltip("웨이브 종료 후 트리거될 대화 이름")]
     public string endDialogueName;
+
+    [Tooltip("특정 웨이브 종료 후 트리거될 대화 이름")]
     public string waveDialogueName;
+
+    [Tooltip("대화를 트리거할 웨이브 인덱스 (0부터 시작)")]
     public int dialogueTriggerWaveIndex = 1;
+
+    [Tooltip("플레이어와의 상호작용을 위한 참조")]
     public PlayerInteraction playerInteraction;
 
+    [Tooltip("나태 맵 기믹 여부")]
     public bool slothMapGimmick = false;
-    // 다른 기믹들을 위한 Bool 변수 추가
-    // public bool gimmick2 = false;
-    // public bool gimmick3 = false;
-    // ...
 
     private List<GameObject> spawnedMonsters = new List<GameObject>();
     private int currentWaveIndex = 0;
@@ -47,12 +64,13 @@ public class MonsterSpawner : MonoBehaviour
         while (currentWaveIndex < waves.Count)
         {
             var wave = waves[currentWaveIndex];
+            var spawnPointsToUse = wave.customSpawnPoints.Length > 0 ? wave.customSpawnPoints : spawnPoints; // 웨이브의 커스텀 스폰 지점 사용 여부 결정
 
             foreach (var spawnInfo in wave.spawnInfos)
             {
                 for (int i = 0; i < spawnInfo.count; i++)
                 {
-                    SpawnMonster(spawnInfo.monsterPrefab);
+                    SpawnMonster(spawnInfo.monsterPrefab, spawnPointsToUse);
                     yield return new WaitForSeconds(wave.spawnInterval);
                 }
             }
@@ -83,16 +101,10 @@ public class MonsterSpawner : MonoBehaviour
             Debug.Log("나태 맵 기믹이 실행되었습니다.");
             ExecuteSlothMapGimmick();
         }
-        // 다른 기믹들을 여기에 추가
-        // if (gimmick2) { ExecuteGimmick2(); }
-        // if (gimmick3) { ExecuteGimmick3(); }
-        // ...
     }
 
     private void ExecuteSlothMapGimmick()
     {
-        // 나태 맵 기믹 실행 로직
-        // 시계방향으로 돌던 전기줄을 반시계방향으로 빠르게 돌게 만드는 로직
         ElectricWire[] electricWires = FindObjectsOfType<ElectricWire>();
         foreach (var wire in electricWires)
         {
@@ -101,16 +113,16 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnMonster(GameObject monsterPrefab)
+    private void SpawnMonster(GameObject monsterPrefab, Transform[] spawnPointsToUse)
     {
-        if (spawnPoints.Length == 0)
+        if (spawnPointsToUse.Length == 0)
         {
             Debug.LogWarning("스폰 지점이 설정되지 않았습니다.");
             return;
         }
 
-        int spawnPointIndex = Random.Range(0, spawnPoints.Length);
-        Transform spawnPoint = spawnPoints[spawnPointIndex];
+        int spawnPointIndex = Random.Range(0, spawnPointsToUse.Length);
+        Transform spawnPoint = spawnPointsToUse[spawnPointIndex];
 
         GameObject monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
         spawnedMonsters.Add(monster);
