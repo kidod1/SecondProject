@@ -46,6 +46,9 @@ public class Player : MonoBehaviour
 
     private PlayerInput playerInput;
 
+    // ShootPoint 추가
+    public Transform shootPoint; // 투사체가 발사될 위치
+
     public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
@@ -397,7 +400,8 @@ public class Player : MonoBehaviour
             return;
         }
 
-        projectile.transform.position = transform.position;
+        // ShootPoint 위치에서 투사체를 생성
+        projectile.transform.position = shootPoint.position;
 
         Projectile projScript = projectile.GetComponent<Projectile>();
         if (projScript != null)

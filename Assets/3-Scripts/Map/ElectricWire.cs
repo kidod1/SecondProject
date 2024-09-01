@@ -28,9 +28,8 @@ public class ElectricWire : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        // 회전 경로를 원으로 그리기
-        Vector3 pivotPoint = transform.position; // 부모 오브젝트의 위치를 회전 축으로 사용
-        float radius = Vector3.Distance(pivotPoint, transform.GetChild(0).position); // 자식 오브젝트의 위치를 기준으로 반지름 계산
+        Vector3 pivotPoint = transform.position;
+        float radius = Vector3.Distance(pivotPoint, transform.GetChild(0).position);
 
         Gizmos.DrawWireSphere(pivotPoint, radius);
     }

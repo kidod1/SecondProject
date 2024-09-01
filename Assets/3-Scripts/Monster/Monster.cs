@@ -128,22 +128,7 @@ public abstract class Monster : MonoBehaviour
             Destroy(deathEffect, deathEffectDuration);
         }
 
-        // player가 null인지 확인하여 예외 방지
-        if (player != null)
-        {
-            player.GainExperience(monsterBaseStat.experiencePoints);
-            player.stat.currentCurrency += monsterBaseStat.rewardCurrency;
-        }
-
-        PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
-        if (uiManager != null)
-        {
-            uiManager.UpdateCurrencyUI(player?.stat.currentCurrency ?? 0);
-        }
-        else
-        {
-            Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
-        }
+        DropExperienceItem();
 
         Destroy(gameObject);
     }
@@ -168,7 +153,22 @@ public abstract class Monster : MonoBehaviour
 
         isInvincible = false;
     }
-
+    private void DropExperienceItem()
+    {
+        if (player != null && monsterBaseStat != null)
+        {
+            GameObject experienceItemPrefab = Resources.Load<GameObject>("ExperienceItem");
+            if (experienceItemPrefab != null)
+            {
+                GameObject expItem = Instantiate(experienceItemPrefab, transform.position, Quaternion.identity);
+                ExperienceItem expScript = expItem.GetComponent<ExperienceItem>();
+                if (expScript != null)
+                {
+                    expScript.experienceAmount = monsterBaseStat.experiencePoints;
+                }
+            }
+        }
+    }
     virtual protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
