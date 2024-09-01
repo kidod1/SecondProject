@@ -8,10 +8,17 @@ public class ElectricWire : MonoBehaviour
     private float increaseSpeedUp = 2f;
     private bool isReversed = false;
 
+    private Vector3 pivotPoint;
+
+    private void Start()
+    {
+        pivotPoint = transform.parent != null ? transform.parent.position : Vector3.zero;
+    }
+
     private void Update()
     {
         float direction = isReversed ? -1 : 1;
-        transform.Rotate(Vector3.forward, rotationSpeed * direction * Time.deltaTime);
+        transform.RotateAround(pivotPoint, Vector3.forward, rotationSpeed * direction * Time.deltaTime);
     }
 
     public void ReverseRotation()
@@ -28,9 +35,9 @@ public class ElectricWire : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        Vector3 pivotPoint = transform.position;
-        float radius = Vector3.Distance(pivotPoint, transform.GetChild(0).position);
+        Vector3 pivotPointGizmo = transform.parent != null ? transform.parent.position : Vector3.zero;
+        float radius = Vector3.Distance(pivotPointGizmo, transform.position);
 
-        Gizmos.DrawWireSphere(pivotPoint, radius);
+        Gizmos.DrawWireSphere(pivotPointGizmo, radius);
     }
 }
