@@ -46,7 +46,6 @@ public class Player : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    // ShootPoint 추가
     public Transform shootPoint; // 투사체가 발사될 위치
 
     public UnityEvent<Vector2, int> OnShoot;
@@ -115,7 +114,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        UpdateAnimation();
+        if (!isShooting)
+        {
+            UpdateAnimation();
+        }
     }
 
     private void FixedUpdate()
@@ -130,18 +132,7 @@ public class Player : MonoBehaviour
     {
         if (isShooting)
         {
-            if (shootDirection.y > 0)
-            {
-                SetSkinAndAnimation(backSkinName, shootBackUpperAnimName, false);
-            }
-            else if (shootDirection.y < 0)
-            {
-                SetSkinAndAnimation(frontSkinName, shootFrontUpperAnimName, false);
-            }
-            else
-            {
-                SetSkinAndAnimation(sideSkinName, shootSideUpperAnimName, false, shootDirection.x < 0);
-            }
+            PlayShootAnimation();
         }
         else
         {
@@ -194,18 +185,7 @@ public class Player : MonoBehaviour
     {
         if (isShooting)
         {
-            if (shootDirection.y > 0)
-            {
-                spineAnimationState.SetAnimation(1, shootBackUpperAnimName, false);
-            }
-            else if (shootDirection.y < 0)
-            {
-                spineAnimationState.SetAnimation(1, shootFrontUpperAnimName, false);
-            }
-            else
-            {
-                spineAnimationState.SetAnimation(1, shootSideUpperAnimName, false);
-            }
+            PlayShootAnimation(); // 애니메이션을 재생하는 부분을 PlayShootAnimation으로 통합
         }
     }
 
@@ -351,12 +331,14 @@ public class Player : MonoBehaviour
     {
         while (isShooting)
         {
+            // 플레이어의 공격 속도에 따른 타이밍 체크
             if (Time.time >= lastShootTime + stat.currentShootCooldown)
             {
                 Shoot(shootDirection, stat.currentProjectileType);
-                lastShootTime = Time.time;
+                lastShootTime = Time.time; // 마지막 발사 시간 갱신
 
-                UpdateAnimation();
+                // 애니메이션 재생
+                PlayShootAnimation();
 
                 if (hasNextShootDirection)
                 {
@@ -364,8 +346,34 @@ public class Player : MonoBehaviour
                     hasNextShootDirection = false;
                 }
             }
+
             yield return null;
         }
+    }
+
+    private void PlayShootAnimation()
+    {
+        int trackIndex = 2; // 트랙 2를 사용하여 다른 애니메이션보다 높은 우선순위를 가짐
+
+        // 공격 애니메이션 재생 로직과 스킨 설정
+        if (shootDirection.y > 0)
+        {
+            skeleton.SetSkin(backSkinName);
+            spineAnimationState.SetAnimation(trackIndex, shootBackUpperAnimName, false);
+        }
+        else if (shootDirection.y < 0)
+        {
+            skeleton.SetSkin(frontSkinName);
+            spineAnimationState.SetAnimation(trackIndex, shootFrontUpperAnimName, false);
+        }
+        else
+        {
+            skeleton.SetSkin(sideSkinName);
+            transform.localScale = new Vector3(shootDirection.x < 0 ? 0.1f : -0.1f, 0.1f, 0.1f);
+            spineAnimationState.SetAnimation(trackIndex, shootSideUpperAnimName, false);
+        }
+
+        skeleton.SetSlotsToSetupPose(); // 스킨 설정 후 슬롯 포즈 업데이트
     }
 
     private void OnShootPerformed(InputAction.CallbackContext context)
@@ -400,7 +408,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // ShootPoint 위치에서 투사체를 생성
         projectile.transform.position = shootPoint.position;
 
         Projectile projScript = projectile.GetComponent<Projectile>();

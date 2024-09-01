@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CutsceneManager : MonoBehaviour
+public class UICutsceneManager : MonoBehaviour
 {
     [SerializeField]
     private Image cutsceneImage;
