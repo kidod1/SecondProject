@@ -27,10 +27,13 @@ public class CutsceneManager : MonoBehaviour
     public CutsceneDialogue cutsceneDialogue;
     public TMP_Text nameText;
     public TMP_Text dialogueText;
+    public Image animationImage; // 애니메이션이 시작될 때 true로 설정될 이미지
     public int nextSceneIndex = -1;
+    public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
     private Queue<string> sentences;
     private int currentSentenceIndex = 0;
+    private Coroutine textAnimationCoroutine;
 
     private void Start()
     {
@@ -45,6 +48,7 @@ public class CutsceneManager : MonoBehaviour
             }
         }
 
+        animationImage.gameObject.SetActive(false); // 초기화할 때 애니메이션 이미지를 비활성화
         StartCutscene();
     }
 
@@ -68,11 +72,32 @@ public class CutsceneManager : MonoBehaviour
             return;
         }
 
+        if (textAnimationCoroutine != null)
+        {
+            StopCoroutine(textAnimationCoroutine); // 이전 애니메이션 중지
+        }
+
+        animationImage.gameObject.SetActive(false); // 다음 애니메이션이 실행될 때 이전 이미지를 비활성화
+
         string sentence = sentences.Dequeue();
-        dialogueText.text = sentence;
+        textAnimationCoroutine = StartCoroutine(AnimateText(sentence));
         currentSentenceIndex++;
 
         ToggleCharacterImagesAndNames();
+    }
+
+    private IEnumerator AnimateText(string sentence)
+    {
+        dialogueText.text = "";
+        yield return new WaitForSeconds(0.1f); // 텍스트 애니메이션이 시작하기 전에 잠깐의 딜레이를 추가
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(textAnimationSpeed);
+        }
+
+        animationImage.gameObject.SetActive(true); // 애니메이션이 끝날 때 이미지 활성화
     }
 
     private void ToggleCharacterImagesAndNames()

@@ -21,7 +21,7 @@ public class PlayerUIManager : MonoBehaviour
 
     private int maxHP;
     private Player player;
-    private Color originalHealthTextColor; // 원래 체력 텍스트 색상 저장
+    private Color originalHealthTextColor = Color.white; // 초기 체력 텍스트 색상을 흰색으로 설정
 
     public void Initialize(Player player)
     {
@@ -47,7 +47,7 @@ public class PlayerUIManager : MonoBehaviour
 
         if (healthText != null)
         {
-            originalHealthTextColor = healthText.color;
+            healthText.color = originalHealthTextColor; // 체력 텍스트 색상을 항상 흰색으로 초기화
         }
         else
         {

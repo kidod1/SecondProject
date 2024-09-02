@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Spine.Unity;
+using Cinemachine; // Cinemachine을 사용하기 위해 추가
+using System.Collections.Generic; // List 사용을 위해 추가
 
 public class Player : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class Player : MonoBehaviour
     public ObjectPool objectPool;
     public PlayerAbilityManager abilityManager;
     public Barrier barrierAbility;
-    private UIShaker healthBarShaker;
+    private List<UIShaker> healthBarShakers = new List<UIShaker>(); // 여러 UIShaker를 담을 리스트
 
     [Header("Spine Animation")]
     public SkeletonAnimation skeletonAnimation;
@@ -59,6 +61,9 @@ public class Player : MonoBehaviour
 
     public Vector2 PlayerPosition => transform.position;
 
+    [Header("Camera Shake")]
+    public CinemachineImpulseSource impulseSource; // 카메라 흔들림을 위한 시네머신 임펄스 소스
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -84,7 +89,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        healthBarShaker = FindObjectOfType<UIShaker>();
+        // 모든 UIShaker 컴포넌트를 찾아 리스트에 추가
+        healthBarShakers.AddRange(FindObjectsOfType<UIShaker>());
         InitializePlayer();
         UpdateUI();
         SavePlayerData();
@@ -211,9 +217,23 @@ public class Player : MonoBehaviour
             stat.TakeDamage(damage);
             OnTakeDamage.Invoke();
 
-            if (healthBarShaker != null)
+            // 체력 퍼센티지를 계산합니다.
+            float healthPercentage = (float)stat.currentHP / stat.currentMaxHP;
+
+            // 모든 UIShaker 컴포넌트에 대해 StartShake 호출
+            foreach (UIShaker shaker in healthBarShakers)
             {
-                healthBarShaker.StartShake();
+                shaker.StartShake(healthPercentage); // 현재 체력 퍼센티지를 전달하여 흔들림 강도 조정
+            }
+
+            // 시네머신 임펄스 발생
+            if (impulseSource != null)
+            {
+                impulseSource.GenerateImpulse(); // 임펄스를 생성하여 카메라 흔들림 효과를 발생시킴
+            }
+            else
+            {
+                Debug.LogWarning("ImpulseSource가 할당되지 않았습니다.");
             }
 
             StartCoroutine(InvincibilityCoroutine());
