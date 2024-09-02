@@ -1,83 +1,132 @@
 
 Sloth_shockbutton_anime.png
-size: 94,254
+size: 512,128
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Body
-  rotate: true
-  xy: 2, 4
-  size: 28, 30
-  orig: 28, 30
+  rotate: false
+  xy: 302, 22
+  size: 32, 34
+  orig: 32, 34
+  offset: 0, 0
+  index: -1
+Body_attack
+  rotate: false
+  xy: 336, 22
+  size: 32, 34
+  orig: 32, 34
   offset: 0, 0
   index: -1
 Button
-  rotate: false
-  xy: 2, 87
+  rotate: true
+  xy: 194, 58
+  size: 68, 59
+  orig: 68, 59
+  offset: 0, 0
+  index: -1
+Button_attack
+  rotate: true
+  xy: 255, 58
   size: 68, 59
   orig: 68, 59
   offset: 0, 0
   index: -1
 Button_body
   rotate: true
-  xy: 2, 148
-  size: 104, 90
-  orig: 104, 90
+  xy: 2, 18
+  size: 108, 94
+  orig: 108, 94
+  offset: 0, 0
+  index: -1
+Button_body_attack
+  rotate: true
+  xy: 98, 18
+  size: 108, 94
+  orig: 108, 94
   offset: 0, 0
   index: -1
 Face
-  rotate: false
-  xy: 56, 28
-  size: 35, 31
-  orig: 36, 31
-  offset: 1, 0
+  rotate: true
+  xy: 194, 19
+  size: 37, 34
+  orig: 37, 34
+  offset: 0, 0
+  index: -1
+Face_attack
+  rotate: true
+  xy: 230, 19
+  size: 37, 34
+  orig: 37, 34
+  offset: 0, 0
+  index: -1
+Face_recharge
+  rotate: true
+  xy: 266, 19
+  size: 37, 34
+  orig: 37, 34
+  offset: 0, 0
   index: -1
 Head
-  rotate: false
-  xy: 2, 34
-  size: 52, 51
-  orig: 52, 51
+  rotate: true
+  xy: 316, 58
+  size: 68, 55
+  orig: 68, 55
   offset: 0, 0
   index: -1
 L_arm
-  rotate: false
-  xy: 72, 76
-  size: 14, 24
-  orig: 14, 24
+  rotate: true
+  xy: 302, 3
+  size: 17, 28
+  orig: 17, 28
   offset: 0, 0
   index: -1
 L_horn
-  rotate: true
-  xy: 65, 3
-  size: 23, 27
-  orig: 24, 28
+  rotate: false
+  xy: 370, 24
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+L_horn_attack
+  rotate: false
+  xy: 373, 61
+  size: 27, 31
+  orig: 27, 32
   offset: 0, 1
   index: -1
 L_leg
-  rotate: false
-  xy: 72, 125
-  size: 15, 21
-  orig: 15, 21
+  rotate: true
+  xy: 389, 3
+  size: 19, 25
+  orig: 19, 25
   offset: 0, 0
   index: -1
 R_arm
-  rotate: false
-  xy: 56, 61
-  size: 14, 24
-  orig: 14, 24
+  rotate: true
+  xy: 332, 3
+  size: 17, 28
+  orig: 17, 28
   offset: 0, 0
   index: -1
 R_horn
-  rotate: true
-  xy: 34, 2
-  size: 24, 29
-  orig: 24, 30
-  offset: 0, 1
+  rotate: false
+  xy: 373, 94
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+R_horn_attack
+  rotate: false
+  xy: 399, 28
+  size: 26, 31
+  orig: 27, 32
+  offset: 1, 1
   index: -1
 R_leg
-  rotate: false
-  xy: 72, 102
-  size: 15, 21
-  orig: 15, 21
+  rotate: true
+  xy: 362, 2
+  size: 18, 25
+  orig: 19, 25
   offset: 0, 0
   index: -1
