@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Spine.Unity;
-using Cinemachine; // Cinemachine을 사용하기 위해 추가
-using System.Collections.Generic; // List 사용을 위해 추가
+using Cinemachine;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public ObjectPool objectPool;
     public PlayerAbilityManager abilityManager;
     public Barrier barrierAbility;
-    private List<UIShaker> healthBarShakers = new List<UIShaker>(); // 여러 UIShaker를 담을 리스트
+    private List<UIShaker> healthBarShakers = new List<UIShaker>();
 
     [Header("Spine Animation")]
     public SkeletonAnimation skeletonAnimation;
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    public Transform shootPoint; // 투사체가 발사될 위치
+    public Transform shootPoint;
 
     public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     public Vector2 PlayerPosition => transform.position;
 
     [Header("Camera Shake")]
-    public CinemachineImpulseSource impulseSource; // 카메라 흔들림을 위한 시네머신 임펄스 소스
+    public CinemachineImpulseSource impulseSource; 
 
     private void Awake()
     {
@@ -89,7 +89,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        // 모든 UIShaker 컴포넌트를 찾아 리스트에 추가
         healthBarShakers.AddRange(FindObjectsOfType<UIShaker>());
         InitializePlayer();
         UpdateUI();
@@ -191,7 +190,7 @@ public class Player : MonoBehaviour
     {
         if (isShooting)
         {
-            PlayShootAnimation(); // 애니메이션을 재생하는 부분을 PlayShootAnimation으로 통합
+            PlayShootAnimation(); 
         }
     }
 
@@ -217,19 +216,16 @@ public class Player : MonoBehaviour
             stat.TakeDamage(damage);
             OnTakeDamage.Invoke();
 
-            // 체력 퍼센티지를 계산합니다.
             float healthPercentage = (float)stat.currentHP / stat.currentMaxHP;
 
-            // 모든 UIShaker 컴포넌트에 대해 StartShake 호출
             foreach (UIShaker shaker in healthBarShakers)
             {
-                shaker.StartShake(healthPercentage); // 현재 체력 퍼센티지를 전달하여 흔들림 강도 조정
+                shaker.StartShake(healthPercentage);
             }
 
-            // 시네머신 임펄스 발생
             if (impulseSource != null)
             {
-                impulseSource.GenerateImpulse(); // 임펄스를 생성하여 카메라 흔들림 효과를 발생시킴
+                impulseSource.GenerateImpulse();
             }
             else
             {
@@ -313,7 +309,7 @@ public class Player : MonoBehaviour
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        UpdateAnimation();  // 방향 변경 시 즉시 애니메이션 업데이트
+        UpdateAnimation();
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
@@ -352,13 +348,11 @@ public class Player : MonoBehaviour
     {
         while (isShooting)
         {
-            // 플레이어의 공격 속도에 따른 타이밍 체크
             if (Time.time >= lastShootTime + stat.currentShootCooldown)
             {
                 Shoot(shootDirection, stat.currentProjectileType);
-                lastShootTime = Time.time; // 마지막 발사 시간 갱신
+                lastShootTime = Time.time;
 
-                // 애니메이션 재생
                 PlayShootAnimation();
 
                 if (hasNextShootDirection)
@@ -374,9 +368,8 @@ public class Player : MonoBehaviour
 
     private void PlayShootAnimation()
     {
-        int trackIndex = 2; // 트랙 2를 사용하여 다른 애니메이션보다 높은 우선순위를 가짐
+        int trackIndex = 2;
 
-        // 공격 애니메이션 재생 로직과 스킨 설정
         if (shootDirection.y > 0)
         {
             skeleton.SetSkin(backSkinName);
@@ -394,7 +387,7 @@ public class Player : MonoBehaviour
             spineAnimationState.SetAnimation(trackIndex, shootSideUpperAnimName, false);
         }
 
-        skeleton.SetSlotsToSetupPose(); // 스킨 설정 후 슬롯 포즈 업데이트
+        skeleton.SetSlotsToSetupPose();
     }
 
     private void OnShootPerformed(InputAction.CallbackContext context)

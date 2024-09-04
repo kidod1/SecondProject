@@ -24,7 +24,7 @@ public abstract class Monster : MonoBehaviour
     [SerializeField]
     private GameObject deathEffectPrefab;
     [SerializeField]
-    private float deathEffectDuration = 0.4f; // 사망 이펙트가 지속될 시간
+    private float deathEffectDuration = 0.2f; // 사망 이펙트가 지속될 시간
 
     public bool isInCooldown = false;
 
