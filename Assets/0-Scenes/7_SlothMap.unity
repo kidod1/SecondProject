@@ -144,7 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 80885361}
   - component: {fileID: 80885362}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Light 2D (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 95977504}
   - component: {fileID: 95977506}
   - component: {fileID: 95977505}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9-Sliced (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 105682827}
   - component: {fileID: 105682828}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Light 2D (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,6 +444,83 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1312486537473881943, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
   m_PrefabInstance: {fileID: 2328123864751208078}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &140136079
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2350005319911755306, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d668e426b0434b046b873d56d754ddcf, type: 2}
+    - target: {fileID: 4808963231029370759, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_Name
+      value: Drone
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336081041278382817, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: deathEffectPrefab
+      value: 
+      objectReference: {fileID: 5637720799618704278, guid: dd84d232e40bad8488424e632bb19014, type: 3}
+    - target: {fileID: 7336081041278382817, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: deathEffectDuration
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336081041278382817, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: monsterDeathEffectPrefab
+      value: 
+      objectReference: {fileID: 2554013357090995075, guid: eeafef5e43eebe24cae831bb9e63f78e, type: 3}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.8478482
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.1847103
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603733789333308654, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
 --- !u!1 &256735707
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,7 +532,7 @@ GameObject:
   - component: {fileID: 256735708}
   - component: {fileID: 256735710}
   - component: {fileID: 256735709}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: slothmap_combined
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +699,7 @@ GameObject:
   - component: {fileID: 434860790}
   - component: {fileID: 434860792}
   - component: {fileID: 434860791}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9-Sliced (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -901,7 +978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 616850289}
   - component: {fileID: 616850291}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1060,7 +1137,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 33c350f1706e18947ba629b73cc1ae23, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1068,7 +1145,7 @@ SpriteRenderer:
   m_Size: {x: 15.24, y: 12.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &705901342
@@ -1149,7 +1226,7 @@ GameObject:
   - component: {fileID: 727613971}
   - component: {fileID: 727613973}
   - component: {fileID: 727613972}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9-Sliced (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1300,7 +1377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 794259411}
   - component: {fileID: 794259412}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Light 2D (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1512,7 +1589,7 @@ GameObject:
   - component: {fileID: 1297611617}
   - component: {fileID: 1297611619}
   - component: {fileID: 1297611618}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9-Sliced (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2089,7 +2166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1457425049}
   - component: {fileID: 1457425050}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2172,7 +2249,7 @@ GameObject:
   - component: {fileID: 1503719651}
   - component: {fileID: 1503719653}
   - component: {fileID: 1503719652}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9-Sliced
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2312,7 +2389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1562597935}
   - component: {fileID: 1562597936}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Light 2D (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2680,7 +2757,7 @@ GameObject:
   - component: {fileID: 1868205443}
   - component: {fileID: 1868205445}
   - component: {fileID: 1868205444}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9-Sliced (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3474,6 +3551,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawn
       objectReference: {fileID: 0}
+    - target: {fileID: 1934801322940994144, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: playerInteraction
       value: 
@@ -3626,3 +3707,4 @@ SceneRoots:
   - {fileID: 616850289}
   - {fileID: 1779098366}
   - {fileID: 705901342}
+  - {fileID: 140136079}
