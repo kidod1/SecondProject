@@ -170,18 +170,44 @@ public abstract class Monster : MonoBehaviour
     {
         if (player != null && monsterBaseStat != null)
         {
-            GameObject experienceItemPrefab = Resources.Load<GameObject>("ExperienceItem");
+            int experiencePointsToDrop = monsterBaseStat.experiencePoints;
+            if (Random.value < monsterBaseStat.highExperienceDropChance)
+            {
+                experiencePointsToDrop = monsterBaseStat.highExperiencePoints;
+            }
+
+            string prefabName = "ExperienceItem";
+            if (experiencePointsToDrop > 50 && experiencePointsToDrop <= 100)
+            {
+                prefabName = "ExperienceItem2";
+            }
+            else if (experiencePointsToDrop > 100 && experiencePointsToDrop <= 150)
+            {
+                prefabName = "ExperienceItem3";
+            }
+            else if (experiencePointsToDrop > 150)
+            {
+                prefabName = "ExperienceItem4";
+            }
+
+            GameObject experienceItemPrefab = Resources.Load<GameObject>(prefabName);
             if (experienceItemPrefab != null)
             {
                 GameObject expItem = Instantiate(experienceItemPrefab, transform.position, Quaternion.identity);
                 ExperienceItem expScript = expItem.GetComponent<ExperienceItem>();
                 if (expScript != null)
                 {
-                    expScript.experienceAmount = monsterBaseStat.experiencePoints;
+                    expScript.experienceAmount = experiencePointsToDrop;
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"리소스를 찾을 수 없습니다: {prefabName}");
             }
         }
     }
+
+
     virtual protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
