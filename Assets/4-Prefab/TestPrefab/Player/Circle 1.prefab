@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1968602080119340472}
   - component: {fileID: 2100648980255152511}
   - component: {fileID: 7876795592502897976}
-  - component: {fileID: 3866688030265010984}
+  - component: {fileID: 5532212154180221838}
   m_Layer: 0
   m_Name: Circle 1
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -508134431
-  m_SortingLayer: 1
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.3773585, g: 0.1975792, b: 0.1975792, a: 1}
@@ -149,7 +149,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &3866688030265010984
+--- !u!114 &5532212154180221838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,6 +158,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 603568951414228764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b23773ca82cb59348a40098d4d705dab, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a6766c1c7994734a8fa5133552d9aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}

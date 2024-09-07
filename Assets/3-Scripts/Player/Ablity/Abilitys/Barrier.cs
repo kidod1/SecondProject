@@ -59,8 +59,7 @@ public class Barrier : Ability
                 // 이펙트 생성
                 GameObject effectInstance = Instantiate(shieldDeactivateEffectPrefab, playerInstance.transform.position, Quaternion.identity);
 
-                // 일정 시간 후에 이펙트 삭제 (예: 2초 후)
-                Destroy(effectInstance, 2f);
+                Destroy(effectInstance, 1f);
             }
         }
     }
@@ -80,13 +79,11 @@ public class Barrier : Ability
 
     private IEnumerator BarrierCooldown()
     {
-        // 쿨타임 대기
         if (currentLevel - 1 >= 0 && currentLevel - 1 < cooldownTimes.Length)
         {
             yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
         }
 
-        // 쿨타임이 끝난 후 Barrier 다시 활성화
         if (playerInstance != null)
         {
             ActivateBarrierVisual();

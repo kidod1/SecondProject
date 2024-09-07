@@ -133,7 +133,6 @@ public class PlayerAbilityManager : MonoBehaviour
         {
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
 
-            // Synergy 패널을 표시하여 사용자가 선택할 수 있게 함
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)
             {

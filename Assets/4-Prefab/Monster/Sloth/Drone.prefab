@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: d668e426b0434b046b873d56d754ddcf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   monsterBaseStat: {fileID: 11400000, guid: 42afc292bd0acef4698668ee73ca61e3, type: 2}
   invincibilityDuration: 0.5
   blinkInterval: 0.1
-  deathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
+  monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 3
   isInCooldown: 0
   bulletPrefab: {fileID: 1927569836658033460, guid: 8efc32d2dcc753e4a9125ad22e903604, type: 3}

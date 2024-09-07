@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
     public Transform shootPoint;
 
-    public UnityEvent<Vector2, int> OnShoot;
+    public UnityEvent<Vector2, int> OnShoot; // OnShoot 이벤트 원래대로 복구
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
     public UnityEvent OnShootCanceled;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     public Vector2 PlayerPosition => transform.position;
 
     [Header("Camera Shake")]
-    public CinemachineImpulseSource impulseSource; 
+    public CinemachineImpulseSource impulseSource;
 
     private void Awake()
     {
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         playerInput = new PlayerInput();
 
-        OnShoot ??= new UnityEvent<Vector2, int>();
+        OnShoot ??= new UnityEvent<Vector2, int>(); // OnShoot 시그니처 변경
         OnMonsterEnter ??= new UnityEvent<Collider2D>();
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
@@ -129,7 +129,6 @@ public class Player : MonoBehaviour
     {
         Vector2 movement = moveInput * stat.currentPlayerSpeed * Time.fixedDeltaTime;
         Vector2 newPosition = rb.position + movement;
-
         rb.MovePosition(newPosition);
     }
 
@@ -190,7 +189,7 @@ public class Player : MonoBehaviour
     {
         if (isShooting)
         {
-            PlayShootAnimation(); 
+            PlayShootAnimation();
         }
     }
 
@@ -414,13 +413,15 @@ public class Player : MonoBehaviour
             Debug.LogError("objectPool is not assigned.");
             return;
         }
-
         GameObject projectile = objectPool.GetObject(prefabIndex);
         if (projectile == null)
         {
             Debug.LogError("Projectile could not be instantiated.");
             return;
         }
+
+        // Debug 로그 추가: 투사체의 위치를 확인
+        Debug.Log($"ShootPoint 위치에서 발사: {shootPoint.position}");
 
         projectile.transform.position = shootPoint.position;
 
@@ -430,13 +431,10 @@ public class Player : MonoBehaviour
             projScript.Initialize(stat);
             projScript.SetDirection(direction);
         }
-        else
-        {
-            Debug.LogError("Projectile does not have a Projectile component.");
-        }
 
-        OnShoot.Invoke(direction, prefabIndex);
+        OnShoot.Invoke(direction, prefabIndex);  // OnShoot 이벤트 호출
     }
+
 
     private void SaveCurrencyOnly()
     {
@@ -504,6 +502,7 @@ public class Player : MonoBehaviour
         SavePlayerData();
     }
 }
+
 
 [System.Serializable]
 public class PlayerCurrencyToJson

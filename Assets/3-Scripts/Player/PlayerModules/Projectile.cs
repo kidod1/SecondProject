@@ -4,9 +4,10 @@ public class Projectile : MonoBehaviour
 {
     private Vector2 direction;
     private float damageMultiplier = 1.0f;
-    private PlayerData stat;
+    [SerializeField]
+    protected PlayerData stat;
     private bool isCloneProjectile = false;
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     private float lifetime;
 
     private void Awake()

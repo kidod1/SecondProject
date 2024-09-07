@@ -126,13 +126,9 @@ public abstract class Monster : MonoBehaviour
             GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);
             deathEffect.transform.localScale = Vector3.one;
 
-            Debug.Log("사망 이펙트 생성됨");
-            Debug.Log($"Death Effect 활성 상태: {deathEffect.activeSelf}");
-
             ParticleSystem[] particleSystems = deathEffect.GetComponentsInChildren<ParticleSystem>();
             foreach (ParticleSystem ps in particleSystems)
             {
-                Debug.Log($"파티클 시스템 이름: {ps.gameObject.name}, 활성 상태: {ps.gameObject.activeSelf}, 실행 중: {ps.isPlaying}");
                 ps.Clear();  // 초기화
                 ps.Play();   // 재생
             }
