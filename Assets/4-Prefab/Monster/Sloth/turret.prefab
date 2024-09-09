@@ -98,7 +98,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 590fcc03b04d2b1489e122504b89cd8c, type: 2}
+  - {fileID: 2100000, guid: aef1de7eb3a24a94ea0502ef040d7d9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 9837bc0b5f8295846b09ba3e6fcf7ab5, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 28b9b473f3aafa146a9bc2f08ab1711b, type: 2}
   initialSkinName: side
   initialFlipX: 0
   initialFlipY: 0
@@ -184,10 +184,11 @@ MonoBehaviour:
   sideAttackAnimation: attack/attack_side
   reloadAnimation: reroad
   reloadIdleAnimation: reroad_idle
+  retargetAnimation: retargeting
   firePoints:
   - {fileID: 8509312286314539964}
   - {fileID: 814760329991142954}
-  bulietQuantity: 2
+  bulietQuantity: 4
   isAttacking: 0
 --- !u!61 &4457303775279968565
 BoxCollider2D:

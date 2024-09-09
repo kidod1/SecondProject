@@ -4899,7 +4899,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475cecd8b63e1e449b9a3f29fe715bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0.4, z: 0}
+  usePlayer: 1
+  target: {fileID: 0}
+  offset: {x: 0, y: 0.5, z: 0}
   followSpeed: 200
 --- !u!1 &1038639462812692643
 GameObject:
