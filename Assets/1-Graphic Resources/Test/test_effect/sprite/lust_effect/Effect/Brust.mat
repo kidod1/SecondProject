@@ -43,6 +43,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 43d8bd2631bbc6c42a7586a010a8f5a4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Main_Texture:
+        m_Texture: {fileID: 2800000, guid: 43d8bd2631bbc6c42a7586a010a8f5a4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,13 +55,28 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha_M: 1
     - _BlendOp: 0
+    - _Boolan: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 0
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
+    - _ColorFloat: 2.1
     - _ColorMode: 1
     - _Cull: 2
     - _Cutoff: 0.5
@@ -71,14 +90,18 @@ Material:
     - _FlipbookMode: 0
     - _LightingEnabled: 0
     - _Mode: 2
+    - _My_Time: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
     - _SrcBlend: 5
+    - _Tile_X: 1
     - _ZWrite: 0
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 25.688938, g: 25.688938, b: 25.688938, a: 1}
+    - _Color: {r: 67.793526, g: 13.750575, b: 34.757687, a: 1}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

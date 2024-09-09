@@ -15,7 +15,6 @@ public class Turret : Monster
     [SpineAnimation] public string sideAttackAnimation;
     [SpineAnimation] public string reloadAnimation;
     [SpineAnimation] public string reloadIdleAnimation;
-    [SpineAnimation] public string retargetAnimation;
 
     protected SkeletonAnimation skeletonAnimation;
     public SkeletonAnimation GetSkeletonAnimation()
@@ -158,7 +157,6 @@ public class Turret : Monster
         currentFirePoint = (currentFirePoint + 1) % firePoints.Length;
     }
 
-
     public void PlayAnimation(string animationName, bool loop)
     {
         if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
@@ -166,15 +164,8 @@ public class Turret : Monster
             skeletonAnimation.state.SetAnimation(0, animationName, loop);
         }
     }
-    public void PlayRetargetAnimation(string animationName, bool loop)
-    {
-        if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
-        {
-            skeletonAnimation.state.SetAnimation(1, animationName, loop);
-        }
-    }
-
 }
+
 public class TurretIdleState : MonsterState
 {
     public TurretIdleState(Monster monster) : base(monster) { }
@@ -262,28 +253,7 @@ public class TurretCooldownState : MonsterState
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;
-
-            (monster as Turret)?.PlayRetargetAnimation((monster as Turret).retargetAnimation, false);
-            (monster as Turret).StartCoroutine(WaitForRetargetAnimation());
-        }
-    }
-
-
-    private IEnumerator WaitForRetargetAnimation()
-    {
-        yield return new WaitForSeconds(1.0f);
-        if (monster.IsPlayerInRange(monster.monsterBaseStat.attackRange))
-        {
-            monster.TransitionToState(monster.attackState);
-        }
-        else if (monster.IsPlayerInRange(monster.monsterBaseStat.detectionRange))
-        {
-            monster.TransitionToState(monster.chaseState);
-        }
-        else
-        {
-            (monster as Turret)?.PlayAnimation((monster as Turret).idleAnimation, true);
-            monster.TransitionToState(monster.idleState);
+            monster.TransitionToState(monster.idleState); // 쿨다운이 끝나면 대기 상태로 전환
         }
     }
 

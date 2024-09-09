@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
     public float maxLifetime = 3f;
     private float currentLifetime = 0f;
     private Vector3 initialSpriteScale;
+    private bool scaleStart = false;
 
     private void Start()
     {
@@ -22,11 +23,21 @@ public class Bullet : MonoBehaviour
     private void Update()
     {
         currentLifetime += Time.deltaTime;
-        float t = Mathf.Clamp01(currentLifetime / maxLifetime);
 
-        float newScaleX = Mathf.Lerp(initialSpriteScale.x, 2f, t);
-        spriteRenderer.transform.localScale = new Vector3(newScaleX, initialSpriteScale.y, initialSpriteScale.z);
+        // 0.5초 이후에 스케일 변경 시작
+        if (currentLifetime > 0.5f && !scaleStart)
+        {
+            scaleStart = true;
+        }
 
+        if (scaleStart)
+        {
+            float t = Mathf.Clamp01((currentLifetime - 0.5f) / (maxLifetime - 0.5f)); // 0.5초 후부터 2까지 보간
+            float newScaleX = Mathf.Lerp(1.5f, 2f, t); // X 스케일을 1.5에서 2로 점진적으로 변경
+            spriteRenderer.transform.localScale = new Vector3(newScaleX, initialSpriteScale.y, initialSpriteScale.z);
+        }
+
+        // 라이프타임 종료 시 탄환 파괴
         if (currentLifetime >= maxLifetime)
         {
             Destroy(gameObject);
@@ -46,7 +57,6 @@ public class Bullet : MonoBehaviour
     private void AdjustSpriteDirection()
     {
         Vector2 direction = rb.velocity.normalized;
-
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
@@ -74,7 +84,6 @@ public class Bullet : MonoBehaviour
     {
         if (sourceMonster != null)
         {
-            Debug.Log($"{sourceMonster.name}이(가) 플레이어를 공격함. 공격력: {attackDamage}");
         }
     }
 
