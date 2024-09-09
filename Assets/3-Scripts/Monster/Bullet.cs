@@ -5,10 +5,12 @@ public class Bullet : MonoBehaviour
     private int attackDamage;
     private Monster sourceMonster;
     private Rigidbody2D rb;
-    public SpriteRenderer spriteRenderer;
-    public CircleCollider2D bulletCollider;
-
-    public float maxLifetime = 3f;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private CircleCollider2D bulletCollider;
+    [SerializeField]
+    private float maxLifetime = 3f;
     private float currentLifetime = 0f;
     private Vector3 initialSpriteScale;
     private bool scaleStart = false;
