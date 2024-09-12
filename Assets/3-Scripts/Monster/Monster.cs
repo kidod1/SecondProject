@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IMonsterState
@@ -25,6 +26,7 @@ public abstract class Monster : MonoBehaviour
     [SerializeField]
     private float deathEffectDuration = 0.2f;
 
+    public bool isElite = false;
     public bool isInCooldown = false;
 
     public IMonsterState currentState;
@@ -32,6 +34,16 @@ public abstract class Monster : MonoBehaviour
     public IMonsterState chaseState;
     public IMonsterState attackState;
     public IMonsterState cooldownState;
+
+
+    public GameObject damageArea;
+    private Collider2D areaCollider;
+    private SpriteRenderer areaSpriteRenderer;
+
+    [SerializeField]
+    private int areaDamage = 10;
+    [SerializeField]
+    private float damageInterval = 1f;
 
     protected virtual void Start()
     {
@@ -46,6 +58,34 @@ public abstract class Monster : MonoBehaviour
         else
         {
             InitializeStates();
+        }
+
+        if (isElite)
+        {
+            if (damageArea != null)
+            {
+                areaCollider = damageArea.GetComponent<Collider2D>();
+                areaSpriteRenderer = damageArea.GetComponent<SpriteRenderer>();
+
+                if (areaCollider == null)
+                {
+                    Debug.LogError("Damage area collider를 찾을 수 없습니다. Collider2D가 존재하는지 확인하세요.");
+                }
+
+                if (areaSpriteRenderer == null)
+                {
+                    Debug.LogError("Damage area의 SpriteRenderer를 찾을 수 없습니다. SpriteRenderer가 존재하는지 확인하세요.");
+                }
+
+                if (areaCollider != null && areaSpriteRenderer != null)
+                {
+                    StartCoroutine(AreaDamageCoroutine());
+                }
+            }
+            else
+            {
+                Debug.LogWarning("damageArea가 설정되지 않았습니다. 장판 데미지 시스템을 비활성화합니다.");
+            }
         }
     }
 
@@ -214,5 +254,38 @@ public abstract class Monster : MonoBehaviour
                 player.TakeDamage(monsterBaseStat.contectDamage);
             }
         }
+    }
+
+    private IEnumerator AreaDamageCoroutine()
+    {
+        while (!isDead)
+        {
+            if (player != null && areaCollider != null)
+            {
+                // 장판 범위 내에 플레이어가 있는지 확인
+                if (areaCollider.bounds.Contains(player.transform.position))
+                {
+                    // 플레이어에게 데미지를 준다
+                    player.TakeDamage(areaDamage);
+
+                    // SpriteRenderer 반짝이게 하기
+                    StartCoroutine(BlinkAreaSprite());
+                }
+            }
+
+            // 주기마다 데미지 입히기
+            yield return new WaitForSeconds(damageInterval);
+        }
+    }
+
+    // SpriteRenderer 반짝이게 하는 코루틴
+    private IEnumerator BlinkAreaSprite()
+    {
+        if (areaSpriteRenderer == null) yield break;
+
+        float blinkDuration = 0.2f; // 반짝이는 시간
+        areaSpriteRenderer.enabled = false; // 투명하게 만듦
+        yield return new WaitForSeconds(blinkDuration);
+        areaSpriteRenderer.enabled = true; // 다시 보이게 만듦
     }
 }

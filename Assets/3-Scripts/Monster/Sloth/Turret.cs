@@ -1,6 +1,7 @@
 using Spine.Unity;
 using UnityEngine;
 using System.Collections;
+using System.ComponentModel;
 
 public class Turret : Monster
 {
@@ -24,7 +25,8 @@ public class Turret : Monster
 
     [SerializeField] private Transform[] firePoints;
     [SerializeField] private int bulietQuantity = 4;
-
+    [SerializeField] private float currentSize = 0.3f;
+    [SerializeField] private float eliteSize = 0.6f;
     private int currentFirePoint = 0;
     private int attackCount = 0;
     public bool isAttacking = false;
@@ -126,13 +128,28 @@ public class Turret : Monster
             skinName = "side";
             attackAnimationName = sideAttackAnimation;
 
-            if (directionToPlayer.x > 0)
+
+            if (isElite)
             {
-                transform.localScale = new Vector3(-0.3f, 0.3f, 1);
+                if (directionToPlayer.x > 0)
+                {
+                    transform.localScale = new Vector3(-eliteSize, eliteSize, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(eliteSize, eliteSize, 1);
+                }
             }
             else
             {
-                transform.localScale = new Vector3(0.3f, 0.3f, 1);
+                if (directionToPlayer.x > 0)
+                {
+                    transform.localScale = new Vector3(-currentSize, currentSize, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(currentSize, currentSize, 1);
+                }
             }
         }
 
