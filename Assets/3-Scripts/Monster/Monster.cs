@@ -35,7 +35,6 @@ public abstract class Monster : MonoBehaviour
     public IMonsterState attackState;
     public IMonsterState cooldownState;
 
-
     public GameObject damageArea;
     private Collider2D areaCollider;
     private SpriteRenderer areaSpriteRenderer;
@@ -119,7 +118,6 @@ public abstract class Monster : MonoBehaviour
 
     public bool IsPlayerInRange(float range)
     {
-        // player가 null인지 확인하여 예외 방지
         if (player == null)
         {
             Debug.LogWarning("Player가 설정되지 않았습니다. IsPlayerInRange 호출이 무시됩니다.");
@@ -169,12 +167,11 @@ public abstract class Monster : MonoBehaviour
             ParticleSystem[] particleSystems = deathEffect.GetComponentsInChildren<ParticleSystem>();
             foreach (ParticleSystem ps in particleSystems)
             {
-                ps.Clear();  // 초기화
-                ps.Play();   // 재생
+                ps.Clear();
+                ps.Play();
             }
 
             Destroy(deathEffect, deathEffectDuration + 0.5f);
-
         }
 
         DropExperienceItem();
@@ -202,6 +199,7 @@ public abstract class Monster : MonoBehaviour
 
         isInvincible = false;
     }
+
     private void DropExperienceItem()
     {
         if (player != null && monsterBaseStat != null)
@@ -243,7 +241,6 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-
     virtual protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -260,32 +257,26 @@ public abstract class Monster : MonoBehaviour
     {
         while (!isDead)
         {
-            if (player != null && areaCollider != null)
+            if (player != null && areaCollider != null && areaCollider.enabled)
             {
-                // 장판 범위 내에 플레이어가 있는지 확인
                 if (areaCollider.bounds.Contains(player.transform.position))
                 {
-                    // 플레이어에게 데미지를 준다
                     player.TakeDamage(areaDamage);
-
-                    // SpriteRenderer 반짝이게 하기
                     StartCoroutine(BlinkAreaSprite());
                 }
             }
-
-            // 주기마다 데미지 입히기
             yield return new WaitForSeconds(damageInterval);
         }
     }
 
-    // SpriteRenderer 반짝이게 하는 코루틴
     private IEnumerator BlinkAreaSprite()
     {
         if (areaSpriteRenderer == null) yield break;
 
-        float blinkDuration = 0.2f; // 반짝이는 시간
-        areaSpriteRenderer.enabled = false; // 투명하게 만듦
+        float blinkDuration = 0.2f;
+        areaSpriteRenderer.enabled = false;
         yield return new WaitForSeconds(blinkDuration);
-        areaSpriteRenderer.enabled = true; // 다시 보이게 만듦
+        areaSpriteRenderer.enabled = true;
     }
+
 }

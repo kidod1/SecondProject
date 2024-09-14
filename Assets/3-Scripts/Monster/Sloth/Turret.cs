@@ -2,7 +2,6 @@ using Spine.Unity;
 using UnityEngine;
 using System.Collections;
 using System.ComponentModel;
-
 public class Turret : Monster
 {
     public GameObject bulletPrefab;
@@ -25,8 +24,6 @@ public class Turret : Monster
 
     [SerializeField] private Transform[] firePoints;
     [SerializeField] private int bulietQuantity = 4;
-    [SerializeField] private float currentSize = 0.3f;
-    [SerializeField] private float eliteSize = 0.6f;
     private int currentFirePoint = 0;
     private int attackCount = 0;
     public bool isAttacking = false;
@@ -104,11 +101,25 @@ public class Turret : Monster
         }
     }
 
+    public void ClearCurrentSkin()
+    {
+        if (skeletonAnimation != null)
+        {
+            skeletonAnimation.state.ClearTracks();
+            skeletonAnimation.Skeleton.SetSlotsToSetupPose(); // 슬롯을 기본 상태로 설정
+            skeletonAnimation.Initialize(true); // true로 설정하면 강제로 재설정
+            Debug.Log("Skeleton animation state has been reloaded.");
+        }
+    }
+
     private void UpdateSkinAndAnimation()
     {
         Vector3 directionToPlayer = player.transform.position - transform.position;
         string skinName;
         string attackAnimationName;
+
+        // 스킨 변경 전에 현재 슬롯 상태를 초기화
+        ClearCurrentSkin();
 
         if (Mathf.Abs(directionToPlayer.y) > Mathf.Abs(directionToPlayer.x))
         {
@@ -121,6 +132,17 @@ public class Turret : Monster
             {
                 skinName = "front";
                 attackAnimationName = frontAttackAnimation;
+
+                if (isElite)
+                {
+                    transform.localScale = new Vector3(0.6f, 0.6f, 1);
+                    damageArea.transform.localScale = new Vector3(2.5f, 2.5f, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(0.3f, 0.3f, 1);
+                    damageArea.transform.localScale = new Vector3(1.2f, 1.2f, 1);
+                }
             }
         }
         else
@@ -128,34 +150,41 @@ public class Turret : Monster
             skinName = "side";
             attackAnimationName = sideAttackAnimation;
 
-
             if (isElite)
             {
                 if (directionToPlayer.x > 0)
                 {
-                    transform.localScale = new Vector3(-eliteSize, eliteSize, 1);
+                    transform.localScale = new Vector3(-0.6f, 0.6f, 1);
+                    damageArea.transform.localScale = new Vector3(-2.5f, 2.5f, 1);
                 }
                 else
                 {
-                    transform.localScale = new Vector3(eliteSize, eliteSize, 1);
+                    transform.localScale = new Vector3(0.6f, 0.6f, 1);
+                    damageArea.transform.localScale = new Vector3(2.5f, 2.5f, 1);
                 }
             }
             else
             {
                 if (directionToPlayer.x > 0)
                 {
-                    transform.localScale = new Vector3(-currentSize, currentSize, 1);
+                    transform.localScale = new Vector3(-0.3f, 0.3f, 1);
+                    damageArea.transform.localScale = new Vector3(-1.2f, 1.2f, 1);
                 }
                 else
                 {
-                    transform.localScale = new Vector3(currentSize, currentSize, 1);
+                    transform.localScale = new Vector3(0.3f, 0.3f, 1);
+                    damageArea.transform.localScale = new Vector3(1.2f, 1.2f, 1);
                 }
             }
         }
 
+        Debug.Log($"Setting skin to: {skinName}, Playing animation: {attackAnimationName}");
+
+
         skeletonAnimation.Skeleton.SetSkin(skinName);
         PlayAnimation(attackAnimationName, false);
     }
+
 
     private void FireBullet()
     {
@@ -178,7 +207,12 @@ public class Turret : Monster
     {
         if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
         {
-            skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            var currentTrackEntry = skeletonAnimation.state.GetCurrent(0);
+
+            if (currentTrackEntry == null || currentTrackEntry.Animation.Name != animationName)
+            {
+                skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            }
         }
     }
 }

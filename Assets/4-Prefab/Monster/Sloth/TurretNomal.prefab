@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &8509312286314539964
 Transform:
@@ -52,7 +52,7 @@ GameObject:
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &6955322145952194302
 Transform:
@@ -112,7 +112,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -176,7 +176,11 @@ MonoBehaviour:
   blinkInterval: 0.1
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
+  isElite: 0
   isInCooldown: 0
+  damageArea: {fileID: 7698582841258142112}
+  areaDamage: 10
+  damageInterval: 1
   bulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
   stat: {fileID: 11400000, guid: addc8503f3313404b89d34af4d991a75, type: 2}
   summonAnimation: summon
@@ -289,7 +293,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &814760329991142954
 Transform:
@@ -366,5 +370,10 @@ PrefabInstance:
 --- !u!4 &2856815904920931960 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7403338250123367255, guid: 47e61fb5bd2d7db49bff0aa596cbfe74, type: 3}
+  m_PrefabInstance: {fileID: 4690641965729307951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7698582841258142112 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3156564061304272015, guid: 47e61fb5bd2d7db49bff0aa596cbfe74, type: 3}
   m_PrefabInstance: {fileID: 4690641965729307951}
   m_PrefabAsset: {fileID: 0}
