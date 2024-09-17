@@ -42,4 +42,17 @@ public class PlayManager : MonoBehaviour
             return Vector2.zero;
         }
     }
+
+    public Player GetPlayer()
+    {
+        if (player != null)
+        {
+            return player;
+        }
+        else
+        {
+            Debug.LogError("Player is not assigned!");
+            return null;
+        }
+    }
 }

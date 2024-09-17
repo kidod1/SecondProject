@@ -57,7 +57,7 @@ public class ReverseAttack : Ability
         Projectile projScript = projectile.GetComponent<Projectile>();
         if (projScript != null)
         {
-            projScript.Initialize(player.stat);
+            projScript.Initialize(player.stat, PlayManager.I.GetPlayer());
             projScript.SetDirection(direction);
             Debug.Log($"반대 방향을 지정. 위칫값 : {direction}");
         }

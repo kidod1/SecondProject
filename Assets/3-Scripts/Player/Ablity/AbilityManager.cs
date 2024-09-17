@@ -29,7 +29,7 @@ public class AbilityManager : MonoBehaviour
     private Image[] abilityIcons;
     [SerializeField]
     private Button rerollButton;
-
+    [SerializeField]
     private PlayerAbilityManager playerAbilityManager;
     private List<Ability> availableAbilities;
 
@@ -185,6 +185,8 @@ public class AbilityManager : MonoBehaviour
         if (playerAbilityManager != null)
         {
             playerAbilityManager.ApplySynergyAbility(synergyAbility);
+            player.AcquireSynergyAbility(synergyAbility);
+            Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
         }
         else
         {
@@ -200,6 +202,7 @@ public class AbilityManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+
     private void SelectAbility(Ability ability)
     {
         if (ability == null)
@@ -211,6 +214,12 @@ public class AbilityManager : MonoBehaviour
         if (playerAbilityManager != null)
         {
             playerAbilityManager.SelectAbility(ability);
+
+            if (ability is SynergyAbility synergyAbility)
+            {
+                player.AcquireSynergyAbility(synergyAbility);
+                Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
+            }
         }
         else
         {
@@ -230,6 +239,7 @@ public class AbilityManager : MonoBehaviour
 
         Time.timeScale = 1f;
     }
+
 
     private void RerollAbilities()
     {

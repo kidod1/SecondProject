@@ -15,7 +15,7 @@ public class HomingProjectile : Projectile
 
     public void Initialize(PlayerData playerStat, float startDelay, float speed, float range)
     {
-        base.Initialize(playerStat);
+        base.Initialize(playerStat, PlayManager.I.GetPlayer());
         homingStartDelay = startDelay;
         homingSpeed = speed;
         homingRange = range;

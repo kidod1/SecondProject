@@ -44,6 +44,8 @@ public abstract class Monster : MonoBehaviour
     [SerializeField]
     private float damageInterval = 1f;
 
+    private bool isStunned = false;
+    private float stunDuration = 2f;
     protected virtual void Start()
     {
         currentHP = monsterBaseStat.maxHP;
@@ -98,12 +100,32 @@ public abstract class Monster : MonoBehaviour
                 InitializeStates();
             }
         }
-
+        if (isStunned) return;
         currentState?.UpdateState();
     }
 
     protected abstract void InitializeStates();
 
+    public void Stun()
+    {
+        if (isStunned) return;
+        isStunned = true;
+
+        // 몬스터가 기절했다는 메시지 출력
+        Debug.Log($"몬스터 {gameObject.name} 이(가) 기절했습니다! 기절 지속 시간: {stunDuration}초");
+
+        // 기절 상태가 끝나는 Coroutine 시작
+        StartCoroutine(StunCoroutine());
+    }
+
+    private IEnumerator StunCoroutine()
+    {
+        yield return new WaitForSeconds(stunDuration);
+        isStunned = false;
+
+        // 기절이 끝났다는 메시지 출력
+        Debug.Log($"몬스터 {gameObject.name} 의 기절 상태가 종료되었습니다.");
+    }
     public void TransitionToState(IMonsterState newState)
     {
         if (isInCooldown && newState != cooldownState)
@@ -159,6 +181,10 @@ public abstract class Monster : MonoBehaviour
         isDead = true;
         Debug.Log("몬스터 사망");
 
+        if (player != null)
+        {
+            player.KillMonster();
+        }
         if (monsterDeathEffectPrefab != null)
         {
             GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);

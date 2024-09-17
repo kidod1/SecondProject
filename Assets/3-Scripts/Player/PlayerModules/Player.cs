@@ -11,6 +11,7 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
     public PlayerData stat;
+    public SynergyAbility currentSynergyAbility;
     public ObjectPool objectPool;
     public PlayerAbilityManager abilityManager;
     public Barrier barrierAbility;
@@ -56,6 +57,8 @@ public class Player : MonoBehaviour
     public UnityEvent OnShootCanceled;
     public UnityEvent OnTakeDamage;
     public UnityEvent OnPlayerDeath;
+    public UnityEvent OnMonsterKilled;
+    public UnityEvent<Collider2D> OnHitEnemy;
 
     private string saveFilePath;
 
@@ -75,6 +78,7 @@ public class Player : MonoBehaviour
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
         OnPlayerDeath ??= new UnityEvent();
+        OnMonsterKilled ??= new UnityEvent();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -123,7 +127,21 @@ public class Player : MonoBehaviour
         {
             UpdateAnimation();
         }
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            if (currentSynergyAbility != null)
+            {
+                Debug.Log($"Activating ability: {currentSynergyAbility.abilityName}");
+                currentSynergyAbility.Activate(this);
+            }
+            else
+            {
+                Debug.Log("No synergy ability assigned.");
+            }
+        }
     }
+
+
 
     private void FixedUpdate()
     {
@@ -131,7 +149,6 @@ public class Player : MonoBehaviour
         Vector2 newPosition = rb.position + movement;
         rb.MovePosition(newPosition);
     }
-
     private void UpdateAnimation()
     {
         if (isShooting)
@@ -178,6 +195,7 @@ public class Player : MonoBehaviour
         }
     }
 
+
     private void SetSkinAndAnimation(string skinName, string animationName, bool loop, bool flipX = false)
     {
         skeleton.SetSkin(skinName);
@@ -191,6 +209,11 @@ public class Player : MonoBehaviour
         {
             PlayShootAnimation();
         }
+    }
+
+    public void AcquireSynergyAbility(SynergyAbility newAbility)
+    {
+        currentSynergyAbility = newAbility;
     }
 
     public void SetInvincibility(bool value)
@@ -263,7 +286,11 @@ public class Player : MonoBehaviour
 
         OnPlayerDeath.Invoke();
     }
-
+    public void KillMonster()
+    {
+        OnMonsterKilled.Invoke();
+        Debug.Log("몬스터 킬");
+    }
     public void Heal(int amount)
     {
         stat.Heal(amount);
@@ -420,20 +447,25 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // Debug 로그 추가: 투사체의 위치를 확인
-        Debug.Log($"ShootPoint 위치에서 발사: {shootPoint.position}");
-
         projectile.transform.position = shootPoint.position;
 
         Projectile projScript = projectile.GetComponent<Projectile>();
         if (projScript != null)
         {
-            projScript.Initialize(stat);
+            projScript.Initialize(stat, this);
             projScript.SetDirection(direction);
         }
 
-        OnShoot.Invoke(direction, prefabIndex);  // OnShoot 이벤트 호출
+        OnShoot.Invoke(direction, prefabIndex);
     }
+
+    public bool CanStun()
+    {
+        StunAbility stunAbility = abilityManager.GetAbilityOfType<StunAbility>();
+
+        return stunAbility != null;
+    }
+
 
 
     private void SaveCurrencyOnly()

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    private Player playerInstance;
     private Vector2 direction;
     private float damageMultiplier = 1.0f;
     [SerializeField]
@@ -44,9 +45,10 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Initialize(PlayerData playerStat, bool isClone = false, float multiplier = 1.0f)
+    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f)
     {
         stat = playerStat;
+        this.playerInstance = playerInstance;
         isCloneProjectile = isClone;
         damageMultiplier = multiplier;
 
@@ -60,6 +62,7 @@ public class Projectile : MonoBehaviour
             OnEnable();
         }
     }
+
 
     private void Deactivate()
     {
@@ -77,28 +80,50 @@ public class Projectile : MonoBehaviour
             Monster monster = collision.GetComponent<Monster>();
             if (monster != null)
             {
+                // 플레이어의 현재 공격력을 가져와 데미지 계산
                 int damage = stat.currentPlayerDamage;
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);
                 }
-                monster.TakeDamage(damage);
+                monster.TakeDamage(damage); // 몬스터에게 데미지 적용
+
+                if (playerInstance != null)
+                {
+                    playerInstance.OnHitEnemy?.Invoke(collision);
+                }
+
+                // 기절 여부 판정
+                if (playerInstance != null && playerInstance.CanStun())
+                {
+                    float stunChance = 0.25f; // 25% 확률로 기절
+                    if (Random.value < stunChance)
+                    {
+                        monster.Stun(); // 몬스터 기절시키기
+                        Debug.Log($"{monster.name}이(가) 기절했습니다."); // 몬스터 이름과 함께 기절 메시지 출력
+                    }
+                    else
+                    {
+                        Debug.Log($"{monster.name}은(는) 기절하지 않았습니다."); // 기절하지 않았을 때 메시지 출력
+                    }
+                }
             }
-            gameObject.SetActive(false);
+            gameObject.SetActive(false); // 투사체 제거
         }
         else if (collision.GetComponent<DestructibleObject>() != null)
         {
             DestructibleObject destructible = collision.GetComponent<DestructibleObject>();
             if (destructible != null)
             {
+                // 플레이어의 공격력을 가져와 데미지 계산
                 int damage = stat.currentPlayerDamage;
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);
                 }
-                destructible.TakeDamage(damage);
+                destructible.TakeDamage(damage); // 파괴 가능한 오브젝트에 데미지 적용
             }
-            gameObject.SetActive(false);
+            gameObject.SetActive(false); // 투사체 제거
         }
     }
 }

@@ -8,12 +8,12 @@ public class DamageField : MonoBehaviour
     private float damageInterval;
     private float damageFieldDuration;
     private float cooldownDurations;
-    private ElectricField electricField; // ElectricField 참조
+    private ElectricField electricField;
     private HashSet<Monster> monstersInRange = new HashSet<Monster>();
     private ParticleSystem particleSystem;
     private Animator animator;
-    private bool isInitialized = false; // 초기화 여부를 확인하는 변수 추가
-    private bool isCooldown = false; // 쿨다운 상태
+    private bool isInitialized = false;
+    private bool isCooldown = false;
 
     public void Initialize(ElectricField electricField, Player playerInstance)
     {
@@ -26,7 +26,7 @@ public class DamageField : MonoBehaviour
         particleSystem = GetComponent<ParticleSystem>();
         animator = GetComponent<Animator>();
 
-        isInitialized = true; // 초기화 완료로 설정
+        isInitialized = true;
         particleSystem?.Stop();
     }
 
@@ -52,6 +52,14 @@ public class DamageField : MonoBehaviour
             {
                 monstersInRange.Remove(monster);
             }
+        }
+    }
+
+    public void DealDamage(int amount)
+    {
+        foreach (var monster in monstersInRange)
+        {
+            monster.TakeDamage(amount);
         }
     }
 

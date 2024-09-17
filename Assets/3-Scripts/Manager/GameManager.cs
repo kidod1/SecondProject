@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
         // 능력 초기화
         abilityManager.ResetAllAbilities(); // Start 시 초기화
 

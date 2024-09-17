@@ -43,7 +43,7 @@ public class RotatingObject : MonoBehaviour
         projectile.transform.position = transform.position;
 
         Projectile projScript = projectile.GetComponent<Projectile>();
-        projScript.Initialize(playerShooting.stat, true, damageMultiplier);
+        projScript.Initialize(playerShooting.stat, PlayManager.I.GetPlayer(), true, damageMultiplier);
         projScript.SetDirection(direction);
     }
 

@@ -1,25 +1,45 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SynergyAbilities/SynergyAbility")]
+[CreateAssetMenu(menuName = "ActiveAbilities/SynergyAbility")]
 public class SynergyAbility : Ability
 {
+    public float cooldownDuration;
+    private float lastUsedTime = 0;
+
+    public bool IsReady => Time.time >= lastUsedTime + cooldownDuration;
+
+    public virtual void Activate(Player player)
+    {
+        Debug.Log(IsReady);
+        Debug.Log(lastUsedTime);
+        Debug.Log(cooldownDuration);
+        if (IsReady)
+        {
+            lastUsedTime = Time.time; // 쿨타임 시작
+            Apply(player);
+            Debug.Log("능력 적용 완료, 쿨타임 시작");
+        }
+        else
+        {
+            float remainingCooldown = (lastUsedTime + cooldownDuration) - Time.time;
+            Debug.Log($"Ability {abilityName} is on cooldown. Remaining: {remainingCooldown:F2} seconds.");
+        }
+    }
     public override void Apply(Player player)
     {
-        // 시너지 능력 적용 로직
     }
 
     public override void Upgrade()
     {
-        // 시너지 능력은 업그레이드 없음
     }
 
     public override string GetDescription()
     {
-        return baseDescription; // 시너지 능력은 레벨에 따른 설명 변경 없음
+        return baseDescription;
     }
 
     protected override int GetNextLevelIncrease()
     {
-        return 0; // 시너지 능력에는 적용되지 않음
+        return 0;
     }
 }

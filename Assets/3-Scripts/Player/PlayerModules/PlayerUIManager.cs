@@ -21,7 +21,7 @@ public class PlayerUIManager : MonoBehaviour
 
     private int maxHP;
     private Player player;
-    private Color originalHealthTextColor = Color.white; // 초기 체력 텍스트 색상을 흰색으로 설정
+    private Color originalHealthTextColor = Color.white;
 
     public void Initialize(Player player)
     {
@@ -47,7 +47,7 @@ public class PlayerUIManager : MonoBehaviour
 
         if (healthText != null)
         {
-            healthText.color = originalHealthTextColor; // 체력 텍스트 색상을 항상 흰색으로 초기화
+            healthText.color = originalHealthTextColor;
         }
         else
         {
@@ -89,7 +89,7 @@ public class PlayerUIManager : MonoBehaviour
 
         if (maskRectTransform != null)
         {
-            float rightPadding = (1 - healthPercentage) * 240 * 4;
+            float rightPadding = (1 - healthPercentage) * 120 * 4;
             maskRectTransform.offsetMax = new Vector2(-rightPadding, maskRectTransform.offsetMax.y);
         }
         else
@@ -133,7 +133,7 @@ public class PlayerUIManager : MonoBehaviour
 
         if (player.stat.currentLevel < player.stat.experienceThresholds.Length)
         {
-            levelText.text = "Lv. " + player.stat.currentLevel;
+            levelText.text = "" +player.stat.currentLevel;
 
             float expRatio = (float)player.stat.currentExperience / player.stat.experienceThresholds[player.stat.currentLevel];
             experienceScrollbar.size = Mathf.Clamp01(expRatio);
