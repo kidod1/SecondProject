@@ -29,6 +29,9 @@ public abstract class Monster : MonoBehaviour
     public bool isElite = false;
     public bool isInCooldown = false;
 
+    // 새로운 필드 추가: Betting 능력에 의해 한 번만 발동하도록 관리
+    public bool HasBeenHitByBetting { get; set; } = false;
+
     public IMonsterState currentState;
     public IMonsterState idleState;
     public IMonsterState chaseState;
@@ -46,6 +49,7 @@ public abstract class Monster : MonoBehaviour
 
     private bool isStunned = false;
     private float stunDuration = 2f;
+
     protected virtual void Start()
     {
         currentHP = monsterBaseStat.maxHP;
@@ -173,6 +177,10 @@ public abstract class Monster : MonoBehaviour
     }
 
     public abstract void Attack();
+    public int GetCurrentHP()
+    {
+        return currentHP;
+    }
 
     protected virtual void Die()
     {
@@ -304,5 +312,4 @@ public abstract class Monster : MonoBehaviour
         yield return new WaitForSeconds(blinkDuration);
         areaSpriteRenderer.enabled = true;
     }
-
 }

@@ -14,18 +14,17 @@ public class SharkStrike : Ability
     public override void Apply(Player player)
     {
         playerInstance = player;
-        playerInstance.OnHitEnemy.AddListener(OnProjectileHit);  // 적중 이벤트 리스너 추가
     }
 
     // 플레이어가 적을 적중시켰을 때 호출되는 메서드
-    private void OnProjectileHit(Collider2D enemy)
+    public void OnProjectileHit(Collider2D enemy)
     {
         hitCount++;
 
         if (hitCount >= hitThreshold)
         {
             SpawnShark();
-            hitCount = 0;  // 적중 횟수 초기화
+            hitCount = 0;
         }
     }
 
@@ -34,13 +33,12 @@ public class SharkStrike : Ability
     {
         if (sharkPrefab != null)
         {
-            // 상어 생성
             GameObject sharkObject = Instantiate(sharkPrefab, playerInstance.transform.position, Quaternion.identity);
             Shark sharkInstance = sharkObject.GetComponent<Shark>();
 
             if (sharkInstance != null)
             {
-                sharkInstance.Initialize(sharkSpeed, chaseDelay);  // 상어 초기화
+                sharkInstance.Initialize(sharkSpeed, chaseDelay);
             }
             else
             {
@@ -56,7 +54,6 @@ public class SharkStrike : Ability
     public override void ResetLevel()
     {
         base.ResetLevel();
-        playerInstance.OnHitEnemy.RemoveListener(OnProjectileHit);  // 리스너 제거
         hitCount = 0;  // 적중 횟수 초기화
     }
 

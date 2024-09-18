@@ -8,6 +8,14 @@ using Spine.Unity;
 using Cinemachine;
 using System.Collections.Generic;
 
+public enum AbilityType
+{
+    JokerDraw,
+    CardStrike,
+    RicochetStrike,
+    SharkStrike
+}
+
 public class Player : MonoBehaviour
 {
     public PlayerData stat;
@@ -58,7 +66,7 @@ public class Player : MonoBehaviour
     public UnityEvent OnTakeDamage;
     public UnityEvent OnPlayerDeath;
     public UnityEvent OnMonsterKilled;
-    public UnityEvent<Collider2D> OnHitEnemy;
+    public UnityEvent<Collider2D> OnHitEnemy; // AbilityType Á¦°Å
 
     private string saveFilePath;
 
@@ -79,6 +87,7 @@ public class Player : MonoBehaviour
         OnTakeDamage ??= new UnityEvent();
         OnPlayerDeath ??= new UnityEvent();
         OnMonsterKilled ??= new UnityEvent();
+        OnHitEnemy ??= new UnityEvent<Collider2D>();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -452,12 +461,13 @@ public class Player : MonoBehaviour
         Projectile projScript = projectile.GetComponent<Projectile>();
         if (projScript != null)
         {
-            projScript.Initialize(stat, this);
+            projScript.Initialize(stat, this, false);
             projScript.SetDirection(direction);
         }
 
         OnShoot.Invoke(direction, prefabIndex);
     }
+
 
     public bool CanStun()
     {

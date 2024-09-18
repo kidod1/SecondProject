@@ -32,6 +32,7 @@ public class KillSpeedBoostAbility : Ability
         isBoostActive = false;
     }
 
+
     private void OnMonsterKilled()
     {
         killCount++;
@@ -43,11 +44,8 @@ public class KillSpeedBoostAbility : Ability
 
     private void ActivateSpeedBoost()
     {
-        // 속도 증가
         isBoostActive = true;
         playerInstance.stat.currentPlayerSpeed += speedBoostAmount;
-
-        // 5초 후에 속도를 원래대로 복구
         playerInstance.StartCoroutine(SpeedBoostCoroutine());
     }
 
@@ -55,19 +53,16 @@ public class KillSpeedBoostAbility : Ability
     {
         yield return new WaitForSeconds(boostDuration);
 
-        // 이동 속도를 원래대로 복구
         playerInstance.stat.currentPlayerSpeed -= speedBoostAmount;
         isBoostActive = false;
-        killCount = 0;  // 처치 수 초기화
+        killCount = 0;
     }
 
-    // GetNextLevelIncrease() 구현
     protected override int GetNextLevelIncrease()
     {
-        return 1; // 레벨이 오를 때 증가할 양을 반환 (필요에 따라 수정 가능)
+        return 1;
     }
 
-    // Upgrade() 구현
     public override void Upgrade()
     {
         if (currentLevel < maxLevel)

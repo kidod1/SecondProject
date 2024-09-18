@@ -59,7 +59,6 @@ public class ReverseAttack : Ability
         {
             projScript.Initialize(player.stat, PlayManager.I.GetPlayer());
             projScript.SetDirection(direction);
-            Debug.Log($"반대 방향을 지정. 위칫값 : {direction}");
         }
         else
         {
@@ -73,7 +72,6 @@ public class ReverseAttack : Ability
         {
             Vector2 reverseDirection = -direction;
             ShootReverse(playerInstance, reverseDirection, prefabIndex);
-            Debug.Log($"반대 방향을 지정. 위칫값: {direction}, 반대 공격의 위칫값 : {reverseDirection}");
         }
     }
 
