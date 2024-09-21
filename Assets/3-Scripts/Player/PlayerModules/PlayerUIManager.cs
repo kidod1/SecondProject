@@ -164,13 +164,10 @@ public class PlayerUIManager : MonoBehaviour
         {
             deathPanel.SetActive(true);
         }
-<<<<<<< HEAD
         // 사망시 UI 업로드를 담당할 메서드. 미완
-=======
         else
         {
             Debug.LogError("PlayerUIManager: deathPanel이 할당되지 않았습니다.");
         }
->>>>>>> main
     }
 }
