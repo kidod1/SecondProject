@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     public bool isShooting = false;
     private Vector2 shootDirection;
     private Vector2 nextShootDirection;
+    private Vector2 lastMoveDirection = Vector2.right;
     private bool hasNextShootDirection = false;
 
     private PlayerInput playerInput;
@@ -344,13 +345,21 @@ public class Player : MonoBehaviour
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+
+        if (moveInput != Vector2.zero)
+        {
+            lastMoveDirection = moveInput.normalized;
+        }
+
         UpdateAnimation();
     }
+
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector2.zero;
     }
+
 
     private void OnShootStarted(InputAction.CallbackContext context)
     {
@@ -476,7 +485,22 @@ public class Player : MonoBehaviour
         return stunAbility != null;
     }
 
-
+    public Vector2 GetFacingDirection()
+    {
+        if (isShooting && shootDirection != Vector2.zero)
+        {
+            return shootDirection.normalized;
+        }
+        else if (moveInput != Vector2.zero)
+        {
+            return moveInput.normalized;
+        }
+        else
+        {
+            // 이동도 사격도 하지 않을 때 마지막 이동 방향을 반환
+            return lastMoveDirection;
+        }
+    }
 
     private void SaveCurrencyOnly()
     {

@@ -16,6 +16,8 @@ public abstract class Monster : MonoBehaviour
     protected MeshRenderer meshRenderer;
     protected bool isInvincible = false;
     protected bool isDead = false;
+    public bool IsDead => isDead;
+
     protected internal Player player;
 
     [SerializeField]
@@ -28,6 +30,8 @@ public abstract class Monster : MonoBehaviour
 
     public bool isElite = false;
     public bool isInCooldown = false;
+    public bool isInfected = false;
+
 
     // 새로운 필드 추가: Betting 능력에 의해 한 번만 발동하도록 관리
     public bool HasBeenHitByBetting { get; set; } = false;
@@ -192,26 +196,43 @@ public abstract class Monster : MonoBehaviour
         if (player != null)
         {
             player.KillMonster();
+
+            // 능력 매니저에서 모든 능력을 가져옵니다.
+            PlayerAbilityManager abilityManager = player.GetComponent<PlayerAbilityManager>();
+            if (abilityManager != null)
+            {
+                abilityManager.ActivateAbilitiesOnMonsterDeath(this);
+            }
         }
+
+        if (isInfected)
+        {
+            SpawnParasite();
+        }
+
         if (monsterDeathEffectPrefab != null)
         {
-            GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);
-            deathEffect.transform.localScale = Vector3.one;
-
-            ParticleSystem[] particleSystems = deathEffect.GetComponentsInChildren<ParticleSystem>();
-            foreach (ParticleSystem ps in particleSystems)
-            {
-                ps.Clear();
-                ps.Play();
-            }
-
-            Destroy(deathEffect, deathEffectDuration + 0.5f);
+            // ...
         }
 
         DropExperienceItem();
 
         Destroy(gameObject);
     }
+
+    private void SpawnParasite()
+    {
+        GameObject parasitePrefab = Resources.Load<GameObject>("ParasitePrefab");
+        if (parasitePrefab != null)
+        {
+            GameObject parasite = Instantiate(parasitePrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("기생 벌레 프리팹을 찾을 수 없습니다: ParasitePrefab");
+        }
+    }
+
 
     private IEnumerator InvincibilityCoroutine()
     {

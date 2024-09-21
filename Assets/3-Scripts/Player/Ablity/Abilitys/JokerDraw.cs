@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilities/JokerDraw")]
 public class JokerDraw : Ability
 {
+    [Range(0f, 1f)]
     public float instantKillChance = 0.01f;
 
     private Player playerInstance;

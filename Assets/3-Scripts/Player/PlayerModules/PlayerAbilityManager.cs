@@ -44,11 +44,24 @@ public class PlayerAbilityManager : MonoBehaviour
             {
                 sharkStrikeAbility.OnProjectileHit(enemy);
             }
-            // 필요한 다른 능력들에 대해서도 동일하게 추가
+            else if (ability is ParasiticNest parasiticNestAbility)
+            {
+                parasiticNestAbility.OnProjectileHit(enemy);
+            }
         }
     }
 
-
+    public void ActivateAbilitiesOnMonsterDeath(Monster monster)
+    {
+        foreach (var ability in abilities)
+        {
+            if (ability is HoneyDrop honeyDropAbility)
+            {
+                honeyDropAbility.OnMonsterDeath(monster);
+            }
+            // 다른 능력들의 몬스터 사망 시 발동 로직이 있다면 여기에 추가
+        }
+    }
     private void LoadAvailableAbilities()
     {
         Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");

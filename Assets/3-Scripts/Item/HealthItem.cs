@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class HealthItem : MonoBehaviour
 {
-    public HealthItemData itemData;
+    [SerializeField]
+    private HealthItemData itemData;
 
     private void OnTriggerEnter2D(Collider2D other)
     {

@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilities/StunAbility")]
 public class StunAbility : Ability
 {
-    public float stunChance = 0.25f; // 기절 확률
+    [Range(0f, 1f)]
+    public float stunChance = 0.25f;
     public float stunDuration = 2f;   // 기절 지속 시간
 
     public override void Apply(Player player)
