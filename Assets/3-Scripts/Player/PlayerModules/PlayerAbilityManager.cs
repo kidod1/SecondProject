@@ -7,6 +7,7 @@ public class PlayerAbilityManager : MonoBehaviour
 
     public List<Ability> abilities = new List<Ability>();
     private List<Ability> availableAbilities = new List<Ability>();
+
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
@@ -16,9 +17,51 @@ public class PlayerAbilityManager : MonoBehaviour
 
         LoadAvailableAbilities();
         InitializeSynergyDictionaries();
-        ResetAllAbilities();  // 게임 시작 시 모든 능력 초기화
+        ResetAllAbilities();
+
+        // Player의 OnHitEnemy 이벤트에 대한 리스너를 추가
+        player.OnHitEnemy.AddListener(ActivateAbilitiesOnHit);
     }
 
+    public void ActivateAbilitiesOnHit(Collider2D enemy)
+    {
+        // 능력 리스트에서 각 능력에 대한 트리거 처리
+        foreach (var ability in abilities)
+        {
+            if (ability is JokerDraw jokerDrawAbility)
+            {
+                jokerDrawAbility.OnHitMonster(enemy);
+            }
+            else if (ability is CardStrike cardStrikeAbility)
+            {
+                cardStrikeAbility.OnProjectileHit(enemy);
+            }
+            else if (ability is RicochetStrike ricochetAbility)
+            {
+                ricochetAbility.OnProjectileHit(enemy);
+            }
+            else if (ability is SharkStrike sharkStrikeAbility)
+            {
+                sharkStrikeAbility.OnProjectileHit(enemy);
+            }
+            else if (ability is ParasiticNest parasiticNestAbility)
+            {
+                parasiticNestAbility.OnProjectileHit(enemy);
+            }
+        }
+    }
+
+    public void ActivateAbilitiesOnMonsterDeath(Monster monster)
+    {
+        foreach (var ability in abilities)
+        {
+            if (ability is HoneyDrop honeyDropAbility)
+            {
+                honeyDropAbility.OnMonsterDeath(monster);
+            }
+            // 다른 능력들의 몬스터 사망 시 발동 로직이 있다면 여기에 추가
+        }
+    }
     private void LoadAvailableAbilities()
     {
         Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
@@ -57,8 +100,6 @@ public class PlayerAbilityManager : MonoBehaviour
         CheckForSynergy(ability.category);
     }
 
-
-
     private void InitializeSynergyDictionaries()
     {
         synergyAbilityAcquired = new Dictionary<string, bool>
@@ -95,7 +136,6 @@ public class PlayerAbilityManager : MonoBehaviour
         }
 
         int totalLevel = 0;
-
         foreach (var ability in abilities)
         {
             if (ability.category == category)
@@ -104,7 +144,6 @@ public class PlayerAbilityManager : MonoBehaviour
             }
         }
 
-        // 디버그 메시지 출력: 카테고리 내 능력 레벨 총합 표시
         Debug.Log($"Category: {category}, Total Level: {totalLevel}");
 
         if (totalLevel >= 15 && synergyLevels[category] < 15)
@@ -124,7 +163,6 @@ public class PlayerAbilityManager : MonoBehaviour
         }
     }
 
-
     private void AssignSynergyAbility(string category, int level)
     {
         string synergyAbilityName = $"{category}Synergy{level}";
@@ -133,7 +171,6 @@ public class PlayerAbilityManager : MonoBehaviour
         {
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
 
-            // Synergy 패널을 표시하여 사용자가 선택할 수 있게 함
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)
             {
@@ -163,6 +200,7 @@ public class PlayerAbilityManager : MonoBehaviour
         }
         abilities.Clear();
     }
+
     public T GetAbilityOfType<T>() where T : Ability
     {
         foreach (var ability in abilities)

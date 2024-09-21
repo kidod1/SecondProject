@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // 씬 매니저 사용을 위해 필요
 
 public class DialogueManager : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class DialogueManager : MonoBehaviour
 
     private bool isDialogueActive = false;
     private bool firstDialogueShown = false;
+    private bool keepPanelActive = false;  // 패널을 유지할지 여부
+
+    private int nextSceneIndex = -1; // 다음 씬 인덱스 저장
 
     private Dictionary<string, Dialogue> dialogueDictionary = new Dictionary<string, Dialogue>();
 
@@ -39,11 +43,11 @@ public class DialogueManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
 
         InitializeDialogueDictionary();
@@ -72,20 +76,42 @@ public class DialogueManager : MonoBehaviour
     {
         sentences = new Queue<string>();
         backgrounds = new Queue<Sprite>();
-        dialoguePanel.SetActive(false);
-        background.gameObject.SetActive(false);
 
-        // animator가 null인지 확인하고, null이면 할당
-        if (dialogueAnimator == null)
+        if (dialoguePanel != null)
         {
-            dialogueAnimator = dialoguePanel.GetComponent<Animator>();
+            dialoguePanel.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("dialoguePanel이 할당되지 않았습니다.");
+        }
+
+        if (background != null)
+        {
+            background.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("background 이미지가 할당되지 않았습니다.");
         }
 
         if (dialogueAnimator == null)
         {
-            Debug.LogError("대화판에서 애니메이터 구성요소를 찾을 수 없습니다.");
+            if (dialoguePanel != null)
+            {
+                dialogueAnimator = dialoguePanel.GetComponent<Animator>();
+                if (dialogueAnimator == null)
+                {
+                    Debug.LogError("대화판에서 애니메이터 구성요소를 찾을 수 없습니다.");
+                }
+            }
+            else
+            {
+                Debug.LogError("dialoguePanel이 설정되지 않았기 때문에 애니메이터를 찾을 수 없습니다.");
+            }
         }
-        else if (dialogueAnimator.runtimeAnimatorController == null)
+
+        if (dialogueAnimator != null && dialogueAnimator.runtimeAnimatorController == null)
         {
             Debug.LogError("애니메이터에 런타임 애니메이터 컨트롤러가 할당되지 않았습니다");
         }
@@ -108,9 +134,12 @@ public class DialogueManager : MonoBehaviour
             var initialDialogueTrigger = FindObjectOfType<DialogueTrigger>();
             if (initialDialogueTrigger != null)
             {
-                // 우선 네임을 변수로 안뺐음. 테스트 용도.
                 initialDialogueTrigger.TriggerDialogueByName("StartDialogue");
                 firstDialogueShown = true;
+            }
+            else
+            {
+                Debug.LogWarning("초기 대화 트리거를 찾을 수 없습니다.");
             }
         }
     }
@@ -128,9 +157,10 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(Dialogue dialogue, bool autoClose = false)
+    public void StartDialogue(Dialogue dialogue, bool autoClose = false, bool keepPanel = false, int nextScene = -1)
     {
         Debug.Log("Starting dialogue...");
+
         if (isDialogueActive)
         {
             Debug.LogWarning("다이얼로그가 이미 실행중입니다.");
@@ -140,11 +170,17 @@ public class DialogueManager : MonoBehaviour
         if (dialogueAnimator == null)
         {
             Debug.LogError("애니메이터가 존재하지 않습니다.");
-            return;
         }
 
-        dialoguePanel.SetActive(true);
-        Debug.Log("다이얼로그 패널 활성화.");
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(true);
+            Debug.Log("다이얼로그 패널 활성화.");
+        }
+        else
+        {
+            Debug.LogWarning("dialoguePanel이 할당되지 않았습니다.");
+        }
 
         if (!dialogueAnimator.isActiveAndEnabled)
         {
@@ -153,7 +189,7 @@ public class DialogueManager : MonoBehaviour
 
         if (dialogueAnimator.runtimeAnimatorController == null)
         {
-            Debug.LogError("애니메이터가 runtimeAnimatorController 를 가지고 있지 않습니다.");
+            Debug.LogError("애니메이터가 runtimeAnimatorController를 가지고 있지 않습니다.");
             return;
         }
 
@@ -169,9 +205,24 @@ public class DialogueManager : MonoBehaviour
         dialogueAnimator.SetTrigger("In");
         Debug.Log("애니메이션 트리거 In 활성화");
 
-        nameText.text = dialogue.characterName;
-        dialogueText.text = ""; // 텍스트 초기화
-        Debug.Log($"캐릭터 이름 설정: {dialogue.characterName}");
+        if (nameText != null)
+        {
+            nameText.text = dialogue.characterName;
+            Debug.Log($"캐릭터 이름 설정: {dialogue.characterName}");
+        }
+        else
+        {
+            Debug.LogWarning("nameText가 할당되지 않았습니다.");
+        }
+
+        if (dialogueText != null)
+        {
+            dialogueText.text = ""; // 텍스트 초기화
+        }
+        else
+        {
+            Debug.LogWarning("dialogueText가 할당되지 않았습니다.");
+        }
 
         sentences.Clear();
         backgrounds.Clear();
@@ -194,7 +245,14 @@ public class DialogueManager : MonoBehaviour
         }
 
         isDialogueActive = true;
+        keepPanelActive = keepPanel;
+        nextSceneIndex = nextScene; // 다음 씬 인덱스 설정
         Time.timeScale = 0f;
+    }
+
+    public bool IsDialogueActive
+    {
+        get { return isDialogueActive; }
     }
 
     public void DisplayNextSentence()
@@ -212,20 +270,30 @@ public class DialogueManager : MonoBehaviour
         if (backgrounds.Count > 0)
         {
             Sprite bg = backgrounds.Dequeue();
-            if (bg != null)
+            if (bg != null && background != null)
             {
                 background.sprite = bg;
                 background.gameObject.SetActive(true);
             }
-            else
+            else if (background != null)
             {
                 background.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("background 이미지가 할당되지 않았습니다.");
             }
         }
     }
 
     private IEnumerator TypeSentence(string sentence)
     {
+        if (dialogueText == null)
+        {
+            Debug.LogWarning("dialogueText가 할당되지 않았습니다.");
+            yield break;
+        }
+
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
@@ -236,22 +304,74 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        imageAnimator.SetTrigger("Out");
-        dialogueAnimator.SetTrigger("Out");
+        if (nextSceneIndex >= 0) // 다음 씬이 지정되어 있는 경우 바로 씬 전환
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+            return;
+        }
+
+        if (imageAnimator != null)
+        {
+            imageAnimator.SetTrigger("Out");
+        }
+        else
+        {
+            Debug.LogWarning("imageAnimator가 할당되지 않았습니다.");
+        }
+
+        if (dialogueAnimator != null)
+        {
+            dialogueAnimator.SetTrigger("Out");
+        }
+        else
+        {
+            Debug.LogWarning("dialogueAnimator가 할당되지 않았습니다.");
+        }
+
         StartCoroutine(DeactivatePanelAfterAnimation());
     }
 
     private IEnumerator DeactivatePanelAfterAnimation()
     {
+        if (nextSceneIndex >= 0)
+        {
+            // 다음 씬이 지정되어 있으면 패널을 비활성화하지 않고 바로 종료
+            yield break;
+        }
+
         yield return new WaitForSecondsRealtime(1f);
-        dialoguePanel.SetActive(false);
-        background.gameObject.SetActive(false);
+
+        if (!keepPanelActive)
+        {
+            if (dialoguePanel != null)
+            {
+                dialoguePanel.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("dialoguePanel이 할당되지 않았습니다.");
+            }
+
+            if (background != null)
+            {
+                background.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("background 이미지가 할당되지 않았습니다.");
+            }
+        }
+
         Debug.Log("다이얼로그 종료");
 
         isDialogueActive = false;
         Time.timeScale = 1f;
 
-        dialogueAnimator.updateMode = AnimatorUpdateMode.Normal;
+        if (dialogueAnimator != null)
+        {
+            dialogueAnimator.updateMode = AnimatorUpdateMode.Normal;
+        }
+
         if (imageAnimator != null)
         {
             imageAnimator.updateMode = AnimatorUpdateMode.Normal;

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad23ea88bf4a4042adddbc7f6de76cc, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: 
+  abilityName: "\uBCA0\uB9AC\uC5B4"
+  baseDescription: "\uBAAC\uC2A4\uD130\uC758 \uACF5\uACA9\uC744 \uC77C\uC815 \uC2DC\uAC04\uB9C8\uB2E4
+    \uB9C9\uC544\uB0C5\uB2C8\uB2E4."
+  category: Sloth
+  maxLevel: 5
+  currentLevel: 5
+  abilityIcon: {fileID: 21300000, guid: b756bc69e72c5c64a967e8b98553b3d6, type: 3}
+  shieldPrefab: {fileID: 1038639462812692643, guid: dbd8e34f040c9d64094aeadc7bfd9d3c, type: 3}
+  shieldDeactivateEffectPrefab: {fileID: 6402902912094828702, guid: f8a862ad2b651a742be65285e1b5fe22, type: 3}
+  cooldownTimes:
+  - 5
+  - 5
+  - 5
+  - 5
+  - 5

@@ -1,8 +1,7 @@
-using System.Collections;
-using UnityEngine;
 using Spine.Unity;
-using Spine;
-
+using UnityEngine;
+using System.Collections;
+using System.ComponentModel;
 public class Turret : Monster
 {
     public GameObject bulletPrefab;
@@ -17,9 +16,14 @@ public class Turret : Monster
     [SpineAnimation] public string reloadAnimation;
     [SpineAnimation] public string reloadIdleAnimation;
 
-    private SkeletonAnimation skeletonAnimation;
+    protected SkeletonAnimation skeletonAnimation;
+    public SkeletonAnimation GetSkeletonAnimation()
+    {
+        return skeletonAnimation;
+    }
 
     [SerializeField] private Transform[] firePoints;
+    [SerializeField] private int bulietQuantity = 4;
     private int currentFirePoint = 0;
     private int attackCount = 0;
     public bool isAttacking = false;
@@ -71,11 +75,17 @@ public class Turret : Monster
     {
         isAttacking = true;
         UpdateSkinAndAnimation();
-        FireBullet();
-        attackCount++;
+
+        for (int i = 0; i < bulietQuantity; i++)
+        {
+            FireBullet();
+            yield return new WaitForSeconds(0.29175f);
+            attackCount++;
+        }
+
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
 
-        if (attackCount >= 4)
+        if (attackCount >= bulietQuantity)
         {
             attackCount = 0;
             PlayAnimation(reloadAnimation, false);
@@ -91,11 +101,25 @@ public class Turret : Monster
         }
     }
 
+    public void ClearCurrentSkin()
+    {
+        if (skeletonAnimation != null)
+        {
+            skeletonAnimation.state.ClearTracks();
+            skeletonAnimation.Skeleton.SetSlotsToSetupPose(); // 슬롯을 기본 상태로 설정
+            skeletonAnimation.Initialize(true); // true로 설정하면 강제로 재설정
+            Debug.Log("Skeleton animation state has been reloaded.");
+        }
+    }
+
     private void UpdateSkinAndAnimation()
     {
         Vector3 directionToPlayer = player.transform.position - transform.position;
         string skinName;
         string attackAnimationName;
+
+        // 스킨 변경 전에 현재 슬롯 상태를 초기화
+        ClearCurrentSkin();
 
         if (Mathf.Abs(directionToPlayer.y) > Mathf.Abs(directionToPlayer.x))
         {
@@ -108,6 +132,17 @@ public class Turret : Monster
             {
                 skinName = "front";
                 attackAnimationName = frontAttackAnimation;
+
+                if (isElite)
+                {
+                    transform.localScale = new Vector3(0.6f, 0.6f, 1);
+                    damageArea.transform.localScale = new Vector3(2.5f, 2.5f, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(0.3f, 0.3f, 1);
+                    damageArea.transform.localScale = new Vector3(1.2f, 1.2f, 1);
+                }
             }
         }
         else
@@ -115,30 +150,54 @@ public class Turret : Monster
             skinName = "side";
             attackAnimationName = sideAttackAnimation;
 
-            if (directionToPlayer.x > 0)
+            if (isElite)
             {
-                transform.localScale = new Vector3(-0.3f, 0.3f, 1);
+                if (directionToPlayer.x > 0)
+                {
+                    transform.localScale = new Vector3(-0.6f, 0.6f, 1);
+                    damageArea.transform.localScale = new Vector3(-2.5f, 2.5f, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(0.6f, 0.6f, 1);
+                    damageArea.transform.localScale = new Vector3(2.5f, 2.5f, 1);
+                }
             }
             else
             {
-                transform.localScale = new Vector3(0.3f, 0.3f, 1);
+                if (directionToPlayer.x > 0)
+                {
+                    transform.localScale = new Vector3(-0.3f, 0.3f, 1);
+                    damageArea.transform.localScale = new Vector3(-1.2f, 1.2f, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(0.3f, 0.3f, 1);
+                    damageArea.transform.localScale = new Vector3(1.2f, 1.2f, 1);
+                }
             }
         }
+
+        Debug.Log($"Setting skin to: {skinName}, Playing animation: {attackAnimationName}");
+
 
         skeletonAnimation.Skeleton.SetSkin(skinName);
         PlayAnimation(attackAnimationName, false);
     }
 
+
     private void FireBullet()
     {
         Vector3 direction = (player.transform.position - firePoints[currentFirePoint].position).normalized;
         GameObject bullet = Instantiate(bulletPrefab, firePoints[currentFirePoint].position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * stat.attackSpeed;
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        bulletRb.velocity = direction * stat.attackSpeed;
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
             bulletScript.SetAttackDamage(monsterBaseStat.attackDamage);
+            bulletScript.SetSourceMonster(this);
         }
 
         currentFirePoint = (currentFirePoint + 1) % firePoints.Length;
@@ -148,7 +207,12 @@ public class Turret : Monster
     {
         if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
         {
-            skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            var currentTrackEntry = skeletonAnimation.state.GetCurrent(0);
+
+            if (currentTrackEntry == null || currentTrackEntry.Animation.Name != animationName)
+            {
+                skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            }
         }
     }
 }
@@ -170,14 +234,18 @@ public class TurretIdleState : MonsterState
         }
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+    }
 }
 
 public class TurretChaseState : MonsterState
 {
     public TurretChaseState(Monster monster) : base(monster) { }
 
-    public override void EnterState() { }
+    public override void EnterState()
+    {
+    }
 
     public override void UpdateState()
     {
@@ -191,7 +259,9 @@ public class TurretChaseState : MonsterState
         }
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+    }
 }
 
 public class TurretAttackState : MonsterState
@@ -211,7 +281,9 @@ public class TurretAttackState : MonsterState
         }
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+    }
 }
 
 public class TurretCooldownState : MonsterState
@@ -232,17 +304,11 @@ public class TurretCooldownState : MonsterState
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;
-            if (monster.IsPlayerInRange(monster.monsterBaseStat.detectionRange))
-            {
-                monster.TransitionToState(monster.chaseState);
-            }
-            else
-            {
-                (monster as Turret)?.PlayAnimation((monster as Turret).idleAnimation, true);
-                monster.TransitionToState(monster.idleState);
-            }
+            monster.TransitionToState(monster.idleState); // 쿨다운이 끝나면 대기 상태로 전환
         }
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+    }
 }

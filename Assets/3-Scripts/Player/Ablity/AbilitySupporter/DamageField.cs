@@ -8,12 +8,12 @@ public class DamageField : MonoBehaviour
     private float damageInterval;
     private float damageFieldDuration;
     private float cooldownDurations;
-    private ElectricField electricField; // ElectricField 참조
+    private ElectricField electricField;
     private HashSet<Monster> monstersInRange = new HashSet<Monster>();
     private ParticleSystem particleSystem;
     private Animator animator;
-    private bool isInitialized = false; // 초기화 여부를 확인하는 변수 추가
-    private bool isCooldown = false; // 쿨다운 상태
+    private bool isInitialized = false;
+    private bool isCooldown = false;
 
     public void Initialize(ElectricField electricField, Player playerInstance)
     {
@@ -26,7 +26,7 @@ public class DamageField : MonoBehaviour
         particleSystem = GetComponent<ParticleSystem>();
         animator = GetComponent<Animator>();
 
-        isInitialized = true; // 초기화 완료로 설정
+        isInitialized = true;
         particleSystem?.Stop();
     }
 
@@ -55,6 +55,14 @@ public class DamageField : MonoBehaviour
         }
     }
 
+    public void DealDamage(int amount)
+    {
+        foreach (var monster in monstersInRange)
+        {
+            monster.TakeDamage(amount);
+        }
+    }
+
     private IEnumerator AttackAndCooldownRoutine()
     {
         if (isCooldown)
@@ -72,15 +80,13 @@ public class DamageField : MonoBehaviour
             animator.SetTrigger("Attack");
         }
 
-        // 적에게 데미지 주기
         var monstersSnapshot = new List<Monster>(monstersInRange);
         foreach (var monster in monstersSnapshot)
         {
             monster.TakeDamage(damageAmount);
-            Debug.Log($"Monster {monster.name} took {damageAmount} damage."); // 디버그 메시지 추가
         }
 
-        yield return new WaitForSeconds(damageFieldDuration); // 지속 시간 대기
+        yield return new WaitForSeconds(damageFieldDuration);
 
         if (particleSystem != null)
         {
@@ -92,7 +98,7 @@ public class DamageField : MonoBehaviour
             animator.ResetTrigger("Attack");
         }
 
-        yield return new WaitForSeconds(cooldownDurations); // 쿨다운 시간 대기
+        yield return new WaitForSeconds(cooldownDurations);
 
         isCooldown = false;
     }

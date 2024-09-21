@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e4768302217304f80ad5be17a6c1cc, type: 3}
   m_Name: Turret
   m_EditorClassIdentifier: 
-  monsterSpeed: 2
-  maxHP: 25
+  monsterSpeed: 0
+  maxHP: 40
   contectDamage: 3
-  attackDamage: 5
+  attackDamage: 10
   experiencePoints: 300
   detectionRange: 100
-  attackRange: 5
+  attackRange: 1000
   attackDelay: 3
+  rewardCurrency: 0
+  highExperiencePoints: 0
+  highExperienceDropChance: 0
   attackCooldown: 1
   attackSpeed: 5

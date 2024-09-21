@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    private Player playerInstance;
     private Vector2 direction;
     private float damageMultiplier = 1.0f;
-    private PlayerData stat;
+    [SerializeField]
+    protected PlayerData stat;
     private bool isCloneProjectile = false;
-    private Rigidbody2D rb;
-    private float lifetime; // 투사체의 생명 시간
+    protected Rigidbody2D rb;
+    private float lifetime;
+    private static Transform projectileParent;
 
     private void Awake()
     {
@@ -16,87 +19,120 @@ public class Projectile : MonoBehaviour
         {
             Debug.LogError("Rigidbody2D가 없습니다.");
         }
+
+        if (projectileParent == null)
+        {
+            GameObject parentObj = new GameObject("ProjectileParent");
+            projectileParent = parentObj.transform;
+        }
+
+        transform.SetParent(projectileParent);
     }
 
     private void OnEnable()
     {
         if (stat != null)
         {
-            // 투사체의 생명 시간을 stat에서 가져와 설정
             lifetime = stat.currentProjectileRange;
-            // lifetime 후에 Deactivate 메서드를 호출
             Invoke(nameof(Deactivate), lifetime);
-            // 투사체의 방향에 따른 속도 설정
             rb.velocity = direction * stat.currentProjectileSpeed;
         }
     }
 
     private void OnDisable()
     {
-        // 활성화 해제 시 모든 Invoke 취소
         CancelInvoke();
-        // 투사체의 속도를 0으로 설정
         rb.velocity = Vector2.zero;
+        isCloneProjectile = false; // 비활성화 시 초기화
     }
 
-    public void SetDirection(Vector2 newDirection)
+    public void SetDirection(Vector2 newDirection, float speedMultiplier = 1.0f)
     {
         direction = newDirection.normalized;
         if (rb != null)
         {
-            // 새로운 방향과 속도 설정
-            rb.velocity = direction * stat.currentProjectileSpeed;
+            rb.velocity = direction * stat.currentProjectileSpeed * speedMultiplier;
         }
     }
 
-    public void Initialize(PlayerData playerStat, bool isClone = false, float multiplier = 1.0f)
+    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f)
     {
         stat = playerStat;
-        isCloneProjectile = isClone;
+        this.playerInstance = playerInstance;
+        isCloneProjectile = isClone;  // 여기서 isCloneProjectile 설정
         damageMultiplier = multiplier;
 
         if (rb != null)
         {
-            // 초기화 시 투사체의 속도를 0으로 설정
             rb.velocity = Vector2.zero;
         }
 
-        // 만약에 Initialize 호출 후 바로 OnEnable 효과를 주고 싶으면 여기에 재설정
         if (gameObject.activeSelf)
         {
-            // 현재 오브젝트가 활성화된 상태라면 다시 OnEnable의 로직을 실행
             OnEnable();
         }
     }
 
     private void Deactivate()
     {
-        // 투사체 비활성화
-        gameObject.SetActive(false);
+        if (isCloneProjectile)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Wall"))
         {
-            // 벽에 닿으면 비활성화
-            gameObject.SetActive(false);
+            Deactivate();
         }
         else if (collision.GetComponent<Monster>() != null)
         {
             Monster monster = collision.GetComponent<Monster>();
             if (monster != null)
             {
-                // 몬스터에게 피해 적용
                 int damage = stat.currentPlayerDamage;
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);
                 }
                 monster.TakeDamage(damage);
+
+                if (playerInstance != null && !isCloneProjectile)
+                {
+                    playerInstance.abilityManager.ActivateAbilitiesOnHit(collision);
+                }
+
+                if (playerInstance != null && playerInstance.CanStun())
+                {
+                    float stunChance = 0.25f;
+                    if (Random.value < stunChance)
+                    {
+                        monster.Stun();
+                        Debug.Log($"{monster.name}이(가) 기절했습니다.");
+                    }
+                }
             }
-            // 몬스터에 닿으면 비활성화
-            gameObject.SetActive(false);
+            Deactivate();
+        }
+        else if (collision.GetComponent<DestructibleObject>() != null)
+        {
+            DestructibleObject destructible = collision.GetComponent<DestructibleObject>();
+            if (destructible != null)
+            {
+                int damage = stat.currentPlayerDamage;
+                if (isCloneProjectile)
+                {
+                    damage = Mathf.RoundToInt(damage * damageMultiplier);
+                }
+                destructible.TakeDamage(damage);
+            }
+            Deactivate();
         }
     }
 }

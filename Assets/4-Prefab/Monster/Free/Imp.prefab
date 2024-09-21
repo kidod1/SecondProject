@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.175, y: 0.175, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3745594369458847291}
@@ -85,7 +85,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -508134431
-  m_SortingLayer: 1
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &5480244379959700624
@@ -202,8 +202,8 @@ MonoBehaviour:
   monsterBaseStat: {fileID: 11400000, guid: 2e2be1302d68a3f4ca9616fbed3d6013, type: 2}
   invincibilityDuration: 0.5
   blinkInterval: 0.1
-  deathEffectPrefab: {fileID: 0}
-  deathEffectDuration: 2
+  monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: bacc39830fc832e4b8e1bcab2679e977, type: 3}
+  deathEffectDuration: 0.4
   isInCooldown: 0
   bulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
   stat: {fileID: 11400000, guid: 2e2be1302d68a3f4ca9616fbed3d6013, type: 2}

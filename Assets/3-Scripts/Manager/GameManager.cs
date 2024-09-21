@@ -36,12 +36,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
         // 능력 초기화
         abilityManager.ResetAllAbilities(); // Start 시 초기화
 
         // 플레이어 데이터 초기화 및 UI 업데이트
         player.LoadPlayerData(); // 플레이어 데이터 로드
-        abilityManager.Initialize(player); // 능력 매니저 초기화
+        abilityManager.Initialize(player);
         abilityUIManager.Initialize(abilityManager); // AbilityManager 초기화
 
         // UI 초기화

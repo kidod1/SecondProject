@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IMonsterState
@@ -15,24 +16,43 @@ public abstract class Monster : MonoBehaviour
     protected MeshRenderer meshRenderer;
     protected bool isInvincible = false;
     protected bool isDead = false;
+    public bool IsDead => isDead;
+
     protected internal Player player;
 
     [SerializeField]
     private float invincibilityDuration = 0.5f;
     [SerializeField]
     private float blinkInterval = 0.1f;
+    public GameObject monsterDeathEffectPrefab;
     [SerializeField]
-    private GameObject deathEffectPrefab;
-    [SerializeField]
-    private float deathEffectDuration = 0.4f; // 사망 이펙트가 지속될 시간
+    private float deathEffectDuration = 0.2f;
 
+    public bool isElite = false;
     public bool isInCooldown = false;
+    public bool isInfected = false;
+
+
+    // 새로운 필드 추가: Betting 능력에 의해 한 번만 발동하도록 관리
+    public bool HasBeenHitByBetting { get; set; } = false;
 
     public IMonsterState currentState;
     public IMonsterState idleState;
     public IMonsterState chaseState;
     public IMonsterState attackState;
     public IMonsterState cooldownState;
+
+    public GameObject damageArea;
+    private Collider2D areaCollider;
+    private SpriteRenderer areaSpriteRenderer;
+
+    [SerializeField]
+    private int areaDamage = 10;
+    [SerializeField]
+    private float damageInterval = 1f;
+
+    private bool isStunned = false;
+    private float stunDuration = 2f;
 
     protected virtual void Start()
     {
@@ -48,6 +68,34 @@ public abstract class Monster : MonoBehaviour
         {
             InitializeStates();
         }
+
+        if (isElite)
+        {
+            if (damageArea != null)
+            {
+                areaCollider = damageArea.GetComponent<Collider2D>();
+                areaSpriteRenderer = damageArea.GetComponent<SpriteRenderer>();
+
+                if (areaCollider == null)
+                {
+                    Debug.LogError("Damage area collider를 찾을 수 없습니다. Collider2D가 존재하는지 확인하세요.");
+                }
+
+                if (areaSpriteRenderer == null)
+                {
+                    Debug.LogError("Damage area의 SpriteRenderer를 찾을 수 없습니다. SpriteRenderer가 존재하는지 확인하세요.");
+                }
+
+                if (areaCollider != null && areaSpriteRenderer != null)
+                {
+                    StartCoroutine(AreaDamageCoroutine());
+                }
+            }
+            else
+            {
+                Debug.LogWarning("damageArea가 설정되지 않았습니다. 장판 데미지 시스템을 비활성화합니다.");
+            }
+        }
     }
 
     private void Update()
@@ -60,12 +108,32 @@ public abstract class Monster : MonoBehaviour
                 InitializeStates();
             }
         }
-
+        if (isStunned) return;
         currentState?.UpdateState();
     }
 
     protected abstract void InitializeStates();
 
+    public void Stun()
+    {
+        if (isStunned) return;
+        isStunned = true;
+
+        // 몬스터가 기절했다는 메시지 출력
+        Debug.Log($"몬스터 {gameObject.name} 이(가) 기절했습니다! 기절 지속 시간: {stunDuration}초");
+
+        // 기절 상태가 끝나는 Coroutine 시작
+        StartCoroutine(StunCoroutine());
+    }
+
+    private IEnumerator StunCoroutine()
+    {
+        yield return new WaitForSeconds(stunDuration);
+        isStunned = false;
+
+        // 기절이 끝났다는 메시지 출력
+        Debug.Log($"몬스터 {gameObject.name} 의 기절 상태가 종료되었습니다.");
+    }
     public void TransitionToState(IMonsterState newState)
     {
         if (isInCooldown && newState != cooldownState)
@@ -80,7 +148,6 @@ public abstract class Monster : MonoBehaviour
 
     public bool IsPlayerInRange(float range)
     {
-        // player가 null인지 확인하여 예외 방지
         if (player == null)
         {
             Debug.LogWarning("Player가 설정되지 않았습니다. IsPlayerInRange 호출이 무시됩니다.");
@@ -114,6 +181,10 @@ public abstract class Monster : MonoBehaviour
     }
 
     public abstract void Attack();
+    public int GetCurrentHP()
+    {
+        return currentHP;
+    }
 
     protected virtual void Die()
     {
@@ -122,31 +193,46 @@ public abstract class Monster : MonoBehaviour
         isDead = true;
         Debug.Log("몬스터 사망");
 
-        if (deathEffectPrefab != null)
-        {
-            GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-            Destroy(deathEffect, deathEffectDuration);
-        }
-
-        // player가 null인지 확인하여 예외 방지
         if (player != null)
         {
-            player.GainExperience(monsterBaseStat.experiencePoints);
-            player.stat.currentCurrency += monsterBaseStat.rewardCurrency;
+            player.KillMonster();
+
+            // 능력 매니저에서 모든 능력을 가져옵니다.
+            PlayerAbilityManager abilityManager = player.GetComponent<PlayerAbilityManager>();
+            if (abilityManager != null)
+            {
+                abilityManager.ActivateAbilitiesOnMonsterDeath(this);
+            }
         }
 
-        PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
-        if (uiManager != null)
+        if (isInfected)
         {
-            uiManager.UpdateCurrencyUI(player?.stat.currentCurrency ?? 0);
+            SpawnParasite();
         }
-        else
+
+        if (monsterDeathEffectPrefab != null)
         {
-            Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
+            // ...
         }
+
+        DropExperienceItem();
 
         Destroy(gameObject);
     }
+
+    private void SpawnParasite()
+    {
+        GameObject parasitePrefab = Resources.Load<GameObject>("ParasitePrefab");
+        if (parasitePrefab != null)
+        {
+            GameObject parasite = Instantiate(parasitePrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("기생 벌레 프리팹을 찾을 수 없습니다: ParasitePrefab");
+        }
+    }
+
 
     private IEnumerator InvincibilityCoroutine()
     {
@@ -169,6 +255,47 @@ public abstract class Monster : MonoBehaviour
         isInvincible = false;
     }
 
+    private void DropExperienceItem()
+    {
+        if (player != null && monsterBaseStat != null)
+        {
+            int experiencePointsToDrop = monsterBaseStat.experiencePoints;
+            if (Random.value < monsterBaseStat.highExperienceDropChance)
+            {
+                experiencePointsToDrop = monsterBaseStat.highExperiencePoints;
+            }
+
+            string prefabName = "ExperienceItem";
+            if (experiencePointsToDrop > 50 && experiencePointsToDrop <= 100)
+            {
+                prefabName = "ExperienceItem2";
+            }
+            else if (experiencePointsToDrop > 100 && experiencePointsToDrop <= 150)
+            {
+                prefabName = "ExperienceItem3";
+            }
+            else if (experiencePointsToDrop > 150)
+            {
+                prefabName = "ExperienceItem4";
+            }
+
+            GameObject experienceItemPrefab = Resources.Load<GameObject>(prefabName);
+            if (experienceItemPrefab != null)
+            {
+                GameObject expItem = Instantiate(experienceItemPrefab, transform.position, Quaternion.identity);
+                ExperienceItem expScript = expItem.GetComponent<ExperienceItem>();
+                if (expScript != null)
+                {
+                    expScript.experienceAmount = experiencePointsToDrop;
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"리소스를 찾을 수 없습니다: {prefabName}");
+            }
+        }
+    }
+
     virtual protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -179,5 +306,31 @@ public abstract class Monster : MonoBehaviour
                 player.TakeDamage(monsterBaseStat.contectDamage);
             }
         }
+    }
+
+    private IEnumerator AreaDamageCoroutine()
+    {
+        while (!isDead)
+        {
+            if (player != null && areaCollider != null && areaCollider.enabled)
+            {
+                if (areaCollider.bounds.Contains(player.transform.position))
+                {
+                    player.TakeDamage(areaDamage);
+                    StartCoroutine(BlinkAreaSprite());
+                }
+            }
+            yield return new WaitForSeconds(damageInterval);
+        }
+    }
+
+    private IEnumerator BlinkAreaSprite()
+    {
+        if (areaSpriteRenderer == null) yield break;
+
+        float blinkDuration = 0.2f;
+        areaSpriteRenderer.enabled = false;
+        yield return new WaitForSeconds(blinkDuration);
+        areaSpriteRenderer.enabled = true;
     }
 }
