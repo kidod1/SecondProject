@@ -29,6 +29,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Spine {
 
@@ -133,6 +134,9 @@ namespace Spine {
 		/// Increments the track entry <see cref="TrackEntry.TrackTime"/>, setting queued animations as current if needed.</summary>
 		/// <param name="delta">delta time</param>
 		public void Update (float delta) {
+			if (Time.timeScale == 0)
+				return;
+
 			delta *= timeScale;
 			var tracksItems = tracks.Items;
 			for (int i = 0, n = tracks.Count; i < n; i++) {
@@ -338,6 +342,9 @@ namespace Spine {
 		}
 
 		private float ApplyMixingFrom (TrackEntry to, Skeleton skeleton, MixBlend blend) {
+			if (Time.timeScale == 0)
+				return 0;
+			
 			TrackEntry from = to.mixingFrom;
 			if (from.mixingFrom != null) ApplyMixingFrom(from, skeleton, blend);
 
@@ -1104,6 +1111,8 @@ namespace Spine {
 		public float AnimationTime {
 			get {
 				if (loop) {
+					if (Time.timeScale == 0)
+						return 0;
 					float duration = animationEnd - animationStart;
 					if (duration == 0) return animationStart;
 					return (trackTime % duration) + animationStart;

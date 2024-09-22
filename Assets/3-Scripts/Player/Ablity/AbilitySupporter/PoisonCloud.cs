@@ -29,7 +29,7 @@ public class PoisonCloud : MonoBehaviour
         while (true)
         {
             ApplyDamage();
-            yield return new WaitForSeconds(damageInterval);
+            yield return new WaitForSecondsRealtime(damageInterval);
         }
     }
 

@@ -89,12 +89,12 @@ public class CutsceneManager : MonoBehaviour
     private IEnumerator AnimateText(string sentence)
     {
         dialogueText.text = "";
-        yield return new WaitForSeconds(0.1f); // 텍스트 애니메이션이 시작하기 전에 잠깐의 딜레이를 추가
+        yield return new WaitForSecondsRealtime(0.1f); // 텍스트 애니메이션이 시작하기 전에 잠깐의 딜레이를 추가
 
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(textAnimationSpeed);
+            yield return new WaitForSecondsRealtime(textAnimationSpeed);
         }
 
         animationImage.gameObject.SetActive(true); // 애니메이션이 끝날 때 이미지 활성화

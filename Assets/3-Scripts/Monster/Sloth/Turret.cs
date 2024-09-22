@@ -79,7 +79,7 @@ public class Turret : Monster
         for (int i = 0; i < bulietQuantity; i++)
         {
             FireBullet();
-            yield return new WaitForSeconds(0.29175f);
+            yield return new WaitForSecondsRealtime(0.29175f);
             attackCount++;
         }
 
@@ -107,6 +107,7 @@ public class Turret : Monster
         {
             skeletonAnimation.state.ClearTracks();
             skeletonAnimation.Skeleton.SetSlotsToSetupPose(); // 슬롯을 기본 상태로 설정
+            Debug.Log("실행");
             skeletonAnimation.Initialize(true); // true로 설정하면 강제로 재설정
             Debug.Log("Skeleton animation state has been reloaded.");
         }
@@ -215,6 +216,7 @@ public class Turret : Monster
             }
         }
     }
+
 }
 
 public class TurretIdleState : MonsterState
@@ -300,7 +302,7 @@ public class TurretCooldownState : MonsterState
 
     public override void UpdateState()
     {
-        cooldownTimer -= Time.deltaTime;
+        cooldownTimer -= Time.unscaledDeltaTime;
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;

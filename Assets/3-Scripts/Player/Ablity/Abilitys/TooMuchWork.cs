@@ -100,7 +100,7 @@ public class TooMuchWork : Ability
                 yield break;
             }
 
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             float newCooldown = Mathf.Lerp(originalCooldown, originalCooldown / maxAttackSpeedMultiplier, elapsedTime / baseTimeToMaxSpeed);
 
             // 공격 속도가 최소값에 도달하면 과열 상태로 전환
@@ -143,7 +143,7 @@ public class TooMuchWork : Ability
         Debug.Log("Weapon overheated! Can't attack for " + overheatDuration + " seconds.");
         playerInstance.stat.currentShootCooldown = Mathf.Infinity;
 
-        yield return new WaitForSeconds(overheatDuration);
+        yield return new WaitForSecondsRealtime(overheatDuration);
 
         if (playerInstance != null)
         {

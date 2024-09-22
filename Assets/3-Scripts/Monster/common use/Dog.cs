@@ -48,7 +48,7 @@ public class Dog : Monster
         {
             player.TakeDamage(monsterBaseStat.attackDamage);
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         TransitionToState(cooldownState);
     }
 
@@ -103,7 +103,7 @@ public class DogCooldownState : MonsterState
 
     public override void UpdateState()
     {
-        cooldownTimer -= Time.deltaTime;
+        cooldownTimer -= Time.unscaledDeltaTime;
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;

@@ -128,7 +128,7 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator StunCoroutine()
     {
-        yield return new WaitForSeconds(stunDuration);
+        yield return new WaitForSecondsRealtime(stunDuration);
         isStunned = false;
 
         // 기절이 끝났다는 메시지 출력
@@ -160,7 +160,7 @@ public abstract class Monster : MonoBehaviour
     public void MoveTowards(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;
-        transform.position += direction * monsterBaseStat.monsterSpeed * Time.deltaTime;
+        transform.position += direction * monsterBaseStat.monsterSpeed * Time.unscaledDeltaTime;
     }
 
     public virtual void TakeDamage(int damage)
@@ -244,7 +244,7 @@ public abstract class Monster : MonoBehaviour
             {
                 meshRenderer.enabled = !meshRenderer.enabled;
             }
-            yield return new WaitForSeconds(blinkInterval);
+            yield return new WaitForSecondsRealtime(blinkInterval);
         }
 
         if (meshRenderer != null)
@@ -320,7 +320,7 @@ public abstract class Monster : MonoBehaviour
                     StartCoroutine(BlinkAreaSprite());
                 }
             }
-            yield return new WaitForSeconds(damageInterval);
+            yield return new WaitForSecondsRealtime(damageInterval);
         }
     }
 
@@ -330,7 +330,7 @@ public abstract class Monster : MonoBehaviour
 
         float blinkDuration = 0.2f;
         areaSpriteRenderer.enabled = false;
-        yield return new WaitForSeconds(blinkDuration);
+        yield return new WaitForSecondsRealtime(blinkDuration);
         areaSpriteRenderer.enabled = true;
     }
 }

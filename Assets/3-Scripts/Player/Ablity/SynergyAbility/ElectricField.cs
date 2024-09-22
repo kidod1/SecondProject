@@ -66,7 +66,7 @@ public class ElectricField : SynergyAbility
         {
             damageFieldScript.DealDamage(damageAmount);
             elapsedTime += damageInterval;
-            yield return new WaitForSeconds(damageInterval);
+            yield return new WaitForSecondsRealtime(damageInterval);
         }
 
         DeactivateDamageField();
@@ -86,7 +86,6 @@ public class ElectricField : SynergyAbility
             activeDamageField = null;
         }
     }
-
     public override void Upgrade()
     {
         // 업그레이드 논리를 여기에 추가할 수 있음

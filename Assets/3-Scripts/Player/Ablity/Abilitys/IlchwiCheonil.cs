@@ -39,7 +39,7 @@ public class IlchwiCheonil : Ability
         while (true)
         {
             SpawnPoisonCloud();
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSecondsRealtime(spawnInterval);
         }
     }
 

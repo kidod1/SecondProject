@@ -4,24 +4,42 @@ using UnityEngine;
 
 public class PlayerUIManager : MonoBehaviour
 {
+    [Header("Level and Experience UI")]
     [SerializeField]
     private TMP_Text levelText;
     [SerializeField]
     private Scrollbar experienceScrollbar;
     [SerializeField]
-    private RectTransform maskRectTransform;
+    private TMP_Text experienceText; // 경험치 텍스트 추가 (선택 사항)
+
+    [Header("Health UI")]
     [SerializeField]
     private TMP_Text healthText;
     [SerializeField]
-    private Image healthFillImage;
+    private Image healthFillImage;  // 체력바 이미지
+    [SerializeField]
+    private RectTransform healthBarMaskRect;  // 체력바 마스크 역할을 할 RectTransform
+    [SerializeField]
+    private RectTransform healthBarFullRect;  // 체력바 전체 크기 RectTransform
+
+    [Header("Currency UI")]
     [SerializeField]
     private TMP_Text currencyText;
     [SerializeField]
     private GameObject deathPanel;
 
+    [Header("Experience UI")]
+    [SerializeField]
+    private RectTransform experienceBarMaskRect;  // 경험치 바 마스크 역할을 할 RectTransform
+    [SerializeField]
+    private RectTransform experienceBarFullRect;  // 경험치 바 전체 크기 RectTransform
+
     private int maxHP;
     private Player player;
     private Color originalHealthTextColor = Color.white;
+
+    private float fullHealthBarWidth;
+    private float fullExperienceBarWidth;
 
     public void Initialize(Player player)
     {
@@ -33,41 +51,31 @@ public class PlayerUIManager : MonoBehaviour
 
         this.player = player;
 
-        if (player.OnTakeDamage == null || player.OnLevelUp == null || player.OnPlayerDeath == null)
-        {
-            Debug.LogError("PlayerUIManager: 플레이어 이벤트가 초기화되지 않았습니다.");
-            return;
-        }
-
+        // 이벤트 리스너 등록
         player.OnTakeDamage.AddListener(UpdateHealthUI);
-        player.OnLevelUp.AddListener(UpdateExperienceUI);
+        player.OnHeal.AddListener(UpdateHealthUI); // 회복 시에도 업데이트
+
+        // OnGainExperience는 UnityEvent<int> 타입이므로, 매개변수를 받는 메서드와 연결해야 합니다.
+        player.OnGainExperience.AddListener(UpdateExperienceUI);
+        player.OnLevelUp.AddListener(UpdateExperienceUIWithoutParam);
         player.OnPlayerDeath.AddListener(OnPlayerDeath);
 
         maxHP = player.stat.currentMaxHP;
 
-        if (healthText != null)
-        {
-            healthText.color = originalHealthTextColor;
-        }
-        else
-        {
-            Debug.LogWarning("PlayerUIManager: 체력 텍스트가 할당되지 않았습니다.");
-        }
+        // 체력바와 경험치 바의 전체 너비 저장
+        fullHealthBarWidth = healthBarFullRect.rect.width;
+        fullExperienceBarWidth = experienceBarFullRect.rect.width;
 
+        // 초기 UI 업데이트
         UpdateUI();
     }
 
+
     private void UpdateUI()
     {
-        if (player == null)
+        if (player == null || player.stat == null)
         {
             Debug.LogError("PlayerUIManager: 플레이어가 할당되지 않았습니다.");
-            return;
-        }
-
-        if (player.stat == null)
-        {
-            Debug.LogError("PlayerUIManager: 플레이어의 스탯이 초기화되지 않았습니다.");
             return;
         }
 
@@ -79,68 +87,76 @@ public class PlayerUIManager : MonoBehaviour
 
     public void UpdateHealthUI()
     {
-        if (player == null)
+        if (player == null || healthBarMaskRect == null || healthBarFullRect == null)
         {
-            Debug.LogError("PlayerUIManager: 플레이어가 할당되지 않았습니다.");
+            Debug.LogError("PlayerUIManager: 필요한 요소가 할당되지 않았습니다.");
             return;
         }
 
         float healthPercentage = (float)player.GetCurrentHP() / maxHP;
 
-        if (maskRectTransform != null)
-        {
-            float rightPadding = (1 - healthPercentage) * 120 * 4;
-            maskRectTransform.offsetMax = new Vector2(-rightPadding, maskRectTransform.offsetMax.y);
-        }
-        else
-        {
-            Debug.LogWarning("PlayerUIManager: Mask RectTransform이 할당되지 않았습니다.");
-        }
+        // 체력에 비례해 마스크의 너비 조정 (왼쪽 고정)
+        float newMaskWidth = fullHealthBarWidth * healthPercentage;
+        healthBarMaskRect.sizeDelta = new Vector2(newMaskWidth, healthBarMaskRect.sizeDelta.y);
 
+        // 체력 텍스트 업데이트
         if (healthText != null)
         {
             healthText.text = $"{healthPercentage * 100:F0}%";
             healthText.color = Color.Lerp(Color.red, originalHealthTextColor, healthPercentage);
         }
-        else
-        {
-            Debug.LogWarning("PlayerUIManager: 체력 텍스트가 할당되지 않았습니다.");
-        }
 
+        // 체력 이미지 업데이트 (필요 시)
         if (healthFillImage != null)
         {
             healthFillImage.fillAmount = healthPercentage;
         }
-        else
-        {
-            Debug.LogWarning("PlayerUIManager: 체력 이미지가 할당되지 않았습니다.");
-        }
     }
-
-    public void UpdateExperienceUI()
+    public void UpdateExperienceUIWithoutParam()
     {
-        if (experienceScrollbar == null || levelText == null)
+        UpdateExperienceUI();
+    }
+    public void UpdateExperienceUI(int gainedExperience = 0)
+    {
+        if (player == null || experienceBarMaskRect == null || experienceBarFullRect == null)
         {
-            Debug.LogError("PlayerUIManager: 경험치 UI 요소가 할당되지 않았습니다.");
+            Debug.LogError("PlayerUIManager: 경험치 바에 필요한 요소가 할당되지 않았습니다.");
             return;
         }
 
-        if (player == null || player.stat == null)
-        {
-            Debug.LogError("PlayerUIManager: 플레이어 또는 플레이어의 스탯이 할당되지 않았습니다.");
-            return;
-        }
+        float experienceRatio = 0f;
 
         if (player.stat.currentLevel < player.stat.experienceThresholds.Length)
         {
-            levelText.text = "" +player.stat.currentLevel;
-
-            float expRatio = (float)player.stat.currentExperience / player.stat.experienceThresholds[player.stat.currentLevel];
-            experienceScrollbar.size = Mathf.Clamp01(expRatio);
+            experienceRatio = (float)player.stat.currentExperience / player.stat.experienceThresholds[player.stat.currentLevel];
         }
         else
         {
-            Debug.LogError("PlayerUIManager: 현재 레벨이 경험치 임계값의 범위를 벗어났습니다.");
+            experienceRatio = 1f; // 최대 레벨 도달 시 경험치 바를 가득 채움
+        }
+
+        experienceRatio = Mathf.Clamp01(experienceRatio);
+
+        // 경험치에 비례해 마스크의 너비 조정 (왼쪽 고정)
+        float newMaskWidth = fullExperienceBarWidth * experienceRatio;
+        experienceBarMaskRect.sizeDelta = new Vector2(newMaskWidth, experienceBarMaskRect.sizeDelta.y);
+
+        // 경험치 텍스트 업데이트 (선택 사항)
+        if (experienceText != null)
+        {
+            experienceText.text = $"{player.stat.currentExperience}/{(player.stat.currentLevel < player.stat.experienceThresholds.Length ? player.stat.experienceThresholds[player.stat.currentLevel].ToString() : "Max")} XP";
+        }
+
+        // 경험치 Scrollbar 업데이트 (선택 사항)
+        if (experienceScrollbar != null)
+        {
+            experienceScrollbar.size = experienceRatio;
+        }
+
+        // 레벨 텍스트 업데이트
+        if (levelText != null)
+        {
+            levelText.text = player.stat.currentLevel.ToString();
         }
     }
 
@@ -152,14 +168,12 @@ public class PlayerUIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PlayerUIManager: currencyText가 인스펙터에 할당되지 않았습니다.");
+            Debug.LogWarning("PlayerUIManager: currencyText가 할당되지 않았습니다.");
         }
     }
 
     private void OnPlayerDeath()
     {
-        Debug.Log("플레이어 사망 UI 처리");
-
         if (deathPanel != null)
         {
             deathPanel.SetActive(true);
