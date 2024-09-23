@@ -26,7 +26,7 @@ public class MeteorController : MonoBehaviour
         {
             // 메테오를 타겟 위치로 이동
             Vector2 currentPosition = transform.position;
-            Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, fallSpeed * Time.unscaledDeltaTime);
+            Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, fallSpeed * Time.deltaTime);
             transform.position = new Vector3(newPosition.x, newPosition.y, transform.position.z);
 
             // 타겟 위치에 도달하면 충돌 처리

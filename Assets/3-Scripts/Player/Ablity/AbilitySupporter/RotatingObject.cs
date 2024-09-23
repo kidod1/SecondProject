@@ -26,7 +26,7 @@ public class RotatingObject : MonoBehaviour
     {
         if (player != null)
         {
-            angle += rotationSpeed * Time.unscaledDeltaTime;
+            angle += rotationSpeed * Time.deltaTime;
 
             float angleRad = angle * Mathf.Deg2Rad;
 

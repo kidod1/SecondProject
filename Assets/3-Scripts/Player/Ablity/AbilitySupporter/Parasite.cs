@@ -19,7 +19,7 @@ public class Parasite : MonoBehaviour
         if (target != null)
         {
             Vector3 direction = (target.position - transform.position).normalized;
-            transform.position += direction * speed * Time.unscaledDeltaTime;
+            transform.position += direction * speed * Time.deltaTime;
         }
         else
         {

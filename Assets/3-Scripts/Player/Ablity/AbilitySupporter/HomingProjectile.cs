@@ -35,7 +35,7 @@ public class HomingProjectile : Projectile
             {
                 Vector2 directionToMonster = (targetMonster.transform.position - transform.position).normalized;
                 Debug.Log($"투사체 방향: {directionToMonster} / 위치: {transform.position}");
-                rb.velocity = Vector2.Lerp(rb.velocity, directionToMonster * homingSpeed, Time.unscaledDeltaTime * 2);
+                rb.velocity = Vector2.Lerp(rb.velocity, directionToMonster * homingSpeed, Time.deltaTime * 2);
             }
         }
     }

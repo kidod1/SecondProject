@@ -51,7 +51,7 @@ public class Bat : Monster
         while (Vector3.Distance(transform.position, player.transform.position) > 0.5f)
         {
             Vector3 direction = (player.transform.position - transform.position).normalized;
-            transform.position += direction * stat.skillDashSpeed * Time.unscaledDeltaTime;
+            transform.position += direction * stat.skillDashSpeed * Time.deltaTime;
             yield return null;
         }
 
