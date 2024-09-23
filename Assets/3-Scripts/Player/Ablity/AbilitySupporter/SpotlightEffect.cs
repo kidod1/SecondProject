@@ -26,9 +26,9 @@ public class SpotlightEffect : MonoBehaviour
         while (true)
         {
             spriteRenderer.enabled = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSecondsRealtime(0.1f);
             spriteRenderer.enabled = false;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSecondsRealtime(0.1f);
             spriteRenderer.enabled = true;
 
             int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, damageRadius, hits);
@@ -41,7 +41,7 @@ public class SpotlightEffect : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(damageInterval - 0.2f);
+            yield return new WaitForSecondsRealtime(damageInterval - 0.2f);
         }
     }
 

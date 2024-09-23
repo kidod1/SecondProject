@@ -18,7 +18,7 @@ public class ElectricWire : MonoBehaviour
     private void Update()
     {
         float direction = isReversed ? -1 : 1;
-        transform.RotateAround(pivotPoint, Vector3.forward, rotationSpeed * direction * Time.deltaTime);
+        transform.RotateAround(pivotPoint, Vector3.forward, rotationSpeed * direction * Time.unscaledDeltaTime);
     }
 
     public void ReverseRotation()

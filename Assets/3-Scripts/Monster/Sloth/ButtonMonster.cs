@@ -56,13 +56,13 @@ public class ButtonMonster : Monster
 
         if (attackEffect != null)
         {
-            yield return new WaitForSeconds(0.72f);
+            yield return new WaitForSecondsRealtime(0.72f);
             GameObject effect = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
             effect.SetActive(true);
             StartCoroutine(DeactivateAfterAnimation(effect)); // 이펙트 비활성화
 
             // 이펙트가 0.2초간 활성화된 후 데미지 입히기
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSecondsRealtime(0.2f);
             ExecuteAttack();
         }
         else
@@ -93,7 +93,7 @@ public class ButtonMonster : Monster
 
     private IEnumerator DeactivateAfterAnimation(GameObject effect)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
         effect.SetActive(false);
     }
 
@@ -101,9 +101,14 @@ public class ButtonMonster : Monster
     {
         if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
         {
-            skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            var currentTrackEntry = skeletonAnimation.state.GetCurrent(0);
+            if (currentTrackEntry == null || currentTrackEntry.Animation.Name != animationName)
+            {
+                skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            }
         }
     }
+
 
     private void OnDrawGizmosSelected()
     {
@@ -188,7 +193,7 @@ public class ButtonCooldownState : MonsterState
 
     public override void UpdateState()
     {
-        cooldownTimer -= Time.deltaTime;
+        cooldownTimer -= Time.unscaledDeltaTime;
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;

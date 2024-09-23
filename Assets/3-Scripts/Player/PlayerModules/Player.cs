@@ -60,14 +60,16 @@ public class Player : MonoBehaviour
 
     public Transform shootPoint;
 
-    public UnityEvent<Vector2, int> OnShoot; // OnShoot 이벤트 원래대로 복구
+    public UnityEvent<Vector2, int> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
     public UnityEvent OnShootCanceled;
     public UnityEvent OnTakeDamage;
     public UnityEvent OnPlayerDeath;
     public UnityEvent OnMonsterKilled;
-    public UnityEvent<Collider2D> OnHitEnemy; // AbilityType 제거
+    public UnityEvent<Collider2D> OnHitEnemy;
+    public UnityEvent OnHeal;
+    public UnityEvent<int> OnGainExperience; // 경험치 획득 이벤트 추가
 
     private string saveFilePath;
 
@@ -82,13 +84,15 @@ public class Player : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         playerInput = new PlayerInput();
 
-        OnShoot ??= new UnityEvent<Vector2, int>(); // OnShoot 시그니처 변경
+        OnShoot ??= new UnityEvent<Vector2, int>();
         OnMonsterEnter ??= new UnityEvent<Collider2D>();
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
         OnPlayerDeath ??= new UnityEvent();
         OnMonsterKilled ??= new UnityEvent();
         OnHitEnemy ??= new UnityEvent<Collider2D>();
+        OnHeal ??= new UnityEvent();
+        OnGainExperience ??= new UnityEvent<int>(); // 이벤트 초기화
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -137,6 +141,7 @@ public class Player : MonoBehaviour
         {
             UpdateAnimation();
         }
+
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             if (currentSynergyAbility != null)
@@ -151,14 +156,13 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
     private void FixedUpdate()
     {
         Vector2 movement = moveInput * stat.currentPlayerSpeed * Time.fixedDeltaTime;
         Vector2 newPosition = rb.position + movement;
         rb.MovePosition(newPosition);
     }
+
     private void UpdateAnimation()
     {
         if (isShooting)
@@ -204,7 +208,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
 
     private void SetSkinAndAnimation(string skinName, string animationName, bool loop, bool flipX = false)
     {
@@ -282,7 +285,7 @@ public class Player : MonoBehaviour
         for (float i = 0; i < invincibilityDuration; i += blinkInterval)
         {
             meshRenderer.enabled = !meshRenderer.enabled;
-            yield return new WaitForSeconds(blinkInterval);
+            yield return new WaitForSecondsRealtime(blinkInterval);
         }
 
         meshRenderer.enabled = true;
@@ -296,14 +299,17 @@ public class Player : MonoBehaviour
 
         OnPlayerDeath.Invoke();
     }
+
     public void KillMonster()
     {
         OnMonsterKilled.Invoke();
         Debug.Log("몬스터 킬");
     }
+
     public void Heal(int amount)
     {
         stat.Heal(amount);
+        OnHeal.Invoke(); // 체력 회복 시 이벤트 호출
         UpdateUI();
     }
 
@@ -318,6 +324,8 @@ public class Player : MonoBehaviour
         {
             OnLevelUp?.Invoke();
         }
+
+        OnGainExperience.Invoke(amount); // 경험치 획득 시 이벤트 호출
         UpdateUI();
     }
 
@@ -356,12 +364,10 @@ public class Player : MonoBehaviour
         UpdateAnimation();
     }
 
-
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector2.zero;
     }
-
 
     private void OnShootStarted(InputAction.CallbackContext context)
     {
@@ -472,7 +478,17 @@ public class Player : MonoBehaviour
         Projectile projScript = projectile.GetComponent<Projectile>();
         if (projScript != null)
         {
-            projScript.Initialize(stat, this, false);
+            // FieryBloodToastAbility의 효과 적용
+            float damageMultiplier = 1f;
+            FieryBloodToastAbility fieryAbility = abilityManager.GetAbilityOfType<FieryBloodToastAbility>();
+            if (fieryAbility != null)
+            {
+                damageMultiplier = fieryAbility.GetDamageMultiplier();
+            }
+
+            int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
+
+            projScript.Initialize(stat, this, false, adjustedDamage);
             projScript.SetDirection(direction);
         }
 
@@ -570,7 +586,6 @@ public class Player : MonoBehaviour
         SavePlayerData();
     }
 }
-
 
 [System.Serializable]
 public class PlayerCurrencyToJson

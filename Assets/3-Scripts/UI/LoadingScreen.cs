@@ -52,7 +52,7 @@ public class LoadingScreen : MonoBehaviour
 
         while (elapsedTime < loadingDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             float fillAmount = Mathf.Clamp01(elapsedTime / loadingDuration);
             loadingBarFill.fillAmount = fillAmount;
 

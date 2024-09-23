@@ -51,7 +51,7 @@ public class Bat : Monster
         while (Vector3.Distance(transform.position, player.transform.position) > 0.5f)
         {
             Vector3 direction = (player.transform.position - transform.position).normalized;
-            transform.position += direction * stat.skillDashSpeed * Time.deltaTime;
+            transform.position += direction * stat.skillDashSpeed * Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -65,9 +65,15 @@ public class Bat : Monster
     {
         if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
         {
-            skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            var currentTrackEntry = skeletonAnimation.state.GetCurrent(0);
+
+            if (currentTrackEntry == null || currentTrackEntry.Animation.Name != animationName)
+            {
+                skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            }
         }
     }
+
 }
 
 public class ExplodeAttackState : MonsterState

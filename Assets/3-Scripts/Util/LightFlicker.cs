@@ -13,7 +13,7 @@ public class LightFlicker : MonoBehaviour
     void Update()
     {
         // 시간에 따라 밝기를 변경
-        timeElapsed += Time.deltaTime;
+        timeElapsed += Time.unscaledDeltaTime;
 
         // Mathf.PingPong을 사용해 시간이 지나면서 밝기가 오르내리도록 함
         float intensity = Mathf.PingPong(timeElapsed / flickerDuration * (maxIntensity - minIntensity), maxIntensity - minIntensity) + minIntensity;

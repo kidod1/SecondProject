@@ -21,8 +21,8 @@ public class Shark : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < chaseDelay)
         {
-            transform.Translate(Vector3.right * sharkSpeed * Time.deltaTime);  // 직선 이동
-            elapsedTime += Time.deltaTime;
+            transform.Translate(Vector3.right * sharkSpeed * Time.unscaledDeltaTime);  // 직선 이동
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -37,7 +37,7 @@ public class Shark : MonoBehaviour
         {
             // 몬스터를 추격
             Vector3 direction = (targetMonster.position - transform.position).normalized;
-            transform.position += direction * sharkSpeed * Time.deltaTime;
+            transform.position += direction * sharkSpeed * Time.unscaledDeltaTime;
 
             // 몬스터에 닿으면 공격
             if (Vector3.Distance(transform.position, targetMonster.position) < 0.5f)

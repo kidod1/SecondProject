@@ -19,7 +19,7 @@ public class ElectricBeam : MonoBehaviour
         if (playerTransform != null)
         {
             // 플레이어를 중심으로 회전
-            transform.RotateAround(playerTransform.position, Vector3.forward, rotationSpeed * Time.deltaTime);
+            transform.RotateAround(playerTransform.position, Vector3.forward, rotationSpeed * Time.unscaledDeltaTime);
 
             // 범위 내 몬스터에게 데미지 주기
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(playerTransform.position, range / 100f);

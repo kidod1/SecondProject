@@ -39,7 +39,7 @@ public class IlchwiCheonil : Ability
         while (true)
         {
             SpawnPoisonCloud();
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSecondsRealtime(spawnInterval);
         }
     }
 
@@ -82,9 +82,8 @@ public class IlchwiCheonil : Ability
         if (currentLevel < maxLevel)
         {
             currentLevel++;
-            // 레벨 업 시 독구름 피해량이나 범위 증가 등
-            poisonDamage += 5f; // 예: 레벨 당 피해량 5 증가
-            poisonRange += 0.5f; // 예: 레벨 당 범위 0.5 증가
+            poisonDamage += 5f;
+            poisonRange += 0.5f;
         }
     }
 }

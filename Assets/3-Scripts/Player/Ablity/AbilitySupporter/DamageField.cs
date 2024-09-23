@@ -86,7 +86,7 @@ public class DamageField : MonoBehaviour
             monster.TakeDamage(damageAmount);
         }
 
-        yield return new WaitForSeconds(damageFieldDuration);
+        yield return new WaitForSecondsRealtime(damageFieldDuration);
 
         if (particleSystem != null)
         {
@@ -98,7 +98,7 @@ public class DamageField : MonoBehaviour
             animator.ResetTrigger("Attack");
         }
 
-        yield return new WaitForSeconds(cooldownDurations);
+        yield return new WaitForSecondsRealtime(cooldownDurations);
 
         isCooldown = false;
     }

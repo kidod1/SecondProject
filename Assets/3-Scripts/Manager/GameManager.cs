@@ -1,8 +1,12 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using Spine.Unity;
 
 public class GameManager : MonoBehaviour
 {
+    private bool isPaused = false;
+    private SkeletonAnimation[] skeletonAnimations;
+
     private float restartHoldTime = 3f;
     private float restartTimer = 0f;
     private bool isRestarting = false;
@@ -14,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Null 체크 추가
+        skeletonAnimations = FindObjectsOfType<SkeletonAnimation>();
         if (player == null)
         {
             Debug.LogError("Player is not assigned in GameManager.");
@@ -57,12 +61,16 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))
         {
-            restartTimer += Time.deltaTime;
+            restartTimer += Time.unscaledDeltaTime;
             if (restartTimer >= restartHoldTime && !isRestarting)
             {
                 isRestarting = true;
                 RestartScene();
             }
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TogglePause();
         }
         else if (Input.GetKeyUp(KeyCode.R))
         {
@@ -81,5 +89,41 @@ public class GameManager : MonoBehaviour
         // 씬이 재시작될 때 플레이어 데이터를 저장하고, 씬을 재시작합니다.
         player.SavePlayerData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0;
+            PauseAnimations();
+        }
+        else
+        {
+            Time.timeScale = 1;
+            ResumeAnimations();
+        }
+    }
+    private void PauseAnimations()
+    {
+        foreach (var skeletonAnimation in skeletonAnimations)
+        {
+            if (skeletonAnimation != null)
+            {
+                skeletonAnimation.timeScale = 0;
+            }
+        }
+    }
+    private void ResumeAnimations()
+    {
+        foreach (var skeletonAnimation in skeletonAnimations)
+        {
+            if (skeletonAnimation != null)
+            {
+                skeletonAnimation.timeScale = 1;
+            }
+        }
     }
 }

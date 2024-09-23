@@ -48,7 +48,7 @@ public class CoinRain : SynergyAbility
         {
             DealDamageToVisibleMonsters();
             elapsedTime += damageInterval;
-            yield return new WaitForSeconds(damageInterval);
+            yield return new WaitForSecondsRealtime(damageInterval);
         }
 
         DeactivateCoinRain();

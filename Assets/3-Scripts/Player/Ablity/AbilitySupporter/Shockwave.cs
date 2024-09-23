@@ -70,7 +70,7 @@ public class Shockwave : MonoBehaviour
             PerformPushAway();
 
             // 넉백이 끝나면 쿨타임 대기
-            yield return new WaitForSeconds(cooldownTime);
+            yield return new WaitForSecondsRealtime(cooldownTime);
         }
     }
 
@@ -124,7 +124,7 @@ public class Shockwave : MonoBehaviour
 
     private IEnumerator EndPlayAnimation()
     {
-        yield return new WaitForSeconds(1.13f); // 애니메이션이 재생되는 시간 (대략적인 시간 설정)
+        yield return new WaitForSecondsRealtime(1.13f); // 애니메이션이 재생되는 시간 (대략적인 시간 설정)
 
         if (animator != null)
         {

@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        currentLifetime += Time.deltaTime;
+        currentLifetime += Time.unscaledDeltaTime;
 
         // 0.5초 이후에 스케일 변경 시작
         if (currentLifetime > 0.5f && !scaleStart)

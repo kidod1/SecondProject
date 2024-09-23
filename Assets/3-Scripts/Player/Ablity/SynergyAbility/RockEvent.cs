@@ -25,19 +25,19 @@ public class RockEvent : SynergyAbility
     {
         while (true)
         {
-            yield return new WaitForSeconds(cooldownDuration);
+            yield return new WaitForSecondsRealtime(cooldownDuration);
 
             // 공격력 버프
             ActivateBuff(playerInstance, BuffType.Attack);
-            yield return new WaitForSeconds(buffDuration);
+            yield return new WaitForSecondsRealtime(buffDuration);
 
             // 공격 속도 버프
             ActivateBuff(playerInstance, BuffType.AttackSpeed);
-            yield return new WaitForSeconds(buffDuration);
+            yield return new WaitForSecondsRealtime(buffDuration);
 
             // 이동 속도 버프
             ActivateBuff(playerInstance, BuffType.MoveSpeed);
-            yield return new WaitForSeconds(buffDuration);
+            yield return new WaitForSecondsRealtime(buffDuration);
         }
     }
 
@@ -71,7 +71,7 @@ public class RockEvent : SynergyAbility
 
     private IEnumerator RemoveBuffAfterDuration(System.Action removeBuffAction, float duration)
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSecondsRealtime(duration);
         removeBuffAction();
     }
 }

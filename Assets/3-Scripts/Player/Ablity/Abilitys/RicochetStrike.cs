@@ -59,7 +59,7 @@ public class RicochetStrike : Ability
 
     private IEnumerator HomingTowardsEnemy(GameObject projectile, Projectile projScript)
     {
-        yield return new WaitForSeconds(0.25f);  // 필요에 따라 딜레이 조정
+        yield return new WaitForSecondsRealtime(0.25f);  // 필요에 따라 딜레이 조정
 
         Collider2D closestEnemy = FindClosestEnemy(projectile.transform.position);
 
