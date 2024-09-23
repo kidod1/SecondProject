@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593facb25f22cfe45bc0fc3c870211ec, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: 
-  monsterSpeed: 2
+  monsterSpeed: 1
   maxHP: 8
   contectDamage: 2
   attackDamage: 4
@@ -21,4 +21,6 @@ MonoBehaviour:
   attackRange: 3
   attackDelay: 3
   rewardCurrency: 0
+  highExperiencePoints: 50
+  highExperienceDropChance: 0.11
   skillDashSpeed: 2
