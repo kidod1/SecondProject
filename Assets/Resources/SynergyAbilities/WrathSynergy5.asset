@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed7ca3477d5e1c741b0b8b4b94d9c1fc, type: 3}
-  m_Name: Meteor Ability
+  m_Name: WrathSynergy5
   m_EditorClassIdentifier: 
   abilityName: "\uBA54\uD14C\uC624!!!!!!"
   baseDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uADFC\uCC98 \uB79C\uB364\uD55C
     \uC704\uCE58\uC5D0 \uBA54\uD14C\uC624\uB97C \uB5A8\uC5B4\uD2B8\uB9BD\uB2C8\uB2E4."
-  category: Wrath
+  category: Null
   maxLevel: 5
-  currentLevel: 1
+  currentLevel: 0
   abilityIcon: {fileID: 21300000, guid: c27ab9a1dcf38a24ea272f9f65b8b61f, type: 3}
+  cooldownDuration: 0
   meteorPrefab: {fileID: 4846621467829092376, guid: bc247cca8209f1b4099b209771ff9453, type: 3}
   meteorDamage: 10
   meteorRadius: 2
   warningDuration: 1.5
   fallSpeed: 10
-  meteorCount: 3
+  meteorCount: 15
   spawnRadius: 5
-  spawnInterval: 1
+  cooldownDurations: 0
   warningSprite: {fileID: -126669118, guid: 785a4670a97dd8c41bc7f708d0f9f716, type: 3}

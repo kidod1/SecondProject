@@ -36,7 +36,7 @@ public class UIShaker : MonoBehaviour
 
             rectTransform.anchoredPosition = initialPosition + new Vector2(offsetX, offsetY);
 
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 

@@ -55,7 +55,7 @@ public class ParticleFollow : MonoBehaviour
         for (int i = 0; i < numParticlesAlive; i++)
         {
             Vector3 targetPosition = followTarget.position + offset;
-            particles[i].position = Vector3.Lerp(particles[i].position, targetPosition, followSpeed * Time.deltaTime);
+            particles[i].position = Vector3.Lerp(particles[i].position, targetPosition, followSpeed * Time.unscaledDeltaTime);
         }
 
         particleSystem.SetParticles(particles, numParticlesAlive);

@@ -87,9 +87,15 @@ public class Drone : Monster
     {
         if (skeletonAnimation != null && !string.IsNullOrEmpty(animationName))
         {
-            skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            var currentTrackEntry = skeletonAnimation.state.GetCurrent(0);
+
+            if (currentTrackEntry == null || currentTrackEntry.Animation.Name != animationName)
+            {
+                skeletonAnimation.state.SetAnimation(0, animationName, loop);
+            }
         }
     }
+
 }
 
 public class DroneIdleState : MonsterState
@@ -167,7 +173,7 @@ public class DroneCooldownState : MonsterState
 
     public override void UpdateState()
     {
-        cooldownTimer -= Time.deltaTime;
+        cooldownTimer -= Time.unscaledDeltaTime;
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;

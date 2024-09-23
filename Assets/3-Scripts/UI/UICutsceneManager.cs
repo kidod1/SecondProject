@@ -60,7 +60,7 @@ public class UICutsceneManager : MonoBehaviour
     private IEnumerator FadeIn()
     {
         Color color = cutsceneImage.color;
-        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             float normalizedTime = t / fadeDuration;
             color.a = Mathf.Lerp(0, 1, normalizedTime);
@@ -74,7 +74,7 @@ public class UICutsceneManager : MonoBehaviour
     private IEnumerator FadeOut()
     {
         Color color = cutsceneImage.color;
-        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             float normalizedTime = t / fadeDuration;
             color.a = Mathf.Lerp(1, 0, normalizedTime);

@@ -81,7 +81,7 @@ public class Barrier : Ability
     {
         if (currentLevel - 1 >= 0 && currentLevel - 1 < cooldownTimes.Length)
         {
-            yield return new WaitForSeconds(cooldownTimes[currentLevel - 1]);
+            yield return new WaitForSecondsRealtime(cooldownTimes[currentLevel - 1]);
         }
 
         if (playerInstance != null)

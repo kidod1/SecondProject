@@ -34,7 +34,7 @@ public class ParasiticNest : Ability
             Color originalColor = renderer.color;
             renderer.color = Color.green;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
             renderer.color = originalColor;
         }
     }

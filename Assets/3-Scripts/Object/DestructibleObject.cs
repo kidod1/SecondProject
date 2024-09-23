@@ -62,7 +62,7 @@ public class DestructibleObject : MonoBehaviour
             {
                 spriteRenderer.enabled = !spriteRenderer.enabled;
             }
-            yield return new WaitForSeconds(blinkInterval);
+            yield return new WaitForSecondsRealtime(blinkInterval);
         }
 
         if (spriteRenderer != null)
