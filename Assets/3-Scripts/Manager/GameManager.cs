@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))
         {
-            restartTimer += Time.unscaledDeltaTime;
+            restartTimer += Time.deltaTime;
             if (restartTimer >= restartHoldTime && !isRestarting)
             {
                 isRestarting = true;

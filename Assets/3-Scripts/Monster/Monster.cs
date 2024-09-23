@@ -160,7 +160,7 @@ public abstract class Monster : MonoBehaviour
     public void MoveTowards(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;
-        transform.position += direction * monsterBaseStat.monsterSpeed * Time.unscaledDeltaTime;
+        transform.position += direction * monsterBaseStat.monsterSpeed * Time.deltaTime;
     }
 
     public virtual void TakeDamage(int damage)

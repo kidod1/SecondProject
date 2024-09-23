@@ -193,7 +193,7 @@ public class ButtonCooldownState : MonsterState
 
     public override void UpdateState()
     {
-        cooldownTimer -= Time.unscaledDeltaTime;
+        cooldownTimer -= Time.deltaTime;
         if (cooldownTimer <= 0)
         {
             monster.isInCooldown = false;
