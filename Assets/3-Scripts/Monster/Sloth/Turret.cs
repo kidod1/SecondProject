@@ -106,10 +106,8 @@ public class Turret : Monster
         if (skeletonAnimation != null)
         {
             skeletonAnimation.state.ClearTracks();
-            skeletonAnimation.Skeleton.SetSlotsToSetupPose(); // 슬롯을 기본 상태로 설정
-            Debug.Log("실행");
-            skeletonAnimation.Initialize(true); // true로 설정하면 강제로 재설정
-            Debug.Log("Skeleton animation state has been reloaded.");
+            skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+            skeletonAnimation.Initialize(true);
         }
     }
 
@@ -178,10 +176,6 @@ public class Turret : Monster
                 }
             }
         }
-
-        Debug.Log($"Setting skin to: {skinName}, Playing animation: {attackAnimationName}");
-
-
         skeletonAnimation.Skeleton.SetSkin(skinName);
         PlayAnimation(attackAnimationName, false);
     }

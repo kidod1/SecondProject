@@ -346,7 +346,7 @@ namespace Spine {
 				return 0;
 			
 			TrackEntry from = to.mixingFrom;
-			if (from.mixingFrom != null) ApplyMixingFrom(from, skeleton, blend);
+			if (from.mixingFrom != null && Time.timeScale != 0) ApplyMixingFrom(from, skeleton, blend);
 
 			float mix;
 			if (to.mixDuration == 0) { // Single frame mix to undo mixingFrom changes.
@@ -366,7 +366,7 @@ namespace Spine {
 			var timelinesItems = timelines.Items;
 			float alphaHold = from.alpha * to.interruptAlpha, alphaMix = alphaHold * (1 - mix);
 
-			if (blend == MixBlend.Add) {
+            if (blend == MixBlend.Add) {
 				for (int i = 0; i < timelineCount; i++)
 					timelinesItems[i].Apply(skeleton, animationLast, animationTime, eventBuffer, alphaMix, blend, MixDirection.Out);
 			} else {

@@ -9,7 +9,7 @@ public class ElectricField : SynergyAbility
     public float damageFieldDuration = 1f; // 전기장 지속 시간
     public float damageInterval = 0.25f; // 데미지 간격
     public int damageAmount = 20; // 데미지 양
-    public float cooldownDurations = 5f; // 쿨다운 시간 추가
+    public float cooldownDurations = 15f; // 쿨다운 시간 추가
 
     private Player playerInstance;
     private GameObject activeDamageField;
@@ -85,6 +85,10 @@ public class ElectricField : SynergyAbility
             Destroy(activeDamageField);
             activeDamageField = null;
         }
+    }
+    public override void ResetLevel()
+    {
+        currentLevel = 0;
     }
     public override void Upgrade()
     {

@@ -282,6 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}
+  currentSynergyAbility: {fileID: 0}
   objectPool: {fileID: 5018752986689712375}
   abilityManager: {fileID: 287484265595492415}
   barrierAbility: {fileID: 11400000, guid: 4d43d418a14cc9b47a713a1e2655fb46, type: 2}
@@ -315,6 +316,18 @@ MonoBehaviour:
   OnPlayerDeath:
     m_PersistentCalls:
       m_Calls: []
+  OnMonsterKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHitEnemy:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGainExperience:
+    m_PersistentCalls:
+      m_Calls: []
   impulseSource: {fileID: 0}
 --- !u!114 &6097180407724964633
 MonoBehaviour:
@@ -330,11 +343,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelText: {fileID: 0}
   experienceScrollbar: {fileID: 0}
-  maskRectTransform: {fileID: 0}
+  experienceText: {fileID: 0}
   healthText: {fileID: 0}
   healthFillImage: {fileID: 0}
+  healthBarMaskRect: {fileID: 0}
+  healthBarFullRect: {fileID: 0}
   currencyText: {fileID: 0}
   deathPanel: {fileID: 0}
+  experienceBarMaskRect: {fileID: 0}
+  experienceBarFullRect: {fileID: 0}
 --- !u!114 &5018752986689712375
 MonoBehaviour:
   m_ObjectHideFlags: 0

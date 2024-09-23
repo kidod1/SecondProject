@@ -12,6 +12,9 @@ public class MonsterSpawner : MonoBehaviour
 
         [Tooltip("생성할 몬스터 수")]
         public int count;
+
+        [Tooltip("몬스터 스폰 간격")]
+        public float spawnInterval = 1.0f;
     }
 
     [System.Serializable]
@@ -20,8 +23,6 @@ public class MonsterSpawner : MonoBehaviour
         [Tooltip("스폰 정보 리스트")]
         public List<SpawnInfo> spawnInfos;
 
-        [Tooltip("몬스터 스폰 간격")]
-        public float spawnInterval = 1.0f;
 
         [Tooltip("이 웨이브에서 사용할 스폰 지점 (선택 사항)")]
         public Transform[] customSpawnPoints; // 웨이브별 커스텀 스폰 지점
@@ -71,7 +72,7 @@ public class MonsterSpawner : MonoBehaviour
                 for (int i = 0; i < spawnInfo.count; i++)
                 {
                     SpawnMonster(spawnInfo.monsterPrefab, spawnPointsToUse);
-                    yield return new WaitForSecondsRealtime(wave.spawnInterval);
+                    yield return new WaitForSecondsRealtime(spawnInfo.spawnInterval);
                 }
             }
 
