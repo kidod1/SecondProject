@@ -236,6 +236,7 @@ Transform:
   - {fileID: 6159791049733783598}
   - {fileID: 1087814097378120405}
   - {fileID: 2519161580506224301}
+  - {fileID: 8320796084609985479}
   - {fileID: 1764682471005584840}
   - {fileID: 6932425234171922166}
   - {fileID: 5652406189191179381}
@@ -338,9 +339,15 @@ MonoBehaviour:
     - {fileID: 5469197543703704893}
     - {fileID: 9011532662198909879}
   - spawnInfos:
-    - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
-      count: 12
+    - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
+      count: 1
       spawnInterval: 1
+    customSpawnPoints:
+    - {fileID: 1750231354575667567}
+  - spawnInfos:
+    - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
+      count: 24
+      spawnInterval: 0.5
     customSpawnPoints:
     - {fileID: 1750231354575667567}
     - {fileID: 4733429610036466886}
@@ -348,6 +355,12 @@ MonoBehaviour:
     - {fileID: 5173495012105047830}
     - {fileID: 7107331433448967541}
     - {fileID: 6381513585542448266}
+    - {fileID: 7125222037530549630}
+    - {fileID: 9060285755060411328}
+    - {fileID: 3213173915449427119}
+    - {fileID: 6159791049733783598}
+    - {fileID: 1087814097378120405}
+    - {fileID: 2519161580506224301}
   spawnPoints: []
   endDialogueName: EndDialogue
   waveDialogueName: WaveDialogue
@@ -473,6 +486,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.28, y: 14.94, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3321361640584581917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8320796084609985479}
+  m_Layer: 0
+  m_Name: GameObject (25)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8320796084609985479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321361640584581917}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.79, y: 10.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
