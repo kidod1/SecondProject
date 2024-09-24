@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ac29a9f0fb4766c45a50d7da523a9128, type: 2}
+  - {fileID: 2100000, guid: 6e33568b866d4f7469da4c5228ce3252, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: dd21b7651ad59c94eae6336a90c69f07, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 2a8e268e9fe8c4a4c8f8a8a461305038, type: 2}
   initialSkinName: 
   initialFlipX: 0
   initialFlipY: 0
@@ -203,7 +203,12 @@ MonoBehaviour:
   blinkInterval: 0.1
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: bacc39830fc832e4b8e1bcab2679e977, type: 3}
   deathEffectDuration: 0.4
+  isElite: 0
   isInCooldown: 0
+  isInfected: 0
+  damageArea: {fileID: 0}
+  areaDamage: 10
+  damageInterval: 1
   stat: {fileID: 11400000, guid: af5aece43d137e64c89499d91461f0af, type: 2}
-  idleAnimation: animation
-  attackAnimation: animation
+  idleAnimation: idle_move
+  attackAnimation: attack

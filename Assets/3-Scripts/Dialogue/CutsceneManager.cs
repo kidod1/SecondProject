@@ -27,7 +27,7 @@ public class CutsceneManager : MonoBehaviour
     public CutsceneDialogue cutsceneDialogue;
     public TMP_Text nameText;
     public TMP_Text dialogueText;
-    public Image animationImage; // 애니메이션이 시작될 때 true로 설정될 이미지
+    public Image animationImage;
     public int nextSceneIndex = -1;
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
@@ -77,19 +77,44 @@ public class CutsceneManager : MonoBehaviour
             StopCoroutine(textAnimationCoroutine); // 이전 애니메이션 중지
         }
 
-        animationImage.gameObject.SetActive(false); // 다음 애니메이션이 실행될 때 이전 이미지를 비활성화
+        // 새로운 대사가 출력되기 전에 이미지를 비활성화
+        animationImage.gameObject.SetActive(false);
 
         string sentence = sentences.Dequeue();
-        textAnimationCoroutine = StartCoroutine(AnimateText(sentence));
         currentSentenceIndex++;
 
         ToggleCharacterImagesAndNames();
+
+        // 첫 번째 대사에만 1초의 딜레이 추가
+        if (currentSentenceIndex == 1)
+        {
+            StartCoroutine(DisplayNameAndSentenceWithDelay(sentence, 3.3f)); // 1초 딜레이 추가
+        }
+        else
+        {
+            DisplayNameAndSentence(sentence);
+        }
+    }
+
+    private void DisplayNameAndSentence(string sentence)
+    {
+        if (textAnimationCoroutine != null)
+        {
+            StopCoroutine(textAnimationCoroutine);
+        }
+
+        textAnimationCoroutine = StartCoroutine(AnimateText(sentence));
+    }
+
+    private IEnumerator DisplayNameAndSentenceWithDelay(string sentence, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        DisplayNameAndSentence(sentence);
     }
 
     private IEnumerator AnimateText(string sentence)
     {
         dialogueText.text = "";
-        yield return new WaitForSecondsRealtime(0.1f); // 텍스트 애니메이션이 시작하기 전에 잠깐의 딜레이를 추가
 
         foreach (char letter in sentence.ToCharArray())
         {
@@ -97,7 +122,8 @@ public class CutsceneManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(textAnimationSpeed);
         }
 
-        animationImage.gameObject.SetActive(true); // 애니메이션이 끝날 때 이미지 활성화
+        // 애니메이션이 끝나면 이미지를 활성화
+        animationImage.gameObject.SetActive(true);
     }
 
     private void ToggleCharacterImagesAndNames()
@@ -122,7 +148,6 @@ public class CutsceneManager : MonoBehaviour
             }
         }
 
-        // 특정 인덱스 이후에 캐릭터 이미지를 비활성화
         foreach (var entry in cutsceneDialogue.dialogueEntries)
         {
             if (entry.characterImage != null && currentSentenceIndex > entry.hideAfterSentence)

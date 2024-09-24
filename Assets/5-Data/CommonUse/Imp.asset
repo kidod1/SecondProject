@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f444067eff60d44a99055452af3dbcc, type: 3}
   m_Name: Imp
   m_EditorClassIdentifier: 
-  monsterSpeed: 2
+  monsterSpeed: 0
   maxHP: 20
   contectDamage: 2
   attackDamage: 2
@@ -20,4 +20,7 @@ MonoBehaviour:
   detectionRange: 100
   attackRange: 5
   attackDelay: 2
+  rewardCurrency: 0
+  highExperiencePoints: 0
+  highExperienceDropChance: 0
   attackSpeed: 3
