@@ -64,8 +64,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: ac29a9f0fb4766c45a50d7da523a9128, type: 2}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: dd21b7651ad59c94eae6336a90c69f07, type: 2}
-  initialSkinName: 
+  skeletonDataAsset: {fileID: 11400000, guid: 2a8e268e9fe8c4a4c8f8a8a461305038, type: 2}
+  initialSkinName: 5.sloth
   initialFlipX: 0
   initialFlipY: 0
   updateWhenInvisible: 3
@@ -210,5 +209,5 @@ MonoBehaviour:
   areaDamage: 10
   damageInterval: 1
   stat: {fileID: 11400000, guid: 7881552078ff36e46b67398ed514c9f0, type: 2}
-  idleAnimation: animation
-  attackAnimation: animation
+  idleAnimation: idle_move
+  attackAnimation: attack
