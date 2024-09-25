@@ -5,40 +5,29 @@ using UnityEngine;
 public class DamageField : MonoBehaviour
 {
     private int damageAmount;
-    private float damageInterval;
-    private float damageFieldDuration;
-    private float fieldCooldownDurations;
-    private ElectricField electricField;
     private HashSet<Monster> monstersInRange = new HashSet<Monster>();
     private ParticleSystem particleSystem;
-    private Animator animator;
-    private bool isInitialized = false;
-    private bool isCooldown = false;
 
-    public void Initialize(ElectricField electricField, Player playerInstance)
+    public void Initialize(ElectricField electricField)
     {
-        this.electricField = electricField;
         damageAmount = electricField.damageAmount;
-        damageInterval = electricField.damageInterval;
-        damageFieldDuration = electricField.damageFieldDuration;
-        fieldCooldownDurations = electricField.ElectricAblityCooldownDurations;
 
         particleSystem = GetComponent<ParticleSystem>();
-        animator = GetComponent<Animator>();
 
-        isInitialized = true;
-        particleSystem?.Stop();
+        if (particleSystem != null)
+        {
+            particleSystem.Stop();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Monster") && !isCooldown)
+        if (other.CompareTag("Monster"))
         {
             Monster monster = other.GetComponent<Monster>();
             if (monster != null)
             {
                 monstersInRange.Add(monster);
-                StartCoroutine(AttackAndCooldownRoutine());
             }
         }
     }
@@ -57,49 +46,31 @@ public class DamageField : MonoBehaviour
 
     public void DealDamage(int amount)
     {
-        foreach (var monster in monstersInRange)
+        // monstersInRange의 복사본을 만들어 순회
+        List<Monster> monstersSnapshot = new List<Monster>(monstersInRange);
+        foreach (var monster in monstersSnapshot)
         {
-            monster.TakeDamage(amount);
+            if (monster != null) // 몬스터가 유효한지 확인
+            {
+                monster.TakeDamage(amount);
+            }
         }
     }
 
-    private IEnumerator AttackAndCooldownRoutine()
+    // 파티클 재생 및 중지와 관련된 메서드
+    public void Activate()
     {
-        if (isCooldown)
-            yield break;
-
-        isCooldown = true;
-
         if (particleSystem != null)
         {
             particleSystem.Play();
         }
+    }
 
-        if (animator != null)
-        {
-            animator.SetTrigger("Attack");
-        }
-
-        var monstersSnapshot = new List<Monster>(monstersInRange);
-        foreach (var monster in monstersSnapshot)
-        {
-            monster.TakeDamage(damageAmount);
-        }
-
-        yield return new WaitForSecondsRealtime(damageFieldDuration);
-
+    public void Deactivate()
+    {
         if (particleSystem != null)
         {
             particleSystem.Stop();
         }
-
-        if (animator != null)
-        {
-            animator.ResetTrigger("Attack");
-        }
-
-        yield return new WaitForSecondsRealtime(fieldCooldownDurations);
-
-        isCooldown = false;
     }
 }

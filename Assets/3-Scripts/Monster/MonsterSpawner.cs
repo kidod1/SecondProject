@@ -72,7 +72,7 @@ public class MonsterSpawner : MonoBehaviour
                 for (int i = 0; i < spawnInfo.count; i++)
                 {
                     SpawnMonster(spawnInfo.monsterPrefab, spawnPointsToUse);
-                    yield return new WaitForSecondsRealtime(spawnInfo.spawnInterval);
+                    yield return new WaitForSeconds(spawnInfo.spawnInterval);
                 }
             }
 
