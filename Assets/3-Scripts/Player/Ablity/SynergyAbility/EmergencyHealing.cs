@@ -5,7 +5,6 @@ using UnityEngine;
 public class EmergencyHealing : SynergyAbility
 {
     public GameObject healingDronePrefab; // 치유 드론 프리팹
-    public float cooldownDuration = 20f; // 쿨타임 20초
     private Player playerInstance;
     private Coroutine cooldownCoroutine;
 

@@ -6,7 +6,6 @@ public class RockEvent : SynergyAbility
 {
     public GameObject effectPrefab;
     public float buffDuration = 10f;
-    public float cooldownDuration = 20f;
 
     private Player playerInstance;
     private Coroutine buffCoroutine;
