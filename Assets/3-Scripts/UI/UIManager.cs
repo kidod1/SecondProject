@@ -23,14 +23,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        // DontDestroyOnLoad을 제거하고, 중복된 UIManager를 파괴하지 않음
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (_instance != this)
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // 중복된 인스턴스는 삭제
         }
     }
 
@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
         // L 키가 눌렸을 때 지정된 씬으로 이동
         if (Input.GetKeyDown(KeyCode.L))
         {
-            ChangeScene(6); // 여기서 1은 이동하려는 씬의 인덱스입니다. 원하는 인덱스로 변경하세요.
+            ChangeScene(6); // 씬 인덱스를 원하는 대로 변경
         }
     }
 
