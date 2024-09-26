@@ -33,6 +33,9 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField]
     private AnimationReferenceAsset completeAnimationAsset;  // 로딩 완료 후 재생할 애니메이션 참조
 
+    [SerializeField]
+    private GameObject[] resultImages;  // 로딩 완료 후 나타날 이미지 배열
+
     // 쉐이더가 적용된 Material
     [SerializeField]
     private Material noiseMaterial;
@@ -79,6 +82,15 @@ public class LoadingScreen : MonoBehaviour
         {
             skeletonGraphic.AnimationState.SetAnimation(0, idleAnimationAsset.Animation.Name, true);  // 로딩 시작 애니메이션 재생
         }
+
+        // 로딩 완료 후 나올 이미지들 비활성화
+        foreach (var resultImage in resultImages)
+        {
+            if (resultImage != null)
+            {
+                resultImage.SetActive(false);
+            }
+        }
     }
 
     private IEnumerator FillLoadingBar()
@@ -120,6 +132,15 @@ public class LoadingScreen : MonoBehaviour
         {
             skeletonGraphic.AnimationState.SetAnimation(0, completeAnimationAsset.Animation.Name, true);  // 로딩 완료 애니메이션 재생
         }
+
+        // 결과 이미지 배열 활성화
+        foreach (var resultImage in resultImages)
+        {
+            if (resultImage != null)
+            {
+                resultImage.SetActive(true);  // 각 이미지 활성화
+            }
+        }
     }
 
     // 노이즈 효과를 서서히 줄이면서 UI(노이즈 이미지)를 비활성화
@@ -135,7 +156,7 @@ public class LoadingScreen : MonoBehaviour
         }
 
         // 노이즈가 0이 되면 노이즈 UI 이미지를 비활성화
-        if (noiseImage != null)
+        if (noiseStrength <= 0.5f)
         {
             noiseImage.SetActive(false);
         }
