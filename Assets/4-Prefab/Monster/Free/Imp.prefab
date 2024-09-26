@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bf9144cb26ae7a947955503627dda593, type: 2}
+  - {fileID: 2100000, guid: 2c8f67c6d933c5946ae70e4ea71017b4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,8 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: ef3b3592b565fe248821308ace6ab58c, type: 2}
-  initialSkinName: front
+  skeletonDataAsset: {fileID: 11400000, guid: 541e9fd75a7c97347ad54390cf20dbd9, type: 2}
+  initialSkinName: 0.nomal/front
   initialFlipX: 0
   initialFlipY: 0
   updateWhenInvisible: 3
@@ -122,7 +122,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: 
+  _animationName: idle
   loop: 1
   timeScale: 1
 --- !u!50 &7077287781012051402
@@ -204,7 +204,12 @@ MonoBehaviour:
   blinkInterval: 0.1
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: bacc39830fc832e4b8e1bcab2679e977, type: 3}
   deathEffectDuration: 0.4
+  isElite: 0
   isInCooldown: 0
+  isInfected: 0
+  damageArea: {fileID: 0}
+  areaDamage: 10
+  damageInterval: 1
   bulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
   stat: {fileID: 11400000, guid: 2e2be1302d68a3f4ca9616fbed3d6013, type: 2}
   idleAnimation: idle

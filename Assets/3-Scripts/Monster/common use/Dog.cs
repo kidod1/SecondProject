@@ -1,7 +1,6 @@
-using System.Collections;
-using UnityEngine;
 using Spine.Unity;
-
+using UnityEngine;
+using System.Collections;
 public class Dog : Monster
 {
     [SerializeField]
@@ -48,7 +47,7 @@ public class Dog : Monster
         {
             player.TakeDamage(monsterBaseStat.attackDamage);
         }
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.5f);
         TransitionToState(cooldownState);
     }
 
@@ -76,10 +75,28 @@ public class Dog : Monster
     private void Update()
     {
         currentState?.UpdateState();
+        FlipDirection();
 
         if (skeletonAnimation != null && currentState == cooldownState)
         {
             skeletonAnimation.AnimationName = null;
+        }
+    }
+
+    private void FlipDirection()
+    {
+        var players = PlayManager.I.GetPlayer();
+        if (PlayManager.I.GetPlayer() != null)
+        {
+            Vector3 directionToPlayer = players.transform.position - transform.position;
+            if (directionToPlayer.x > 0 && transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else if (directionToPlayer.x < 0 && transform.localScale.x < 0)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 
@@ -88,6 +105,7 @@ public class Dog : Monster
         currentState?.EnterState();
     }
 }
+
 
 public class DogCooldownState : MonsterState
 {

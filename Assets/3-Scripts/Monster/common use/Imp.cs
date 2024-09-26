@@ -54,9 +54,10 @@ public class Imp : Monster
     private IEnumerator AttackCoroutine()
     {
         PlayAnimation(attackAnimation, false);
+        yield return new WaitForSeconds(0.2f);
         FireBullet();
-        TransitionToState(cooldownState);
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
+        TransitionToState(cooldownState);
         PlayAnimation(idleAnimation, true);
     }
 
@@ -116,7 +117,6 @@ public class ImpChaseState : MonsterState
 
     public override void EnterState()
     {
-        // 추가적인 초기화가 필요하다면 여기에 작성
     }
 
     public override void UpdateState()

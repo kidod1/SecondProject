@@ -13,6 +13,8 @@ public class LoadingScreen : MonoBehaviour
     private int nextSceneIndex;  // 전환할 다음 씬의 인덱스 번호
     [SerializeField]
     private GameObject pressSpaceText;  // 로딩 완료 후 나타날 텍스트 UI
+    [SerializeField]
+    private GameObject loadingImage;  // 로딩 중에 표시될 이미지
 
     private bool isLoadingComplete = false;
 
@@ -35,6 +37,15 @@ public class LoadingScreen : MonoBehaviour
         else
         {
             Debug.LogWarning("LoadingScreen: pressSpaceText가 할당되지 않았습니다.");
+        }
+
+        if (loadingImage != null)
+        {
+            loadingImage.SetActive(true);  // 로딩 중 표시될 이미지 활성화
+        }
+        else
+        {
+            Debug.LogWarning("LoadingScreen: 로딩 중 이미지가 할당되지 않았습니다.");
         }
     }
 
@@ -60,6 +71,16 @@ public class LoadingScreen : MonoBehaviour
         }
 
         isLoadingComplete = true;
+
+        // 로딩이 끝나면 로딩 이미지를 비활성화
+        if (loadingImage != null)
+        {
+            loadingImage.SetActive(false);  // 로딩 중 이미지 비활성화
+        }
+        else
+        {
+            Debug.LogWarning("LoadingScreen: 로딩 중 이미지가 할당되지 않았습니다.");
+        }
 
         if (pressSpaceText != null)
         {
