@@ -21,6 +21,9 @@ public class DestructibleObject : MonoBehaviour
     [SerializeField]
     private float blinkInterval = 0.1f;
 
+    // 오브젝트가 파괴될 때 호출되는 이벤트
+    public event System.Action<GameObject> OnDestroyed;
+
     private void Start()
     {
         if (objectData != null)
@@ -81,6 +84,12 @@ public class DestructibleObject : MonoBehaviour
         {
             int randomIndex = Random.Range(0, spawnPrefabs.Length);
             Instantiate(spawnPrefabs[randomIndex], transform.position, Quaternion.identity);
+        }
+
+        // 파괴 이벤트 호출
+        if (OnDestroyed != null)
+        {
+            OnDestroyed(gameObject);
         }
 
         Destroy(gameObject);
