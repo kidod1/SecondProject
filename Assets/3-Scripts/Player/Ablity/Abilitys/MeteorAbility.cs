@@ -12,7 +12,7 @@ public class MeteorSynergyAbility : SynergyAbility
     public float fallSpeed = 10f;         // 메테오 낙하 속도
     public int meteorCount = 3;           // 메테오 개수
     public float spawnRadius = 5f;        // 플레이어 주변 메테오 스폰 반경
-    public float cooldownDurations = 5f;  // 쿨다운 시간
+    public float MeteorCooldownDurations = 5f;  // 쿨다운 시간
 
     public Sprite warningSprite;          // 경고 표시용 스프라이트
 
@@ -20,7 +20,7 @@ public class MeteorSynergyAbility : SynergyAbility
 
     private void OnEnable()
     {
-        cooldownDuration = cooldownDurations; // 쿨다운 시간 설정
+        cooldownDuration = MeteorCooldownDurations; // 쿨다운 시간 설정
     }
 
     public override void Apply(Player player)

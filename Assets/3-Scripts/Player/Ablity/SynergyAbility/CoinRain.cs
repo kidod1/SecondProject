@@ -8,7 +8,7 @@ public class CoinRain : SynergyAbility
     public float coinRainDuration = 5f;
     public float damageInterval = 0.5f;
     public int damageAmount = 20;
-    public float cooldownDurations = 8f;
+    public float coinAbilityCooldownDurations = 8f;
 
     private Player playerInstance;
     private GameObject activeCoinRain;
@@ -17,7 +17,7 @@ public class CoinRain : SynergyAbility
 
     private void OnEnable()
     {
-        cooldownDuration = cooldownDurations;
+        cooldownDuration = coinAbilityCooldownDurations;
     }
 
     public override void Apply(Player player)

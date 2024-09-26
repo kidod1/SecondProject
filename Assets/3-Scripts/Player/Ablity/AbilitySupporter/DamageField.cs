@@ -7,7 +7,7 @@ public class DamageField : MonoBehaviour
     private int damageAmount;
     private float damageInterval;
     private float damageFieldDuration;
-    private float cooldownDurations;
+    private float fieldCooldownDurations;
     private ElectricField electricField;
     private HashSet<Monster> monstersInRange = new HashSet<Monster>();
     private ParticleSystem particleSystem;
@@ -21,7 +21,7 @@ public class DamageField : MonoBehaviour
         damageAmount = electricField.damageAmount;
         damageInterval = electricField.damageInterval;
         damageFieldDuration = electricField.damageFieldDuration;
-        cooldownDurations = electricField.cooldownDurations;
+        fieldCooldownDurations = electricField.ElectricAblityCooldownDurations;
 
         particleSystem = GetComponent<ParticleSystem>();
         animator = GetComponent<Animator>();
@@ -98,7 +98,7 @@ public class DamageField : MonoBehaviour
             animator.ResetTrigger("Attack");
         }
 
-        yield return new WaitForSecondsRealtime(cooldownDurations);
+        yield return new WaitForSecondsRealtime(fieldCooldownDurations);
 
         isCooldown = false;
     }

@@ -124,6 +124,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1244381279112392031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2035441191513153124}
+  m_Layer: 0
+  m_Name: GameObject (25)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2035441191513153124
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244381279112392031}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.9, y: 12.69, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1857232777655808150
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +267,7 @@ Transform:
   - {fileID: 6159791049733783598}
   - {fileID: 1087814097378120405}
   - {fileID: 2519161580506224301}
-  - {fileID: 8320796084609985479}
+  - {fileID: 2035441191513153124}
   - {fileID: 1764682471005584840}
   - {fileID: 6932425234171922166}
   - {fileID: 5652406189191179381}
@@ -258,28 +289,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - spawnInfos:
-    - monsterPrefab: {fileID: 5257169338272492925, guid: ed0c08f9e805bcf42a80c698469e3d7b, type: 3}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: fe2a2b2e8a924fb4189408c31a45ab61, type: 3}
       count: 7
-      spawnInterval: 0.5
-    - monsterPrefab: {fileID: 6073249613970012703, guid: 4915e7dcab84d1349999a44ebc63f019, type: 3}
+      spawnInterval: 2
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 36e0508f525089349ba9f5c7b5a6ccf9, type: 3}
       count: 5
       spawnInterval: 1
-    - monsterPrefab: {fileID: 5951554319984575952, guid: f63e63d2b0d25f84b87a156ae6bf649c, type: 3}
+    - monsterPrefab: {fileID: 5951554319984575952, guid: 2cc5d3bd22acdd14697abead8c11d511, type: 3}
       count: 3
-      spawnInterval: 2
-    - monsterPrefab: {fileID: 5257169338272492925, guid: ed0c08f9e805bcf42a80c698469e3d7b, type: 3}
+      spawnInterval: 5
+    - monsterPrefab: {fileID: 5257169338272492925, guid: fe2a2b2e8a924fb4189408c31a45ab61, type: 3}
       count: 15
-      spawnInterval: 0.5
-    - monsterPrefab: {fileID: 6073249613970012703, guid: 4915e7dcab84d1349999a44ebc63f019, type: 3}
+      spawnInterval: 5
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 36e0508f525089349ba9f5c7b5a6ccf9, type: 3}
       count: 10
-      spawnInterval: 1
-    - monsterPrefab: {fileID: 5951554319984575952, guid: f63e63d2b0d25f84b87a156ae6bf649c, type: 3}
+      spawnInterval: 5
+    - monsterPrefab: {fileID: 5951554319984575952, guid: 2cc5d3bd22acdd14697abead8c11d511, type: 3}
       count: 5
       spawnInterval: 2
-    - monsterPrefab: {fileID: 5257169338272492925, guid: ed0c08f9e805bcf42a80c698469e3d7b, type: 3}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: fe2a2b2e8a924fb4189408c31a45ab61, type: 3}
       count: 20
       spawnInterval: 0.5
-    - monsterPrefab: {fileID: 6073249613970012703, guid: 4915e7dcab84d1349999a44ebc63f019, type: 3}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 36e0508f525089349ba9f5c7b5a6ccf9, type: 3}
       count: 13
       spawnInterval: 1
     customSpawnPoints:
@@ -344,6 +375,17 @@ MonoBehaviour:
       spawnInterval: 1
     customSpawnPoints:
     - {fileID: 1750231354575667567}
+    - {fileID: 4733429610036466886}
+    - {fileID: 8773226534224250070}
+    - {fileID: 5173495012105047830}
+    - {fileID: 7107331433448967541}
+    - {fileID: 6381513585542448266}
+    - {fileID: 7125222037530549630}
+    - {fileID: 9060285755060411328}
+    - {fileID: 3213173915449427119}
+    - {fileID: 6159791049733783598}
+    - {fileID: 1087814097378120405}
+    - {fileID: 2519161580506224301}
   - spawnInfos:
     - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
       count: 24
@@ -486,37 +528,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.28, y: 14.94, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4904552654199749081}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3321361640584581917
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8320796084609985479}
-  m_Layer: 0
-  m_Name: GameObject (25)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8320796084609985479
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321361640584581917}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.79, y: 10.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
