@@ -7,83 +7,83 @@ using Spine.Unity;
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField]
-    private Image loadingBarFill;  // 로딩 바의 이미지 (Fill 타입)
+    private Image loadingBarFill;
 
     [SerializeField]
-    private float loadingDuration = 5f;  // 로딩 바가 다 차는 시간 (초)
+    private float loadingDuration = 5f;
 
     [SerializeField]
-    private int nextSceneIndex;  // 전환할 다음 씬의 인덱스 번호
+    private int nextSceneIndex;
 
     [SerializeField]
-    private GameObject pressSpaceText;  // 로딩 완료 후 나타날 텍스트 UI
+    private GameObject pressSpaceText;
 
     [SerializeField]
-    private GameObject noiseImage;  // 노이즈가 적용된 UI 이미지 (노이즈 효과가 끝나면 비활성화할 이미지)
+    private GameObject loadingImage;
 
     [SerializeField]
-    private GameObject loadingImage;  // 로딩 중에 표시될 이미지 (추가됨)
+    private SkeletonGraphic skeletonGraphic;
 
     [SerializeField]
-    private SkeletonGraphic skeletonGraphic;  // Spine SkeletonGraphic 컴포넌트
+    private AnimationReferenceAsset idleAnimationAsset;
 
     [SerializeField]
-    private AnimationReferenceAsset idleAnimationAsset;  // 로딩 중 재생할 애니메이션 참조
+    private AnimationReferenceAsset completeAnimationAsset;
 
     [SerializeField]
-    private AnimationReferenceAsset completeAnimationAsset;  // 로딩 완료 후 재생할 애니메이션 참조
+    private AnimationReferenceAsset standardAnimationAsset; // 배경 애니메이션 자산
 
     [SerializeField]
-    private GameObject[] resultImages;  // 로딩 완료 후 나타날 이미지 배열
+    private AnimationReferenceAsset deletePlayerAnimationAsset; // 플레이어 없는 애니메이션 자산
 
-    // 쉐이더가 적용된 Material
     [SerializeField]
-    private Material noiseMaterial;
+    private AnimationReferenceAsset playerAnimationAsset; // 플레이어 있는 애니메이션 자산
 
-    // 노이즈 강도가 줄어드는 속도
     [SerializeField]
-    private float noiseFadeSpeed = 1f;
+    private GameObject[] resultImages;
 
-    // 노이즈 강도의 초기값 (최대)
-    private const float noiseMaxStrength = 1f;
+    [SerializeField]
+    private Image fadeImage;
+
+    [SerializeField]
+    private float fadeDuration = 1f;
 
     private bool isLoadingComplete = false;
-    private bool isNoiseFading = false;
+    private bool hasFadeOutStarted = false;
 
     private void Start()
     {
-        // 로딩 바 초기화 및 채우기 시작
+        if (fadeImage != null)
+        {
+            Color c = fadeImage.color;
+            c.a = 1f;
+            fadeImage.color = c;
+            StartCoroutine(FadeIn());
+        }
+
         if (loadingBarFill != null)
         {
             loadingBarFill.fillAmount = 0f;
             StartCoroutine(FillLoadingBar());
         }
 
-        // 로딩 완료 텍스트 비활성화
         if (pressSpaceText != null)
         {
             pressSpaceText.SetActive(false);
         }
 
-        // 노이즈 UI 이미지 비활성화
-        if (noiseImage != null)
+        // 트랙 0에서 배경 애니메이션 재생
+        if (skeletonGraphic != null && standardAnimationAsset != null && standardAnimationAsset.Animation != null)
         {
-            noiseImage.SetActive(false);  // 초기 상태에서는 비활성화
+            skeletonGraphic.AnimationState.SetAnimation(0, standardAnimationAsset.Animation.Name, true);
         }
 
-        // 노이즈 강도를 최대치로 초기화
-        if (noiseMaterial != null)
+        // 초기에는 플레이어가 없는 애니메이션을 트랙 1에서 재생
+        if (skeletonGraphic != null && deletePlayerAnimationAsset != null && deletePlayerAnimationAsset.Animation != null)
         {
-            noiseMaterial.SetFloat("_NoiseStrength", noiseMaxStrength);  // 노이즈 강도를 최대치로 설정
+            skeletonGraphic.AnimationState.SetAnimation(1, deletePlayerAnimationAsset.Animation.Name, true);
         }
 
-        // Spine 애니메이션 설정 (로딩 시작 시)
-        if (skeletonGraphic != null && idleAnimationAsset != null && idleAnimationAsset.Animation != null)
-        {
-            skeletonGraphic.AnimationState.SetAnimation(0, idleAnimationAsset.Animation.Name, true);  // 로딩 시작 애니메이션 재생
-        }
-
-        // 로딩 완료 후 나올 이미지들 비활성화
         foreach (var resultImage in resultImages)
         {
             if (resultImage != null)
@@ -103,70 +103,93 @@ public class LoadingScreen : MonoBehaviour
             float fillAmount = Mathf.Clamp01(elapsedTime / loadingDuration);
             loadingBarFill.fillAmount = fillAmount;
 
+            if (!hasFadeOutStarted && elapsedTime >= (loadingDuration - 0.5f))
+            {
+                hasFadeOutStarted = true;
+                StartCoroutine(FadeOut());
+            }
+
             yield return null;
         }
 
         isLoadingComplete = true;
 
-        // 로딩 완료 후 텍스트 활성화
         if (pressSpaceText != null)
         {
             pressSpaceText.SetActive(true);
         }
 
-        // 로딩 이미지 비활성화
         if (loadingImage != null)
         {
-            loadingImage.SetActive(false);  // 로딩 이미지 비활성화
+            loadingImage.SetActive(false);
         }
 
-        // 노이즈 이미지 활성화 및 노이즈 페이드 아웃 시작
-        if (noiseImage != null)
+        // 트랙 1에서 플레이어 있는 애니메이션으로 전환
+        if (skeletonGraphic != null && playerAnimationAsset != null && playerAnimationAsset.Animation != null)
         {
-            noiseImage.SetActive(true);  // 노이즈 이미지 활성화
-            StartCoroutine(FadeOutNoise());  // 노이즈 페이드 아웃 시작
+            skeletonGraphic.AnimationState.SetAnimation(1, playerAnimationAsset.Animation.Name, true);
         }
 
-        // Spine 애니메이션 트리거
-        if (skeletonGraphic != null && completeAnimationAsset != null && completeAnimationAsset.Animation != null)
-        {
-            skeletonGraphic.AnimationState.SetAnimation(0, completeAnimationAsset.Animation.Name, true);  // 로딩 완료 애니메이션 재생
-        }
-
-        // 결과 이미지 배열 활성화
         foreach (var resultImage in resultImages)
         {
             if (resultImage != null)
             {
-                resultImage.SetActive(true);  // 각 이미지 활성화
+                resultImage.SetActive(true);
             }
         }
+
+        StartCoroutine(FadeIn());
+
+        StartCoroutine(WaitForInputAndFadeOut());
     }
 
-    // 노이즈 효과를 서서히 줄이면서 UI(노이즈 이미지)를 비활성화
-    private IEnumerator FadeOutNoise()
+    private IEnumerator WaitForInputAndFadeOut()
     {
-        float noiseStrength = noiseMaterial.GetFloat("_NoiseStrength");
-
-        while (noiseStrength > 0)
-        {
-            noiseStrength -= Time.deltaTime * noiseFadeSpeed;
-            noiseMaterial.SetFloat("_NoiseStrength", Mathf.Clamp01(noiseStrength));
-            yield return null;
-        }
-
-        // 노이즈가 0이 되면 노이즈 UI 이미지를 비활성화
-        if (noiseStrength <= 0.5f)
-        {
-            noiseImage.SetActive(false);
-        }
-
-        // Space 키 입력 대기 후 씬 전환
         while (!Input.GetKeyDown(KeyCode.Space))
         {
             yield return null;
         }
 
+        if (fadeImage != null)
+        {
+            yield return StartCoroutine(FadeOut());
+            yield return new WaitForSeconds(0.5f); // 페이드 아웃 완료 후 0.5초 대기
+        }
+
         SceneManager.LoadScene(nextSceneIndex);
+    }
+
+    private IEnumerator FadeIn()
+    {
+        float elapsedTime = 0f;
+        Color c = fadeImage.color;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            c.a = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            fadeImage.color = c;
+            yield return null;
+        }
+
+        c.a = 0f;
+        fadeImage.color = c;
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float elapsedTime = 0f;
+        Color c = fadeImage.color;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            c.a = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
+            fadeImage.color = c;
+            yield return null;
+        }
+
+        c.a = 1f;
+        fadeImage.color = c;
     }
 }
