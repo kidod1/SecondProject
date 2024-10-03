@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using System.Linq;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -34,6 +37,12 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private RectTransform experienceBarFullRect;  // 경험치 바 전체 크기 RectTransform
 
+    [Header("Post-Processing")]
+    private Volume globalVolume;
+
+
+    private DepthOfField depthOfField;
+
     private int maxHP;
     private Player player;
     private Color originalHealthTextColor = Color.white;
@@ -65,6 +74,25 @@ public class PlayerUIManager : MonoBehaviour
         // 체력바와 경험치 바의 전체 너비 저장
         fullHealthBarWidth = healthBarFullRect.rect.width;
         fullExperienceBarWidth = experienceBarFullRect.rect.width;
+
+        // 글로벌 볼륨을 찾아 할당
+        globalVolume = FindObjectsOfType<Volume>().FirstOrDefault(v => v.isGlobal);
+
+        if (globalVolume != null)
+        {
+            if (globalVolume.profile.TryGet(out depthOfField))
+            {
+                depthOfField.active = false;
+            }
+            else
+            {
+                Debug.LogError("PlayerUIManager: Depth of Field가 글로벌 볼륨 프로파일에 존재하지 않습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("PlayerUIManager: 글로벌 볼륨을 찾을 수 없습니다.");
+        }
 
         // 초기 UI 업데이트
         UpdateUI();
@@ -164,7 +192,7 @@ public class PlayerUIManager : MonoBehaviour
     {
         if (currencyText != null)
         {
-            currencyText.text = "현재 재화: " + currentCurrency;
+            currencyText.text = "" + currentCurrency;
         }
         else
         {
@@ -184,4 +212,20 @@ public class PlayerUIManager : MonoBehaviour
             Debug.LogError("PlayerUIManager: deathPanel이 할당되지 않았습니다.");
         }
     }
+    public void EnableDepthOfField()
+    {
+        if (depthOfField != null)
+        {
+            depthOfField.active = true;
+        }
+    }
+
+    public void DisableDepthOfField()
+    {
+        if (depthOfField != null)
+        {
+            depthOfField.active = false;
+        }
+    }
+
 }

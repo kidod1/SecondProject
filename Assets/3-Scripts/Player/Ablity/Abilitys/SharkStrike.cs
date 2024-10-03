@@ -7,6 +7,7 @@ public class SharkStrike : Ability
     public int hitThreshold = 5;  // 적중 임계값
     public float sharkSpeed = 5f;  // 상어 속도
     public float chaseDelay = 0.5f;  // 상어 추격 시작 전 대기 시간
+    public float maxSearchTime = 3f; // 상어가 몬스터를 찾는 최대 시간
 
     private Player playerInstance;
     private int hitCount = 0;
@@ -38,16 +39,16 @@ public class SharkStrike : Ability
 
             if (sharkInstance != null)
             {
-                sharkInstance.Initialize(sharkSpeed, chaseDelay);
+                sharkInstance.Initialize(sharkSpeed, chaseDelay, maxSearchTime);
             }
             else
             {
-                Debug.LogError("Shark component is missing from the prefab.");
+                Debug.LogError("Shark 컴포넌트가 프리팹에 없습니다.");
             }
         }
         else
         {
-            Debug.LogError("Shark prefab is null. Cannot spawn shark.");
+            Debug.LogError("Shark 프리팹이 없습니다. 상어를 생성할 수 없습니다.");
         }
     }
 

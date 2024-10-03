@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RotatingObject : MonoBehaviour
 {
-    public Transform player; 
+    public Transform player;
     public float radius = 2.0f;
     public float rotationSpeed = 50.0f;
     private float angle = 0.0f;
@@ -43,7 +43,7 @@ public class RotatingObject : MonoBehaviour
         projectile.transform.position = transform.position;
 
         Projectile projScript = projectile.GetComponent<Projectile>();
-        projScript.Initialize(playerShooting.stat, PlayManager.I.GetPlayer(), true, damageMultiplier);
+        projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier);
         projScript.SetDirection(direction);
     }
 

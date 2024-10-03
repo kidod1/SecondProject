@@ -15,6 +15,9 @@ public class Bullet : MonoBehaviour
     private Vector3 initialSpriteScale;
     private bool scaleStart = false;
 
+    [SerializeField]
+    private float scaleMultiplier = 2f; // 스케일 증가 배율
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,8 +37,8 @@ public class Bullet : MonoBehaviour
 
         if (scaleStart)
         {
-            float t = Mathf.Clamp01((currentLifetime - 0.5f) / (maxLifetime - 0.5f)); // 0.5초 후부터 2까지 보간
-            float newScaleX = Mathf.Lerp(1.5f, 2f, t); // X 스케일을 1.5에서 2로 점진적으로 변경
+            float t = Mathf.Clamp01((currentLifetime - 0.5f) / (maxLifetime - 0.5f)); // 0.5초 후부터 maxLifetime까지 보간
+            float newScaleX = Mathf.Lerp(initialSpriteScale.x, initialSpriteScale.x * scaleMultiplier, t); // X 스케일을 초기값에서 증가된 값으로 변경
             spriteRenderer.transform.localScale = new Vector3(newScaleX, initialSpriteScale.y, initialSpriteScale.z);
         }
 
@@ -46,16 +49,27 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 탄환의 공격 데미지를 설정합니다.
+    /// </summary>
+    /// <param name="damage">설정할 데미지 값</param>
     public void SetAttackDamage(int damage)
     {
         attackDamage = damage;
     }
 
+    /// <summary>
+    /// 탄환의 출처 몬스터를 설정합니다.
+    /// </summary>
+    /// <param name="monster">출처가 되는 몬스터</param>
     public void SetSourceMonster(Monster monster)
     {
         sourceMonster = monster;
     }
 
+    /// <summary>
+    /// 탄환의 방향에 맞게 스프라이트를 조정합니다.
+    /// </summary>
     private void AdjustSpriteDirection()
     {
         Vector2 direction = rb.velocity.normalized;
@@ -72,25 +86,30 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Player>().TakeDamage(attackDamage);
-            RecordHit();
+            Player player = collision.GetComponent<Player>();
+            if (player != null)
+            {
+                player.TakeDamage(attackDamage);
+            }
+            RecordHit("Player");
             Destroy(gameObject);
         }
         else if (collision.CompareTag("Wall"))
         {
+            RecordHit("Wall");
             Destroy(gameObject);
         }
     }
 
-    private void RecordHit()
+    /// <summary>
+    /// 탄환이 히트된 타입과 출처 몬스터 정보를 기록합니다.
+    /// </summary>
+    /// <param name="hitType">히트된 타입 ("Player" 또는 "Wall")</param>
+    private void RecordHit(string hitType)
     {
         if (sourceMonster != null)
         {
+            // 추가적인 히트 기록 로직을 여기에 구현할 수 있습니다.
         }
-    }
-
-    private void OnBecameInvisible()
-    {
-        Destroy(gameObject);
     }
 }

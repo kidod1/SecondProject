@@ -31,6 +31,8 @@ public class AbilityManager : MonoBehaviour
     private Button rerollButton;
     [SerializeField]
     private PlayerAbilityManager playerAbilityManager;
+    [SerializeField]
+    private PlayerUIManager uiManager;
     private List<Ability> availableAbilities;
 
     private void OnEnable()
@@ -71,6 +73,12 @@ public class AbilityManager : MonoBehaviour
         {
             Debug.LogError("AbilityManager: PlayerAbilityManager가 초기화되지 않았습니다.");
             return;
+        }
+
+        if (uiManager != null)
+        {
+            uiManager.EnableDepthOfField();
+            Debug.Log("블러 전환");
         }
 
         Time.timeScale = 0f;
@@ -237,6 +245,10 @@ public class AbilityManager : MonoBehaviour
             rerollButton.gameObject.SetActive(false);
         }
 
+        if (uiManager != null)
+        {
+            uiManager.DisableDepthOfField();
+        }
         Time.timeScale = 1f;
     }
 

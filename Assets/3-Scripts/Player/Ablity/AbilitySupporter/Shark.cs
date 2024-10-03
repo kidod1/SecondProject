@@ -8,16 +8,20 @@ public class Shark : MonoBehaviour
     private bool isChasing = false;
     private Transform targetMonster;
 
-    public void Initialize(float speed, float delay)
+    private float maxSearchTime = 3f; // 최대 탐색 시간
+    private float currentSearchTime = 0f;
+
+    public void Initialize(float speed, float delay, float searchTime)
     {
         sharkSpeed = speed;
         chaseDelay = delay;
+        maxSearchTime = searchTime;
         StartCoroutine(SharkAction());
     }
 
     private IEnumerator SharkAction()
     {
-        // 직선으로 0.5초 동안 이동
+        // 직선으로 chaseDelay 동안 이동
         float elapsedTime = 0f;
         while (elapsedTime < chaseDelay)
         {
@@ -26,9 +30,30 @@ public class Shark : MonoBehaviour
             yield return null;
         }
 
-        // 0.5초 후에 추격 시작
+        // 추격 시작
         isChasing = true;
-        FindClosestMonster();  // 가장 가까운 몬스터 찾기
+        currentSearchTime = 0f;
+        StartCoroutine(SearchForMonster());
+    }
+
+    private IEnumerator SearchForMonster()
+    {
+        while (currentSearchTime < maxSearchTime && targetMonster == null)
+        {
+            FindClosestMonster();
+
+            if (targetMonster != null)
+            {
+                // 몬스터를 찾았으므로 코루틴 종료
+                yield break;
+            }
+
+            currentSearchTime += 0.5f; // 검색 주기와 일치
+            yield return new WaitForSeconds(0.5f); // 0.5초마다 검색
+        }
+
+        // 최대 탐색 시간 초과, 상어 제거
+        Destroy(gameObject);
     }
 
     private void Update()
@@ -60,12 +85,6 @@ public class Shark : MonoBehaviour
                 closestDistance = distance;
                 targetMonster = monster.transform;
             }
-        }
-
-        if (targetMonster == null)
-        {
-            Debug.Log("No monsters found to chase.");
-            Destroy(gameObject);  // 몬스터가 없으면 상어를 제거
         }
     }
 
