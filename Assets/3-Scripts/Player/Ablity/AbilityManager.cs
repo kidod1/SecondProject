@@ -149,6 +149,8 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
+        Time.timeScale = 0f;
+
         if (abilitySelectionPanel != null)
         {
             abilitySelectionPanel.SetActive(false);
@@ -209,6 +211,7 @@ public class AbilityManager : MonoBehaviour
 
         Time.timeScale = 1f;
     }
+
 
 
     private void SelectAbility(Ability ability)
