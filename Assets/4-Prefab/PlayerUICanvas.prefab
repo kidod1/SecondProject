@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2901961}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2310,7 +2310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -708.9, y: 418}
+  m_AnchoredPosition: {x: -703.42, y: 418}
   m_SizeDelta: {x: 60, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1316740615505217873
@@ -2375,7 +2375,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2600,7 +2600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1731505839449749408}
   m_Layer: 5
-  m_Name: Synerge
+  m_Name: SynergePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3902,9 +3902,9 @@ RectTransform:
   - {fileID: 619878692363676509}
   m_Father: {fileID: 7467556635083226758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 80, y: 0}
   m_SizeDelta: {x: 159, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2046177235004126795
@@ -3989,7 +3989,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6620576420766886479}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.097
+  m_Size: 0.996
   m_NumberOfSteps: 11
   m_OnValueChanged:
     m_PersistentCalls:

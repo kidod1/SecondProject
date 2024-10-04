@@ -4,12 +4,11 @@ using System.Collections;
 [CreateAssetMenu(menuName = "Abilities/RicochetStrike")]
 public class RicochetStrike : Ability
 {
-    public int hitThreshold = 5;          // 적중 임계값
-    public float range = 10f;             // 적 탐색 범위
-    public GameObject projectilePrefab;   // 사용할 투사체 프리팹
-    public int projectileCount = 3;       // 발사할 투사체의 수
+    public int hitThreshold = 5;          // 적충 임계값
+    public float range = 10f;             // 적 탑상 범위
+    public GameObject projectilePrefab;   // 사용할 투사체 프리텀
+    public int projectileCount = 3;       // 발생할 투사체의 수
     public float baseSpeedMultiplier = 1.0f;
-    public float speedIncreaseMultiplier = 2.0f;
 
     private Player playerInstance;
     private int hitCount = 0;
@@ -34,7 +33,7 @@ public class RicochetStrike : Ability
     {
         if (projectilePrefab == null)
         {
-            Debug.LogError("투사체 프리팹이 없습니다.");
+            Debug.LogError("투사체 프리텀이 없습니다.");
             return;
         }
 
@@ -44,33 +43,51 @@ public class RicochetStrike : Ability
 
             GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
             Projectile projScript = projectile.GetComponent<Projectile>();
+            Collider2D projectileCollider = projectile.GetComponent<Collider2D>();
 
             if (projScript != null)
             {
+                // 초기에는 Collider 비활성화
+                if (projectileCollider != null)
+                {
+                    projectileCollider.enabled = false;
+                }
+
                 Vector2 randomDirection = GetRandomDirection();
                 projScript.Initialize(playerInstance.stat, playerInstance, true, baseSpeedMultiplier);
-                projScript.SetDirection(randomDirection);
+                projScript.SetDirection(randomDirection, baseSpeedMultiplier);
 
-                // 유도 시작
-                playerInstance.StartCoroutine(HomingTowardsEnemy(projectile, projScript));
+                // 0.5초 후에 유도 시작 및 Collider 활성화
+                playerInstance.StartCoroutine(HomingTowardsEnemy(projectile, projScript, 0.3f, projectileCollider));
             }
         }
     }
 
-    private IEnumerator HomingTowardsEnemy(GameObject projectile, Projectile projScript)
+    private IEnumerator HomingTowardsEnemy(GameObject projectile, Projectile projScript, float delay, Collider2D projectileCollider)
     {
-        yield return new WaitForSecondsRealtime(0.25f);  // 필요에 따라 딜레이 조정
+        yield return new WaitForSecondsRealtime(delay);
+        Destroy(projectile, 5f);  // 투사체가 생성된 후 5초 뒤에 파괴
 
+        // Collider 활성화
+        if (projectileCollider != null)
+        {
+            projectileCollider.enabled = true;
+        }
+
+        // 유도 시작전 1초 동안 속도를 0으로 설정
+
+
+        // 유도 시작
         Collider2D closestEnemy = FindClosestEnemy(projectile.transform.position);
 
         if (closestEnemy != null)
         {
             Vector2 directionToEnemy = (closestEnemy.transform.position - projectile.transform.position).normalized;
-            projScript.SetDirection(directionToEnemy, speedIncreaseMultiplier);
+            projScript.SetDirection(directionToEnemy);
         }
         else
         {
-            Destroy(projectile);
+            // 적이 없을 경우 투사체 파괴는 하지 않음
         }
     }
 

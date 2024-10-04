@@ -5,7 +5,8 @@ using Spine;
 
 public class Drone : Monster
 {
-    public GameObject bulletPrefab;
+    [SerializeField] 
+    private GameObject bulletPrefab;  // 프리팹을 발사하는 오브젝트
     [SerializeField]
     private DroneMonsterData stat;
 
@@ -61,19 +62,38 @@ public class Drone : Monster
     private IEnumerator AttackCoroutine()
     {
         PlayAnimation(attackAnimation, false);
-        FireBullet();
+        FireBulletWithParticle();
         TransitionToState(cooldownState);
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
     }
 
-    private void FireBullet()
+    private void FireBulletWithParticle()
     {
-        Vector3 direction = (player.transform.position - firePoint.position).normalized;
+        if (bulletPrefab == null)
+        {
+            Debug.LogError("Bullet 프리팹이 설정되지 않았습니다.");
+            return;
+        }
 
+        Vector3 direction = (player.transform.position - firePoint.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(new Vector3(0, 0, angle)));
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * stat.attackSpeed;
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(new Vector3(0, 0, -angle)));
+
+        // 프리팹의 자식에 있는 파티클의 각도를 조정
+        ParticleSystem particleSystem = bullet.GetComponentInChildren<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            var mainModule = particleSystem.main;
+            mainModule.startRotation = Mathf.Deg2Rad * -angle; // 각도를 라디안 값으로 변환하여 설정
+        }
+
+        // 프리팹에 Rigidbody2D를 사용하여 발사
+        Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();
+        if (bulletRigidbody != null)
+        {
+            bulletRigidbody.velocity = direction * stat.attackSpeed;
+        }
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
@@ -81,7 +101,6 @@ public class Drone : Monster
             bulletScript.SetAttackDamage(monsterBaseStat.attackDamage);
         }
     }
-
 
     public void PlayAnimation(string animationName, bool loop)
     {
@@ -95,8 +114,8 @@ public class Drone : Monster
             }
         }
     }
-
 }
+
 
 public class DroneIdleState : MonsterState
 {
