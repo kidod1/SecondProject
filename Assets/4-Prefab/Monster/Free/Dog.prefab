@@ -132,14 +132,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6073249613970012703}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_LinearDrag: 10
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -150,7 +150,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &182615328999557499
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -201,7 +201,7 @@ MonoBehaviour:
   monsterBaseStat: {fileID: 11400000, guid: af5aece43d137e64c89499d91461f0af, type: 2}
   invincibilityDuration: 0.5
   blinkInterval: 0.1
-  monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: bacc39830fc832e4b8e1bcab2679e977, type: 3}
+  monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
   isElite: 0
   isInCooldown: 0

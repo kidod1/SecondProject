@@ -95,7 +95,7 @@ public class Shark : MonoBehaviour
             Monster monster = targetMonster.GetComponent<Monster>();
             if (monster != null)
             {
-                monster.TakeDamage(50);  // 상어가 몬스터에게 데미지를 줌
+                monster.TakeDamage(50, PlayManager.I.GetPlayerPosition());  // 상어가 몬스터에게 데미지를 줌
             }
         }
 

@@ -21,7 +21,7 @@ public class JokerDraw : Ability
         {
             if (Random.value < instantKillChance)
             {
-                monster.TakeDamage(monster.GetCurrentHP());
+                monster.TakeDamage(monster.GetCurrentHP(), PlayManager.I.GetPlayerPosition());
             }
         }
     }

@@ -13,6 +13,7 @@ public interface IMonsterState
 public abstract class Monster : MonoBehaviour
 {
     public MonsterData monsterBaseStat;
+    protected Rigidbody2D rb;
     protected int currentHP;
     protected MeshRenderer meshRenderer;
     protected bool isInvincible = false;
@@ -60,6 +61,7 @@ public abstract class Monster : MonoBehaviour
         currentHP = monsterBaseStat.maxHP;
         meshRenderer = GetComponent<MeshRenderer>();
         player = FindObjectOfType<Player>();
+        rb = GetComponent<Rigidbody2D>();
 
         if (player == null)
         {
@@ -164,13 +166,15 @@ public abstract class Monster : MonoBehaviour
         transform.position += direction * monsterBaseStat.monsterSpeed * Time.deltaTime;
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, Vector3 damageSourcePosition)
     {
         if (isDead) return;
 
         currentHP -= damage;
 
         ShowDamageText(damage);
+
+        ApplyKnockback(damageSourcePosition);
 
         if (currentHP <= 0)
         {
@@ -182,6 +186,23 @@ public abstract class Monster : MonoBehaviour
             StartCoroutine(InvincibilityCoroutine());
         }
     }
+    private void ApplyKnockback(Vector3 damageSourcePosition)
+    {
+        if (rb != null)
+        {
+            // 노크백 방향 계산 (몬스터 위치 - 공격자 위치)
+            Vector2 knockbackDirection = (transform.position - damageSourcePosition).normalized;
+
+            float knockbackForce = 1f; // 노크백 힘의 크기 (필요에 따라 조절)
+            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+        }
+        else
+        {
+            Debug.LogWarning("Rigidbody2D가 몬스터에 없습니다.");
+        }
+    }
+
     private void ShowDamageText(int damage)
     {
         // 데미지 텍스트 프리팹 로드

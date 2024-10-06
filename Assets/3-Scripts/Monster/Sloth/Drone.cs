@@ -6,7 +6,7 @@ using Spine;
 public class Drone : Monster
 {
     [SerializeField] 
-    private GameObject bulletPrefab;  // 프리팹을 발사하는 오브젝트
+    private GameObject bulletPrefab;
     [SerializeField]
     private DroneMonsterData stat;
 

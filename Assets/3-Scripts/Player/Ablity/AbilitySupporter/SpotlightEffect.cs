@@ -37,7 +37,7 @@ public class SpotlightEffect : MonoBehaviour
                 Monster monster = hits[i].GetComponent<Monster>();
                 if (monster != null)
                 {
-                    monster.TakeDamage(damageAmount);
+                    monster.TakeDamage(damageAmount, PlayManager.I.GetPlayerPosition());
                 }
             }
 

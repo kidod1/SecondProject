@@ -62,7 +62,7 @@ public class CoinRain : SynergyAbility
             Monster monster = monsterCollider.GetComponent<Monster>();
             if (monster != null)
             {
-                monster.TakeDamage(damageAmount);
+                monster.TakeDamage(damageAmount, PlayManager.I.GetPlayerPosition());
             }
         }
     }

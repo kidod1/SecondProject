@@ -101,7 +101,7 @@ public class Projectile : MonoBehaviour
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);
                 }
-                monster.TakeDamage(damage);
+                monster.TakeDamage(damage, transform.position);
 
                 if (playerInstance != null && !isCloneProjectile)
                 {

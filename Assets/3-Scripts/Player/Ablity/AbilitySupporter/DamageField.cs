@@ -52,7 +52,7 @@ public class DamageField : MonoBehaviour
         {
             if (monster != null) // 몬스터가 유효한지 확인
             {
-                monster.TakeDamage(amount);
+                monster.TakeDamage(amount, transform.position);
             }
         }
     }

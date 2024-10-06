@@ -36,7 +36,9 @@ public class CutsceneManager : MonoBehaviour
     private Coroutine textAnimationCoroutine;
     private bool canProceed = true;
     private bool isAnimating = false; // 텍스트 애니메이션 중인지 확인하는 플래그
+    private bool cutsceneEnded = false;
     private string currentSentence = ""; // 현재 대사 저장
+
 
     private void Start()
     {
@@ -53,6 +55,10 @@ public class CutsceneManager : MonoBehaviour
 
         animationImage.gameObject.SetActive(false); // 초기화할 때 애니메이션 이미지를 비활성화
         StartCutscene();
+    }
+    public bool IsCutsceneEnded()
+    {
+        return cutsceneEnded;
     }
 
     public void StartCutscene()
@@ -168,7 +174,7 @@ public class CutsceneManager : MonoBehaviour
         }
     }
 
-    private void EndCutscene()
+    public void LoadNextScene()
     {
         if (nextSceneIndex >= 0 && nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
@@ -178,6 +184,11 @@ public class CutsceneManager : MonoBehaviour
         {
             Debug.LogError("다음 씬의 인덱스가 유효하지 않습니다.");
         }
+    }
+
+    private void EndCutscene()
+    {
+        cutsceneEnded = true;
     }
 
     private void Update()

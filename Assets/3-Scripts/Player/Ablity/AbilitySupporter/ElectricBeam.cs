@@ -30,7 +30,7 @@ public class ElectricBeam : MonoBehaviour
                     Monster monster = hitCollider.GetComponent<Monster>();
                     if (monster != null)
                     {
-                        monster.TakeDamage(damage);
+                        monster.TakeDamage(damage, PlayManager.I.GetPlayerPosition());
                     }
                 }
             }
@@ -44,7 +44,7 @@ public class ElectricBeam : MonoBehaviour
             Monster monster = collision.GetComponent<Monster>();
             if (monster != null)
             {
-                monster.TakeDamage(damage);
+                monster.TakeDamage(damage, PlayManager.I.GetPlayerPosition());
             }
         }
     }

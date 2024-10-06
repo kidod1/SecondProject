@@ -105,7 +105,7 @@ public class Shockwave : MonoBehaviour
                 Monster monster = hitCollider.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    monster.TakeDamage(damageValue);
+                    monster.TakeDamage(damageValue, PlayManager.I.GetPlayerPosition());
 
                     Rigidbody2D monsterRb = monster.GetComponent<Rigidbody2D>();
                     if (monsterRb != null)
