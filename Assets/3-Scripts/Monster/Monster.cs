@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -169,6 +170,8 @@ public abstract class Monster : MonoBehaviour
 
         currentHP -= damage;
 
+        ShowDamageText(damage);
+
         if (currentHP <= 0)
         {
             currentHP = 0;
@@ -179,6 +182,81 @@ public abstract class Monster : MonoBehaviour
             StartCoroutine(InvincibilityCoroutine());
         }
     }
+    private void ShowDamageText(int damage)
+    {
+        // 데미지 텍스트 프리팹 로드
+        GameObject damageTextPrefab = Resources.Load<GameObject>("DamageTextPrefab");
+        if (damageTextPrefab == null)
+        {
+            Debug.LogError("DamageTextPrefab을 Resources 폴더에서 찾을 수 없습니다.");
+            return;
+        }
+
+        // 캔버스를 찾습니다.
+        Canvas screenCanvas = FindObjectOfType<Canvas>();
+        if (screenCanvas == null)
+        {
+            Debug.LogError("스크린 공간 캔버스를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 캔버스의 Render Camera 설정 확인 및 가져오기
+        Camera uiCamera = screenCanvas.worldCamera;
+        if (uiCamera == null)
+        {
+            uiCamera = Camera.main;
+        }
+
+        if (uiCamera == null)
+        {
+            Debug.LogError("UI 카메라를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 몬스터의 머리 위치 계산 (월드 좌표)
+        float monsterHeightOffset = 1.0f; // 몬스터 머리 위로 얼마나 띄울지 조정 가능한 값
+        Vector3 headPosition = transform.position + new Vector3(0, monsterHeightOffset, 0);
+
+        // 머리 위치를 스크린 좌표로 변환
+        Vector3 screenPosition = uiCamera.WorldToScreenPoint(headPosition);
+
+        // 스크린 좌표를 캔버스 로컬 좌표로 변환
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            screenCanvas.transform as RectTransform,
+            screenPosition,
+            uiCamera,
+            out Vector2 localPoint);
+
+        // 데미지 텍스트 인스턴스 생성 및 부모 설정
+        GameObject damageTextInstance = Instantiate(damageTextPrefab, screenCanvas.transform);
+
+        // RectTransform의 로컬 좌표 설정
+        RectTransform rectTransform = damageTextInstance.GetComponent<RectTransform>();
+        rectTransform.localPosition = localPoint;
+
+        // 데미지 텍스트 설정
+        DamageText damageText = damageTextInstance.GetComponent<DamageText>();
+        if (damageText != null)
+        {
+            // 폰트와 글자 크기 설정 (원하는 폰트로 변경 가능)
+            TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Maplestory Light SDF");
+            if (font == null)
+            {
+                Debug.LogWarning("폰트 에셋을 찾을 수 없습니다. 기본 폰트를 사용합니다.");
+            }
+
+            int fontSize = 22;
+            Color color = Color.white;
+
+            damageText.SetText(damage.ToString(), font, fontSize, color);
+        }
+        else
+        {
+            Debug.LogError("DamageText 컴포넌트를 찾을 수 없습니다.");
+        }
+    }
+
+
 
     public abstract void Attack();
     public int GetCurrentHP()
@@ -212,7 +290,8 @@ public abstract class Monster : MonoBehaviour
 
         if (monsterDeathEffectPrefab != null)
         {
-            // ...
+            GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(deathEffect, deathEffectDuration);
         }
 
         DropExperienceItem();

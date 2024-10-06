@@ -34,6 +34,9 @@ public class CutsceneManager : MonoBehaviour
     private Queue<string> sentences;
     private int currentSentenceIndex = 0;
     private Coroutine textAnimationCoroutine;
+    private bool canProceed = true;
+    private bool isAnimating = false; // 텍스트 애니메이션 중인지 확인하는 플래그
+    private string currentSentence = ""; // 현재 대사 저장
 
     private void Start()
     {
@@ -66,11 +69,15 @@ public class CutsceneManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
+        if (!canProceed) return;
+
         if (sentences.Count == 0)
         {
             EndCutscene();
             return;
         }
+
+        canProceed = false;
 
         if (textAnimationCoroutine != null)
         {
@@ -80,19 +87,19 @@ public class CutsceneManager : MonoBehaviour
         // 새로운 대사가 출력되기 전에 이미지를 비활성화
         animationImage.gameObject.SetActive(false);
 
-        string sentence = sentences.Dequeue();
+        currentSentence = sentences.Dequeue();
         currentSentenceIndex++;
 
         ToggleCharacterImagesAndNames();
 
-        // 첫 번째 대사에만 1초의 딜레이 추가
+        // 첫 번째 대사에만 딜레이 추가
         if (currentSentenceIndex == 1)
         {
-            StartCoroutine(DisplayNameAndSentenceWithDelay(sentence, 3.3f)); // 1초 딜레이 추가
+            StartCoroutine(DisplayNameAndSentenceWithDelay(currentSentence, 3.3f)); // 딜레이 추가
         }
         else
         {
-            DisplayNameAndSentence(sentence);
+            DisplayNameAndSentence(currentSentence);
         }
     }
 
@@ -114,6 +121,7 @@ public class CutsceneManager : MonoBehaviour
 
     private IEnumerator AnimateText(string sentence)
     {
+        isAnimating = true; // 애니메이션 시작
         dialogueText.text = "";
 
         foreach (char letter in sentence.ToCharArray())
@@ -122,8 +130,11 @@ public class CutsceneManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(textAnimationSpeed);
         }
 
-        // 애니메이션이 끝나면 이미지를 활성화
+        isAnimating = false; // 애니메이션 종료
+
+        // 애니메이션이 끝나면 이미지를 활성화하고, 진행 가능하도록 설정
         animationImage.gameObject.SetActive(true);
+        canProceed = true;
     }
 
     private void ToggleCharacterImagesAndNames()
@@ -173,7 +184,22 @@ public class CutsceneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            DisplayNextSentence();
+            if (isAnimating)
+            {
+                // 애니메이션 중이면 즉시 전체 대사를 표시
+                if (textAnimationCoroutine != null)
+                {
+                    StopCoroutine(textAnimationCoroutine);
+                }
+                dialogueText.text = currentSentence;
+                isAnimating = false;
+                animationImage.gameObject.SetActive(true); // 애니메이션 이미지를 활성화
+                canProceed = true; // 다음 대사로 넘어갈 수 있도록 설정
+            }
+            else if (canProceed)
+            {
+                DisplayNextSentence();
+            }
         }
     }
 }
