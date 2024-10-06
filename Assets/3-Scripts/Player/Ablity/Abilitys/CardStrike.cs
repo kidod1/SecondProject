@@ -60,7 +60,7 @@ public class CardStrike : Ability
 
     private IEnumerator DelayedTargetSearch(GameObject card, Projectile cardScript)
     {
-        yield return new WaitForSecondsRealtime(0.25f);
+        yield return new WaitForSeconds(0.25f);
 
         Collider2D closestEnemy = FindClosestEnemy(card.transform.position);
 

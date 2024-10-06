@@ -131,7 +131,7 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator StunCoroutine()
     {
-        yield return new WaitForSecondsRealtime(stunDuration);
+        yield return new WaitForSeconds(stunDuration);
         isStunned = false;
 
         // 기절이 끝났다는 메시지 출력
@@ -290,7 +290,6 @@ public abstract class Monster : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
-        Debug.Log("몬스터 사망");
 
         if (player != null)
         {
@@ -344,7 +343,7 @@ public abstract class Monster : MonoBehaviour
             {
                 meshRenderer.enabled = !meshRenderer.enabled;
             }
-            yield return new WaitForSecondsRealtime(blinkInterval);
+            yield return new WaitForSeconds(blinkInterval);
         }
 
         if (meshRenderer != null)
@@ -420,7 +419,7 @@ public abstract class Monster : MonoBehaviour
                     StartCoroutine(BlinkAreaSprite());
                 }
             }
-            yield return new WaitForSecondsRealtime(damageInterval);
+            yield return new WaitForSeconds(damageInterval);
         }
     }
 
@@ -430,7 +429,7 @@ public abstract class Monster : MonoBehaviour
 
         float blinkDuration = 0.2f;
         areaSpriteRenderer.enabled = false;
-        yield return new WaitForSecondsRealtime(blinkDuration);
+        yield return new WaitForSeconds(blinkDuration);
         areaSpriteRenderer.enabled = true;
     }
 }

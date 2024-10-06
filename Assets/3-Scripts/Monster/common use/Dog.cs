@@ -47,7 +47,7 @@ public class Dog : Monster
         {
             player.TakeDamage(monsterBaseStat.attackDamage);
         }
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSeconds(0.5f);
         TransitionToState(cooldownState);
     }
 

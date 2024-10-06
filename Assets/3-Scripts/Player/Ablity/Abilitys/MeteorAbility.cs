@@ -49,7 +49,7 @@ public class MeteorSynergyAbility : SynergyAbility
 
     private IEnumerator MeteorSpawnAfterWarning(GameObject warning, Vector2 spawnPosition)
     {
-        yield return new WaitForSecondsRealtime(warningDuration);
+        yield return new WaitForSeconds(warningDuration);
 
         // 경고 표시 제거
         Destroy(warning);

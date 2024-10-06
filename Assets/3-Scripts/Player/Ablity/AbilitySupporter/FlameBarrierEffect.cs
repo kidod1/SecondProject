@@ -62,7 +62,7 @@ public class FlameBarrierEffect : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSecondsRealtime(damageInterval);
+            yield return new WaitForSeconds(damageInterval);
         }
     }
 

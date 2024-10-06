@@ -45,7 +45,7 @@ public class Breath : Ability
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(cooldownTime);
+            yield return new WaitForSeconds(cooldownTime);
             FireBreath();
         }
     }

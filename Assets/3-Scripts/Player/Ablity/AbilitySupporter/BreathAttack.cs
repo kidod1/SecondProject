@@ -43,7 +43,7 @@ public class BreathAttack : MonoBehaviour
         while (elapsedTime < duration)
         {
             ApplyDamage();
-            yield return new WaitForSecondsRealtime(damageInterval);
+            yield return new WaitForSeconds(damageInterval);
             elapsedTime += damageInterval;
         }
     }

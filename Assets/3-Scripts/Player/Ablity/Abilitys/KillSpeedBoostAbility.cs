@@ -51,7 +51,7 @@ public class KillSpeedBoostAbility : Ability
 
     private IEnumerator SpeedBoostCoroutine()
     {
-        yield return new WaitForSecondsRealtime(boostDuration);
+        yield return new WaitForSeconds(boostDuration);
 
         playerInstance.stat.currentPlayerSpeed -= speedBoostAmount;
         isBoostActive = false;

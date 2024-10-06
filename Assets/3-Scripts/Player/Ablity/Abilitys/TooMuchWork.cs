@@ -143,7 +143,7 @@ public class TooMuchWork : Ability
         Debug.Log("Weapon overheated! Can't attack for " + overheatDuration + " seconds.");
         playerInstance.stat.currentShootCooldown = Mathf.Infinity;
 
-        yield return new WaitForSecondsRealtime(overheatDuration);
+        yield return new WaitForSeconds(overheatDuration);
 
         if (playerInstance != null)
         {

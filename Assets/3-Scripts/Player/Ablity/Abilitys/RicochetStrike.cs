@@ -65,7 +65,7 @@ public class RicochetStrike : Ability
 
     private IEnumerator HomingTowardsEnemy(GameObject projectile, Projectile projScript, float delay, Collider2D projectileCollider)
     {
-        yield return new WaitForSecondsRealtime(delay);
+        yield return new WaitForSeconds(delay);
         Destroy(projectile, 5f);  // 투사체가 생성된 후 5초 뒤에 파괴
 
         // Collider 활성화
