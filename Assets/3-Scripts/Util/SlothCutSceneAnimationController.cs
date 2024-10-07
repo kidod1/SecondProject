@@ -40,7 +40,7 @@ public class SlothCutSceneAnimationController : MonoBehaviour
         spineAnimationState.SetAnimation(0, animation1, false).MixDuration = 0.5f;
 
         // Coroutine을 시작하여 2초 후에 Fade_In을 실행
-        StartCoroutine(PlayFadeInAfterDelay(2.3f));
+        StartCoroutine(PlayFadeInAfterDelay(2f));
     }
 
     // Fade_In 애니메이션을 지연 후 실행하는 Coroutine
@@ -64,7 +64,42 @@ public class SlothCutSceneAnimationController : MonoBehaviour
             // 애니메이션 완료 시 호출될 이벤트 핸들러 등록
             spineAnimationState.Complete += OnAnimationComplete;
 
+            // 말풍선 비활성화 및 캐릭터 이미지의 FadeOut 트리거 활성화
+            HandleFadeOutEffects();
+
             hasFadedOut = true;
+        }
+    }
+
+    private void HandleFadeOutEffects()
+    {
+        // 1. 말풍선 애니메이터에 FadeOut 트리거 설정
+        if (cutsceneManager.speechBubbleAnimator != null)
+        {
+            cutsceneManager.speechBubbleAnimator.SetTrigger("FadeOut");
+            cutsceneManager.speechBubble.SetActive(false);
+            cutsceneManager.speechBubble2.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("SpeechBubbleAnimator가 할당되지 않았습니다.");
+        }
+
+        // 2. 활성화된 캐릭터 이미지의 Animator에 FadeOut 트리거 설정
+        foreach (var entry in cutsceneManager.cutsceneDialogue.dialogueEntries)
+        {
+            if (entry.characterImage != null && entry.characterImage.activeSelf)
+            {
+                Animator animator = entry.characterImage.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.SetTrigger("FadeOut");
+                }
+                else
+                {
+                    Debug.LogWarning($"캐릭터 이미지 '{entry.characterName}'에 Animator 컴포넌트가 없습니다.");
+                }
+            }
         }
     }
 

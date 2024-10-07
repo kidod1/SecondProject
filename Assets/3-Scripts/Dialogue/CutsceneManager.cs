@@ -31,6 +31,12 @@ public class CutsceneManager : MonoBehaviour
     public int nextSceneIndex = -1;
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
+    [Header("UI Elements")]
+    public GameObject speechBubble; // 말풍선 UI GameObject
+    public GameObject speechBubble2; // 말풍선 UI GameObject
+    [SerializeField]
+    public Animator speechBubbleAnimator; // 말풍선의 Animator 컴포넌트
+
     private Queue<string> sentences;
     private int currentSentenceIndex = 0;
     private Coroutine textAnimationCoroutine;
@@ -38,7 +44,6 @@ public class CutsceneManager : MonoBehaviour
     private bool isAnimating = false; // 텍스트 애니메이션 중인지 확인하는 플래그
     private bool cutsceneEnded = false;
     private string currentSentence = ""; // 현재 대사 저장
-
 
     private void Start()
     {
@@ -53,9 +58,20 @@ public class CutsceneManager : MonoBehaviour
             }
         }
 
+        if (speechBubble != null)
+        {
+            speechBubble.SetActive(true); // 말풍선을 활성화
+        }
+
+        if (speechBubbleAnimator != null)
+        {
+            speechBubbleAnimator.ResetTrigger("FadeOut"); // 초기화 시 트리거 리셋
+        }
+
         animationImage.gameObject.SetActive(false); // 초기화할 때 애니메이션 이미지를 비활성화
         StartCutscene();
     }
+
     public bool IsCutsceneEnded()
     {
         return cutsceneEnded;
@@ -165,6 +181,7 @@ public class CutsceneManager : MonoBehaviour
             }
         }
 
+        // 현재 대사 인덱스보다 큰 hideAfterSentence 값을 가진 캐릭터 이미지를 비활성화
         foreach (var entry in cutsceneDialogue.dialogueEntries)
         {
             if (entry.characterImage != null && currentSentenceIndex > entry.hideAfterSentence)

@@ -48,6 +48,10 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField]
     private float fadeDuration = 1f;
 
+    [Header("Animator Controllers")]
+    [SerializeField]
+    private Animator fadeInAnimator; // FadeIn 및 Loop 애니메이터
+
     private bool isLoadingComplete = false;
     private bool hasFadeOutStarted = false;
 
@@ -138,9 +142,29 @@ public class LoadingScreen : MonoBehaviour
             }
         }
 
+        // FadeIn 애니메이터 실행
+        if (fadeInAnimator != null)
+        {
+            fadeInAnimator.SetTrigger("FadeIn");
+            StartCoroutine(TriggerLoopAfterDelay(0.1f));
+        }
+        else
+        {
+            Debug.LogWarning("FadeInAnimator가 할당되지 않았습니다.");
+        }
+
         StartCoroutine(FadeIn());
 
         StartCoroutine(WaitForInputAndFadeOut());
+    }
+
+    private IEnumerator TriggerLoopAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (fadeInAnimator != null)
+        {
+            fadeInAnimator.SetTrigger("Loop");
+        }
     }
 
     private IEnumerator WaitForInputAndFadeOut()
