@@ -193,7 +193,7 @@ public abstract class Monster : MonoBehaviour
             // 노크백 방향 계산 (몬스터 위치 - 공격자 위치)
             Vector2 knockbackDirection = (transform.position - damageSourcePosition).normalized;
 
-            float knockbackForce = 1f; // 노크백 힘의 크기 (필요에 따라 조절)
+            float knockbackForce = 2f;
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
 
         }
@@ -213,11 +213,18 @@ public abstract class Monster : MonoBehaviour
             return;
         }
 
-        // 캔버스를 찾습니다.
-        Canvas screenCanvas = FindObjectOfType<Canvas>();
+        // 태그로 캔버스를 찾습니다.
+        GameObject canvasObject = GameObject.FindGameObjectWithTag("DamageCanvas");
+        if (canvasObject == null)
+        {
+            Debug.LogError("'DamageCanvas' 태그를 가진 캔버스를 찾을 수 없습니다.");
+            return;
+        }
+
+        Canvas screenCanvas = canvasObject.GetComponent<Canvas>();
         if (screenCanvas == null)
         {
-            Debug.LogError("스크린 공간 캔버스를 찾을 수 없습니다.");
+            Debug.LogError("'DamageCanvas' 오브젝트에서 Canvas 컴포넌트를 찾을 수 없습니다.");
             return;
         }
 
@@ -276,7 +283,6 @@ public abstract class Monster : MonoBehaviour
             Debug.LogError("DamageText 컴포넌트를 찾을 수 없습니다.");
         }
     }
-
 
 
     public abstract void Attack();
