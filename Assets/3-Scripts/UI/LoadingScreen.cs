@@ -176,8 +176,13 @@ public class LoadingScreen : MonoBehaviour
 
         if (fadeImage != null)
         {
+            if (fadeInAnimator != null)
+            {
+                fadeInAnimator.SetTrigger("FadeOut");
+                Debug.Log("FadeOut실행");
+            }
             yield return StartCoroutine(FadeOut());
-            yield return new WaitForSeconds(0.5f); // 페이드 아웃 완료 후 0.5초 대기
+            yield return new WaitForSeconds(1f); // 페이드 아웃 완료 후 1초 대기
         }
 
         SceneManager.LoadScene(nextSceneIndex);
