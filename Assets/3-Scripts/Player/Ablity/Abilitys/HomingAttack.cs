@@ -39,8 +39,6 @@ public class HomingAttack : Ability
 
     private void OnShoot(Vector2 direction, int prefabIndex)
     {
-        Debug.Log("OnShoot È£ÃâµÊ");
-
         // À¯µµÅº »ý¼º
         GameObject projectile = playerInstance.objectPool.GetObject(prefabIndex);
         if (projectile == null)

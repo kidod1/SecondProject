@@ -130,6 +130,7 @@ public class RicochetStrike : Ability
     {
         base.ResetLevel();
         hitCount = 0;
+        currentLevel = 0;
     }
 
     protected override int GetNextLevelIncrease()

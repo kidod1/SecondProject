@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
 
             if (impulseSource != null)
             {
-                impulseSource.GenerateImpulse();
+                impulseSource.GenerateImpulse(); // 카메라 쉐이크 발생
             }
             else
             {
@@ -275,6 +275,7 @@ public class Player : MonoBehaviour
             }
         }
     }
+
 
     private IEnumerator InvincibilityCoroutine()
     {
@@ -466,34 +467,64 @@ public class Player : MonoBehaviour
             Debug.LogError("objectPool is not assigned.");
             return;
         }
-        GameObject projectile = objectPool.GetObject(prefabIndex);
-        if (projectile == null)
-        {
-            Debug.LogError("Projectile could not be instantiated.");
-            return;
-        }
 
-        projectile.transform.position = shootPoint.position;
+        // 3방향으로 투사체 발사
+        float angleOffset = 15f; // 각도 오프셋 설정
+        Vector2[] shootDirections = new Vector2[3];
 
-        Projectile projScript = projectile.GetComponent<Projectile>();
-        if (projScript != null)
+        // 중앙 방향
+        shootDirections[0] = direction;
+
+        // 왼쪽 방향
+        shootDirections[1] = RotateVector(direction, angleOffset);
+
+        // 오른쪽 방향
+        shootDirections[2] = RotateVector(direction, -angleOffset);
+
+        // 각 방향으로 투사체 생성
+        foreach (var dir in shootDirections)
         {
-            // FieryBloodToastAbility의 효과 적용
-            float damageMultiplier = 1f;
-            FieryBloodToastAbility fieryAbility = abilityManager.GetAbilityOfType<FieryBloodToastAbility>();
-            if (fieryAbility != null)
+            GameObject projectile = objectPool.GetObject(prefabIndex);
+            if (projectile == null)
             {
-                damageMultiplier = fieryAbility.GetDamageMultiplier();
+                Debug.LogError("Projectile could not be instantiated.");
+                continue;
             }
 
-            int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
+            projectile.transform.position = shootPoint.position;
 
-            projScript.Initialize(stat, this, false, adjustedDamage);
-            projScript.SetDirection(direction);
+            Projectile projScript = projectile.GetComponent<Projectile>();
+            if (projScript != null)
+            {
+                // FieryBloodToastAbility의 효과 적용
+                float damageMultiplier = 1f;
+                FieryBloodToastAbility fieryAbility = abilityManager.GetAbilityOfType<FieryBloodToastAbility>();
+                if (fieryAbility != null)
+                {
+                    damageMultiplier = fieryAbility.GetDamageMultiplier();
+                }
+
+                int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
+
+                projScript.Initialize(stat, this, false, adjustedDamage);
+                projScript.SetDirection(dir);
+            }
+
+            OnShoot.Invoke(dir, prefabIndex);
         }
-
-        OnShoot.Invoke(direction, prefabIndex);
     }
+    private Vector2 RotateVector(Vector2 vector, float degrees)
+    {
+        float radians = degrees * Mathf.Deg2Rad;
+        float sin = Mathf.Sin(radians);
+        float cos = Mathf.Cos(radians);
+
+        float x = vector.x * cos - vector.y * sin;
+        float y = vector.x * sin + vector.y * cos;
+
+        return new Vector2(x, y);
+    }
+
 
 
     public bool CanStun()
