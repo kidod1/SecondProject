@@ -9,7 +9,9 @@ public class PlayerUIManager : MonoBehaviour
 {
     [Header("Level and Experience UI")]
     [SerializeField]
-    private TMP_Text levelText;
+    private TMP_Text levelTextPrimary; // 기존 레벨 텍스트 (주 텍스트)
+    [SerializeField]
+    private TMP_Text levelTextSecondary; // 새로 추가한 레벨 텍스트 (보조 텍스트)
     [SerializeField]
     private Scrollbar experienceScrollbar;
     [SerializeField]
@@ -39,7 +41,6 @@ public class PlayerUIManager : MonoBehaviour
 
     [Header("Post-Processing")]
     private Volume globalVolume;
-
 
     private DepthOfField depthOfField;
 
@@ -140,10 +141,12 @@ public class PlayerUIManager : MonoBehaviour
             healthFillImage.fillAmount = healthPercentage;
         }
     }
+
     public void UpdateExperienceUIWithoutParam()
     {
         UpdateExperienceUI();
     }
+
     public void UpdateExperienceUI(int gainedExperience = 0)
     {
         if (player == null || experienceBarMaskRect == null || experienceBarFullRect == null)
@@ -182,9 +185,27 @@ public class PlayerUIManager : MonoBehaviour
         }
 
         // 레벨 텍스트 업데이트
-        if (levelText != null)
+        UpdateLevelTexts();
+    }
+
+    private void UpdateLevelTexts()
+    {
+        if (levelTextPrimary != null)
         {
-            levelText.text = player.stat.currentLevel.ToString();
+            levelTextPrimary.text = player.stat.currentLevel.ToString();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: levelTextPrimary가 할당되지 않았습니다.");
+        }
+
+        if (levelTextSecondary != null)
+        {
+            levelTextSecondary.text = player.stat.currentLevel.ToString();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: levelTextSecondary가 할당되지 않았습니다.");
         }
     }
 
@@ -212,6 +233,7 @@ public class PlayerUIManager : MonoBehaviour
             Debug.LogError("PlayerUIManager: deathPanel이 할당되지 않았습니다.");
         }
     }
+
     public void EnableDepthOfField()
     {
         if (depthOfField != null)
@@ -227,5 +249,4 @@ public class PlayerUIManager : MonoBehaviour
             depthOfField.active = false;
         }
     }
-
 }

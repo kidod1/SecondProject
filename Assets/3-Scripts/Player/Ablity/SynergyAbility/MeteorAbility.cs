@@ -56,7 +56,7 @@ public class MeteorSynergyAbility : SynergyAbility
 
         // 메테오 시작 위치 계산
         float spawnDistance = 10f;
-        float angle = 45 * Mathf.Deg2Rad;//Random.Range(0f, 180f) * Mathf.Deg2Rad; // 전체 각도로 수정
+        float angle = 45 * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * spawnDistance;
         Vector2 meteorStartPosition = spawnPosition + offset;
 
