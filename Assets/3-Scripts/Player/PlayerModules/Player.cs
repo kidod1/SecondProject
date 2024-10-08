@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
 
             if (impulseSource != null)
             {
-                impulseSource.GenerateImpulse(); // 카메라 쉐이크 발생
+                impulseSource.GenerateImpulse();
             }
             else
             {

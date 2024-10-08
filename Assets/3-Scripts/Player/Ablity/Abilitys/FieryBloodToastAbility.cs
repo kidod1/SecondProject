@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilities/FieryBloodToastAbility")]
-public class FieryBloodToastAbility : SynergyAbility
+public class FieryBloodToastAbility : Ability
 {
     public float maxDamageMultiplier = 2.0f; // 최대 공격력 배율
 

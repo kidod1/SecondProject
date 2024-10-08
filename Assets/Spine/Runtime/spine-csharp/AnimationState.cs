@@ -342,13 +342,19 @@ namespace Spine {
 		}
 
 		private float ApplyMixingFrom (TrackEntry to, Skeleton skeleton, MixBlend blend) {
-			if (Time.timeScale == 0)
-				return 0;
-			
-			TrackEntry from = to.mixingFrom;
-			if (from.mixingFrom != null && Time.timeScale != 0) ApplyMixingFrom(from, skeleton, blend);
+            if (Time.timeScale == 0)
+                return 0;
 
-			float mix;
+            TrackEntry from = to.mixingFrom;
+            if (from == null) return 1;
+
+            if (from == to)
+            {
+                Debug.LogWarning("Avoiding infinite recursion in ApplyMixingFrom.");
+                return 0;
+            }
+
+            float mix;
 			if (to.mixDuration == 0) { // Single frame mix to undo mixingFrom changes.
 				mix = 1;
 				if (blend == MixBlend.First) blend = MixBlend.Setup; // Tracks > 0 are transparent and can't reset to setup pose.
