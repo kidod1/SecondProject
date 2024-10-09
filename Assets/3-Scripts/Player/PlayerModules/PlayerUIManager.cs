@@ -42,6 +42,12 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Post-Processing")]
     private Volume globalVolume;
 
+    [Header("Selected Abilities UI")]
+    [SerializeField]
+    private Transform abilitiesContainer; // 능력 아이콘을 담을 부모 Transform
+    [SerializeField]
+    private GameObject abilityIconPrefab; // 능력 아이콘 프리팹
+
     private DepthOfField depthOfField;
 
     private int maxHP;
@@ -50,6 +56,7 @@ public class PlayerUIManager : MonoBehaviour
 
     private float fullHealthBarWidth;
     private float fullExperienceBarWidth;
+    private PlayerAbilityManager abilityManager;
 
     public void Initialize(Player player)
     {
@@ -64,11 +71,19 @@ public class PlayerUIManager : MonoBehaviour
         // 이벤트 리스너 등록
         player.OnTakeDamage.AddListener(UpdateHealthUI);
         player.OnHeal.AddListener(UpdateHealthUI); // 회복 시에도 업데이트
-
-        // OnGainExperience는 UnityEvent<int> 타입이므로, 매개변수를 받는 메서드와 연결해야 합니다.
         player.OnGainExperience.AddListener(UpdateExperienceUI);
         player.OnLevelUp.AddListener(UpdateExperienceUIWithoutParam);
         player.OnPlayerDeath.AddListener(OnPlayerDeath);
+
+        abilityManager = player.abilityManager;
+        if (abilityManager != null)
+        {
+            abilityManager.OnAbilitiesChanged.AddListener(UpdateSelectedAbilitiesUI);
+        }
+        else
+        {
+            Debug.LogError("PlayerUIManager: PlayerAbilityManager가 할당되지 않았습니다.");
+        }
 
         maxHP = player.stat.currentMaxHP;
 
@@ -97,8 +112,8 @@ public class PlayerUIManager : MonoBehaviour
 
         // 초기 UI 업데이트
         UpdateUI();
+        UpdateSelectedAbilitiesUI(); // 선택된 능력 UI 초기화
     }
-
 
     private void UpdateUI()
     {
@@ -227,7 +242,6 @@ public class PlayerUIManager : MonoBehaviour
         {
             deathPanel.SetActive(true);
         }
-        // 사망시 UI 업로드를 담당할 메서드. 미완
         else
         {
             Debug.LogError("PlayerUIManager: deathPanel이 할당되지 않았습니다.");
@@ -247,6 +261,40 @@ public class PlayerUIManager : MonoBehaviour
         if (depthOfField != null)
         {
             depthOfField.active = false;
+        }
+    }
+
+    /// <summary>
+    /// 선택된 모든 능력의 아이콘을 UI에 표시하는 메서드
+    /// </summary>
+    public void UpdateSelectedAbilitiesUI()
+    {
+        if (abilitiesContainer == null || abilityIconPrefab == null || abilityManager == null)
+        {
+            Debug.LogError("PlayerUIManager: Abilities UI 요소가 할당되지 않았습니다.");
+            return;
+        }
+
+        // 기존 아이콘들 제거
+        foreach (Transform child in abilitiesContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // 선택된 모든 능력의 아이콘 생성
+        foreach (var ability in abilityManager.abilities)
+        {
+            GameObject iconObj = Instantiate(abilityIconPrefab, abilitiesContainer);
+            Image iconImage = iconObj.GetComponent<Image>();
+            if (iconImage != null)
+            {
+                iconImage.sprite = ability.abilityIcon;
+                // 추가적으로 툴팁이나 다른 기능을 넣을 수 있습니다.
+            }
+            else
+            {
+                Debug.LogError("Ability Icon Prefab에 Image 컴포넌트가 없습니다.");
+            }
         }
     }
 }

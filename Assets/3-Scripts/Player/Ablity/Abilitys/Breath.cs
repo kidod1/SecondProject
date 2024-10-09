@@ -1,21 +1,41 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 [CreateAssetMenu(menuName = "Abilities/Breath")]
 public class Breath : Ability
 {
     [Header("Ability Parameters")]
-    public float breathDamage = 20f;        // 브레스의 피해량
-    public float cooldownTime = 10f;        // 브레스의 쿨타임
+    public float breathDamage = 20f;        // 브레스의 기본 피해량
+    public float cooldownTime = 10f;        // 브레스의 기본 쿨타임
     public float breathDuration = 2f;       // 브레스의 지속 시간
     public float breathRange = 10f;         // 브레스의 사거리
     public float breathAngle = 45f;         // 브레스의 각도 (양옆으로 22.5도씩)
+
+    [Tooltip("브레스 능력 업그레이드 시 레벨별 데미지 증가량")]
+    public int[] damageIncrements = { 10, 15, 20, 25, 30 }; // 레벨 1~5
 
     public GameObject breathPrefab;         // 브레스 프리팹
 
     private Player playerInstance;
     private Coroutine breathCoroutine;
 
+    /// <summary>
+    /// 현재 레벨에 맞는 데미지 증가량을 반환합니다.
+    /// </summary>
+    protected override int GetNextLevelIncrease()
+    {
+        if (currentLevel < damageIncrements.Length)
+        {
+            return damageIncrements[currentLevel];
+        }
+        Debug.LogWarning($"Breath: currentLevel ({currentLevel})이 damageIncrements 배열의 범위를 벗어났습니다. 기본값 0을 반환합니다.");
+        return 0;
+    }
+
+    /// <summary>
+    /// 브레스 능력을 플레이어에게 적용합니다. 초기 레벨에서는 브레스 발사를 시작합니다.
+    /// </summary>
     public override void Apply(Player player)
     {
         playerInstance = player;
@@ -27,20 +47,45 @@ public class Breath : Ability
         }
     }
 
-    public override void ResetLevel()
+    /// <summary>
+    /// 브레스 능력을 업그레이드합니다. 레벨이 증가할 때마다 데미지가 증가합니다.
+    /// </summary>
+    public override void Upgrade()
     {
-        base.ResetLevel();
-
-        // 초기화 로직 추가: 브레스 코루틴 중지 및 변수 초기화
-        if (breathCoroutine != null)
+        if (currentLevel < maxLevel)
         {
-            playerInstance.StopCoroutine(breathCoroutine);
-            breathCoroutine = null;
-        }
+            currentLevel++;
+            Debug.Log($"Breath 업그레이드: 현재 레벨 {currentLevel}");
 
-        // 필요에 따라 추가 초기화 작업 수행
+            // 업그레이드 후 데미지 증가 적용
+            breathDamage += GetNextLevelIncrease();
+        }
+        else
+        {
+            Debug.LogWarning("Breath: 이미 최대 레벨에 도달했습니다.");
+        }
     }
 
+    /// <summary>
+    /// 능력 설명을 오버라이드하여 레벨 업 시 데미지 증가량을 포함시킵니다.
+    /// </summary>
+    public override string GetDescription()
+    {
+        if (currentLevel < maxLevel)
+        {
+            int damageIncrease = GetNextLevelIncrease();
+            return $"{baseDescription}{System.Environment.NewLine}(Level {currentLevel + 1}: +{damageIncrease} 데미지)";
+        }
+        else
+        {
+            int finalDamageIncrease = GetNextLevelIncrease();
+            return $"{baseDescription}{System.Environment.NewLine}(Max Level: +{finalDamageIncrease} 데미지)";
+        }
+    }
+
+    /// <summary>
+    /// 브레스 발사 코루틴입니다. 쿨타임마다 브레스를 발사합니다.
+    /// </summary>
     private IEnumerator BreathRoutine()
     {
         while (true)
@@ -50,16 +95,22 @@ public class Breath : Ability
         }
     }
 
+    /// <summary>
+    /// 플레이어의 현재 방향을 반환합니다.
+    /// </summary>
     private Vector3 GetPlayerDirection()
     {
         return playerInstance.GetFacingDirection();
     }
 
+    /// <summary>
+    /// 브레스를 발사합니다.
+    /// </summary>
     private void FireBreath()
     {
         if (breathPrefab == null)
         {
-            Debug.LogError("브레스 프리팹이 설정되지 않았습니다.");
+            Debug.LogError("Breath 프리팹이 설정되지 않았습니다.");
             return;
         }
 
@@ -88,17 +139,28 @@ public class Breath : Ability
         }
     }
 
-    protected override int GetNextLevelIncrease()
+    /// <summary>
+    /// 레벨 초기화 시 호출됩니다. 브레스 코루틴을 중지하고 변수들을 초기화합니다.
+    /// </summary>
+    public override void ResetLevel()
     {
-        return Mathf.RoundToInt(breathDamage + 10f);
-    }
+        base.ResetLevel();
 
-    public override void Upgrade()
-    {
-        if (currentLevel < maxLevel)
+        // 브레스 코루틴 중지 및 변수 초기화
+        if (breathCoroutine != null && playerInstance != null)
         {
-            currentLevel++;
-            breathDamage += 10f;
+            playerInstance.StopCoroutine(breathCoroutine);
+            breathCoroutine = null;
+        }
+
+        currentLevel = 0;
+    }
+    private void OnValidate()
+    {
+        if (damageIncrements.Length != maxLevel)
+        {
+            Debug.LogWarning($"Breath: damageIncrements 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            Array.Resize(ref damageIncrements, maxLevel);
         }
     }
 }

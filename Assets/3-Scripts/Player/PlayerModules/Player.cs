@@ -504,15 +504,22 @@ public class Player : MonoBehaviour
                     damageMultiplier = fieryAbility.GetDamageMultiplier();
                 }
 
+                // 능력의 데미지가 아닌 기본 공격의 데미지 설정
                 int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
 
-                projScript.Initialize(stat, this, false, adjustedDamage);
+                // Projectile.Initialize의 5개 매개변수에 맞게 전달
+                projScript.Initialize(stat, this, false, 1.0f, stat.currentPlayerDamage);
                 projScript.SetDirection(dir);
+            }
+            else
+            {
+                Debug.LogError("CardStrike: Projectile 스크립트를 찾을 수 없습니다.");
             }
 
             OnShoot.Invoke(dir, prefabIndex);
         }
     }
+
     private Vector2 RotateVector(Vector2 vector, float degrees)
     {
         float radians = degrees * Mathf.Deg2Rad;

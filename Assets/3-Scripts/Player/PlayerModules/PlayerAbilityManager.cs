@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAbilityManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerAbilityManager : MonoBehaviour
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
+    // 능력 변경 시 호출할 이벤트
+    public UnityEvent OnAbilitiesChanged;
+
     public void Initialize(Player player)
     {
         this.player = player;
@@ -21,6 +25,31 @@ public class PlayerAbilityManager : MonoBehaviour
 
         // Player의 OnHitEnemy 이벤트에 대한 리스너를 추가
         player.OnHitEnemy.AddListener(ActivateAbilitiesOnHit);
+    }
+
+    public void SelectAbility(Ability ability)
+    {
+        ability.Apply(player);
+
+        if (ability.currentLevel == 0)
+        {
+            ability.currentLevel = 1;
+            abilities.Add(ability);
+        }
+        else
+        {
+            ability.Upgrade();
+        }
+
+        if (ability.currentLevel >= 5)
+        {
+            availableAbilities.Remove(ability);
+        }
+
+        CheckForSynergy(ability.category);
+
+        // 능력이 변경되었음을 알림
+        OnAbilitiesChanged?.Invoke();
     }
 
     public void ActivateAbilitiesOnHit(Collider2D enemy)
@@ -62,44 +91,6 @@ public class PlayerAbilityManager : MonoBehaviour
             // 다른 능력들의 몬스터 사망 시 발동 로직이 있다면 여기에 추가
         }
     }
-    private void LoadAvailableAbilities()
-    {
-        Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
-        availableAbilities.AddRange(loadedAbilities);
-
-        foreach (var ability in loadedAbilities)
-        {
-            Debug.Log($"Loaded ability: {ability.abilityName}");
-        }
-    }
-
-    public List<Ability> GetAvailableAbilities()
-    {
-        return availableAbilities;
-    }
-
-    public void SelectAbility(Ability ability)
-    {
-        ability.Apply(player);
-
-        if (ability.currentLevel == 0)
-        {
-            ability.currentLevel = 1;
-            abilities.Add(ability);
-        }
-        else
-        {
-            ability.Upgrade();
-        }
-
-        if (ability.currentLevel >= 5)
-        {
-            availableAbilities.Remove(ability);
-        }
-
-        CheckForSynergy(ability.category);
-    }
-
     private void InitializeSynergyDictionaries()
     {
         synergyAbilityAcquired = new Dictionary<string, bool>
@@ -126,8 +117,35 @@ public class PlayerAbilityManager : MonoBehaviour
             { "Null", 0 }
         };
     }
+    private void LoadAvailableAbilities()
+    {
+        Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
+        availableAbilities.AddRange(loadedAbilities);
 
-    private void CheckForSynergy(string category)
+        foreach (var ability in loadedAbilities)
+        {
+            Debug.Log($"Loaded ability: {ability.abilityName}");
+        }
+    }
+
+    public List<Ability> GetAvailableAbilities()
+    {
+        return availableAbilities;
+    }
+
+    public void ResetAllAbilities()
+    {
+        foreach (var ability in availableAbilities)
+        {
+            ability.ResetLevel();
+        }
+        abilities.Clear();
+
+        // 능력이 변경되었음을 알림
+        OnAbilitiesChanged?.Invoke();
+    }
+
+    public void CheckForSynergy(string category)
     {
         if (!synergyAbilityAcquired.ContainsKey(category) || !synergyLevels.ContainsKey(category))
         {
@@ -190,15 +208,6 @@ public class PlayerAbilityManager : MonoBehaviour
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
         synergyAbility.Apply(player);
-    }
-
-    public void ResetAllAbilities()
-    {
-        foreach (var ability in availableAbilities)
-        {
-            ability.ResetLevel();
-        }
-        abilities.Clear();
     }
 
     public T GetAbilityOfType<T>() where T : Ability
