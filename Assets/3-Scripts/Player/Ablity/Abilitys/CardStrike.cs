@@ -10,7 +10,7 @@ public class CardStrike : Ability
     public int hitThreshold = 5;
 
     [Tooltip("레벨별 카드의 데미지 값")]
-    public float[] damageLevels = { 50f, 60f, 70f, 80f, 90f }; // 레벨 1~5
+    public int[] damageLevels = { 50, 60, 70, 80, 90 }; // 레벨 1~5
 
     [Tooltip("카드의 발사 사거리")]
     public float range = 10f;
@@ -97,7 +97,7 @@ public class CardStrike : Ability
 
         if (cardScript != null)
         {
-            float currentDamage = GetCurrentDamage();
+            int currentDamage = GetCurrentDamage();
             Vector2 randomDirection = GetRandomDirection();
             cardScript.Initialize(playerInstance.stat, playerInstance, true, baseSpeedMultiplier, currentDamage);
             cardScript.SetDirection(randomDirection);
@@ -195,7 +195,7 @@ public class CardStrike : Ability
     /// 현재 레벨에 맞는 데미지를 반환합니다.
     /// </summary>
     /// <returns>현재 레벨의 데미지 값</returns>
-    private float GetCurrentDamage()
+    private int GetCurrentDamage()
     {
         if (currentLevel < damageLevels.Length)
         {

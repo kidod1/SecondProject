@@ -37,6 +37,11 @@ public class PlayerData : ScriptableObject
     public float defalutExperienceMultiplier = 1.0f;
     public int currentLevel;
 
+    [Header("Reverse Attack Stats")]
+    [Tooltip("현재 반전 공격 데미지 퍼센트 (0.0f ~ 1.0f)")]
+    [Range(0f, 1.0f)]
+    public float reverseAttackDamagePercentage = 1.0f; // 기본값 100%
+
     public void InitializeStats()
     {
         currentPlayerSpeed = defaultPlayerSpeed;
@@ -51,6 +56,7 @@ public class PlayerData : ScriptableObject
         currentHP = currentMaxHP;
         currentExperience = 0;
         currentLevel = 1;
+        reverseAttackDamagePercentage = 1.0f; // 초기화
     }
 
     public void TakeDamage(int damage)

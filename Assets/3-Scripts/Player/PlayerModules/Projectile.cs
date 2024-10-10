@@ -11,7 +11,8 @@ public class Projectile : MonoBehaviour
     protected Rigidbody2D rb;
     private float lifetime;
     private static Transform projectileParent;
-    private float currentDamage = 0f; // 추가: 현재 데미지
+    public int projectileRealDamage;
+    public int projectileCurrentDamage = 0; // 추가: 현재 데미지
 
     private void Awake()
     {
@@ -69,13 +70,13 @@ public class Projectile : MonoBehaviour
     /// <param name="isClone">클론 프로젝트일 여부</param>
     /// <param name="multiplier">데미지 배율</param>
     /// <param name="damage">프로젝트일의 데미지</param>
-    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f, float damage = 50f)
+    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f, int damage = 50)
     {
         stat = playerStat;
         this.playerInstance = playerInstance;
         isCloneProjectile = isClone;
         damageMultiplier = multiplier;
-        currentDamage = damage; // 데미지 설정
+        projectileCurrentDamage = damage; // 데미지 설정
 
         if (rb != null)
         {
@@ -111,7 +112,7 @@ public class Projectile : MonoBehaviour
             Monster monster = collision.GetComponent<Monster>();
             if (monster != null)
             {
-                int damage = Mathf.RoundToInt(currentDamage);
+                int damage = Mathf.RoundToInt(projectileCurrentDamage);
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);
@@ -128,7 +129,7 @@ public class Projectile : MonoBehaviour
                     float stunChance = 0.25f;
                     if (UnityEngine.Random.value < stunChance)
                     {
-                        monster.Stun();
+                        monster.Stun(2f);
                         Debug.Log($"{monster.name}이(가) 기절했습니다.");
                     }
                 }
@@ -140,7 +141,7 @@ public class Projectile : MonoBehaviour
             DestructibleObject destructible = collision.GetComponent<DestructibleObject>();
             if (destructible != null)
             {
-                int damage = Mathf.RoundToInt(currentDamage);
+                int damage = Mathf.RoundToInt(projectileCurrentDamage);
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);

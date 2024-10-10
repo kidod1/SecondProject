@@ -17,7 +17,8 @@ public class RotatingObject : MonoBehaviour
             playerShooting = player.GetComponent<Player>();
             if (playerShooting != null)
             {
-                playerShooting.OnShoot.AddListener(FollowAttack);
+                playerShooting.OnShoot.RemoveListener(FollowAttackHandler); // 중복 방지를 위해 제거
+                playerShooting.OnShoot.AddListener(FollowAttackHandler); // 수정된 리스너 추가
             }
         }
     }
@@ -37,21 +38,31 @@ public class RotatingObject : MonoBehaviour
         }
     }
 
-    private void FollowAttack(Vector2 direction, int prefabIndex)
+    private void FollowAttackHandler(Vector2 direction, int prefabIndex, GameObject projectile)
     {
-        GameObject projectile = playerShooting.objectPool.GetObject(prefabIndex);
-        projectile.transform.position = transform.position;
+        if (projectile == null)
+        {
+            Debug.LogError("RotatingObject: 전달된 프로젝트트가 null입니다.");
+            return;
+        }
 
         Projectile projScript = projectile.GetComponent<Projectile>();
-        projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier);
-        projScript.SetDirection(direction);
+        if (projScript != null)
+        {
+            projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier);
+            projScript.SetDirection(direction);
+        }
+        else
+        {
+            Debug.LogError("RotatingObject: Projectile 스크립트를 찾을 수 없습니다.");
+        }
     }
 
     private void OnDestroy()
     {
         if (playerShooting != null)
         {
-            playerShooting.OnShoot.RemoveListener(FollowAttack);
+            playerShooting.OnShoot.RemoveListener(FollowAttackHandler); // 수정된 리스너 제거
         }
     }
 }

@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
 
     public Transform shootPoint;
 
-    public UnityEvent<Vector2, int> OnShoot;
+    public UnityEvent<Vector2, int, GameObject> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
     public UnityEvent OnShootCanceled;
@@ -84,7 +84,8 @@ public class Player : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         playerInput = new PlayerInput();
 
-        OnShoot ??= new UnityEvent<Vector2, int>();
+        // 수정된 이벤트 초기화
+        OnShoot ??= new UnityEvent<Vector2, int, GameObject>(); // 초기화 수정
         OnMonsterEnter ??= new UnityEvent<Collider2D>();
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
@@ -93,6 +94,7 @@ public class Player : MonoBehaviour
         OnHitEnemy ??= new UnityEvent<Collider2D>();
         OnHeal ??= new UnityEvent();
         OnGainExperience ??= new UnityEvent<int>(); // 이벤트 초기화
+
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -275,7 +277,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
 
     private IEnumerator InvincibilityCoroutine()
     {
@@ -516,7 +517,8 @@ public class Player : MonoBehaviour
                 Debug.LogError("CardStrike: Projectile 스크립트를 찾을 수 없습니다.");
             }
 
-            OnShoot.Invoke(dir, prefabIndex);
+            // 수정된 OnShoot 이벤트 호출 (프로젝트트 전달)
+            OnShoot.Invoke(dir, prefabIndex, projectile); // 세 번째 인수 추가
         }
     }
 
@@ -531,8 +533,6 @@ public class Player : MonoBehaviour
 
         return new Vector2(x, y);
     }
-
-
 
     public bool CanStun()
     {

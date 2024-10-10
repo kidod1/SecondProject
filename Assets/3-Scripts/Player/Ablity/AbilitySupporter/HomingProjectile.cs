@@ -1,69 +1,92 @@
 using UnityEngine;
 
-public class HomingProjectile : Projectile
+public class HomingProjectile : MonoBehaviour
 {
-    private float homingStartDelay;
-    private float homingSpeed;
-    private float homingRange; // 유도 범위
-    private bool isHomingActive = false;
+    private PlayerData stat;
+    private float startDelay;
+    private float speed;
+    private float range;
+    private Vector2 direction;
 
-    private void Start()
+    private Vector3 initialPosition;
+
+    /// <summary>
+    /// 유도 탄환을 초기화합니다.
+    /// </summary>
+    /// <param name="playerStat">플레이어의 데이터</param>
+    /// <param name="delay">유도 시작 지연 시간 (초)</param>
+    /// <param name="homingSpeed">유도 속도</param>
+    /// <param name="homingRange">유도 범위</param>
+    public void Initialize(PlayerData playerStat, float delay, float homingSpeed, float homingRange)
     {
-        Debug.Log("Homing activated!");
-        Invoke(nameof(ActivateHoming), homingStartDelay);
+        stat = playerStat;
+        startDelay = delay;
+        speed = homingSpeed;
+        range = homingRange;
+        initialPosition = transform.position;
+
+        // 유도 시작 지연 후 유도 로직 시작
+        Invoke(nameof(StartHoming), startDelay);
     }
 
-    public void Initialize(PlayerData playerStat, float startDelay, float speed, float range)
+    /// <summary>
+    /// 유도 로직을 시작합니다.
+    /// </summary>
+    private void StartHoming()
     {
-        base.Initialize(playerStat, PlayManager.I.GetPlayer());
-        homingStartDelay = startDelay;
-        homingSpeed = speed;
-        homingRange = range;
-    }
-
-    private void ActivateHoming()
-    {
-        isHomingActive = true;
+        // 목표를 설정 (예: 가장 가까운 적)
+        GameObject target = FindNearestEnemy();
+        if (target != null)
+        {
+            direction = (target.transform.position - transform.position).normalized;
+        }
     }
 
     private void Update()
     {
-        if (isHomingActive)
+        // 이동 로직
+        if (direction != Vector2.zero)
         {
-            Monster targetMonster = FindClosestMonsterWithinRange();
-            if (targetMonster != null)
-            {
-                Vector2 directionToMonster = (targetMonster.transform.position - transform.position).normalized;
-                Debug.Log($"투사체 방향: {directionToMonster} / 위치: {transform.position}");
-                rb.velocity = Vector2.Lerp(rb.velocity, directionToMonster * homingSpeed, Time.deltaTime * 2);
-            }
+            transform.Translate(direction * speed * Time.deltaTime, Space.World);
+        }
+
+        // 범위 초과 시 파괴
+        if (Vector3.Distance(initialPosition, transform.position) > range)
+        {
+            Destroy(gameObject);
         }
     }
 
-    private Monster FindClosestMonsterWithinRange()
+    /// <summary>
+    /// 가장 가까운 적을 찾습니다.
+    /// </summary>
+    /// <returns>가장 가까운 적의 게임 오브젝트</returns>
+    private GameObject FindNearestEnemy()
     {
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster"); 
-        Monster closestMonster = null;
-        float closestDistance = homingRange;
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject nearest = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
 
-        foreach (GameObject monsterObj in monsters)
+        foreach (GameObject enemy in enemies)
         {
-            Monster monster = monsterObj.GetComponent<Monster>();
-            float distanceToMonster = Vector2.Distance(transform.position, monster.transform.position);
-            if (distanceToMonster <= homingRange && distanceToMonster < closestDistance)
+            float dist = Vector3.Distance(enemy.transform.position, currentPos);
+            if (dist < minDist)
             {
-                closestMonster = monster;
-                closestDistance = distanceToMonster;
+                nearest = enemy;
+                minDist = dist;
             }
         }
 
-        return closestMonster;
+        return nearest;
     }
 
-    // 기즈모로 유도 범위를 그려주는 메서드
-    private void OnDrawGizmosSelected()
+    /// <summary>
+    /// 발사 방향을 설정합니다.
+    /// </summary>
+    /// <param name="dir">발사 방향</param>
+    public void SetDirection(Vector2 dir)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, homingRange);
+        direction = dir.normalized;
     }
 }

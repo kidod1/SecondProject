@@ -55,6 +55,7 @@ public abstract class Monster : MonoBehaviour
 
     private bool isStunned = false;
     private float stunDuration = 2f;
+    private float stunEndTime;
 
     protected virtual void Start()
     {
@@ -117,26 +118,26 @@ public abstract class Monster : MonoBehaviour
 
     protected abstract void InitializeStates();
 
-    public void Stun()
+    public void Stun(float duration)
     {
-        if (isStunned) return;
-        isStunned = true;
-
-        // 몬스터가 기절했다는 메시지 출력
-        Debug.Log($"몬스터 {gameObject.name} 이(가) 기절했습니다! 기절 지속 시간: {stunDuration}초");
-
-        // 기절 상태가 끝나는 Coroutine 시작
-        StartCoroutine(StunCoroutine());
+        if (!isStunned)
+        {
+            isStunned = true;
+            stunEndTime = Time.time + duration;
+            // 스턴 효과 활성화 (애니메이션, 상태 변경 등)
+            Debug.Log($"{name} has been stunned for {duration} seconds.");
+            StartCoroutine(StunCoroutine(duration));
+        }
     }
 
-    private IEnumerator StunCoroutine()
+    private IEnumerator StunCoroutine(float duration)
     {
-        yield return new WaitForSeconds(stunDuration);
+        yield return new WaitForSeconds(duration);
         isStunned = false;
-
-        // 기절이 끝났다는 메시지 출력
-        Debug.Log($"몬스터 {gameObject.name} 의 기절 상태가 종료되었습니다.");
+        // 스턴 효과 비활성화
+        Debug.Log($"{name} is no longer stunned.");
     }
+
     public void TransitionToState(IMonsterState newState)
     {
         if (isInCooldown && newState != cooldownState)

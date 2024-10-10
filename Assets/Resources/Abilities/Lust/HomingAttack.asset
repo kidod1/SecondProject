@@ -17,8 +17,24 @@ MonoBehaviour:
     \uBC1C\uC0AC\uD569\uB2C8\uB2E4."
   category: Lust
   maxLevel: 5
-  currentLevel: 1
+  currentLevel: 0
   abilityIcon: {fileID: 21300000, guid: f220f8f5d4182854e98bcec54ddd79bd, type: 3}
-  homingStartDelay: 0.3
-  homingSpeed: 5
-  homingRange: 3
+  homingStartDelayLevels:
+  - 0.3
+  - 0.25
+  - 0.2
+  - 0.15
+  - 0.1
+  homingSpeedLevels:
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  homingRangeLevels:
+  - 10
+  - 12
+  - 14
+  - 16
+  - 18
+  homingProjectilePrefab: {fileID: 603568951414228764, guid: 94c48a47f30fbd340922582d6f5407d8, type: 3}

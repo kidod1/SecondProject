@@ -3,42 +3,120 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilities/StunAbility")]
 public class StunAbility : Ability
 {
+    [Tooltip("레벨별 스턴 확률 (0.0f ~ 1.0f)")]
     [Range(0f, 1f)]
-    public float stunChance = 0.25f;
+    public float[] stunChances;   // 레벨별 스턴 확률 배열
+
     public float stunDuration = 2f;   // 기절 지속 시간
 
+    private Player playerInstance;
+
+    /// <summary>
+    /// 능력을 플레이어에게 적용합니다.
+    /// </summary>
+    /// <param name="player">능력을 적용할 플레이어</param>
     public override void Apply(Player player)
     {
-        // 능력 적용 로직 (플레이어의 능력 목록에 추가하는 등)
-        Debug.Log($"Stun ability applied. Current Level: {currentLevel}");
+        playerInstance = player;
+        Debug.Log($"StunAbility applied. Current Level: {currentLevel + 1}");
     }
 
+    /// <summary>
+    /// 몬스터에게 스턴을 시도합니다.
+    /// </summary>
+    /// <param name="monster">스턴을 시도할 몬스터</param>
     public void TryStun(Monster monster)
     {
+        float currentStunChance = GetCurrentStunChance();
         float randomValue = Random.value;
-        if (randomValue < stunChance) // 기절 확률 체크
+        if (randomValue < currentStunChance) // 스턴 확률 체크
         {
-            monster.Stun(); // 몬스터 기절시키기
-            Debug.Log($"{monster.name} is stunned!");
+            monster.Stun(stunDuration); // 몬스터 기절시키기
+            Debug.Log($"{monster.name} is stunned for {stunDuration} seconds!");
+        }
+        else
+        {
+            Debug.Log($"{monster.name} resisted the stun.");
         }
     }
 
+    /// <summary>
+    /// 현재 레벨에 따른 스턴 확률을 반환합니다.
+    /// </summary>
+    /// <returns>현재 레벨의 스턴 확률 (0.0f ~ 1.0f)</returns>
+    private float GetCurrentStunChance()
+    {
+        if (currentLevel < stunChances.Length)
+        {
+            return stunChances[currentLevel];
+        }
+        else
+        {
+            Debug.LogWarning($"StunAbility: currentLevel ({currentLevel}) exceeds stunChances 배열 범위. 마지막 레벨의 스턴 확률을 사용합니다.");
+            return stunChances[stunChances.Length - 1];
+        }
+    }
+
+    /// <summary>
+    /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 스턴 확률이 증가합니다.
+    /// </summary>
+    public override void Upgrade()
+    {
+        if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
+        {
+            currentLevel++;
+            Debug.Log($"StunAbility upgraded to Level {currentLevel + 1}. 스턴 확률: {stunChances[currentLevel] * 100}%");
+        }
+        else
+        {
+            Debug.LogWarning("StunAbility: Already at max level.");
+        }
+    }
+
+    /// <summary>
+    /// 다음 레벨의 스턴 확률 증가값을 반환합니다.
+    /// </summary>
+    /// <returns>다음 레벨에서의 스턴 확률 증가량 (퍼센트)</returns>
+    protected override int GetNextLevelIncrease()
+    {
+        if (currentLevel + 1 < stunChances.Length)
+        {
+            return Mathf.RoundToInt(stunChances[currentLevel + 1] * 100); // 퍼센트로 변환
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// 능력 레벨을 초기화합니다.
+    /// </summary>
     public override void ResetLevel()
     {
         base.ResetLevel();
+        currentLevel = 0;
+        Debug.Log("StunAbility level has been reset.");
     }
 
-    public override void Upgrade()
+    /// <summary>
+    /// 능력의 현재 상태와 효과를 설명하는 문자열을 반환합니다.
+    /// </summary>
+    /// <returns>능력 설명 문자열</returns>
+    public override string GetDescription()
     {
-        if (currentLevel < maxLevel)
+        Debug.Log($"GetDescription called. Current Level: {currentLevel + 1}, stunChances.Length: {stunChances.Length}, maxLevel: {maxLevel}");
+
+        if (currentLevel < stunChances.Length && currentLevel >= 0)
         {
-            currentLevel++;
-            Debug.Log($"Stun ability upgraded. Current Level: {currentLevel}");
+            float stunChancePercent = stunChances[currentLevel] * 100f;
+            return $"{baseDescription}\nLv {currentLevel + 1}: 적을 공격할 때 {stunChancePercent}% 확률로 {stunDuration}초 동안 기절";
         }
-    }
-
-    protected override int GetNextLevelIncrease()
-    {
-        return 0;
+        else if (currentLevel >= stunChances.Length)
+        {
+            float maxStunChancePercent = stunChances[stunChances.Length - 1] * 100f;
+            return $"{baseDescription}\n최대 레벨 도달: 적을 공격할 때 {maxStunChancePercent}% 확률로 {stunDuration}초 동안 기절";
+        }
+        else
+        {
+            return $"{baseDescription}\n최대 레벨 도달.";
+        }
     }
 }

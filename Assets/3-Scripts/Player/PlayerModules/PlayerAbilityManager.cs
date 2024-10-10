@@ -52,6 +52,10 @@ public class PlayerAbilityManager : MonoBehaviour
         OnAbilitiesChanged?.Invoke();
     }
 
+    /// <summary>
+    /// 플레이어가 몬스터와 충돌했을 때 호출되는 메서드입니다.
+    /// </summary>
+    /// <param name="enemy">충돌한 몬스터의 Collider2D</param>
     public void ActivateAbilitiesOnHit(Collider2D enemy)
     {
         // 능력 리스트에서 각 능력에 대한 트리거 처리
@@ -75,22 +79,28 @@ public class PlayerAbilityManager : MonoBehaviour
             }
             else if (ability is ParasiticNest parasiticNestAbility)
             {
-                parasiticNestAbility.OnProjectileHit(enemy);
+                parasiticNestAbility.OnProjectileHit(enemy); // ParasiticNest의 OnProjectileHit 호출
             }
         }
     }
 
+    /// <summary>
+    /// 몬스터가 사망했을 때 호출되는 메서드입니다.
+    /// </summary>
+    /// <param name="monster">사망한 몬스터</param>
     public void ActivateAbilitiesOnMonsterDeath(Monster monster)
     {
         foreach (var ability in abilities)
         {
-            if (ability is HoneyDrop honeyDropAbility)
+            if (ability is KillSpeedBoostAbility killSpeedBoostAbility)
             {
-                honeyDropAbility.OnMonsterDeath(monster);
+                killSpeedBoostAbility.OnMonsterKilled();
             }
-            // 다른 능력들의 몬스터 사망 시 발동 로직이 있다면 여기에 추가
+            // ParasiticNest는 OnMonsterKilled 메서드를 필요로 하지 않으므로 호출을 제거합니다.
+            // 다른 능력들의 OnMonsterKilled 메서드가 있다면 여기에 추가
         }
     }
+
     private void InitializeSynergyDictionaries()
     {
         synergyAbilityAcquired = new Dictionary<string, bool>
@@ -117,6 +127,7 @@ public class PlayerAbilityManager : MonoBehaviour
             { "Null", 0 }
         };
     }
+
     private void LoadAvailableAbilities()
     {
         Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
