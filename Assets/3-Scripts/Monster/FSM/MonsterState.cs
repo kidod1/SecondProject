@@ -47,6 +47,8 @@ public class ChaseState : MonsterState
 
     public override void UpdateState()
     {
+        if (monster.IsStunned) return;
+
         if (monster.IsPlayerInRange(monster.monsterBaseStat.attackRange))
         {
             monster.TransitionToState(monster.attackState);

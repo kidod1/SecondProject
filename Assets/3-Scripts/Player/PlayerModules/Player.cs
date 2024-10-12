@@ -297,7 +297,6 @@ public class Player : MonoBehaviour
     public void KillMonster()
     {
         OnMonsterKilled.Invoke();
-        Debug.Log("몬스터 킬");
     }
 
     public void Heal(int amount)

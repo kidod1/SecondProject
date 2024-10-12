@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
@@ -35,6 +36,7 @@ public abstract class Monster : MonoBehaviour
     public bool isInfected = false;
 
     private string damageTextPrefabPath = "DamageTextPrefab";
+    protected SkeletonAnimation skeletonAnimation;
 
     // 새로운 필드 추가: Betting 능력에 의해 한 번만 발동하도록 관리
     public bool HasBeenHitByBetting { get; set; } = false;
@@ -55,11 +57,15 @@ public abstract class Monster : MonoBehaviour
     private float damageInterval = 1f;
 
     private bool isStunned = false;
-    private float stunDuration = 2f;
+    public bool IsStunned => isStunned;
     private float stunEndTime;
+
+    // 원래의 isKinematic 상태를 저장하기 위한 필드 추가
+    private bool originalIsKinematic;
 
     protected virtual void Start()
     {
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
         currentHP = monsterBaseStat.maxHP;
         meshRenderer = GetComponent<MeshRenderer>();
         player = FindObjectOfType<Player>();
@@ -103,7 +109,7 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (player == null)
         {
@@ -113,6 +119,7 @@ public abstract class Monster : MonoBehaviour
                 InitializeStates();
             }
         }
+
         if (isStunned) return;
         currentState?.UpdateState();
     }
@@ -125,8 +132,22 @@ public abstract class Monster : MonoBehaviour
         {
             isStunned = true;
             stunEndTime = Time.time + duration;
-            // 스턴 효과 활성화 (애니메이션, 상태 변경 등)
-            Debug.Log($"{name} has been stunned for {duration} seconds.");
+
+            // 애니메이션 정지
+            if (skeletonAnimation != null)
+            {
+                skeletonAnimation.timeScale = 0f;
+            }
+
+            // Rigidbody 멈춤
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                // 원래의 isKinematic 상태 저장
+                originalIsKinematic = rb.isKinematic;
+                rb.isKinematic = true;
+            }
+
             StartCoroutine(StunCoroutine(duration));
         }
     }
@@ -135,8 +156,18 @@ public abstract class Monster : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         isStunned = false;
-        // 스턴 효과 비활성화
-        Debug.Log($"{name} is no longer stunned.");
+
+        // 애니메이션 재개
+        if (skeletonAnimation != null)
+        {
+            skeletonAnimation.timeScale = 1f;
+        }
+
+        // Rigidbody 원래 상태로 복원
+        if (rb != null)
+        {
+            rb.isKinematic = originalIsKinematic;
+        }
     }
 
     public void TransitionToState(IMonsterState newState)
@@ -370,7 +401,6 @@ public abstract class Monster : MonoBehaviour
             Debug.LogWarning("기생 벌레 프리팹을 찾을 수 없습니다: ParasitePrefab");
         }
     }
-
 
     private IEnumerator InvincibilityCoroutine()
     {

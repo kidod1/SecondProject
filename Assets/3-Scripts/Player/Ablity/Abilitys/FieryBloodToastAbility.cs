@@ -88,8 +88,6 @@ public class FieryBloodToastAbility : Ability
 
         // basePlayerDamage가 PlayerData에 정의되어 있어야 합니다.
         playerInstance.stat.currentPlayerDamage = Mathf.RoundToInt(playerInstance.stat.defaultPlayerDamage * damageMultiplier);
-
-        Debug.Log($"FieryBloodToastAbility: 플레이어의 현재 데미지 배율이 x{damageMultiplier}로 업데이트되었습니다.");
     }
 
     /// <summary>
