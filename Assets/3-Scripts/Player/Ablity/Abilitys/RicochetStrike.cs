@@ -23,7 +23,6 @@ public class RicochetStrike : Ability
     public override void Apply(Player player)
     {
         playerInstance = player;
-        Debug.Log($"RicochetStrike applied. Current Level: {currentLevel + 1}");
     }
 
     /// <summary>
@@ -33,7 +32,6 @@ public class RicochetStrike : Ability
     public void OnProjectileHit(Collider2D enemy)
     {
         hitCount++;
-        Debug.Log($"RicochetStrike HitCount: {hitCount}/{hitThreshold}");
         if (hitCount >= hitThreshold)
         {
             hitCount = 0;
@@ -188,7 +186,6 @@ public class RicochetStrike : Ability
         base.ResetLevel();
         hitCount = 0;
         currentLevel = 0;
-        Debug.Log("RicochetStrike level has been reset.");
     }
 
     /// <summary>
@@ -212,7 +209,6 @@ public class RicochetStrike : Ability
         if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
         {
             currentLevel++;
-            Debug.Log($"RicochetStrike upgraded to Level {currentLevel + 1}. 데미지 증가량: {damageIncreases[currentLevel]}");
         }
         else
         {

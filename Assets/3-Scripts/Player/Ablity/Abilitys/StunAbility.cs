@@ -18,7 +18,6 @@ public class StunAbility : Ability
     public override void Apply(Player player)
     {
         playerInstance = player;
-        Debug.Log($"StunAbility applied. Current Level: {currentLevel + 1}");
     }
 
     /// <summary>
@@ -32,7 +31,6 @@ public class StunAbility : Ability
         if (randomValue < currentStunChance) // 스턴 확률 체크
         {
             monster.Stun(stunDuration); // 몬스터 기절시키기
-            Debug.Log($"{monster.name} is stunned for {stunDuration} seconds!");
         }
         else
         {
@@ -93,7 +91,6 @@ public class StunAbility : Ability
     {
         base.ResetLevel();
         currentLevel = 0;
-        Debug.Log("StunAbility level has been reset.");
     }
 
     /// <summary>
@@ -102,7 +99,6 @@ public class StunAbility : Ability
     /// <returns>능력 설명 문자열</returns>
     public override string GetDescription()
     {
-        Debug.Log($"GetDescription called. Current Level: {currentLevel + 1}, stunChances.Length: {stunChances.Length}, maxLevel: {maxLevel}");
 
         if (currentLevel < stunChances.Length && currentLevel >= 0)
         {

@@ -52,7 +52,6 @@ public class HoneyDrop : Ability
             if (honeyScript != null)
             {
                 honeyScript.ItemData.healAmount = GetCurrentHealthRecoveryAmount();
-                Debug.Log($"HoneyDrop: 벌꿀 아이템 스폰됨. 회복량: {honeyScript.ItemData.healAmount}");
             }
             else
             {
@@ -73,7 +72,6 @@ public class HoneyDrop : Ability
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
             currentLevel++;
-            Debug.Log($"HoneyDrop 업그레이드: 현재 레벨 {currentLevel + 1}");
             // 레벨 업 시 필요한 추가 로직이 있다면 여기에 추가
         }
         else

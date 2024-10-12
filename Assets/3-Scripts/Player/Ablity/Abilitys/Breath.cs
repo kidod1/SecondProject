@@ -129,9 +129,6 @@ public class Breath : Ability
 
             // Breath의 방향을 설정합니다.
             breathAttackScript.SetDirection(direction);
-
-            // 디버그 메시지 추가
-            Debug.Log($"[Breath Ability] 브레스 사용됨 - 위치: {spawnPosition}, 방향: {direction}");
         }
         else
         {

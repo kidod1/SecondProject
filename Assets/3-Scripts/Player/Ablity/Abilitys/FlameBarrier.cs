@@ -44,7 +44,6 @@ public class FlameBarrier : Ability
         if (currentLevel < maxLevel)
         {
             currentLevel++;
-            Debug.Log($"FlameBarrier 업그레이드: 현재 레벨 {currentLevel}");
 
             // 레벨 업 시 데미지와 장막 반경 업데이트
             UpdateFlameBarrierParameters();

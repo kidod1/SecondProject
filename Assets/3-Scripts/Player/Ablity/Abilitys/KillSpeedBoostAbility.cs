@@ -71,7 +71,6 @@ public class KillSpeedBoostAbility : Ability
         isBoostActive = true;
         float boostAmount = speedBoostAmounts[currentLevel];
         playerInstance.stat.currentPlayerSpeed += boostAmount;
-        Debug.Log($"KillSpeedBoostAbility: 이동 속도 {boostAmount}만큼 증가! (지속 시간: {boostDuration}초)");
 
         playerInstance.StartCoroutine(SpeedBoostCoroutine(boostAmount));
     }
@@ -88,7 +87,6 @@ public class KillSpeedBoostAbility : Ability
         playerInstance.stat.currentPlayerSpeed -= boostAmount;
         isBoostActive = false;
         killCount = 0;
-        Debug.Log($"KillSpeedBoostAbility: 이동 속도 부스트가 해제되었습니다.");
     }
 
     /// <summary>
@@ -99,7 +97,6 @@ public class KillSpeedBoostAbility : Ability
         if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
         {
             currentLevel++;
-            Debug.Log($"KillSpeedBoostAbility 업그레이드: 현재 레벨 {currentLevel + 1}, 이동 속도 증가량 {speedBoostAmounts[currentLevel]}");
         }
         else
         {

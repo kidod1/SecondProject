@@ -34,7 +34,6 @@ public class FieryBloodToastAbility : Ability
         if (currentLevel < maxLevel)
         {
             currentLevel++;
-            Debug.Log($"FieryBloodToastAbility 업그레이드: 현재 레벨 {currentLevel}");
 
             // 레벨 업 시 데미지 배율 업데이트
             UpdateDamage();

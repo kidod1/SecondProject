@@ -180,7 +180,6 @@ public class Barrier : Ability
         if (playerInstance != null)
         {
             ActivateBarrierVisual();
-            Debug.Log("Barrier: 쿨타임 완료, 방패 재활성화.");
         }
 
         cooldownCoroutine = null;

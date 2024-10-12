@@ -41,8 +41,6 @@ public class HomingAttack : Ability
         // 이벤트 리스너 추가 전에 중복 제거
         playerInstance.OnShoot.RemoveListener(OnShootHandler);
         playerInstance.OnShoot.AddListener(OnShootHandler);
-
-        Debug.Log($"HomingAttack이 적용되었습니다. 현재 레벨 Lv: {currentLevel + 1}");
     }
 
     /// <summary>
@@ -53,7 +51,6 @@ public class HomingAttack : Ability
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
             currentLevel++;
-            Debug.Log($"HomingAttack 업그레이드: 현재 레벨 {currentLevel + 1}");
 
             // 레벨 업 시 필요한 로직 추가 (필요 시)
             // 현재 이 능력은 레벨별 파라미터 배열을 통해 자동으로 조정되므로 별도의 조정은 필요 없습니다.
@@ -147,8 +144,6 @@ public class HomingAttack : Ability
 
             projScript.Initialize(playerInstance.stat, currentDelay, currentSpeed, currentRange);
             projScript.SetDirection(direction);
-
-            Debug.Log($"HomingAttack: 유도 탄환이 적용되었습니다. 레벨 {currentLevel + 1}, 지연 {currentDelay}s, 속도 {currentSpeed}, 범위 {currentRange}m");
         }
         else
         {

@@ -23,7 +23,6 @@ public class IncreaseAttack : Ability
         if (currentLevel < attackIncreases.Length)
         {
             player.stat.currentPlayerDamage += attackIncreases[currentLevel];
-            Debug.Log($"IncreaseAttack이 적용되었습니다. 현재 레벨 Lv: {currentLevel + 1}, 공격력 증가: {attackIncreases[currentLevel]}");
         }
         else
         {
@@ -46,7 +45,6 @@ public class IncreaseAttack : Ability
             if (player != null && currentLevel < attackIncreases.Length)
             {
                 player.stat.currentPlayerDamage += attackIncreases[currentLevel];
-                Debug.Log($"IncreaseAttack 레벨 {currentLevel + 1}에서 공격력 증가: {attackIncreases[currentLevel]}");
             }
         }
         else

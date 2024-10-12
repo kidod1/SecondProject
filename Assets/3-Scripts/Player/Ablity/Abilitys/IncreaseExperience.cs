@@ -20,7 +20,6 @@ public class IncreaseExperience : Ability
         if (currentLevel < maxLevel)
         {
             currentLevel++;
-            Debug.Log($"IncreaseExperience 업그레이드: 현재 레벨 {currentLevel}");
         }
     }
 

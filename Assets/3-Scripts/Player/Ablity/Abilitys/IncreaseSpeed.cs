@@ -22,7 +22,6 @@ public class IncreaseSpeed : Ability
         if (currentLevel < maxLevel)
         {
             currentLevel++;
-            Debug.Log($"IncreaseSpeed 업그레이드: 현재 레벨 {currentLevel}");
         }
         else
         {

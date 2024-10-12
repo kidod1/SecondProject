@@ -31,7 +31,6 @@ public class IncreaseAttackSpeed : Ability
             {
                 player.stat.currentShootCooldown = 0.1f;
             }
-            Debug.Log($"IncreaseAttackSpeed이 적용되었습니다. 현재 레벨 Lv: {currentLevel}, 쿨다운 감소: {cooldownReductions[currentLevel]}초");
         }
         else
         {
@@ -59,7 +58,6 @@ public class IncreaseAttackSpeed : Ability
                 {
                     player.stat.currentShootCooldown = 0.1f;
                 }
-                Debug.Log($"IncreaseAttackSpeed 레벨 {currentLevel + 1}에서 쿨다운 감소: {cooldownReductions[currentLevel]}초");
             }
             else
             {
