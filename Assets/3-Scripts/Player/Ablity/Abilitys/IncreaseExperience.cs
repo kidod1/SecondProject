@@ -11,8 +11,9 @@ public class IncreaseExperience : Ability
     {
         if (currentLevel < experienceMultipliers.Length)
         {
-            player.stat.experienceMultiplier += experienceMultipliers[currentLevel - 1];
+            player.stat.experienceMultiplier += experienceMultipliers[currentLevel];
         }
+        if (player == null) return;
     }
 
     public override void Upgrade()
