@@ -21,6 +21,7 @@ public class SentryAbility : SynergyAbility
 
     public override void Apply(Player player)
     {
+        base.Apply(player);
         playerInstance = player;
 
         Debug.Log($"Applying {abilityName} to {playerInstance.name}");

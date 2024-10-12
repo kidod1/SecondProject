@@ -24,6 +24,7 @@ public class SwordDance : SynergyAbility
 
     public override void Apply(Player player)
     {
+        base.Apply(player);
         if (isAbilityActive)
             return; // 이미 능력이 활성화되어 있으면 중복 실행 방지
 

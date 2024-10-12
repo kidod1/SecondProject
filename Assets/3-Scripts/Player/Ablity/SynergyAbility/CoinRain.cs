@@ -22,6 +22,7 @@ public class CoinRain : SynergyAbility
 
     public override void Apply(Player player)
     {
+        base.Apply(player);
         playerInstance = player;
         mainCamera = Camera.main;
 

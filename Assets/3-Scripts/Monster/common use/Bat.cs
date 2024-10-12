@@ -55,7 +55,6 @@ public class Bat : Monster
             yield return null;
         }
 
-        Debug.Log("ÀÚÆø!");
         player.TakeDamage(stat.attackDamage);
 
         Die();

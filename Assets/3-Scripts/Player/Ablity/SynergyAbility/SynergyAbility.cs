@@ -25,7 +25,7 @@ public class SynergyAbility : Ability
 
     public override void Apply(Player player)
     {
-        // 능력 발동 로직을 자식 클래스에서 구현
+        lastUsedTime = 0;
     }
 
     public override void Upgrade()

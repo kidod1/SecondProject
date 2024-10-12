@@ -40,6 +40,7 @@ public class AbilityManager : MonoBehaviour
     private List<Ability> availableAbilities;
     // 카테고리별 버튼 이미지 매핑 딕셔너리
     private Dictionary<string, Sprite> categoryButtonImages = new Dictionary<string, Sprite>();
+    private Dictionary<string, Sprite> synergyCategoryButtonImages = new Dictionary<string, Sprite>();
 
     // 강조 표시 관련 변수 추가
     [SerializeField]
@@ -146,6 +147,7 @@ public class AbilityManager : MonoBehaviour
         }
         LoadCategoryButtonImages();
     }
+
     private void LoadCategoryButtonImages()
     {
         // 카테고리 이름 배열 (Null 포함)
@@ -153,6 +155,7 @@ public class AbilityManager : MonoBehaviour
 
         foreach (string category in categories)
         {
+            // 일반 능력의 버튼 이미지 로드
             Sprite buttonImage = Resources.Load<Sprite>($"CategoryButtonImages/{category}");
             if (buttonImage != null)
             {
@@ -162,9 +165,19 @@ public class AbilityManager : MonoBehaviour
             {
                 Debug.LogWarning($"Button image for category '{category}' not found.");
             }
+
+            // 시너지 능력의 버튼 이미지 로드
+            Sprite synergyButtonImage = Resources.Load<Sprite>($"SynergyCategoryButtonImages/{category}");
+            if (synergyButtonImage != null)
+            {
+                synergyCategoryButtonImages.Add(category, synergyButtonImage);
+            }
+            else
+            {
+                Debug.LogWarning($"Synergy button image for category '{category}' not found.");
+            }
         }
     }
-
 
     private void OnEnable()
     {
@@ -191,6 +204,7 @@ public class AbilityManager : MonoBehaviour
             Destroy(currentHighlightEffect);
         }
     }
+
     private void Update()
     {
         if (isAbilitySelectionActive)
@@ -199,6 +213,7 @@ public class AbilityManager : MonoBehaviour
             RotateHighlightImage();
         }
     }
+
     public void Initialize(PlayerAbilityManager abilityManager)
     {
         if (abilityManager != null)
@@ -222,7 +237,6 @@ public class AbilityManager : MonoBehaviour
         if (uiManager != null)
         {
             uiManager.EnableDepthOfField();
-            Debug.Log("블러 전환");
         }
 
         Time.timeScale = 0f;
@@ -290,6 +304,7 @@ public class AbilityManager : MonoBehaviour
             {
                 Debug.LogWarning($"No button image found for category '{ability.category}'.");
             }
+
             abilityNameTexts[i].text = ability.abilityName;
             abilityDescriptionTexts[i].text = ability.GetDescription();
             abilityIcons[i].sprite = ability.abilityIcon;
@@ -364,7 +379,6 @@ public class AbilityManager : MonoBehaviour
         StartCoroutine(DelayedUpdateHighlightPosition(animationDuration));
     }
 
-
     private IEnumerator DelayedUpdateHighlightPosition(float delay)
     {
         // 애니메이션이 완료될 때까지 대기
@@ -376,6 +390,8 @@ public class AbilityManager : MonoBehaviour
 
     private void HandleKeyboardInput()
     {
+        if (Keyboard.current == null) return;
+
         if (isSynergyAbilityActive)
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
