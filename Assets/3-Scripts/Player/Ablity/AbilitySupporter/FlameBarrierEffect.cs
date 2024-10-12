@@ -54,7 +54,7 @@ public class FlameBarrierEffect : MonoBehaviour
                 Monster monster = tempMonstersInRange[i];
                 if (monster != null && !monster.IsDead && Vector3.Distance(monster.transform.position, playerInstance.transform.position) <= barrierRadius)
                 {
-                    monster.TakeDamage(Mathf.RoundToInt(damagePerTick));
+                    monster.TakeDamage(Mathf.RoundToInt(damagePerTick), PlayManager.I.GetPlayerPosition());
                 }
                 else
                 {
@@ -62,7 +62,7 @@ public class FlameBarrierEffect : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSecondsRealtime(damageInterval);
+            yield return new WaitForSeconds(damageInterval);
         }
     }
 

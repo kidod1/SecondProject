@@ -10,6 +10,7 @@ public class ElectricBeamAbility : SynergyAbility
 
     public override void Apply(Player player)
     {
+        base.Apply(player);
         playerInstance = player;
 
         if (beamPrefab == null)
@@ -39,6 +40,7 @@ public class ElectricBeamAbility : SynergyAbility
     {
         base.ResetLevel();
 
+        lastUsedTime = 0;
         if (activeBeam != null)
         {
             Destroy(activeBeam);

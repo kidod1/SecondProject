@@ -12,28 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0d650b76f067040bd0315989f8dcdc, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  defaultPlayerSpeed: 5
+  defaultPlayerSpeed: 4
   defaultPlayerDamage: 10
   defaultProjectileSpeed: 10
   defaultProjectileRange: 1
   defaultProjectileType: 0
   defaultMaxHP: 100
   defaultShield: 0
-  defalutShotCooldown: 0.4
+  defalutShotCooldown: 0.5
   defalutDefense: 0
-  currentPlayerSpeed: 5
+  currentPlayerSpeed: 4
   currentPlayerDamage: 10
   currentProjectileSpeed: 10
   currentProjectileRange: 1
-  currentProjectileType: 1
+  currentProjectileType: 0
   currentMaxHP: 100
   currentShield: 0
   currentShootCooldown: 0.4
   currentDefense: 0
-  currentExperience: 6290
-  currentHP: -138
+  currentExperience: 0
+  currentHP: 100
   currentCurrency: 0
   experienceThresholds: 64000000c8000000900100002003000040060000d0070000280a0000a00f0000e01500004c1d000010270000e02e0000983a0000d8590000007d0000c8af0000
   experienceMultiplier: 1
   defalutExperienceMultiplier: 1
-  currentLevel: 9
+  currentLevel: 1
+  reverseAttackDamagePercentage: 1

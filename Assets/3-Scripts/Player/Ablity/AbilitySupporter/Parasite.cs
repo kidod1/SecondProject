@@ -53,7 +53,7 @@ public class Parasite : MonoBehaviour
         Monster enemy = collision.GetComponent<Monster>();
         if (enemy != null && !enemy.IsDead)
         {
-            enemy.TakeDamage(damage);
+            enemy.TakeDamage(damage, PlayManager.I.GetPlayerPosition());
             Destroy(gameObject);
         }
     }

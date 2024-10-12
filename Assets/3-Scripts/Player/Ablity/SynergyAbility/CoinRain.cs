@@ -22,6 +22,7 @@ public class CoinRain : SynergyAbility
 
     public override void Apply(Player player)
     {
+        base.Apply(player);
         playerInstance = player;
         mainCamera = Camera.main;
 
@@ -48,7 +49,7 @@ public class CoinRain : SynergyAbility
         {
             DealDamageToVisibleMonsters();
             elapsedTime += damageInterval;
-            yield return new WaitForSecondsRealtime(damageInterval);
+            yield return new WaitForSeconds(damageInterval);
         }
 
         DeactivateCoinRain();
@@ -62,7 +63,7 @@ public class CoinRain : SynergyAbility
             Monster monster = monsterCollider.GetComponent<Monster>();
             if (monster != null)
             {
-                monster.TakeDamage(damageAmount);
+                monster.TakeDamage(damageAmount, PlayManager.I.GetPlayerPosition());
             }
         }
     }
@@ -94,5 +95,10 @@ public class CoinRain : SynergyAbility
 
     public override void Upgrade()
     {
+    }
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+        lastUsedTime = 0;
     }
 }

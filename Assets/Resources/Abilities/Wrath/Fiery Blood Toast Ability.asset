@@ -19,5 +19,9 @@ MonoBehaviour:
   maxLevel: 5
   currentLevel: 0
   abilityIcon: {fileID: 21300000, guid: a0920c36d4323824486d31c32eba6f26, type: 3}
-  cooldownDuration: 0
-  maxDamageMultiplier: 2
+  damageMultipliers:
+  - 1.5
+  - 1.75
+  - 2
+  - 2.25
+  - 2.5

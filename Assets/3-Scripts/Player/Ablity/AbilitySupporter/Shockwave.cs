@@ -70,7 +70,7 @@ public class Shockwave : MonoBehaviour
             PerformPushAway();
 
             // 넉백이 끝나면 쿨타임 대기
-            yield return new WaitForSecondsRealtime(cooldownTime);
+            yield return new WaitForSeconds(cooldownTime);
         }
     }
 
@@ -105,7 +105,7 @@ public class Shockwave : MonoBehaviour
                 Monster monster = hitCollider.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    monster.TakeDamage(damageValue);
+                    monster.TakeDamage(damageValue, PlayManager.I.GetPlayerPosition());
 
                     Rigidbody2D monsterRb = monster.GetComponent<Rigidbody2D>();
                     if (monsterRb != null)
@@ -124,7 +124,7 @@ public class Shockwave : MonoBehaviour
 
     private IEnumerator EndPlayAnimation()
     {
-        yield return new WaitForSecondsRealtime(1.13f); // 애니메이션이 재생되는 시간 (대략적인 시간 설정)
+        yield return new WaitForSeconds(1.13f); // 애니메이션이 재생되는 시간 (대략적인 시간 설정)
 
         if (animator != null)
         {

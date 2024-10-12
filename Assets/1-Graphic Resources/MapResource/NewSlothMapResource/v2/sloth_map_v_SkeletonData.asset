@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
+  m_Name: sloth_map_v_SkeletonData
+  m_EditorClassIdentifier: 
+  atlasAssets:
+  - {fileID: 11400000, guid: 1f7c5eb871d9d6f4aaaf8cfb87598905, type: 2}
+  scale: 0.01
+  skeletonJSON: {fileID: 4900000, guid: 9e0035822078a6d4b827ac54ff4c0669, type: 3}
+  isUpgradingBlendModeMaterials: 0
+  blendModeMaterials:
+    requiresBlendModeMaterials: 1
+    applyAdditiveMaterial: 0
+    additiveMaterials: []
+    multiplyMaterials:
+    - pageName: sloth_map_v.22.png
+      material: {fileID: 2100000, guid: 47f6b9c5dfcaf01458b332f18344590d, type: 2}
+    - pageName: sloth_map_v.2.png
+      material: {fileID: 2100000, guid: 406e20ebfe7f28645b53c21cf262f571, type: 2}
+    screenMaterials:
+    - pageName: sloth_map_v.2.png
+      material: {fileID: 2100000, guid: 582e8302209416a4ab4494c8c9f6dbfe, type: 2}
+  skeletonDataModifiers: []
+  fromAnimation: []
+  toAnimation: []
+  duration: []
+  defaultMix: 0.2
+  controller: {fileID: 0}

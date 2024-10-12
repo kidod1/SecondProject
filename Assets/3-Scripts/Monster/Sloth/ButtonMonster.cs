@@ -56,13 +56,13 @@ public class ButtonMonster : Monster
 
         if (attackEffect != null)
         {
-            yield return new WaitForSecondsRealtime(0.72f);
+            yield return new WaitForSeconds(0.72f);
             GameObject effect = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
             effect.SetActive(true);
             StartCoroutine(DeactivateAfterAnimation(effect)); // 이펙트 비활성화
 
             // 이펙트가 0.2초간 활성화된 후 데미지 입히기
-            yield return new WaitForSecondsRealtime(0.2f);
+            yield return new WaitForSeconds(0.2f);
             ExecuteAttack();
         }
         else
@@ -93,7 +93,7 @@ public class ButtonMonster : Monster
 
     private IEnumerator DeactivateAfterAnimation(GameObject effect)
     {
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSeconds(0.5f);
         effect.SetActive(false);
     }
 

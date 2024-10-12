@@ -79,7 +79,7 @@ public class Turret : Monster
         for (int i = 0; i < bulietQuantity; i++)
         {
             FireBullet();
-            yield return new WaitForSecondsRealtime(0.29175f);
+            yield return new WaitForSeconds(0.29175f);
             attackCount++;
         }
 

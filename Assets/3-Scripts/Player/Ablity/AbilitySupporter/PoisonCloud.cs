@@ -29,7 +29,7 @@ public class PoisonCloud : MonoBehaviour
         while (true)
         {
             ApplyDamage();
-            yield return new WaitForSecondsRealtime(damageInterval);
+            yield return new WaitForSeconds(damageInterval);
         }
     }
 
@@ -45,7 +45,7 @@ public class PoisonCloud : MonoBehaviour
                 {
                     affectedMonsters.Add(monster);
                 }
-                monster.TakeDamage(Mathf.RoundToInt(poisonDamage));
+                monster.TakeDamage(Mathf.RoundToInt(poisonDamage), PlayManager.I.GetPlayerPosition());
             }
         }
 

@@ -53,7 +53,7 @@ public class MeteorController : MonoBehaviour
             Monster monster = hit.GetComponent<Monster>();
             if (monster != null && !monster.IsDead)
             {
-                monster.TakeDamage(Mathf.RoundToInt(damage));
+                monster.TakeDamage(Mathf.RoundToInt(damage), PlayManager.I.GetPlayerPosition());
                 // 추가 효과나 이펙트 적용 가능
             }
         }

@@ -8,14 +8,6 @@ using Spine.Unity;
 using Cinemachine;
 using System.Collections.Generic;
 
-public enum AbilityType
-{
-    JokerDraw,
-    CardStrike,
-    RicochetStrike,
-    SharkStrike
-}
-
 public class Player : MonoBehaviour
 {
     public PlayerData stat;
@@ -60,7 +52,7 @@ public class Player : MonoBehaviour
 
     public Transform shootPoint;
 
-    public UnityEvent<Vector2, int> OnShoot;
+    public UnityEvent<Vector2, int, GameObject> OnShoot;
     public UnityEvent OnLevelUp;
     public UnityEvent<Collider2D> OnMonsterEnter;
     public UnityEvent OnShootCanceled;
@@ -69,7 +61,7 @@ public class Player : MonoBehaviour
     public UnityEvent OnMonsterKilled;
     public UnityEvent<Collider2D> OnHitEnemy;
     public UnityEvent OnHeal;
-    public UnityEvent<int> OnGainExperience; // 경험치 획득 이벤트 추가
+    public UnityEvent<int> OnGainExperience;
 
     private string saveFilePath;
 
@@ -84,7 +76,8 @@ public class Player : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         playerInput = new PlayerInput();
 
-        OnShoot ??= new UnityEvent<Vector2, int>();
+        // 수정된 이벤트 초기화
+        OnShoot ??= new UnityEvent<Vector2, int, GameObject>(); // 초기화 수정
         OnMonsterEnter ??= new UnityEvent<Collider2D>();
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
@@ -93,6 +86,7 @@ public class Player : MonoBehaviour
         OnHitEnemy ??= new UnityEvent<Collider2D>();
         OnHeal ??= new UnityEvent();
         OnGainExperience ??= new UnityEvent<int>(); // 이벤트 초기화
+
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -303,7 +297,6 @@ public class Player : MonoBehaviour
     public void KillMonster()
     {
         OnMonsterKilled.Invoke();
-        Debug.Log("몬스터 킬");
     }
 
     public void Heal(int amount)
@@ -466,35 +459,71 @@ public class Player : MonoBehaviour
             Debug.LogError("objectPool is not assigned.");
             return;
         }
-        GameObject projectile = objectPool.GetObject(prefabIndex);
-        if (projectile == null)
-        {
-            Debug.LogError("Projectile could not be instantiated.");
-            return;
-        }
 
-        projectile.transform.position = shootPoint.position;
+        // 3방향으로 투사체 발사
+        float angleOffset = 15f; // 각도 오프셋 설정
+        Vector2[] shootDirections = new Vector2[3];
 
-        Projectile projScript = projectile.GetComponent<Projectile>();
-        if (projScript != null)
+        // 중앙 방향
+        shootDirections[0] = direction;
+
+        // 왼쪽 방향
+        shootDirections[1] = RotateVector(direction, angleOffset);
+
+        // 오른쪽 방향
+        shootDirections[2] = RotateVector(direction, -angleOffset);
+
+        // 각 방향으로 투사체 생성
+        foreach (var dir in shootDirections)
         {
-            // FieryBloodToastAbility의 효과 적용
-            float damageMultiplier = 1f;
-            FieryBloodToastAbility fieryAbility = abilityManager.GetAbilityOfType<FieryBloodToastAbility>();
-            if (fieryAbility != null)
+            GameObject projectile = objectPool.GetObject(prefabIndex);
+            if (projectile == null)
             {
-                damageMultiplier = fieryAbility.GetDamageMultiplier();
+                Debug.LogError("Projectile could not be instantiated.");
+                continue;
             }
 
-            int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
+            projectile.transform.position = shootPoint.position;
 
-            projScript.Initialize(stat, this, false, adjustedDamage);
-            projScript.SetDirection(direction);
+            Projectile projScript = projectile.GetComponent<Projectile>();
+            if (projScript != null)
+            {
+                // FieryBloodToastAbility의 효과 적용
+                float damageMultiplier = 1f;
+                FieryBloodToastAbility fieryAbility = abilityManager.GetAbilityOfType<FieryBloodToastAbility>();
+                if (fieryAbility != null)
+                {
+                    damageMultiplier = fieryAbility.GetDamageMultiplier();
+                }
+
+                // 능력의 데미지가 아닌 기본 공격의 데미지 설정
+                int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
+
+                // Projectile.Initialize의 5개 매개변수에 맞게 전달
+                projScript.Initialize(stat, this, false, 1.0f, stat.currentPlayerDamage);
+                projScript.SetDirection(dir);
+            }
+            else
+            {
+                Debug.LogError("CardStrike: Projectile 스크립트를 찾을 수 없습니다.");
+            }
+
+            // 수정된 OnShoot 이벤트 호출 (프로젝트트 전달)
+            OnShoot.Invoke(dir, prefabIndex, projectile); // 세 번째 인수 추가
         }
-
-        OnShoot.Invoke(direction, prefabIndex);
     }
 
+    private Vector2 RotateVector(Vector2 vector, float degrees)
+    {
+        float radians = degrees * Mathf.Deg2Rad;
+        float sin = Mathf.Sin(radians);
+        float cos = Mathf.Cos(radians);
+
+        float x = vector.x * cos - vector.y * sin;
+        float y = vector.x * sin + vector.y * cos;
+
+        return new Vector2(x, y);
+    }
 
     public bool CanStun()
     {

@@ -9,10 +9,11 @@ public class IncreaseExperience : Ability
 
     public override void Apply(Player player)
     {
-        if (currentLevel > 0)
+        if (currentLevel < experienceMultipliers.Length)
         {
             player.stat.experienceMultiplier += experienceMultipliers[currentLevel];
         }
+        if (player == null) return;
     }
 
     public override void Upgrade()
@@ -25,7 +26,7 @@ public class IncreaseExperience : Ability
 
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel < maxLevel)
+        if (currentLevel < maxLevel && currentLevel < experienceMultipliers.Length)
         {
             return Mathf.RoundToInt(experienceMultipliers[currentLevel] * 100); // 퍼센트로 변환
         }
@@ -34,13 +35,20 @@ public class IncreaseExperience : Ability
 
     public override string GetDescription()
     {
-        if (currentLevel < maxLevel)
+        if (currentLevel < maxLevel && currentLevel < experienceMultipliers.Length)
         {
-            return $"{baseDescription}{Environment.NewLine}(Level {currentLevel + 1}: +{Mathf.RoundToInt(experienceMultipliers[currentLevel] * 100)}% 경험치 획득)";
+            int percentIncrease = Mathf.RoundToInt(experienceMultipliers[currentLevel] * 100);
+            return $"{baseDescription}\n레벨 {currentLevel + 1}: 경험치 획득 +{percentIncrease}%";
         }
         else
         {
-            return $"{baseDescription}{Environment.NewLine}(Max Level)";
+            return $"{baseDescription}\n최대 레벨 도달";
         }
+    }
+
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+        // 필요 시 플레이어의 경험치 배수 초기화 로직 추가
     }
 }

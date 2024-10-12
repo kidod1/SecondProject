@@ -84,7 +84,7 @@ public class EmergencyHealing : SynergyAbility
             yield break;
         }
 
-        yield return new WaitForSecondsRealtime(cooldownDuration);
+        yield return new WaitForSeconds(cooldownDuration);
         cooldownCoroutine = null; // 쿨타임이 끝나면 초기화
     }
 

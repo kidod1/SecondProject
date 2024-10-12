@@ -4,15 +4,12 @@ using UnityEngine;
 public class SynergyAbility : Ability
 {
     public float cooldownDuration;
-    private float lastUsedTime = 0;
+    public float lastUsedTime = 0;
 
     public bool IsReady => Time.time >= lastUsedTime + cooldownDuration;
 
     public virtual void Activate(Player player)
     {
-        Debug.Log(IsReady);
-        Debug.Log(lastUsedTime);
-        Debug.Log(cooldownDuration);
         if (IsReady)
         {
             lastUsedTime = Time.time; // ƒ≈∏¿” Ω√¿€
@@ -25,8 +22,10 @@ public class SynergyAbility : Ability
             Debug.Log($"Ability {abilityName} is on cooldown. Remaining: {remainingCooldown:F2} seconds.");
         }
     }
+
     public override void Apply(Player player)
     {
+        lastUsedTime = 0;
     }
 
     public override void Upgrade()
@@ -41,5 +40,10 @@ public class SynergyAbility : Ability
     protected override int GetNextLevelIncrease()
     {
         return 0;
+    }
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+        lastUsedTime = 0;
     }
 }

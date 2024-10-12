@@ -3,83 +3,109 @@ using System.Collections;
 
 public class Shark : MonoBehaviour
 {
-    private float sharkSpeed;
+    private float speed;
     private float chaseDelay;
+    private float maxSearchTime;
+    private int damage;
     private bool isChasing = false;
-    private Transform targetMonster;
 
-    public void Initialize(float speed, float delay)
+    /// <summary>
+    /// 상어를 초기화합니다.
+    /// </summary>
+    /// <param name="sharkSpeed">상어의 속도</param>
+    /// <param name="delay">추격 시작 전 대기 시간</param>
+    /// <param name="maxTime">적을 찾는 최대 시간</param>
+    /// <param name="sharkDamage">상어의 데미지</param>
+    public void Initialize(float sharkSpeed, float delay, float maxTime, int sharkDamage)
     {
-        sharkSpeed = speed;
+        speed = sharkSpeed;
         chaseDelay = delay;
-        StartCoroutine(SharkAction());
+        maxSearchTime = maxTime;
+        damage = sharkDamage;
+        StartCoroutine(StartChasing());
     }
 
-    private IEnumerator SharkAction()
+    private IEnumerator StartChasing()
     {
-        // 직선으로 0.5초 동안 이동
+        yield return new WaitForSeconds(chaseDelay);
+        isChasing = true;
+        StartCoroutine(FindAndChaseEnemy());
+    }
+
+    private IEnumerator FindAndChaseEnemy()
+    {
         float elapsedTime = 0f;
-        while (elapsedTime < chaseDelay)
+
+        while (elapsedTime < maxSearchTime)
         {
-            transform.Translate(Vector3.right * sharkSpeed * Time.deltaTime);  // 직선 이동
+            Collider2D closestEnemy = FindClosestEnemy();
+            if (closestEnemy != null && closestEnemy.gameObject != null)
+            {
+                Monster targetMonster = closestEnemy.GetComponent<Monster>();
+                if (targetMonster != null && !targetMonster.IsDead)
+                {
+                    ChaseEnemy(targetMonster);
+                    yield break; // 적을 찾았으므로 코루틴 종료
+                }
+            }
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // 0.5초 후에 추격 시작
-        isChasing = true;
-        FindClosestMonster();  // 가장 가까운 몬스터 찾기
+        // 최대 시간 내에 적을 찾지 못했으므로 상어 파괴
+        Destroy(gameObject);
     }
 
-    private void Update()
+    private Collider2D FindClosestEnemy()
     {
-        if (isChasing && targetMonster != null)
-        {
-            // 몬스터를 추격
-            Vector3 direction = (targetMonster.position - transform.position).normalized;
-            transform.position += direction * sharkSpeed * Time.deltaTime;
-
-            // 몬스터에 닿으면 공격
-            if (Vector3.Distance(transform.position, targetMonster.position) < 0.5f)
-            {
-                AttackMonster();
-            }
-        }
-    }
-
-    private void FindClosestMonster()
-    {
-        Monster[] monsters = FindObjectsOfType<Monster>();
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 15f); // 탐지 범위 15으로 설정 (필요에 따라 조정)
+        Collider2D closestEnemy = null;
         float closestDistance = Mathf.Infinity;
 
-        foreach (Monster monster in monsters)
+        foreach (Collider2D enemy in enemies)
         {
-            float distance = Vector3.Distance(transform.position, monster.transform.position);
-            if (distance < closestDistance)
+            if (enemy.GetComponent<Monster>())
             {
-                closestDistance = distance;
-                targetMonster = monster.transform;
+                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = enemy;
+                }
             }
         }
 
-        if (targetMonster == null)
-        {
-            Debug.Log("No monsters found to chase.");
-            Destroy(gameObject);  // 몬스터가 없으면 상어를 제거
-        }
+        return closestEnemy;
     }
 
-    private void AttackMonster()
+    private void ChaseEnemy(Monster target)
     {
-        if (targetMonster != null)
+        StartCoroutine(MoveTowards(target));
+    }
+
+    private IEnumerator MoveTowards(Monster target)
+    {
+        while (target != null && !target.IsDead && Vector3.Distance(transform.position, target.transform.position) > 0.5f)
         {
-            Monster monster = targetMonster.GetComponent<Monster>();
-            if (monster != null)
-            {
-                monster.TakeDamage(50);  // 상어가 몬스터에게 데미지를 줌
-            }
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            yield return null;
         }
 
-        Destroy(gameObject);  // 상어는 몬스터를 공격 후 사라짐
+        // 적에게 도착했을 때 데미지 적용
+        if (target != null && !target.IsDead)
+        {
+            target.TakeDamage(damage, transform.position);
+        }
+
+        // 데미지 적용 후 상어 파괴
+        Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // 탐지 범위 시각화
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 15f);
     }
 }
