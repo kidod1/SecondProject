@@ -4,10 +4,10 @@ using UnityEngine;
 public class SummonClone : Ability
 {
     [Tooltip("레벨별 클론 데미지 배율 (예: 0.3f = 30%)")]
-    [Range(0f, 2f)] // 데미지 배율 범위 설정 (0% ~ 200%)
-    public float[] damageMultipliers = { 0.3f, 0.5f, 0.7f, 1.0f, 1.2f }; // 레벨별 데미지 배율 배열
+    [Range(0f, 2f)]
+    public float[] damageMultipliers = { 0.3f, 0.5f, 0.7f, 1.0f, 1.2f };
 
-    public GameObject clonePrefab;  // 상어 프리팹
+    public GameObject clonePrefab;
     private GameObject cloneInstance;
     private RotatingObject rotatingObject;
 
@@ -17,18 +17,20 @@ public class SummonClone : Ability
     /// <param name="player">능력을 적용할 플레이어</param>
     public override void Apply(Player player)
     {
-
         if (currentLevel < damageMultipliers.Length)
         {
             if (cloneInstance == null)
             {
-                cloneInstance = Instantiate(clonePrefab, player.transform);
+                cloneInstance = Instantiate(clonePrefab, player.transform.position, Quaternion.identity, player.transform);
                 rotatingObject = cloneInstance.GetComponent<RotatingObject>();
                 if (rotatingObject != null)
                 {
                     rotatingObject.player = player.transform;
                     rotatingObject.playerShooting = player;
                     rotatingObject.damageMultiplier = damageMultipliers[currentLevel];
+
+                    player.OnShoot.AddListener(CloneShoot);
+
                     Debug.Log($"SummonClone applied at Level {currentLevel + 1} with Damage Multiplier: {damageMultipliers[currentLevel] * 100}%");
                 }
                 else
@@ -41,7 +43,6 @@ public class SummonClone : Ability
                 if (rotatingObject != null)
                 {
                     rotatingObject.damageMultiplier = damageMultipliers[currentLevel];
-                    Debug.Log($"SummonClone: 기존 클론의 Damage Multiplier이 {damageMultipliers[currentLevel] * 100}%로 업데이트되었습니다.");
                 }
                 else
                 {
@@ -49,38 +50,39 @@ public class SummonClone : Ability
                 }
             }
         }
-        else
-        {
-            Debug.LogWarning($"SummonClone: currentLevel ({currentLevel + 1})이 damageMultipliers 배열 범위를 초과했습니다. 마지막 레벨의 데미지 배율을 사용합니다.");
-            if (rotatingObject != null)
-            {
-                rotatingObject.damageMultiplier = damageMultipliers[damageMultipliers.Length - 1];
-                Debug.Log($"SummonClone: 클론의 Damage Multiplier이 {damageMultipliers[damageMultipliers.Length - 1] * 100}%로 설정되었습니다.");
-            }
-        }
     }
 
     /// <summary>
-    /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 데미지 배율이 증가합니다.
+    /// 클론이 플레이어의 공격을 따라하게 하는 메서드.
     /// </summary>
-    public override void Upgrade()
+    /// <param name="direction">발사 방향</param>
+    /// <param name="prefabIndex">프리팹 인덱스</param>
+    /// <param name="projectile">원본 투사체</param>
+    private void CloneShoot(Vector2 direction, int prefabIndex, GameObject originalProjectile)
     {
-        if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
+        if (rotatingObject == null || cloneInstance == null)
         {
-            currentLevel++;
-            Debug.Log($"SummonClone 업그레이드: 현재 레벨 {currentLevel + 1}, 데미지 배율 {damageMultipliers[currentLevel] * 100}%");
-            Apply(PlayManager.I.GetPlayer()); // 업그레이드 후 클론의 데미지 배율을 업데이트
+            Debug.LogWarning("SummonClone: 클론 인스턴스가 존재하지 않거나 RotatingObject가 설정되지 않았습니다.");
+            return;
+        }
+
+        // 클론이 발사할 투사체 생성 및 초기화
+        GameObject cloneProjectile = Instantiate(originalProjectile, rotatingObject.transform.position, Quaternion.identity);
+        Projectile projScript = cloneProjectile.GetComponent<Projectile>();
+
+        if (projScript != null)
+        {
+            // 클론의 데미지 배율 적용
+            float damageMultiplier = damageMultipliers[currentLevel];
+            int adjustedDamage = Mathf.RoundToInt(projScript.projectileCurrentDamage * damageMultiplier);
+            projScript.Initialize(rotatingObject.playerShooting.stat, rotatingObject.playerShooting, false, 1.0f, adjustedDamage);
+            projScript.SetDirection(direction);
         }
         else
         {
-            Debug.LogWarning("SummonClone: 이미 최대 레벨에 도달했습니다.");
+            Debug.LogError("SummonClone: 클론의 Projectile 스크립트를 찾을 수 없습니다.");
         }
     }
-
-    /// <summary>
-    /// 다음 레벨의 데미지 증가값을 반환합니다.
-    /// </summary>
-    /// <returns>다음 레벨에서의 데미지 증가량 (퍼센트)</returns>
     protected override int GetNextLevelIncrease()
     {
         if (currentLevel + 1 < damageMultipliers.Length)
@@ -88,6 +90,18 @@ public class SummonClone : Ability
             return Mathf.RoundToInt(damageMultipliers[currentLevel + 1] * 100); // 퍼센트로 변환
         }
         return 0;
+    }
+
+    /// <summary>
+    /// 능력을 업그레이드합니다.
+    /// </summary>
+    public override void Upgrade()
+    {
+        if (currentLevel < maxLevel - 1)
+        {
+            currentLevel++;
+            Apply(PlayManager.I.GetPlayer());
+        }
     }
 
     /// <summary>
@@ -101,7 +115,13 @@ public class SummonClone : Ability
             Destroy(cloneInstance);
             cloneInstance = null;
             rotatingObject = null;
-            Debug.Log("SummonClone 레벨이 초기화되었습니다. 클론이 파괴되었습니다.");
+
+            // 플레이어의 공격 이벤트에서 클론의 이벤트 해제
+            Player player = PlayManager.I.GetPlayer();
+            if (player != null)
+            {
+                player.OnShoot.RemoveListener(CloneShoot);
+            }
         }
     }
 
@@ -111,8 +131,6 @@ public class SummonClone : Ability
     /// <returns>능력 설명 문자열</returns>
     public override string GetDescription()
     {
-        Debug.Log($"GetDescription called. Current Level: {currentLevel + 1}, damageMultipliers.Length: {damageMultipliers.Length}, maxLevel: {maxLevel}");
-
         if (currentLevel < damageMultipliers.Length && currentLevel >= 0)
         {
             float damageMultiplierPercent = damageMultipliers[currentLevel] * 100f;

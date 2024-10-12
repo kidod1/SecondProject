@@ -207,7 +207,7 @@ public class Barrier : Ability
         if (currentLevel < maxLevel)
         {
             int currentCooldown = GetNextLevelIncrease();
-            return $"{baseDescription}{Environment.NewLine}(Level {currentLevel + 1}: {currentCooldown}ÃÊ ÄðÅ¸ÀÓ)";
+            return $"{baseDescription}{Environment.NewLine}Level {currentLevel + 1}: {currentCooldown}ÃÊ ÄðÅ¸ÀÓ";
         }
         else
         {

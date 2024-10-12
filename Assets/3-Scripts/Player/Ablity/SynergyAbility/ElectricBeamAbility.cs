@@ -39,6 +39,7 @@ public class ElectricBeamAbility : SynergyAbility
     {
         base.ResetLevel();
 
+        lastUsedTime = 0;
         if (activeBeam != null)
         {
             Destroy(activeBeam);

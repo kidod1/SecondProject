@@ -61,6 +61,10 @@ public class PlayerAbilityManager : MonoBehaviour
         // 능력 리스트에서 각 능력에 대한 트리거 처리
         foreach (var ability in abilities)
         {
+            if (ability is FlashBlade flashBladeAbility)
+            {
+                flashBladeAbility.OnProjectileHit(enemy);
+            }
             if (ability is JokerDraw jokerDrawAbility)
             {
                 jokerDrawAbility.OnHitMonster(enemy);

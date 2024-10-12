@@ -27,6 +27,8 @@ public class CardStrike : Ability
     private Player playerInstance;
     private int hitCount = 0;
 
+    private GameObject currentCardInstance; // 현재 생성된 카드 오브젝트
+
     /// <summary>
     /// 현재 레벨에 해당하는 데미지 값을 반환합니다.
     /// </summary>
@@ -36,7 +38,6 @@ public class CardStrike : Ability
         {
             return Mathf.RoundToInt(damageLevels[currentLevel]);
         }
-        Debug.LogWarning($"CardStrike: currentLevel ({currentLevel})이 damageLevels 배열의 범위를 벗어났습니다. 기본값 0을 반환합니다.");
         return 0;
     }
 
@@ -46,21 +47,22 @@ public class CardStrike : Ability
     public override void Apply(Player player)
     {
         if (player == null)
-        {
-            Debug.LogError("CardStrike Apply: player 인스턴스가 null입니다.");
             return;
-        }
 
         playerInstance = player;
     }
 
     /// <summary>
-    /// 적이 프로젝트일에 맞았을 때 호출되는 메서드입니다.
+    /// 플레이어가 적을 적중시켰을 때 호출되는 메서드입니다.
     /// </summary>
     /// <param name="enemy">맞은 적의 Collider2D</param>
     public void OnProjectileHit(Collider2D enemy)
     {
+        if (enemy == null)
+            return;
+
         hitCount++;
+
         if (hitCount >= hitThreshold)
         {
             hitCount = 0;
@@ -73,23 +75,8 @@ public class CardStrike : Ability
     /// </summary>
     private void FireCard()
     {
-        if (cardPrefab == null)
-        {
-            Debug.LogError("CardStrike: 카드 프리팹이 설정되지 않았습니다.");
+        if (cardPrefab == null || playerInstance == null || playerInstance.shootPoint == null)
             return;
-        }
-
-        if (playerInstance == null)
-        {
-            Debug.LogWarning("CardStrike: playerInstance가 설정되지 않았습니다. Apply 메서드를 먼저 호출하세요.");
-            return;
-        }
-
-        if (playerInstance.shootPoint == null)
-        {
-            Debug.LogError("CardStrike: playerInstance에 shootPoint가 설정되지 않았습니다.");
-            return;
-        }
 
         Vector3 spawnPosition = playerInstance.shootPoint.position;
         GameObject card = Instantiate(cardPrefab, spawnPosition, Quaternion.identity);
@@ -102,12 +89,9 @@ public class CardStrike : Ability
             cardScript.Initialize(playerInstance.stat, playerInstance, true, baseSpeedMultiplier, currentDamage);
             cardScript.SetDirection(randomDirection);
 
-            // 0.25초 후에 유도 시작 및 속도 증가
+            currentCardInstance = card;
+
             playerInstance.StartCoroutine(DelayedTargetSearch(card, cardScript));
-        }
-        else
-        {
-            Debug.LogError("CardStrike: Projectile 스크립트를 찾을 수 없습니다.");
         }
     }
 
@@ -131,9 +115,12 @@ public class CardStrike : Ability
     {
         yield return new WaitForSeconds(0.25f);
 
+        if (card == null || cardScript == null)
+            yield break;
+
         Collider2D closestEnemy = FindClosestEnemy(card.transform.position);
 
-        if (closestEnemy != null)
+        if (closestEnemy != null && closestEnemy.gameObject != null)
         {
             Vector2 directionToEnemy = (closestEnemy.transform.position - card.transform.position).normalized;
             cardScript.SetDirection(directionToEnemy, speedIncreaseMultiplier);
@@ -157,6 +144,9 @@ public class CardStrike : Ability
 
         foreach (Collider2D enemy in enemies)
         {
+            if (enemy == null)
+                continue;
+
             if (enemy.GetComponent<Monster>())
             {
                 float distance = Vector3.Distance(position, enemy.transform.position);
@@ -172,22 +162,13 @@ public class CardStrike : Ability
     }
 
     /// <summary>
-    /// CardStrike 능력을 업그레이드합니다. 레벨이 증가할 때마다 카드의 데미지가 증가합니다.
+    /// CardStrike 능력을 업그레이드합니다. 레벨이 증가할 때마다 데미지가 증가합니다.
     /// </summary>
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel)
+        if (currentLevel < maxLevel - 1)
         {
             currentLevel++;
-            Debug.Log($"CardStrike 업그레이드: 현재 레벨 {currentLevel}");
-
-            // 업그레이드 후 데미지 증가 적용
-            // 데미지는 damageLevels 배열을 통해 동적으로 가져옵니다.
-            // 별도의 로직은 필요 없습니다.
-        }
-        else
-        {
-            Debug.LogWarning("CardStrike: 이미 최대 레벨에 도달했습니다.");
         }
     }
 
@@ -201,7 +182,6 @@ public class CardStrike : Ability
         {
             return damageLevels[currentLevel];
         }
-        Debug.LogWarning($"CardStrike: currentLevel ({currentLevel})이 damageLevels 배열의 범위를 벗어났습니다. 기본값 {damageLevels[0]}을 반환합니다.");
         return damageLevels[0];
     }
 
@@ -211,15 +191,19 @@ public class CardStrike : Ability
     /// <returns>능력의 설명 문자열</returns>
     public override string GetDescription()
     {
-        if (currentLevel < maxLevel)
+        if (currentLevel < damageLevels.Length && currentLevel >= 0)
         {
-            float damageIncrease = damageLevels[currentLevel];
-            return $"{baseDescription}{Environment.NewLine}(Level {currentLevel + 1}: +{damageIncrease} 데미지)";
+            int damageIncrease = damageLevels[currentLevel];
+            return $"{baseDescription}\nLv {currentLevel + 1}: 적을 {hitThreshold}회 맞출 때마다 적을 따라다니는 카드 소환. 데미지 +{damageIncrease}";
+        }
+        else if (currentLevel >= damageLevels.Length)
+        {
+            int maxDamageIncrease = damageLevels[damageLevels.Length - 1];
+            return $"{baseDescription}\n최대 레벨 도달: 적을 {hitThreshold}회 맞출 때마다 적을 따라다니는 카드 소환. 데미지 +{maxDamageIncrease}";
         }
         else
         {
-            float finalDamage = damageLevels[currentLevel];
-            return $"{baseDescription}{Environment.NewLine}(Max Level: +{finalDamage} 데미지)";
+            return $"{baseDescription}\n최대 레벨 도달.";
         }
     }
 
@@ -231,12 +215,21 @@ public class CardStrike : Ability
         base.ResetLevel();
         hitCount = 0;
         currentLevel = 0;
+
+        if (currentCardInstance != null)
+        {
+            Destroy(currentCardInstance);
+            currentCardInstance = null;
+        }
     }
+
+    /// <summary>
+    /// Editor 상에서 유효성 검사
+    /// </summary>
     private void OnValidate()
     {
         if (damageLevels.Length != maxLevel)
         {
-            Debug.LogWarning($"CardStrike: damageLevels 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
             Array.Resize(ref damageLevels, maxLevel);
         }
     }

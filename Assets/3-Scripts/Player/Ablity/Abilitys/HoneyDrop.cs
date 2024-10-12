@@ -100,13 +100,13 @@ public class HoneyDrop : Ability
         {
             int currentHeal = GetCurrentHealthRecoveryAmount();
             float currentChance = GetCurrentHoneyDropChance();
-            return $"{baseDescription}{System.Environment.NewLine}(Lv {currentLevel + 1}: 회복량 +{currentHeal}, 드랍 확률 {currentChance * 100}%)";
+            return $"{baseDescription}{System.Environment.NewLine}Lv {currentLevel + 1}: 회복량 +{currentHeal}, 드랍 확률 {currentChance * 100}%";
         }
         else
         {
             int finalHeal = GetCurrentHealthRecoveryAmount();
             float finalChance = GetCurrentHoneyDropChance();
-            return $"{baseDescription}{System.Environment.NewLine}(Max Level: 회복량 +{finalHeal}, 드랍 확률 {finalChance * 100}%)";
+            return $"{baseDescription}{System.Environment.NewLine}Max Level: 회복량 +{finalHeal}, 드랍 확률 {finalChance * 100}%";
         }
     }
 

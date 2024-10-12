@@ -97,7 +97,11 @@ public class MeteorSynergyAbility : SynergyAbility
 
         return warning;
     }
-
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+        lastUsedTime = 0;
+    }
     public override void Upgrade()
     {
         // 업그레이드 로직 추가 가능

@@ -23,7 +23,7 @@ public class IncreaseAttackSpeed : Ability
         playerInstance = player;
 
         // 현재 레벨에 따른 공격 속도 감소 적용
-        if (currentLevel < cooldownReductions.Length && currentLevel > 0)
+        if (currentLevel < cooldownReductions.Length)
         {
             player.stat.currentShootCooldown -= cooldownReductions[currentLevel];
             // 최소 쿨다운 제한
@@ -31,7 +31,7 @@ public class IncreaseAttackSpeed : Ability
             {
                 player.stat.currentShootCooldown = 0.1f;
             }
-            Debug.Log($"IncreaseAttackSpeed이 적용되었습니다. 현재 레벨 Lv: {currentLevel + 1}, 쿨다운 감소: {cooldownReductions[currentLevel]}초");
+            Debug.Log($"IncreaseAttackSpeed이 적용되었습니다. 현재 레벨 Lv: {currentLevel}, 쿨다운 감소: {cooldownReductions[currentLevel]}초");
         }
         else
         {

@@ -1,9 +1,10 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class DamageText : MonoBehaviour
 {
-    public float lifetime = 1f; // 텍스트가 사라지는 시간
+    public float lifetime = 2f; // 텍스트가 사라지는 시간
     public Vector3 floatSpeed = new Vector3(0, 50f, 0); // 텍스트가 위로 떠오르는 속도 (픽셀 단위)
     public TextMeshProUGUI damageText;
     public Color textColor = Color.red;
@@ -29,8 +30,6 @@ public class DamageText : MonoBehaviour
         }
 
         rectTransform = GetComponent<RectTransform>();
-
-        Destroy(gameObject, lifetime);
     }
 
     void Update()
@@ -45,6 +44,12 @@ public class DamageText : MonoBehaviour
             Color color = damageText.color;
             color.a = Mathf.Lerp(1f, 0f, timer / lifetime);
             damageText.color = color;
+        }
+
+        // 수명 종료 시 오브젝트 삭제
+        if (timer >= lifetime)
+        {
+            Destroy(gameObject);
         }
     }
 

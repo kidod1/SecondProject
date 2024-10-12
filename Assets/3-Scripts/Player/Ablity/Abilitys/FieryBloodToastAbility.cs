@@ -49,7 +49,7 @@ public class FieryBloodToastAbility : Ability
         if (currentLevel < maxLevel)
         {
             float damageMultiplier = damageMultipliers[currentLevel];
-            return $"{baseDescription}{Environment.NewLine}(Level {currentLevel + 1}: x{damageMultiplier} 공격력)";
+            return $"{baseDescription}{Environment.NewLine}Level {currentLevel + 1}: x{damageMultiplier} 공격력";
         }
         else
         {

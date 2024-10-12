@@ -8,14 +8,6 @@ using Spine.Unity;
 using Cinemachine;
 using System.Collections.Generic;
 
-public enum AbilityType
-{
-    JokerDraw,
-    CardStrike,
-    RicochetStrike,
-    SharkStrike
-}
-
 public class Player : MonoBehaviour
 {
     public PlayerData stat;
@@ -69,7 +61,7 @@ public class Player : MonoBehaviour
     public UnityEvent OnMonsterKilled;
     public UnityEvent<Collider2D> OnHitEnemy;
     public UnityEvent OnHeal;
-    public UnityEvent<int> OnGainExperience; // 경험치 획득 이벤트 추가
+    public UnityEvent<int> OnGainExperience;
 
     private string saveFilePath;
 

@@ -70,6 +70,7 @@ public class SharkStrike : Ability
         }
     }
 
+
     /// <summary>
     /// 현재 레벨에 따른 상어 데미지 증가량을 반환합니다.
     /// </summary>

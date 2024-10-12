@@ -39,10 +39,14 @@ public class Shark : MonoBehaviour
         while (elapsedTime < maxSearchTime)
         {
             Collider2D closestEnemy = FindClosestEnemy();
-            if (closestEnemy != null)
+            if (closestEnemy != null && closestEnemy.gameObject != null)
             {
-                ChaseEnemy(closestEnemy.transform.position);
-                yield break; // 적을 찾았으므로 코루틴 종료
+                Monster targetMonster = closestEnemy.GetComponent<Monster>();
+                if (targetMonster != null && !targetMonster.IsDead)
+                {
+                    ChaseEnemy(targetMonster);
+                    yield break; // 적을 찾았으므로 코루틴 종료
+                }
             }
 
             elapsedTime += Time.deltaTime;
@@ -75,21 +79,25 @@ public class Shark : MonoBehaviour
         return closestEnemy;
     }
 
-    private void ChaseEnemy(Vector3 targetPosition)
+    private void ChaseEnemy(Monster target)
     {
-        StartCoroutine(MoveTowards(targetPosition));
+        StartCoroutine(MoveTowards(target));
     }
 
-    private IEnumerator MoveTowards(Vector3 target)
+    private IEnumerator MoveTowards(Monster target)
     {
-        while (Vector3.Distance(transform.position, target) > 0.5f)
+        while (target != null && !target.IsDead && Vector3.Distance(transform.position, target.transform.position) > 0.5f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             yield return null;
         }
 
-        // 적에게 도착했을 때 데미지 적용 (구현 필요)
-        // 예: enemy.GetComponent<Monster>().TakeDamage(damage);
+        // 적에게 도착했을 때 데미지 적용
+        if (target != null && !target.IsDead)
+        {
+            target.TakeDamage(damage, transform.position);
+        }
+
         // 데미지 적용 후 상어 파괴
         Destroy(gameObject);
     }

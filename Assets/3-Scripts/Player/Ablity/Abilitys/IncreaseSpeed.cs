@@ -10,10 +10,9 @@ public class IncreaseSpeed : Ability
     // 플레이어에 어빌리티 적용
     public override void Apply(Player player)
     {
-        if (currentLevel > 0 && currentLevel - 1 < speedIncreases.Length)
+        if (currentLevel < speedIncreases.Length)
         {
             player.stat.currentPlayerSpeed += speedIncreases[currentLevel - 1];
-            Debug.Log($"IncreaseSpeed 적용: 레벨 {currentLevel}, 속도 증가량 {speedIncreases[currentLevel - 1]}");
         }
     }
 

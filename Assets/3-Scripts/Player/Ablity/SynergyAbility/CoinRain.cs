@@ -95,4 +95,9 @@ public class CoinRain : SynergyAbility
     public override void Upgrade()
     {
     }
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+        lastUsedTime = 0;
+    }
 }

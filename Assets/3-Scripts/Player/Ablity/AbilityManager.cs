@@ -38,6 +38,8 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private PlayerUIManager uiManager;
     private List<Ability> availableAbilities;
+    // 카테고리별 버튼 이미지 매핑 딕셔너리
+    private Dictionary<string, Sprite> categoryButtonImages = new Dictionary<string, Sprite>();
 
     // 강조 표시 관련 변수 추가
     [SerializeField]
@@ -142,8 +144,26 @@ public class AbilityManager : MonoBehaviour
         {
             Debug.LogError("AbilityManager: highlightImage가 할당되지 않았습니다.");
         }
+        LoadCategoryButtonImages();
     }
+    private void LoadCategoryButtonImages()
+    {
+        // 카테고리 이름 배열 (Null 포함)
+        string[] categories = { "Lust", "Envy", "Sloth", "Gluttony", "Greed", "Wrath", "Pride", "Null" };
 
+        foreach (string category in categories)
+        {
+            Sprite buttonImage = Resources.Load<Sprite>($"CategoryButtonImages/{category}");
+            if (buttonImage != null)
+            {
+                categoryButtonImages.Add(category, buttonImage);
+            }
+            else
+            {
+                Debug.LogWarning($"Button image for category '{category}' not found.");
+            }
+        }
+    }
 
 
     private void OnEnable()
@@ -252,6 +272,24 @@ public class AbilityManager : MonoBehaviour
             }
 
             var ability = availableAbilities[i];
+
+            if (categoryButtonImages.TryGetValue(ability.category, out Sprite buttonImage))
+            {
+                // 버튼의 이미지를 변경합니다.
+                Image buttonImageComponent = abilityButtons[i].GetComponent<Image>();
+                if (buttonImageComponent != null)
+                {
+                    buttonImageComponent.sprite = buttonImage;
+                }
+                else
+                {
+                    Debug.LogError($"Ability button at index {i} does not have an Image component.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"No button image found for category '{ability.category}'.");
+            }
             abilityNameTexts[i].text = ability.abilityName;
             abilityDescriptionTexts[i].text = ability.GetDescription();
             abilityIcons[i].sprite = ability.abilityIcon;

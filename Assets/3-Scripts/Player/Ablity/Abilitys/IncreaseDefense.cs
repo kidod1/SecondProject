@@ -6,7 +6,6 @@ public class IncreaseDefense : Ability
     [Header("Ability Parameters")]
     [Tooltip("레벨별 방어력 증가량 (레벨 1부터 시작)")]
     public int[] defenseIncreases; // 레벨 1~5
-    private Player playerInstance;
     /// <summary>
     /// 능력을 플레이어에게 적용합니다.
     /// </summary>
@@ -19,13 +18,10 @@ public class IncreaseDefense : Ability
             return;
         }
 
-        playerInstance = player;
-
         // 현재 레벨에 따른 방어력 증가 적용
-        if (currentLevel < defenseIncreases.Length && currentLevel > 0)
+        if (currentLevel < defenseIncreases.Length)
         {
             player.stat.currentDefense += defenseIncreases[currentLevel];
-            Debug.Log($"IncreaseDefense이 적용되었습니다. 현재 레벨 Lv: {currentLevel + 1}, 방어력 증가: {defenseIncreases[currentLevel]}");
         }
         else
         {

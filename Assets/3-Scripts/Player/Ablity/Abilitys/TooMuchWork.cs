@@ -133,7 +133,7 @@ public class TooMuchWork : Ability
 
         if (playerInstance != null)
         {
-            playerInstance.stat.currentShootCooldown = playerInstance.stat.defalutShotCooldown;
+            playerInstance.stat.currentShootCooldown = playerInstance.stat.defaultShootCooldown;
         }
     }
 
@@ -214,7 +214,7 @@ public class TooMuchWork : Ability
         if (playerInstance != null)
         {
             isOverheated = false;
-            playerInstance.stat.currentShootCooldown = playerInstance.stat.defalutShotCooldown;
+            playerInstance.stat.currentShootCooldown = playerInstance.stat.defaultShootCooldown;
             Debug.Log("Weapon cooled down. You can attack again.");
         }
     }
@@ -239,7 +239,7 @@ public class TooMuchWork : Ability
                 attackSpeedCoroutine = null;
             }
 
-            playerInstance.stat.currentShootCooldown = playerInstance.stat.defalutShotCooldown;
+            playerInstance.stat.currentShootCooldown = playerInstance.stat.defaultShootCooldown;
         }
 
         isOverheated = false;
