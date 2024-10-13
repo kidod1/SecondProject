@@ -4897,9 +4897,9 @@ GameObject:
   - component: {fileID: 5876152098741949196}
   - component: {fileID: 356021437627781351}
   - component: {fileID: 5281679213635639060}
-  - component: {fileID: 5740141286403248252}
   - component: {fileID: 8542875277431592117}
   - component: {fileID: 6615640881331043852}
+  - component: {fileID: 51666647882775144}
   m_Layer: 0
   m_Name: Meteor
   m_TagString: Untagged
@@ -9718,19 +9718,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5740141286403248252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9165976067627717446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda7726db96d2784c8dbe81025718311, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosionEffectPrefab: {fileID: 4021761343050985797, guid: f5aae6af0d3bf9e489db95c6be202fed, type: 3}
 --- !u!58 &8542875277431592117
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -9793,3 +9780,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &51666647882775144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9165976067627717446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3948466e482a2a84f8bd868467a61952, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  duration: 2
+  isContinuous: 0

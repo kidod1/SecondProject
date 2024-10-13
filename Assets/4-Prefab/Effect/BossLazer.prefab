@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8878469126456488290}
   - component: {fileID: 1438209339929495078}
   - component: {fileID: 2096530371998597283}
+  - component: {fileID: 8138238634101652655}
+  - component: {fileID: 7896920170307445638}
   m_Layer: 12
   m_Name: BossLazer
   m_TagString: Untagged
@@ -26,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790626839866939137}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -34,8 +36,9 @@ Transform:
   - {fileID: 7820860148375539124}
   - {fileID: 6900793806425034572}
   - {fileID: 7356011637372052216}
+  - {fileID: 9164931100959336970}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1438209339929495078
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4831,6 +4834,66 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!61 &8138238634101652655
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790626839866939137}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5, y: 0.6}
+  m_EdgeRadius: 0
+--- !u!114 &7896920170307445638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790626839866939137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3948466e482a2a84f8bd868467a61952, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  duration: 2
+  isContinuous: 0
 --- !u!1 &3933900750471796675
 GameObject:
   m_ObjectHideFlags: 0
@@ -9691,7 +9754,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MaxParticleSize: 50
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
@@ -14577,7 +14640,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MaxParticleSize: 50
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
@@ -14603,6 +14666,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &6027078020234295259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9164931100959336970}
+  m_Layer: 12
+  m_Name: 9-Sliced
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9164931100959336970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6027078020234295259}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.5, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8878469126456488290}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9152613396669456742
 GameObject:
   m_ObjectHideFlags: 0
@@ -19463,7 +19557,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MaxParticleSize: 50
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
