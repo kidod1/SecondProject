@@ -384,7 +384,7 @@ public class MidBoss : MonoBehaviour
         DamageArea damageArea = attackEffect.AddComponent<DamageArea>();
         damageArea.damage = warningAttackDamage;
         damageArea.duration = patternData.attackEffectDuration;
-        damageArea.isContinuous = false; // 老雀己 单固瘤 利侩
+        damageArea.isContinuous = true; // 老雀己 单固瘤 利侩
     }
 
     /// <summary>
