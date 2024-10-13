@@ -15,12 +15,32 @@ MonoBehaviour:
   abilityName: "\uC77C\uCDE8\uCC9C\uC77C"
   baseDescription: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0\uC5D0 \uB3C5\uAD6C\uB984\uC744
     \uC18C\uD658\uD569\uB2C8\uB2E4."
-  category: Glutony
+  category: Gluttony
   maxLevel: 5
   currentLevel: 1
   abilityIcon: {fileID: 21300000, guid: 2486bb0248412024ea53cc966b684b06, type: 3}
-  poisonDamage: 10
-  poisonRange: 2
-  poisonDuration: 5
-  spawnInterval: 10
+  poisonDamageLevels:
+  - 10
+  - 15
+  - 20
+  - 25
+  - 30
+  poisonRangeLevels:
+  - 5
+  - 5.5
+  - 6
+  - 6.5
+  - 7
+  poisonDurationLevels:
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  spawnIntervalLevels:
+  - 10
+  - 9
+  - 8
+  - 7
+  - 6
   poisonCloudPrefab: {fileID: 488071956167110536, guid: f186ca63022234640982924338d3fe33, type: 3}

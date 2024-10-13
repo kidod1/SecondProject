@@ -1,56 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MonsterSpawner : MonoBehaviour
 {
     [System.Serializable]
     public class SpawnInfo
     {
-        [Tooltip("생성할 몬스터 프리팹")]
         public GameObject monsterPrefab;
-
-        [Tooltip("생성할 몬스터 수")]
         public int count;
-
-        [Tooltip("몬스터 스폰 간격")]
         public float spawnInterval = 1.0f;
     }
 
     [System.Serializable]
     public class Wave
     {
-        [Tooltip("스폰 정보 리스트")]
         public List<SpawnInfo> spawnInfos;
-
-
-        [Tooltip("이 웨이브에서 사용할 스폰 지점 (선택 사항)")]
-        public Transform[] customSpawnPoints; // 웨이브별 커스텀 스폰 지점
+        public Transform[] customSpawnPoints;
     }
 
-    [Tooltip("스폰할 웨이브 목록")]
     public List<Wave> waves;
-
-    [Tooltip("기본 몬스터 스폰 지점")]
     public Transform[] spawnPoints;
+    public bool isSlothArea = false;
 
-    [Tooltip("웨이브 종료 후 트리거될 대화 이름")]
-    public string endDialogueName;
-
-    [Tooltip("특정 웨이브 종료 후 트리거될 대화 이름")]
-    public string waveDialogueName;
-
-    [Tooltip("대화를 트리거할 웨이브 인덱스 (0부터 시작)")]
-    public int dialogueTriggerWaveIndex = 1;
-
-    [Tooltip("플레이어와의 상호작용을 위한 참조")]
-    public PlayerInteraction playerInteraction;
-
-    [Tooltip("나태 맵 기믹 여부")]
-    public bool slothMapGimmick = false;
+    [Header("UI Elements")]
+    public TextMeshProUGUI waveNumberText;
+    public GameObject midBossPrefab;
+    public Transform midBossSpawnPoint;
 
     private List<GameObject> spawnedMonsters = new List<GameObject>();
     private int currentWaveIndex = 0;
+    private MidBoss midBossInstance;
 
     private void Start()
     {
@@ -65,7 +46,7 @@ public class MonsterSpawner : MonoBehaviour
         while (currentWaveIndex < waves.Count)
         {
             var wave = waves[currentWaveIndex];
-            var spawnPointsToUse = wave.customSpawnPoints.Length > 0 ? wave.customSpawnPoints : spawnPoints; // 웨이브의 커스텀 스폰 지점 사용 여부 결정
+            var spawnPointsToUse = wave.customSpawnPoints.Length > 0 ? wave.customSpawnPoints : spawnPoints;
 
             foreach (var spawnInfo in wave.spawnInfos)
             {
@@ -79,38 +60,29 @@ public class MonsterSpawner : MonoBehaviour
             yield return new WaitUntil(() => AreAllMonstersDead());
 
             currentWaveIndex++;
-
-            if (currentWaveIndex == dialogueTriggerWaveIndex && !string.IsNullOrEmpty(waveDialogueName) && playerInteraction != null)
-            {
-                Debug.Log($"웨이브 {dialogueTriggerWaveIndex}가 클리어되었습니다. 다이얼로그를 트리거합니다: {waveDialogueName}");
-                playerInteraction.SetDialogueNameToTrigger(waveDialogueName);
-                ExecuteGimmick();
-            }
+            ShowWaveNumberUI();
         }
 
-        if (currentWaveIndex >= waves.Count && !string.IsNullOrEmpty(endDialogueName) && playerInteraction != null)
+        SpawnMidBoss();
+
+        if (isSlothArea && midBossInstance != null)
         {
-            Debug.Log($"모든 웨이브가 끝났습니다. 종료 다이얼로그를 트리거합니다: {endDialogueName}");
-            playerInteraction.SetDialogueNameToTrigger(endDialogueName);
+            midBossInstance.SetAttackable(true);
+
         }
     }
 
-    private void ExecuteGimmick()
+    private void SpawnMidBoss()
     {
-        if (slothMapGimmick)
+        if (midBossPrefab != null && midBossSpawnPoint != null)
         {
-            Debug.Log("나태 맵 기믹이 실행되었습니다.");
-            ExecuteSlothMapGimmick();
+            GameObject bossObject = Instantiate(midBossPrefab, midBossSpawnPoint.position, midBossSpawnPoint.rotation);
+            midBossInstance = bossObject.GetComponent<MidBoss>();
+            Debug.Log("중간 보스가 스폰되었습니다.");
         }
-    }
-
-    private void ExecuteSlothMapGimmick()
-    {
-        ElectricWire[] electricWires = FindObjectsOfType<ElectricWire>();
-        foreach (var wire in electricWires)
+        else
         {
-            wire.ReverseRotation();
-            wire.IncreaseSpeed();
+            Debug.LogWarning("중간 보스 프리팹 또는 스폰 지점이 설정되지 않았습니다.");
         }
     }
 
@@ -137,5 +109,28 @@ public class MonsterSpawner : MonoBehaviour
     private bool AreAllMonstersDead()
     {
         return spawnedMonsters.Count == 0;
+    }
+
+    private void ShowWaveNumberUI()
+    {
+        if (waveNumberText != null)
+        {
+            waveNumberText.text = $"웨이브 {currentWaveIndex} 클리어!";
+            waveNumberText.alpha = 1f; // 텍스트를 완전히 불투명하게 설정
+            StartCoroutine(FadeOutWaveNumber(3f)); // 3초 후에 페이드 아웃 시작
+        }
+    }
+
+    private IEnumerator FadeOutWaveNumber(float duration)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration); // 점점 투명해지게 설정
+            waveNumberText.alpha = alpha;
+            yield return null;
+        }
+        waveNumberText.alpha = 0f; // 페이드 아웃이 끝나면 완전히 투명하게 설정
     }
 }

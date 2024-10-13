@@ -36,7 +36,7 @@ public abstract class Monster : MonoBehaviour
     public bool isInfected = false;
 
     private string damageTextPrefabPath = "DamageTextPrefab";
-    protected SkeletonAnimation skeletonAnimation;
+    protected SkeletonAnimation skeletonAnimations;
 
     // 새로운 필드 추가: Betting 능력에 의해 한 번만 발동하도록 관리
     public bool HasBeenHitByBetting { get; set; } = false;
@@ -65,11 +65,12 @@ public abstract class Monster : MonoBehaviour
 
     protected virtual void Start()
     {
-        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        skeletonAnimations = GetComponent<SkeletonAnimation>();
         currentHP = monsterBaseStat.maxHP;
         meshRenderer = GetComponent<MeshRenderer>();
-        player = FindObjectOfType<Player>();
         rb = GetComponent<Rigidbody2D>();
+
+        player = FindObjectOfType<Player>();
 
         if (player == null)
         {
@@ -126,7 +127,7 @@ public abstract class Monster : MonoBehaviour
 
     protected abstract void InitializeStates();
 
-    public void Stun(float duration)
+    public virtual void Stun(float duration)
     {
         if (!isStunned)
         {
@@ -134,9 +135,9 @@ public abstract class Monster : MonoBehaviour
             stunEndTime = Time.time + duration;
 
             // 애니메이션 정지
-            if (skeletonAnimation != null)
+            if (skeletonAnimations != null)
             {
-                skeletonAnimation.timeScale = 0f;
+                skeletonAnimations.timeScale = 0f;
             }
 
             // Rigidbody 멈춤
@@ -158,9 +159,9 @@ public abstract class Monster : MonoBehaviour
         isStunned = false;
 
         // 애니메이션 재개
-        if (skeletonAnimation != null)
+        if (skeletonAnimations != null)
         {
-            skeletonAnimation.timeScale = 1f;
+            skeletonAnimations.timeScale = 1f;
         }
 
         // Rigidbody 원래 상태로 복원
@@ -201,7 +202,7 @@ public abstract class Monster : MonoBehaviour
 
     public virtual void TakeDamage(int damage, Vector3 damageSourcePosition)
     {
-        if (isDead) return;
+        if (isDead || isInvincible) return;
 
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
@@ -341,7 +342,6 @@ public abstract class Monster : MonoBehaviour
 
             float knockbackForce = 2f;
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-
         }
         else
         {

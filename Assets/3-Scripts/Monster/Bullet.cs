@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private int attackDamage;
+    public int bulletAttackDamage;
     private Monster sourceMonster;
     private Rigidbody2D rb;
     [SerializeField]
@@ -55,7 +55,7 @@ public class Bullet : MonoBehaviour
     /// <param name="damage">설정할 데미지 값</param>
     public void SetAttackDamage(int damage)
     {
-        attackDamage = damage;
+        bulletAttackDamage = damage;
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class Bullet : MonoBehaviour
             Player player = collision.GetComponent<Player>();
             if (player != null)
             {
-                player.TakeDamage(attackDamage);
+                player.TakeDamage(bulletAttackDamage);
             }
             RecordHit("Player");
             Destroy(gameObject);

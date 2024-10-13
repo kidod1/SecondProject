@@ -101,7 +101,7 @@ public class IlchwiCheonil : Ability
             float currentDuration = GetCurrentPoisonDuration();
             float currentInterval = GetCurrentSpawnInterval();
 
-            return $"{baseDescription}\n(Lv {currentLevel + 1}: 독 피해량 {currentDamage}, 독 범위 {currentRange}m, 독 지속 시간 {currentDuration}초, 소환 간격 {currentInterval}초)";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 독 피해량 {currentDamage}, 독 범위 {currentRange}m, 독 지속 시간 {currentDuration}초, 소환 간격 {currentInterval}초";
         }
         else
         {
@@ -110,7 +110,7 @@ public class IlchwiCheonil : Ability
             float finalDuration = GetCurrentPoisonDuration();
             float finalInterval = GetCurrentSpawnInterval();
 
-            return $"{baseDescription}\nMax Level: 독 피해량 {finalDamage}, 독 범위 {finalRange}m, 독 지속 시간 {finalDuration}초, 소환 간격 {finalInterval}초)";
+            return $"{baseDescription}\nMax Level: 독 피해량 {finalDamage}, 독 범위 {finalRange}m, 독 지속 시간 {finalDuration}초, 소환 간격 {finalInterval}초";
         }
     }
 

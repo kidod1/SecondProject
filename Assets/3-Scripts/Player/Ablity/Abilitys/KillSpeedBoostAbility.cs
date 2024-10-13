@@ -49,7 +49,6 @@ public class KillSpeedBoostAbility : Ability
     public void OnMonsterKilled()
     {
         killCount++;
-        Debug.Log($"KillSpeedBoostAbility: 몬스터 킬 카운트 증가 ({killCount}/{killThreshold})");
 
         if (killCount >= killThreshold && !isBoostActive)
         {

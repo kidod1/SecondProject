@@ -107,48 +107,88 @@ public class Projectile : MonoBehaviour
         {
             Deactivate();
         }
-        else if (collision.GetComponent<Monster>() != null)
+        else
         {
-            Monster monster = collision.GetComponent<Monster>();
-            if (monster != null)
+            // Monster와 MidBoss를 함께 처리
+            bool isDamageApplied = false;
+
+            // Monster 또는 MidBoss 컴포넌트 가져오기
+            MonoBehaviour damageable = collision.GetComponent<Monster>() as MonoBehaviour;
+            if (damageable == null)
+            {
+                damageable = collision.GetComponent<MidBoss>() as MonoBehaviour;
+            }
+            if (damageable == null)
+            {
+                damageable = collision.GetComponentInParent<Monster>() as MonoBehaviour;
+            }
+            if (damageable == null)
+            {
+                damageable = collision.GetComponentInParent<MidBoss>() as MonoBehaviour;
+            }
+
+            if (damageable != null)
             {
                 int damage = Mathf.RoundToInt(projectileCurrentDamage);
                 if (isCloneProjectile)
                 {
                     damage = Mathf.RoundToInt(damage * damageMultiplier);
                 }
-                monster.TakeDamage(damage, transform.position);
 
-                if (playerInstance != null && !isCloneProjectile)
+                // 데미지 적용 및 추가 로직 처리
+                if (damageable is Monster monster)
                 {
-                    playerInstance.abilityManager.ActivateAbilitiesOnHit(collision);
-                }
+                    monster.TakeDamage(damage, transform.position);
 
-                if (playerInstance != null && playerInstance.CanStun())
-                {
-                    float stunChance = 0.25f;
-                    if (UnityEngine.Random.value < stunChance)
+                    if (playerInstance != null && !isCloneProjectile)
                     {
-                        monster.Stun(2f);
-                        Debug.Log($"{monster.name}이(가) 기절했습니다.");
+                        playerInstance.abilityManager.ActivateAbilitiesOnHit(collision);
                     }
+
+                    if (playerInstance != null && playerInstance.CanStun())
+                    {
+                        float stunChance = 0.25f;
+                        if (UnityEngine.Random.value < stunChance)
+                        {
+                            monster.Stun(2f);
+                            Debug.Log($"{monster.name}이(가) 기절했습니다.");
+                        }
+                    }
+                    isDamageApplied = true;
                 }
-            }
-            Deactivate();
-        }
-        else if (collision.GetComponent<DestructibleObject>() != null)
-        {
-            DestructibleObject destructible = collision.GetComponent<DestructibleObject>();
-            if (destructible != null)
-            {
-                int damage = Mathf.RoundToInt(projectileCurrentDamage);
-                if (isCloneProjectile)
+                else if (damageable is MidBoss midBoss)
                 {
-                    damage = Mathf.RoundToInt(damage * damageMultiplier);
+                    midBoss.TakeDamage(damage, transform.position);
+
+                    if (playerInstance != null && !isCloneProjectile)
+                    {
+                        playerInstance.abilityManager.ActivateAbilitiesOnHit(collision);
+                    }
+
+                    // MidBoss는 스턴되지 않도록 처리하거나 필요 시 스턴 로직 추가
+                    isDamageApplied = true;
                 }
-                destructible.TakeDamage(damage);
             }
-            Deactivate();
+
+            if (isDamageApplied)
+            {
+                Deactivate();
+            }
+            else if (collision.GetComponent<DestructibleObject>() != null)
+            {
+                // 파괴 가능한 오브젝트 처리
+                DestructibleObject destructible = collision.GetComponent<DestructibleObject>();
+                if (destructible != null)
+                {
+                    int damage = Mathf.RoundToInt(projectileCurrentDamage);
+                    if (isCloneProjectile)
+                    {
+                        damage = Mathf.RoundToInt(damage * damageMultiplier);
+                    }
+                    destructible.TakeDamage(damage);
+                }
+                Deactivate();
+            }
         }
     }
 }

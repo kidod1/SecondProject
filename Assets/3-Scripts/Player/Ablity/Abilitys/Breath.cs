@@ -74,14 +74,26 @@ public class Breath : Ability
         if (currentLevel < maxLevel)
         {
             int damageIncrease = GetNextLevelIncrease();
-            return $"{baseDescription}{System.Environment.NewLine}(Level {currentLevel + 1}: +{damageIncrease} 데미지)";
+            return $"{baseDescription}\n" +
+                   $"현재 레벨: {currentLevel + 1}\n" +
+                   $"브레스 공격 데미지 증가: +{damageIncrease}\n" +
+                   $"브레스 지속 시간: {breathDuration}초\n" +
+                   $"브레스 쿨타임: {cooldownTime}초";
         }
         else
         {
             int finalDamageIncrease = GetNextLevelIncrease();
-            return $"{baseDescription}{System.Environment.NewLine}(Max Level: +{finalDamageIncrease} 데미지)";
+            return $"{baseDescription}\n" +
+                   $"Max Level: {currentLevel + 1}\n" +
+                   $"브레스 공격 데미지 증가: +{finalDamageIncrease}\n" +
+                   $"브레스 공격 범위: {breathRange}m\n" +
+                   $"브레스 공격 각도: {breathAngle}도\n" +
+                   $"브레스 지속 시간: {breathDuration}초\n" +
+                   $"브레스 쿨타임: {cooldownTime}초";
         }
     }
+
+
 
     /// <summary>
     /// 브레스 발사 코루틴입니다. 쿨타임마다 브레스를 발사합니다.

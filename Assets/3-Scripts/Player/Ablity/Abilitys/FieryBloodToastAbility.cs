@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(menuName = "Abilities/FieryBloodToastAbility")]
 public class FieryBloodToastAbility : Ability
@@ -45,16 +46,12 @@ public class FieryBloodToastAbility : Ability
     }
     public override string GetDescription()
     {
-        if (currentLevel < maxLevel)
-        {
-            float damageMultiplier = damageMultipliers[currentLevel];
-            return $"{baseDescription}{Environment.NewLine}Level {currentLevel + 1}: x{damageMultiplier} 공격력";
-        }
-        else
-        {
-            float finalDamageMultiplier = damageMultipliers[currentLevel];
-            return $"{baseDescription}{Environment.NewLine}(Max Level: x{finalDamageMultiplier} 공격력)";
-        }
+        string description = $"{baseDescription}\n";
+
+        description += $"현재 레벨: {currentLevel + 1}\n";
+        description += $"체력이 낮을수록 공격력 증가 (배율: x{damageMultipliers[currentLevel]:F2})\n";
+
+        return description;
     }
 
     /// <summary>

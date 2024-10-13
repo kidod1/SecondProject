@@ -27,10 +27,7 @@ public class FlameBarrier : Ability
     public override void Apply(Player player)
     {
         if (player == null)
-        {
-            Debug.LogError("FlameBarrier Apply: player 인스턴스가 null입니다.");
             return;
-        }
 
         playerInstance = player;
         CreateFlameBarrier();
@@ -41,16 +38,10 @@ public class FlameBarrier : Ability
     /// </summary>
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel)
+        if (currentLevel < maxLevel - 1)
         {
             currentLevel++;
-
-            // 레벨 업 시 데미지와 장막 반경 업데이트
             UpdateFlameBarrierParameters();
-        }
-        else
-        {
-            Debug.LogWarning("FlameBarrier: 이미 최대 레벨에 도달했습니다.");
         }
     }
 
@@ -74,11 +65,8 @@ public class FlameBarrier : Ability
     /// </summary>
     private void CreateFlameBarrier()
     {
-        if (flameBarrierPrefab == null)
-        {
-            Debug.LogError("FlameBarrier: 화염 장막 프리팹이 설정되지 않았습니다.");
+        if (flameBarrierPrefab == null || playerInstance == null)
             return;
-        }
 
         if (activeFlameBarrier != null)
         {
@@ -100,10 +88,6 @@ public class FlameBarrier : Ability
             float currentRadius = GetCurrentBarrierRadius();
             effect.Initialize(currentDamage, currentRadius, damageInterval, playerInstance);
         }
-        else
-        {
-            Debug.LogError("FlameBarrier: FlameBarrierEffect 스크립트를 찾을 수 없습니다.");
-        }
     }
 
     /// <summary>
@@ -116,11 +100,7 @@ public class FlameBarrier : Ability
         {
             return damagePerTickLevels[currentLevel];
         }
-        else
-        {
-            Debug.LogWarning($"FlameBarrier: currentLevel ({currentLevel})이 damagePerTickLevels 배열의 범위를 벗어났습니다. 기본값 {damagePerTickLevels[damagePerTickLevels.Length - 1]}을 반환합니다.");
-            return damagePerTickLevels[damagePerTickLevels.Length - 1];
-        }
+        return damagePerTickLevels[damagePerTickLevels.Length - 1];
     }
 
     /// <summary>
@@ -133,11 +113,7 @@ public class FlameBarrier : Ability
         {
             return barrierRadiusLevels[currentLevel];
         }
-        else
-        {
-            Debug.LogWarning($"FlameBarrier: currentLevel ({currentLevel})이 barrierRadiusLevels 배열의 범위를 벗어났습니다. 기본값 {barrierRadiusLevels[barrierRadiusLevels.Length - 1]}을 반환합니다.");
-            return barrierRadiusLevels[barrierRadiusLevels.Length - 1];
-        }
+        return barrierRadiusLevels[barrierRadiusLevels.Length - 1];
     }
 
     /// <summary>
@@ -156,7 +132,7 @@ public class FlameBarrier : Ability
             }
             else
             {
-                Debug.LogError("FlameBarrier: FlameBarrierEffect 스크립트를 찾을 수 없습니다.");
+                CreateFlameBarrier();
             }
         }
         else
@@ -176,7 +152,21 @@ public class FlameBarrier : Ability
         {
             return Mathf.RoundToInt(damagePerTickLevels[currentLevel] + 5f);
         }
-        Debug.LogWarning($"FlameBarrier: currentLevel ({currentLevel})이 damagePerTickLevels 배열의 범위를 벗어났습니다. 기본값 1을 반환합니다.");
         return 1;
+    }
+
+    /// <summary>
+    /// 능력의 설명을 반환합니다.
+    /// </summary>
+    /// <returns>능력 설명 문자열</returns>
+    public override string GetDescription()
+    {
+        string description = $"{baseDescription}\n";
+
+        description += $"현재 레벨: {currentLevel + 1}\n";
+        description += $"데미지: {GetCurrentDamagePerTick()} per {damageInterval}초\n";
+        description += $"장막 반경: {GetCurrentBarrierRadius()}m\n";
+
+        return description;
     }
 }

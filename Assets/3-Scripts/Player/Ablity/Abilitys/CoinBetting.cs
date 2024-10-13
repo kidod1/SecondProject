@@ -146,9 +146,10 @@ public class CoinBetting : Ability
     public override string GetDescription()
     {
         return $"{baseDescription}\n" +
-               $"일정 시간마다 플레이어 위치에 코인 폭탄을 떨어뜨립니다.\n" +
+               $"현재 레벨: {currentLevel + 1}\n" +
                $"폭탄 피해량: {damage}\n" +
                $"쿨다운: {cooldown}초\n" +
                $"폭탄 지속 시간: {bombDuration}초";
     }
+
 }

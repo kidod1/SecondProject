@@ -37,7 +37,7 @@ public class HomingAttack : Ability
         }
 
         playerInstance = player;
-
+        playerInstance.stat.currentProjectileType = 1;
         // 이벤트 리스너 추가 전에 중복 제거
         playerInstance.OnShoot.RemoveListener(OnShootHandler);
         playerInstance.OnShoot.AddListener(OnShootHandler);

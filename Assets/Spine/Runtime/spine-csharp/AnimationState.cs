@@ -194,38 +194,63 @@ namespace Spine {
 			queue.Drain();
 		}
 
-		/// <summary>Returns true when all mixing from entries are complete.</summary>
-		private bool UpdateMixingFrom (TrackEntry to, float delta) {
-			TrackEntry from = to.mixingFrom;
-			if (from == null) return true;
+        /// <summary>Returns true when all mixing from entries are complete.</summary>
+        private bool UpdateMixingFrom(TrackEntry to, float delta)
+        {
+            TrackEntry current = to;
+            bool finished = true;
 
-			bool finished = UpdateMixingFrom(from, delta);
+            while (current != null)
+            {
+                TrackEntry from = current.mixingFrom;
 
-			from.animationLast = from.nextAnimationLast;
-			from.trackLast = from.nextTrackLast;
+                if (from == current)
+                {
+                    Debug.LogWarning("UpdateMixingFrom에서 무한 재귀 호출을 방지했습니다.");
+                    return true;
+                }
 
-			// Require mixTime > 0 to ensure the mixing from entry was applied at least once.
-			if (to.mixTime > 0 && to.mixTime >= to.mixDuration) {
-				// Require totalAlpha == 0 to ensure mixing is complete, unless mixDuration == 0 (the transition is a single frame).
-				if (from.totalAlpha == 0 || to.mixDuration == 0) {
-					to.mixingFrom = from.mixingFrom;
-					if (from.mixingFrom != null) from.mixingFrom.mixingTo = to;
-					to.interruptAlpha = from.interruptAlpha;
-					queue.End(from);
-				}
-				return finished;
-			}
+                if (from == null)
+                {
+                    break;
+                }
 
-			from.trackTime += delta * from.timeScale;
-			to.mixTime += delta;
-			return false;
-		}
+                // 기존 재귀 호출을 반복문으로 처리
+                from.animationLast = from.nextAnimationLast;
+                from.trackLast = from.nextTrackLast;
 
-		/// <summary>
-		/// Poses the skeleton using the track entry animations.  The animation state is not changed, so can be applied to multiple
-		/// skeletons to pose them identically.</summary>
-		/// <returns>True if any animations were applied.</returns>
-		public bool Apply (Skeleton skeleton) {
+                // Require mixTime > 0 to ensure the mixing from entry was applied at least once.
+                if (current.mixTime > 0 && current.mixTime >= current.mixDuration)
+                {
+                    if (from.totalAlpha == 0 || current.mixDuration == 0)
+                    {
+                        current.mixingFrom = from.mixingFrom;
+                        if (from.mixingFrom != null)
+                        {
+                            from.mixingFrom.mixingTo = current;
+                        }
+                        current.interruptAlpha = from.interruptAlpha;
+                        queue.End(from);
+                    }
+                    break;
+                }
+
+                from.trackTime += delta * from.timeScale;
+                current.mixTime += delta;
+
+                // 다음 mixingFrom으로 진행
+                current = from;
+            }
+
+            return finished;
+        }
+
+
+        /// <summary>
+        /// Poses the skeleton using the track entry animations.  The animation state is not changed, so can be applied to multiple
+        /// skeletons to pose them identically.</summary>
+        /// <returns>True if any animations were applied.</returns>
+        public bool Apply (Skeleton skeleton) {
 			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
 			if (animationsChanged) AnimationsChanged();
 

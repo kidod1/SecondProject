@@ -12,10 +12,9 @@ public class IncreaseSpeed : Ability
     {
         if (currentLevel < speedIncreases.Length)
         {
-            player.stat.currentPlayerSpeed += speedIncreases[currentLevel - 1];
+            PlayManager.I.GetPlayer().stat.currentPlayerSpeed += speedIncreases[currentLevel];
         }
     }
-
     // 어빌리티 업그레이드
     public override void Upgrade()
     {
