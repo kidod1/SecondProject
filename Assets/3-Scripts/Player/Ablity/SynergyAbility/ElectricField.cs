@@ -4,12 +4,23 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ActiveAbilities/ElectricField")]
 public class ElectricField : SynergyAbility
 {
-    [Header("Electric Field Parameters")]
+    [Header("전기장 능력 설정")]
+    [InspectorName("전기장 프리팹")]
     public GameObject damageFieldPrefab;      // 전기장 프리팹
+
+    [InspectorName("전기장 지속 시간")]
     public float damageFieldDuration = 1f;    // 전기장 지속 시간
+
+    [InspectorName("데미지 간격")]
     public float damageInterval = 0.25f;      // 데미지 간격
+
+    [InspectorName("데미지 양")]
     public int damageAmount = 20;             // 데미지 양
+
+    [InspectorName("능력 쿨다운 시간")]
     public float abilityCooldown = 5f;        // 이 능력의 쿨다운 시간 설정
+
+    [InspectorName("경고용 스프라이트")]
     public Sprite warningSprite;              // 전기장 경고용 스프라이트 (선택 사항)
 
     private Player playerInstance;
@@ -37,25 +48,9 @@ public class ElectricField : SynergyAbility
     {
         if (activeDamageField == null)
         {
-            // 플레이어 위치에 전기장 경고 표시 생성 (선택 사항)
-            // GameObject warning = CreateWarningCircle(playerInstance.transform.position, 2f);
-            // playerInstance.StartCoroutine(ElectricFieldSpawnAfterWarning(warning, playerInstance.transform.position));
-
             // 경고 표시 없이 즉시 전기장 생성
             CreateDamageField(playerInstance.transform.position);
         }
-    }
-
-    // 경고 표시 후 전기장 생성 (선택 사항)
-    private IEnumerator ElectricFieldSpawnAfterWarning(GameObject warning, Vector2 position)
-    {
-        yield return new WaitForSeconds(0f); // warningDuration 변수를 추가하거나 적절한 값 사용
-
-        // 경고 표시 제거
-        Destroy(warning);
-
-        // 전기장 생성
-        CreateDamageField(position);
     }
 
     private void CreateDamageField(Vector2 position)
@@ -120,23 +115,6 @@ public class ElectricField : SynergyAbility
             Destroy(activeDamageField);
             activeDamageField = null;
         }
-    }
-
-    // 경고 표시 생성 메서드 (선택 사항)
-    private GameObject CreateWarningCircle(Vector2 position, float radius)
-    {
-        GameObject warning = new GameObject("ElectricFieldWarning");
-        warning.transform.position = position;
-
-        // SpriteRenderer를 사용하여 원형 경고 표시 생성
-        SpriteRenderer renderer = warning.AddComponent<SpriteRenderer>();
-        renderer.sprite = warningSprite;
-        renderer.color = new Color(0f, 0f, 1f, 0.5f); // 파란색 반투명
-        renderer.sortingLayerName = "Effect";
-
-        warning.transform.localScale = new Vector3(radius, radius, 1f);
-
-        return warning;
     }
 
     public override void Upgrade()

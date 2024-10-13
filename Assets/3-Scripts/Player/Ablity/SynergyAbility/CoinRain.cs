@@ -4,10 +4,20 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ActiveAbilities/CoinRain")]
 public class CoinRain : SynergyAbility
 {
+    [Header("코인비 파라미터")]
+    [InspectorName("코인 레인 프리팹")]
     public GameObject coinRainPrefab;
+
+    [InspectorName("코인 레인 지속 시간(초)")]
     public float coinRainDuration = 5f;
+
+    [InspectorName("데미지 간격(초)")]
     public float damageInterval = 0.5f;
+
+    [InspectorName("데미지 양")]
     public int damageAmount = 20;
+
+    [InspectorName("쿨다운 지속 시간(초)")]
     public float coinAbilityCooldownDurations = 8f;
 
     private Player playerInstance;
@@ -93,9 +103,8 @@ public class CoinRain : SynergyAbility
         }
     }
 
-    public override void Upgrade()
-    {
-    }
+    public override void Upgrade() { }
+
     public override void ResetLevel()
     {
         base.ResetLevel();
