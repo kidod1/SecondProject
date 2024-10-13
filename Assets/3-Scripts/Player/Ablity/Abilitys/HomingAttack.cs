@@ -17,6 +17,7 @@ public class HomingAttack : Ability
     public GameObject homingProjectilePrefab;
 
     private Player playerInstance;
+    private int attackCounter = 0; // 공격 카운터 추가
 
     /// <summary>
     /// 능력을 플레이어에게 적용합니다.
@@ -37,7 +38,6 @@ public class HomingAttack : Ability
         }
 
         playerInstance = player;
-        playerInstance.stat.currentProjectileType = 1;
         // 이벤트 리스너 추가 전에 중복 제거
         playerInstance.OnShoot.RemoveListener(OnShootHandler);
         playerInstance.OnShoot.AddListener(OnShootHandler);
@@ -75,9 +75,8 @@ public class HomingAttack : Ability
             playerInstance = null;
         }
 
-        // 프로젝트 타입을 기본값으로 되돌림 (필요 시)
-        // 이 부분은 플레이어 인스턴스가 null이기 때문에 실행되지 않습니다.
-        // 필요하다면, 플레이어 인스턴스를 먼저 저장해두고 처리해야 합니다.
+        // 공격 카운터 초기화
+        attackCounter = 0;
 
         Debug.Log("HomingAttack 레벨이 초기화되었습니다.");
     }
@@ -128,13 +127,31 @@ public class HomingAttack : Ability
     /// <param name="projectile">생성된 프로젝트트</param>
     private void OnShootHandler(Vector2 direction, int prefabIndex, GameObject projectile)
     {
-        if (projectile == null)
+        attackCounter++; // 공격 카운터 증가
+
+        if (attackCounter >= 9) // 3번째 공격 시
         {
-            Debug.LogError("HomingAttack: 전달된 프로젝트트가 null입니다.");
+            CreateHomingProjectile(direction);
+            attackCounter = 0; // 카운터 초기화
+        }
+    }
+
+    /// <summary>
+    /// 호밍 탄환을 생성합니다.
+    /// </summary>
+    /// <param name="direction">발사 방향</param>
+    private void CreateHomingProjectile(Vector2 direction)
+    {
+        if (homingProjectilePrefab == null)
+        {
+            Debug.LogError("HomingAttack: homingProjectilePrefab이 설정되어 있지 않습니다.");
             return;
         }
 
-        HomingProjectile projScript = projectile.GetComponent<HomingProjectile>();
+        // 플레이어의 위치에서 HomingProjectile 생성
+        GameObject homingProjectile = Instantiate(homingProjectilePrefab, playerInstance.transform.position, Quaternion.identity);
+
+        HomingProjectile projScript = homingProjectile.GetComponent<HomingProjectile>();
         if (projScript != null)
         {
             // 현재 레벨에 맞는 파라미터 설정
@@ -147,10 +164,9 @@ public class HomingAttack : Ability
         }
         else
         {
-            Debug.LogWarning("HomingAttack: 전달된 프로젝트트에 HomingProjectile 스크립트가 없습니다.");
+            Debug.LogWarning("HomingAttack: homingProjectilePrefab에 HomingProjectile 스크립트가 없습니다.");
         }
     }
-
 
     /// <summary>
     /// 현재 레벨의 Homing 시작 지연 시간을 반환합니다.

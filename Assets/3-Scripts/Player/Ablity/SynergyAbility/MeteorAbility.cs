@@ -4,17 +4,17 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ActiveAbilities/MeteorSynergyAbility")]
 public class MeteorSynergyAbility : SynergyAbility
 {
-    [Header("Meteor Parameters")]
-    public GameObject meteorPrefab;       // 메테오 프리팹
-    public float meteorDamage = 50f;      // 메테오 피해량
-    public float meteorRadius = 2f;       // 메테오 충돌 반경
-    public float warningDuration = 1.5f;  // 메테오 경고 표시 시간
-    public float fallSpeed = 10f;         // 메테오 낙하 속도
-    public int meteorCount = 3;           // 메테오 개수
-    public float spawnRadius = 5f;        // 플레이어 주변 메테오 스폰 반경
-    public float MeteorCooldownDurations = 5f;  // 쿨다운 시간
+    [Header("메테오 파라미터")]
+    [InspectorName("메테오 프리팹")] public GameObject meteorPrefab;        // 메테오 프리팹
+    [InspectorName("메테오 피해량")] public float meteorDamage = 50f;       // 메테오 피해량
+    [InspectorName("메테오 충돌 반경")] public float meteorRadius = 2f;    // 메테오 충돌 반경
+    [InspectorName("경고 표시 시간")] public float warningDuration = 1.5f;  // 메테오 경고 표시 시간
+    [InspectorName("메테오 낙하 속도")] public float fallSpeed = 10f;      // 메테오 낙하 속도
+    [InspectorName("메테오 개수")] public int meteorCount = 3;             // 메테오 개수
+    [InspectorName("스폰 반경")] public float spawnRadius = 5f;             // 플레이어 주변 메테오 스폰 반경
+    [InspectorName("쿨다운 시간")] public float MeteorCooldownDurations = 5f;  // 쿨다운 시간
 
-    public Sprite warningSprite;          // 경고 표시용 스프라이트
+    [InspectorName("경고 스프라이트")] public Sprite warningSprite;        // 경고 표시용 스프라이트
 
     private Player playerInstance;
 
@@ -98,11 +98,13 @@ public class MeteorSynergyAbility : SynergyAbility
 
         return warning;
     }
+
     public override void ResetLevel()
     {
         base.ResetLevel();
         lastUsedTime = 0;
     }
+
     public override void Upgrade()
     {
         // 업그레이드 로직 추가 가능
