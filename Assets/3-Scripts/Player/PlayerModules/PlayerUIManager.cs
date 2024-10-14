@@ -48,6 +48,12 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private GameObject abilityIconPrefab; // 능력 아이콘 프리팹
 
+    [Header("Boss Health UI")]
+    [SerializeField]
+    private Slider bossHealthSlider; // 보스 체력 슬라이더
+    [SerializeField]
+    private TMP_Text bossHealthText; // 보스 체력 텍스트 (선택 사항)
+
     private DepthOfField depthOfField;
 
     private int maxHP;
@@ -295,6 +301,49 @@ public class PlayerUIManager : MonoBehaviour
             {
                 Debug.LogError("Ability Icon Prefab에 Image 컴포넌트가 없습니다.");
             }
+        }
+    }
+
+    /// <summary>
+    /// 보스의 최대 체력을 초기화합니다.
+    /// </summary>
+    /// <param name="maxHealth">보스의 최대 체력</param>
+    public void InitializeBossHealth(int maxHealth)
+    {
+        if (bossHealthSlider != null)
+        {
+            bossHealthSlider.maxValue = maxHealth;
+            bossHealthSlider.value = maxHealth;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthSlider가 할당되지 않았습니다.");
+        }
+
+        if (bossHealthText != null)
+        {
+            bossHealthText.text = $"{maxHealth}/{maxHealth} HP";
+        }
+    }
+
+    /// <summary>
+    /// 보스의 현재 체력을 업데이트합니다.
+    /// </summary>
+    /// <param name="currentHealth">보스의 현재 체력</param>
+    public void UpdateBossHealth(int currentHealth)
+    {
+        if (bossHealthSlider != null)
+        {
+            bossHealthSlider.value = currentHealth;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthSlider가 할당되지 않았습니다.");
+        }
+
+        if (bossHealthText != null && bossHealthSlider != null)
+        {
+            bossHealthText.text = $"{currentHealth}/{bossHealthSlider.maxValue} HP";
         }
     }
 }

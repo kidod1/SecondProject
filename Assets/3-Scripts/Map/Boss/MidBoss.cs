@@ -1,7 +1,9 @@
+using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
-using TMPro;
-using System;
+using UnityEngine.Rendering.Universal;
+using System.Linq;
 
 public class MidBoss : MonoBehaviour
 {
@@ -39,11 +41,29 @@ public class MidBoss : MonoBehaviour
 
     public SlothMapManager slothMapManager;
 
+    [Header("UI Elements")]
+    // 기존 Slider는 사용하지 않으므로 제거하거나 주석 처리
+    // public Slider bossHealthSlider; 
+    // public TMP_Text bossHealthText; // 보스 체력 텍스트 (선택 사항)
+
+    [Header("UI Manager")]
+    public PlayerUIManager playerUIManager; // PlayerUIManager 참조
+
     private void Start()
     {
         // 현재 체력을 설정합니다.
         currentHP = maxHealth;
         Debug.Log($"중간 보스 등장! 체력: {currentHP}/{maxHealth}");
+
+        // PlayerUIManager가 할당되어 있는지 확인하고, 체력 UI 초기화
+        if (playerUIManager != null)
+        {
+            playerUIManager.InitializeBossHealth(maxHealth);
+        }
+        else
+        {
+            Debug.LogError("MidBoss: PlayerUIManager가 할당되지 않았습니다.");
+        }
 
         // 패턴 오브젝트들의 부모 생성
         patternParent = new GameObject("BossPatterns").transform;
@@ -101,6 +121,16 @@ public class MidBoss : MonoBehaviour
 
         currentHP -= damage;
         Debug.Log($"중간 보스가 데미지를 입었습니다! 남은 체력: {currentHP}/{maxHealth}");
+
+        // PlayerUIManager의 보스 체력 업데이트
+        if (playerUIManager != null)
+        {
+            playerUIManager.UpdateBossHealth(currentHP);
+        }
+        else
+        {
+            Debug.LogWarning("MidBoss: PlayerUIManager가 할당되지 않았습니다.");
+        }
 
         if (currentHP <= 0)
         {
@@ -272,6 +302,12 @@ public class MidBoss : MonoBehaviour
         isDead = true;
         Debug.Log("중간 보스가 쓰러졌습니다!");
 
+        // PlayerUIManager의 보스 체력 슬라이더를 0으로 설정
+        if (playerUIManager != null)
+        {
+            playerUIManager.UpdateBossHealth(0);
+        }
+
         if (slothMapManager != null)
         {
             // SlothMapManager 게임 오브젝트가 비활성화 상태라면 활성화
@@ -369,7 +405,7 @@ public class MidBoss : MonoBehaviour
         Vector3 direction = (playerPosition - spawnPosition).normalized;
 
         float spreadAngle = 15f; // 샷건 퍼짐 각도
-        int bulletCount = 3;
+        int bulletCount = 7;
 
         for (int i = 0; i < bulletCount; i++)
         {
