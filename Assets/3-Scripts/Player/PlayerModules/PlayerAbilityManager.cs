@@ -53,12 +53,10 @@ public class PlayerAbilityManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어가 몬스터와 충돌했을 때 호출되는 메서드입니다.
+    /// 몬스터와 충돌했을 때 능력을 활성화하는 메서드
     /// </summary>
-    /// <param name="enemy">충돌한 몬스터의 Collider2D</param>
     public void ActivateAbilitiesOnHit(Collider2D enemy)
     {
-        // 능력 리스트에서 각 능력에 대한 트리거 처리
         foreach (var ability in abilities)
         {
             if (ability is FlashBlade flashBladeAbility)
@@ -89,9 +87,8 @@ public class PlayerAbilityManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 몬스터가 사망했을 때 호출되는 메서드입니다.
+    /// 몬스터가 사망했을 때 능력을 활성화하는 메서드
     /// </summary>
-    /// <param name="monster">사망한 몬스터</param>
     public void ActivateAbilitiesOnMonsterDeath(Monster monster)
     {
         foreach (var ability in abilities)
@@ -207,7 +204,7 @@ public class PlayerAbilityManager : MonoBehaviour
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)
             {
-                abilityManager.ShowSynergyAbility(synergyAbility);
+                abilityManager.TriggerShowSynergyAbility(synergyAbility); // 공개 메서드 호출
             }
             else
             {
@@ -220,9 +217,17 @@ public class PlayerAbilityManager : MonoBehaviour
         }
     }
 
+
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
-        synergyAbility.Apply(player);
+        if (synergyAbility != null)
+        {
+            synergyAbility.Apply(player);
+        }
+        else
+        {
+            Debug.LogError("PlayerAbilityManager: synergyAbility가 null입니다.");
+        }
     }
 
     public T GetAbilityOfType<T>() where T : Ability

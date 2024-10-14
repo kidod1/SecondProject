@@ -19,7 +19,22 @@ MonoBehaviour:
   category: Sloth
   maxLevel: 5
   currentLevel: 0
-  abilityIcon: {fileID: 21300000, guid: b08967bf8c40f344a9ea612365267b9f, type: 3}
-  maxAttackSpeedMultiplier: 3
-  baseTimeToMaxSpeed: 4
-  overheatDuration: 3
+  abilityIcon: {fileID: 21300000, guid: dc25e2fc8e4b8a04190b078115012146, type: 3}
+  maxAttackSpeedMultipliers:
+  - 2
+  - 2.5
+  - 3
+  - 3.5
+  - 4
+  baseTimeToMaxSpeedLevels:
+  - 5
+  - 4.5
+  - 4
+  - 3.5
+  - 3
+  overheatDurationsLevels:
+  - 5
+  - 4.5
+  - 4
+  - 3.5
+  - 3

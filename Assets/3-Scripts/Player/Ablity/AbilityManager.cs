@@ -90,6 +90,8 @@ public class AbilityManager : MonoBehaviour
         int numButtons = abilityButtons.Length;
         originalButtonSizes = new Vector2[numButtons];
         originalIconSizes = new Vector2[numButtons];
+        initialButtonSizes = new Vector2[numButtons];
+        initialIconSizes = new Vector2[numButtons];
 
         for (int i = 0; i < numButtons; i++)
         {
@@ -99,6 +101,7 @@ public class AbilityManager : MonoBehaviour
                 if (buttonRect != null)
                 {
                     originalButtonSizes[i] = buttonRect.sizeDelta;
+                    initialButtonSizes[i] = buttonRect.sizeDelta;
                 }
                 else
                 {
@@ -116,6 +119,7 @@ public class AbilityManager : MonoBehaviour
                 if (iconRect != null)
                 {
                     originalIconSizes[i] = iconRect.sizeDelta;
+                    initialIconSizes[i] = iconRect.sizeDelta;
                 }
                 else
                 {
@@ -810,6 +814,7 @@ public class AbilityManager : MonoBehaviour
         currentIndex = 0;
         UpdateHighlightPosition();
     }
+
     private void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
         if (synergyAbility == null)
@@ -851,6 +856,12 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
+    public IEnumerator DelayedShowSynergyAbility(SynergyAbility synergyAbility)
+    {
+        yield return new WaitForSecondsRealtime(0.2f); // 0.2초 지연
+
+        ShowSynergyAbility(synergyAbility);
+    }
     private void SelectAbility(Ability ability)
     {
         if (ability == null)
@@ -949,14 +960,6 @@ public class AbilityManager : MonoBehaviour
         {
             Destroy(currentHighlightEffect);
         }
-    }
-
-    // 시너지 능력 창을 지연 후에 표시하는 코루틴 추가
-    private IEnumerator DelayedShowSynergyAbility(SynergyAbility synergyAbility)
-    {
-        yield return new WaitForSecondsRealtime(1.5f); // 0.5초 지연
-
-        ShowSynergyAbility(synergyAbility);
     }
 
     private void RerollAbilities()
@@ -1065,7 +1068,10 @@ public class AbilityManager : MonoBehaviour
 
         UpdateHighlightPosition();
     }
-
+    public void TriggerShowSynergyAbility(SynergyAbility synergyAbility)
+    {
+        StartCoroutine(DelayedShowSynergyAbility(synergyAbility));
+    }
     private void ShuffleAbilities()
     {
         if (availableAbilities == null)

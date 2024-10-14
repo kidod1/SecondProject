@@ -324,8 +324,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d94a8500e927e4b8b1e028f018e38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 1
   patternData: {fileID: 11400000, guid: 907dbfe24db1ceb4da9611cbd027192e, type: 2}
+  bulletDamage: 10
+  warningAttackDamage: 20
+  laserDamagePerSecond: 5
+  groundSmashDamage: 15
+  slothMapManager: {fileID: 2864643810180034803, guid: bab4d3bbaa5afe6459a198b493a2662a, type: 3}
 --- !u!1001 &261346478545866626
 PrefabInstance:
   m_ObjectHideFlags: 0

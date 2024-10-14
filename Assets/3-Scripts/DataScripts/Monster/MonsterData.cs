@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "MonsterData/MonsterData")]
 public class MonsterData : ScriptableObject
 {
-    public int monsterSpeed;
+    public float monsterSpeed;
     public int maxHP;
     public int contectDamage;
     public int attackDamage;

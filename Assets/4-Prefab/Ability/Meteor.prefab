@@ -4900,6 +4900,7 @@ GameObject:
   - component: {fileID: 8542875277431592117}
   - component: {fileID: 6615640881331043852}
   - component: {fileID: 51666647882775144}
+  - component: {fileID: 1591981181885139027}
   m_Layer: 0
   m_Name: Meteor
   m_TagString: Untagged
@@ -9795,3 +9796,16 @@ MonoBehaviour:
   damage: 10
   duration: 2
   isContinuous: 0
+--- !u!114 &1591981181885139027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9165976067627717446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda7726db96d2784c8dbe81025718311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionEffectPrefab: {fileID: 4021761343050985797, guid: f5aae6af0d3bf9e489db95c6be202fed, type: 3}
