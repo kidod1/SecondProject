@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using System;
 
 public class MidBoss : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class MidBoss : MonoBehaviour
     [Header("패턴 데이터")]
     public BossPatternData patternData;
 
-    private bool isAttackable = false; // 모든 웨이브가 끝나야 공격 가능
+    private bool isAttackable = false;
 
     // 패턴 오브젝트들의 부모
     private Transform patternParent;
@@ -20,7 +21,7 @@ public class MidBoss : MonoBehaviour
     // 데미지 및 무적 관련 변수
     private bool isInvincible = false;
     private bool isDead = false;
-    private float invincibilityDuration = 0.5f;
+    private float invincibilityDuration = 0.2f;
     private float blinkInterval = 0.1f;
     private MeshRenderer meshRenderer;
 
@@ -35,6 +36,8 @@ public class MidBoss : MonoBehaviour
     public int warningAttackDamage = 20;
     public int laserDamagePerSecond = 5;
     public int groundSmashDamage = 15;
+
+    public SlothMapManager slothMapManager;
 
     private void Start()
     {
@@ -56,6 +59,16 @@ public class MidBoss : MonoBehaviour
         if (player == null)
         {
             Debug.LogError("플레이어 오브젝트를 찾을 수 없습니다.");
+        }
+
+        // 자동으로 SlothMapManager 찾기 (Inspector에 할당되지 않은 경우)
+        if (slothMapManager == null)
+        {
+            slothMapManager = FindObjectOfType<SlothMapManager>();
+            if (slothMapManager == null)
+            {
+                Debug.LogError("SlothMapManager를 찾을 수 없습니다.");
+            }
         }
     }
 
@@ -258,7 +271,48 @@ public class MidBoss : MonoBehaviour
 
         isDead = true;
         Debug.Log("중간 보스가 쓰러졌습니다!");
-        // 사망 처리 로직 추가 (애니메이션, 드롭 아이템 등)
+
+        if (slothMapManager != null)
+        {
+            // SlothMapManager 게임 오브젝트가 비활성화 상태라면 활성화
+            if (!slothMapManager.gameObject.activeInHierarchy)
+            {
+                slothMapManager.gameObject.SetActive(true);
+            }
+
+            // 완료 이벤트에 핸들러 추가
+            slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
+
+            // 죽음 애니메이션 재생
+            // 슬로스맵매니저의 초기화가 완료될 때까지 대기하기 위해 코루틴 사용
+            StartCoroutine(PlayDeathAnimationsCoroutine());
+        }
+        else
+        {
+            Debug.LogError("SlothMapManager가 할당되지 않았습니다.");
+            Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator PlayDeathAnimationsCoroutine()
+    {
+        // SlothMapManager가 활성화되고 Awake가 호출될 때까지 대기
+        yield return new WaitForEndOfFrame();
+
+        // 죽음 애니메이션 재생
+        slothMapManager.PlayDeathAnimations();
+    }
+
+    private void HandleDeathAnimationsCompleted()
+    {
+        if (slothMapManager != null)
+        {
+            slothMapManager.OnDeathAnimationsCompleted -= HandleDeathAnimationsCompleted;
+        }
+
+        // 추가적인 사망 로직 (아이템 드롭, 이벤트 트리거 등)
+
+        // 보스 GameObject 파괴
         Destroy(gameObject);
     }
 
@@ -270,7 +324,7 @@ public class MidBoss : MonoBehaviour
     {
         while (true)
         {
-            float randomValue = Random.Range(0f, 100f);
+            float randomValue = UnityEngine.Random.Range(0f, 100f);
 
             if (randomValue < patternData.bulletPatternProbability)
             {
