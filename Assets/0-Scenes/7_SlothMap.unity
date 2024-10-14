@@ -1847,8 +1847,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1934801322940994144, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
+      propertyPath: midBossPrefab
+      value: 
+      objectReference: {fileID: 1717358405}
     - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: waveNumberText
       value: 
@@ -2023,7 +2027,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 66229779930256887, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
   m_PrefabInstance: {fileID: 1259396024}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1717358405}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09d94a8500e927e4b8b1e028f018e38b, type: 3}
@@ -2903,6 +2907,11 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3955230978460404740, guid: b43d9a674e35f9a489b18fbf980a13b1, type: 3}
   m_PrefabInstance: {fileID: 2213542954413078855}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1717358405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7334856938543571108, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
+  m_PrefabInstance: {fileID: 1259396024}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1720567029 stripped
 MonoBehaviour:
@@ -4259,8 +4268,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1934801322940994144, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
+      propertyPath: midBossPrefab
+      value: 
+      objectReference: {fileID: 1717358405}
     - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: waveNumberText
       value: 
