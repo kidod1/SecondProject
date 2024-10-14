@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b13ea46bacb82a45adbd579997d5af3, type: 3}
   m_Name: New Ilchwi Cheonil
   m_EditorClassIdentifier: 
-  abilityName: "\uC77C\uCDE8\uCC9C\uC77C"
+  abilityName: "\uC77C\uCDE8\uCC9C\uC77C <\uC2DD\uD0D0>"
   baseDescription: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0\uC5D0 \uB3C5\uAD6C\uB984\uC744
     \uC18C\uD658\uD569\uB2C8\uB2E4."
   category: Gluttony
@@ -27,20 +27,20 @@ MonoBehaviour:
   - 30
   poisonRangeLevels:
   - 1.3
+  - 1.7
   - 2
-  - 3
-  - 5
-  - 7
+  - 2.5
+  - 4
   poisonDurationLevels:
-  - 5
-  - 5
+  - 3
+  - 3.5
+  - 4
   - 5
   - 7
-  - 10
   spawnIntervalLevels:
-  - 5
-  - 5
-  - 5
-  - 3
-  - 3
+  - 18
+  - 14
+  - 12
+  - 9
+  - 7
   poisonCloudPrefab: {fileID: 488071956167110536, guid: f186ca63022234640982924338d3fe33, type: 3}
