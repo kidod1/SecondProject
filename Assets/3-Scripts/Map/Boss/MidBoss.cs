@@ -2,8 +2,6 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Rendering.Universal;
-using System.Linq;
 
 public class MidBoss : MonoBehaviour
 {
@@ -41,13 +39,9 @@ public class MidBoss : MonoBehaviour
 
     public SlothMapManager slothMapManager;
 
-    [Header("UI Elements")]
-    // 기존 Slider는 사용하지 않으므로 제거하거나 주석 처리
-    // public Slider bossHealthSlider; 
-    // public TMP_Text bossHealthText; // 보스 체력 텍스트 (선택 사항)
-
     [Header("UI Manager")]
-    public PlayerUIManager playerUIManager; // PlayerUIManager 참조
+    [SerializeField]
+    private PlayerUIManager playerUIManager; // PlayerUIManager 참조
 
     private void Start()
     {
@@ -302,7 +296,7 @@ public class MidBoss : MonoBehaviour
         isDead = true;
         Debug.Log("중간 보스가 쓰러졌습니다!");
 
-        // PlayerUIManager의 보스 체력 슬라이더를 0으로 설정
+        // PlayerUIManager의 보스 체력 업데이트
         if (playerUIManager != null)
         {
             playerUIManager.UpdateBossHealth(0);
@@ -320,7 +314,7 @@ public class MidBoss : MonoBehaviour
             slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
 
             // 죽음 애니메이션 재생
-            // 슬로스맵매니저의 초기화가 완료될 때까지 대기하기 위해 코루틴 사용
+            // SlothMapManager의 초기화가 완료될 때까지 대기하기 위해 코루틴 사용
             StartCoroutine(PlayDeathAnimationsCoroutine());
         }
         else
