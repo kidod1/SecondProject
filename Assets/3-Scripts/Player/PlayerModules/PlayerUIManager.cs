@@ -50,9 +50,11 @@ public class PlayerUIManager : MonoBehaviour
 
     [Header("Boss Health UI")]
     [SerializeField]
-    private Slider bossHealthSlider; // 보스 체력 슬라이더
+    private Image bossHealthFillImage; // 보스 체력 채우기 이미지
+    //[SerializeField]
+    //private RectTransform bossHealthBarMaskRect; // 보스 체력 바 마스크 역할을 할 RectTransform (사용하지 않음)
     [SerializeField]
-    private TMP_Text bossHealthText; // 보스 체력 텍스트 (선택 사항)
+    private TMP_Text bossHealthText; // 보스 체력 수치 텍스트
 
     private DepthOfField depthOfField;
 
@@ -63,6 +65,8 @@ public class PlayerUIManager : MonoBehaviour
     private float fullHealthBarWidth;
     private float fullExperienceBarWidth;
     private PlayerAbilityManager abilityManager;
+
+    private int bossMaxHealth; // 보스의 최대 체력 저장
 
     public void Initialize(Player player)
     {
@@ -310,19 +314,24 @@ public class PlayerUIManager : MonoBehaviour
     /// <param name="maxHealth">보스의 최대 체력</param>
     public void InitializeBossHealth(int maxHealth)
     {
-        if (bossHealthSlider != null)
+        bossMaxHealth = maxHealth; // 보스의 최대 체력 저장
+
+        if (bossHealthFillImage != null)
         {
-            bossHealthSlider.maxValue = maxHealth;
-            bossHealthSlider.value = maxHealth;
+            bossHealthFillImage.fillAmount = 1f; // 체력 가득 채우기
         }
         else
         {
-            Debug.LogWarning("PlayerUIManager: bossHealthSlider가 할당되지 않았습니다.");
+            Debug.LogWarning("PlayerUIManager: bossHealthFillImage가 할당되지 않았습니다.");
         }
 
         if (bossHealthText != null)
         {
             bossHealthText.text = $"{maxHealth}/{maxHealth} HP";
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthText가 할당되지 않았습니다.");
         }
     }
 
@@ -332,18 +341,37 @@ public class PlayerUIManager : MonoBehaviour
     /// <param name="currentHealth">보스의 현재 체력</param>
     public void UpdateBossHealth(int currentHealth)
     {
-        if (bossHealthSlider != null)
+        if (bossHealthFillImage != null)
         {
-            bossHealthSlider.value = currentHealth;
+            float healthPercentage = (float)currentHealth / bossMaxHealth;
+            bossHealthFillImage.fillAmount = Mathf.Clamp01(healthPercentage); // 체력 비율에 따라 fillAmount 설정
+
+            // 체력 비율에 따라 색상 변경 (녹색 -> 노란색 -> 빨간색)
+            if (healthPercentage > 0.5f)
+            {
+                bossHealthFillImage.color = Color.green;
+            }
+            else if (healthPercentage > 0.2f)
+            {
+                bossHealthFillImage.color = Color.yellow;
+            }
+            else
+            {
+                bossHealthFillImage.color = Color.red;
+            }
         }
         else
         {
-            Debug.LogWarning("PlayerUIManager: bossHealthSlider가 할당되지 않았습니다.");
+            Debug.LogWarning("PlayerUIManager: bossHealthFillImage가 할당되지 않았습니다.");
         }
 
-        if (bossHealthText != null && bossHealthSlider != null)
+        if (bossHealthText != null)
         {
-            bossHealthText.text = $"{currentHealth}/{bossHealthSlider.maxValue} HP";
+            bossHealthText.text = $"{currentHealth}/{bossMaxHealth} HP";
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthText가 할당되지 않았습니다.");
         }
     }
 }
