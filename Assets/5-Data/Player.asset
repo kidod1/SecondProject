@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   defaultPlayerSpeed: 4.5
-  defaultPlayerDamage: 10
+  defaultPlayerDamage: 50
   defaultProjectileSpeed: 10
   defaultProjectileRange: 1
   defaultProjectileType: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   defaultShootCooldown: 0.5
   defaultDefense: 0
   _currentPlayerSpeed: 4.5
-  _currentPlayerDamage: 10
+  _currentPlayerDamage: 50
   _currentProjectileSpeed: 10
   _currentProjectileRange: 1
   _currentProjectileType: 0
@@ -31,9 +31,9 @@ MonoBehaviour:
   _currentShootCooldown: 0.5
   _currentDefense: 0
   _currentExperience: 0
-  _currentHP: 100
+  _currentHP: 44
   _currentCurrency: 0
-  _currentLevel: 2
+  _currentLevel: 1
   experienceThresholds: 64000000c8000000900100002003000040060000d0070000280a0000a00f0000e01500004c1d000010270000e02e0000983a0000d8590000007d0000c8af0000
   _experienceMultiplier: 1
   defaultExperienceMultiplier: 1

@@ -346,19 +346,6 @@ public class PlayerUIManager : MonoBehaviour
             float healthPercentage = (float)currentHealth / bossMaxHealth;
             bossHealthFillImage.fillAmount = Mathf.Clamp01(healthPercentage); // 체력 비율에 따라 fillAmount 설정
 
-            // 체력 비율에 따라 색상 변경 (녹색 -> 노란색 -> 빨간색)
-            if (healthPercentage > 0.5f)
-            {
-                bossHealthFillImage.color = Color.green;
-            }
-            else if (healthPercentage > 0.2f)
-            {
-                bossHealthFillImage.color = Color.yellow;
-            }
-            else
-            {
-                bossHealthFillImage.color = Color.red;
-            }
         }
         else
         {

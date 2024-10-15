@@ -269,7 +269,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
@@ -461,7 +460,7 @@ public class Player : MonoBehaviour
         }
 
         // 3방향으로 투사체 발사
-        float angleOffset = 15f; // 각도 오프셋 설정
+        float angleOffset = 10f; // 각도 오프셋 설정
         Vector2[] shootDirections = new Vector2[3];
 
         // 중앙 방향

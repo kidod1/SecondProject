@@ -398,8 +398,8 @@ public class MidBoss : MonoBehaviour
         Vector3 playerPosition = GetPlayerPosition();
         Vector3 direction = (playerPosition - spawnPosition).normalized;
 
-        float spreadAngle = 15f; // ¼¦°Ç ÆÛÁü °¢µµ
-        int bulletCount = 7;
+        float spreadAngle = 12f; // ¼¦°Ç ÆÛÁü °¢µµ
+        int bulletCount = 55;
 
         for (int i = 0; i < bulletCount; i++)
         {
@@ -418,7 +418,7 @@ public class MidBoss : MonoBehaviour
                 Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
                 if (bulletRb != null)
                 {
-                    bulletRb.velocity = bulletDirection * 5f;
+                    bulletRb.velocity = bulletDirection * 5;
                 }
             }
             else
