@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f527546862348cc44a6e659ccf68fa08, type: 3}
   m_Name: Enchanting Melody
   m_EditorClassIdentifier: 
-  abilityName: E D M!
+  abilityName: "E D M! <\uC0C9\uC695>"
   baseDescription: "\uC77C\uC815 \uC2DC\uAC04\uB9C8\uB2E4 \uAC01\uC885 \uBC84\uD504\uB97C
     \uBD80\uC5EC\uD569\uB2C8\uB2E4."
   category: Lust
@@ -20,16 +20,16 @@ MonoBehaviour:
   currentLevel: 0
   abilityIcon: {fileID: 21300000, guid: 4cf910383ef5d1245ace07c4bb2aacdd, type: 3}
   buffChangeInterval: 5
-  attackDamageBuffs: 050000000a0000000f0000001400000019000000
+  attackDamageBuffs: 0300000005000000090000000f00000014000000
   attackSpeedBuffs:
+  - 0.03
   - 0.05
-  - 0.07
-  - 0.09
-  - 0.11
+  - 0.1
   - 0.15
+  - 0.2
   movementSpeedBuffs:
   - 1
-  - 1.5
+  - 1.3
   - 2
   - 2.5
-  - 3
+  - 3.3

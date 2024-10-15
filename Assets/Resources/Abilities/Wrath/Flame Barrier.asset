@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec60440031adf243aad23945207e22c, type: 3}
   m_Name: Flame Barrier
   m_EditorClassIdentifier: 
-  abilityName: "\uBD88\uBA78 \uD654\uC0B0 \uC720\uD669 \uD654\uC5FC \uC7A5\uB9C9"
+  abilityName: "\uBD88\uBA78 \uD654\uC0B0 \uC720\uD669 \uD654\uC5FC \uC7A5\uB9C9
+    <\uBD84\uB178>"
   baseDescription: "\uC8FC\uBCC0\uC758 \uC801\uC744 \uBD88\uD0DC\uC6B0\uB294 \uD654\uC5FC
     \uC7A5\uB9C9\uC744 \uB450\uB985\uB2C8\uB2E4."
   category: Wrath
@@ -24,12 +25,12 @@ MonoBehaviour:
   - 15
   - 20
   - 30
-  - 40
+  - 50
   barrierRadiusLevels:
-  - 4
+  - 1.5
+  - 3.7
   - 4.5
   - 5
-  - 5
-  - 5
-  damageInterval: 1
+  - 7
+  damageInterval: 0.5
   flameBarrierPrefab: {fileID: 1295767719650989963, guid: e5edd0f5fa983594583ab37b6d00c656, type: 3}
