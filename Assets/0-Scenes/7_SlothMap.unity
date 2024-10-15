@@ -1617,6 +1617,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
+      propertyPath: waveNumberAnimator
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
+      propertyPath: additionalImageAnimator
+      value: 
+      objectReference: {fileID: 1005810538}
+    - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: waves.Array.data[0].spawnInfos.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -2080,7 +2088,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 66229779930256887, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
       propertyPath: maxHealth
-      value: 1000
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 66229779930256887, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
       propertyPath: playerUIManager
