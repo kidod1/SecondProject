@@ -57,7 +57,6 @@ public class MeteorController : MonoBehaviour
                 // 추가 효과나 이펙트 적용 가능
             }
         }
-
         // 메테오 오브젝트 제거
         Destroy(gameObject);
 

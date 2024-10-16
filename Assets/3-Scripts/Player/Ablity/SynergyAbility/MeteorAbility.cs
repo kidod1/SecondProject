@@ -14,7 +14,8 @@ public class MeteorSynergyAbility : SynergyAbility
     [InspectorName("스폰 반경")] public float spawnRadius = 5f;             // 플레이어 주변 메테오 스폰 반경
     [InspectorName("쿨다운 시간")] public float MeteorCooldownDurations = 5f;  // 쿨다운 시간
 
-    [InspectorName("경고 스프라이트")] public Sprite warningSprite;        // 경고 표시용 스프라이트
+    [Header("경고 프리팹")]
+    [InspectorName("경고 프리팹")] public GameObject warningPrefab;       // 경고 표시 프리팹
 
     private Player playerInstance;
 
@@ -41,10 +42,13 @@ public class MeteorSynergyAbility : SynergyAbility
             Vector2 spawnPosition = (Vector2)playerInstance.transform.position + Random.insideUnitCircle * spawnRadius;
 
             // 경고 표시 생성
-            GameObject warning = CreateWarningCircle(spawnPosition, meteorRadius);
+            GameObject warning = CreateWarningPrefab(spawnPosition);
 
-            // 경고 후 메테오 생성
-            playerInstance.StartCoroutine(MeteorSpawnAfterWarning(warning, spawnPosition));
+            if (warning != null)
+            {
+                // 경고 후 메테오 생성
+                playerInstance.StartCoroutine(MeteorSpawnAfterWarning(warning, spawnPosition));
+            }
         }
     }
 
@@ -81,22 +85,20 @@ public class MeteorSynergyAbility : SynergyAbility
         }
     }
 
-    private GameObject CreateWarningCircle(Vector2 position, float radius)
+    private GameObject CreateWarningPrefab(Vector2 position)
     {
-        GameObject warning = new GameObject("MeteorWarning");
-        warning.transform.position = position;
-
-        // SpriteRenderer를 사용하여 원형 경고 표시 생성
-        SpriteRenderer renderer = warning.AddComponent<SpriteRenderer>();
-        renderer.sprite = warningSprite;
-        renderer.color = new Color(1f, 0f, 0f, 0.5f);
-
-        // Sorting Layer를 "Effect"로 설정
-        renderer.sortingLayerName = "Effect";
-
-        warning.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
-
-        return warning;
+        if (warningPrefab != null)
+        {
+            // -45도 회전된 상태로 경고 프리팹 인스턴스화
+            Quaternion rotation = Quaternion.Euler(-45f, 0f, 0f);
+            GameObject warning = Instantiate(warningPrefab, position, rotation);
+            return warning;
+        }
+        else
+        {
+            Debug.LogError("경고 프리팹이 할당되지 않았습니다.");
+            return null;
+        }
     }
 
     public override void ResetLevel()
