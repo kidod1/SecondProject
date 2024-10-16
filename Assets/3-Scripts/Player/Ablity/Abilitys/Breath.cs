@@ -93,8 +93,6 @@ public class Breath : Ability
         }
     }
 
-
-
     /// <summary>
     /// 브레스 발사 코루틴입니다. 쿨타임마다 브레스를 발사합니다.
     /// </summary>
@@ -115,9 +113,6 @@ public class Breath : Ability
         return playerInstance.GetFacingDirection();
     }
 
-    /// <summary>
-    /// 브레스를 발사합니다.
-    /// </summary>
     private void FireBreath()
     {
         if (breathPrefab == null)
@@ -131,7 +126,22 @@ public class Breath : Ability
         // 플레이어의 실제 방향을 가져옵니다.
         Vector2 direction = GetPlayerDirection();
 
-        // Breath 프리팹 생성
+        if (direction == Vector2.zero)
+        {
+            Debug.LogWarning("Breath: 플레이어의 방향이 설정되지 않았습니다.");
+            return;
+        }
+
+        // 방향 벡터에서 각도 계산 (오른쪽을 기준으로 시계 반대 방향)
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // ParticleSystem의 초기 방향이 위쪽(90도)이므로, 이를 보정하기 위해 -90도 추가
+        float rotationOffset = -90f;
+
+        // 최종 각도 계산
+        float totalAngleDegrees = angle + rotationOffset;
+        float totalAngleRadians = totalAngleDegrees * Mathf.Deg2Rad;
+
         GameObject breath = Instantiate(breathPrefab, spawnPosition, Quaternion.identity);
         BreathAttack breathAttackScript = breath.GetComponent<BreathAttack>();
 
@@ -146,7 +156,21 @@ public class Breath : Ability
         {
             Debug.LogError("BreathAttack 스크립트를 찾을 수 없습니다.");
         }
+
+        // 자식 ParticleSystem의 Start Rotation 조정
+        ParticleSystem ps = breath.GetComponentInChildren<ParticleSystem>();
+        if (ps != null)
+        {
+            var main = ps.main;
+            main.startRotation = totalAngleRadians; // ParticleSystem은 라디안 단위로 회전
+        }
+        else
+        {
+            Debug.LogWarning("Breath 프리팹의 자식에 ParticleSystem이 없습니다.");
+        }
     }
+
+
 
     /// <summary>
     /// 레벨 초기화 시 호출됩니다. 브레스 코루틴을 중지하고 변수들을 초기화합니다.
@@ -164,6 +188,7 @@ public class Breath : Ability
 
         currentLevel = 0;
     }
+
     private void OnValidate()
     {
         if (damageIncrements.Length != maxLevel)

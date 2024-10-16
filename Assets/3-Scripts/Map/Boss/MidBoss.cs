@@ -479,7 +479,7 @@ public class MidBoss : MonoBehaviour
         Debug.Log("레이저 패턴 시작");
 
         // 레이저가 나타날 위치를 보스 위치를 기준으로 설정
-        Vector3 laserPosition = transform.position + Vector3.right * 2f;
+        Vector3 laserPosition = transform.position + Vector3.down * 4f;
 
         // 레이저 경고 표시 생성
         GameObject warning = Instantiate(patternData.laserWarningPrefab, laserPosition, Quaternion.identity, patternParent);
