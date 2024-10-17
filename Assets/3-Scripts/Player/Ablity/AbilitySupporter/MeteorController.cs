@@ -30,7 +30,7 @@ public class MeteorController : MonoBehaviour
             transform.position = new Vector3(newPosition.x, newPosition.y, transform.position.z);
 
             // 타겟 위치에 도달하면 충돌 처리
-            if (Vector2.Distance(newPosition, targetPosition) < 0.1f)
+            if (Vector2.Distance(newPosition, targetPosition) < 1.5f)
             {
                 hasLanded = true;
                 StartCoroutine(Explode());
@@ -40,7 +40,9 @@ public class MeteorController : MonoBehaviour
 
     private IEnumerator Explode()
     {
-        // 충돌 이펙트 생성 (옵션)
+        // 메테오가 타겟 위치에 도착한 후 1초간 대기
+        yield return new WaitForSeconds(0f);
+
         if (explosionEffectPrefab != null)
         {
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);

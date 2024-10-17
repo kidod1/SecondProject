@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System.Linq;
+using System.Collections;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -50,11 +51,13 @@ public class PlayerUIManager : MonoBehaviour
 
     [Header("Boss Health UI")]
     [SerializeField]
-    private Image bossHealthFillImage; // 보스 체력 채우기 이미지
-    //[SerializeField]
-    //private RectTransform bossHealthBarMaskRect; // 보스 체력 바 마스크 역할을 할 RectTransform (사용하지 않음)
+    private GameObject bossHealthUIPanel; // 보스 체력 UI 패널
     [SerializeField]
     private TMP_Text bossHealthText; // 보스 체력 수치 텍스트
+    [SerializeField]
+    private RectTransform bossHealthBarMaskRect;  // 보스 체력바 마스크 역할을 할 RectTransform
+    [SerializeField]
+    private RectTransform bossHealthBarFullRect;  // 보스 체력바 전체 크기 RectTransform
 
     private DepthOfField depthOfField;
 
@@ -67,6 +70,23 @@ public class PlayerUIManager : MonoBehaviour
     private PlayerAbilityManager abilityManager;
 
     private int bossMaxHealth; // 보스의 최대 체력 저장
+
+    // Coroutine references to prevent multiple coroutines running simultaneously
+    private Coroutine playerHealthCoroutine;
+    private Coroutine bossHealthCoroutine;
+
+    private void Awake()
+    {
+        // 보스 체력 UI 패널을 비활성화 상태로 초기화
+        if (bossHealthUIPanel != null)
+        {
+            bossHealthUIPanel.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthUIPanel이 할당되지 않았습니다.");
+        }
+    }
 
     public void Initialize(Player player)
     {
@@ -139,6 +159,9 @@ public class PlayerUIManager : MonoBehaviour
         UpdateCurrencyUI(player.stat.currentCurrency);
     }
 
+    /// <summary>
+    /// 플레이어의 체력 UI를 업데이트합니다.
+    /// </summary>
     public void UpdateHealthUI()
     {
         if (player == null || healthBarMaskRect == null || healthBarFullRect == null)
@@ -148,10 +171,20 @@ public class PlayerUIManager : MonoBehaviour
         }
 
         float healthPercentage = (float)player.GetCurrentHP() / maxHP;
+        healthPercentage = Mathf.Clamp01(healthPercentage);
 
         // 체력에 비례해 마스크의 너비 조정 (왼쪽 고정)
         float newMaskWidth = fullHealthBarWidth * healthPercentage;
-        healthBarMaskRect.sizeDelta = new Vector2(newMaskWidth, healthBarMaskRect.sizeDelta.y);
+
+
+        // 기존 Coroutine이 실행 중이면 중지
+        if (playerHealthCoroutine != null)
+        {
+            StopCoroutine(playerHealthCoroutine);
+        }
+
+        // 플레이어 체력바 애니메이션 시작
+        playerHealthCoroutine = StartCoroutine(AnimateHealthBar(healthBarMaskRect, newMaskWidth, 0.5f)); // 애니메이션 시간 0.5초
 
         // 체력 텍스트 업데이트
         if (healthText != null)
@@ -167,11 +200,18 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 경험치 UI를 업데이트합니다. (매개변수 없이 호출)
+    /// </summary>
     public void UpdateExperienceUIWithoutParam()
     {
         UpdateExperienceUI();
     }
 
+    /// <summary>
+    /// 경험치 UI를 업데이트합니다.
+    /// </summary>
+    /// <param name="gainedExperience">획득한 경험치 (선택 사항)</param>
     public void UpdateExperienceUI(int gainedExperience = 0)
     {
         if (player == null || experienceBarMaskRect == null || experienceBarFullRect == null)
@@ -213,6 +253,9 @@ public class PlayerUIManager : MonoBehaviour
         UpdateLevelTexts();
     }
 
+    /// <summary>
+    /// 레벨 텍스트를 업데이트합니다.
+    /// </summary>
     private void UpdateLevelTexts()
     {
         if (levelTextPrimary != null)
@@ -234,6 +277,10 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 통화 UI를 업데이트합니다.
+    /// </summary>
+    /// <param name="currentCurrency">현재 통화 금액</param>
     public void UpdateCurrencyUI(int currentCurrency)
     {
         if (currencyText != null)
@@ -246,6 +293,9 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어 사망 시 호출되는 메서드
+    /// </summary>
     private void OnPlayerDeath()
     {
         if (deathPanel != null)
@@ -258,6 +308,9 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Depth of Field 효과를 활성화합니다.
+    /// </summary>
     public void EnableDepthOfField()
     {
         if (depthOfField != null)
@@ -266,6 +319,9 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Depth of Field 효과를 비활성화합니다.
+    /// </summary>
     public void DisableDepthOfField()
     {
         if (depthOfField != null)
@@ -309,20 +365,32 @@ public class PlayerUIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 보스의 최대 체력을 초기화합니다.
+    /// 보스의 최대 체력을 초기화하고 보스 체력 UI 패널을 활성화합니다.
     /// </summary>
     /// <param name="maxHealth">보스의 최대 체력</param>
     public void InitializeBossHealth(int maxHealth)
     {
         bossMaxHealth = maxHealth; // 보스의 최대 체력 저장
 
-        if (bossHealthFillImage != null)
+        if (bossHealthUIPanel != null)
         {
-            bossHealthFillImage.fillAmount = 1f; // 체력 가득 채우기
+            bossHealthUIPanel.SetActive(true); // 보스 체력 UI 패널 활성화
+            Debug.Log($"Boss Health UI Panel 활성화됨.");
         }
         else
         {
-            Debug.LogWarning("PlayerUIManager: bossHealthFillImage가 할당되지 않았습니다.");
+            Debug.LogWarning("PlayerUIManager: bossHealthUIPanel이 할당되지 않았습니다.");
+        }
+
+        if (bossHealthBarMaskRect != null && bossHealthBarFullRect != null)
+        {
+            // 보스 체력바 마스크의 너비를 최대 체력에 맞게 설정
+            bossHealthBarMaskRect.sizeDelta = new Vector2(bossHealthBarFullRect.rect.width, bossHealthBarMaskRect.sizeDelta.y);
+            Debug.Log($"Initialized Boss Health: Max Health = {maxHealth}, Mask Width = {bossHealthBarFullRect.rect.width}");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthBarMaskRect 또는 bossHealthBarFullRect가 할당되지 않았습니다.");
         }
 
         if (bossHealthText != null)
@@ -341,15 +409,28 @@ public class PlayerUIManager : MonoBehaviour
     /// <param name="currentHealth">보스의 현재 체력</param>
     public void UpdateBossHealth(int currentHealth)
     {
-        if (bossHealthFillImage != null)
+        if (bossHealthBarMaskRect != null && bossHealthBarFullRect != null)
         {
             float healthPercentage = (float)currentHealth / bossMaxHealth;
-            bossHealthFillImage.fillAmount = Mathf.Clamp01(healthPercentage); // 체력 비율에 따라 fillAmount 설정
+            healthPercentage = Mathf.Clamp01(healthPercentage);
+            float targetWidth = bossHealthBarFullRect.rect.width * healthPercentage;
 
+            Debug.Log($"Updating Boss Health: Current HP = {currentHealth}, Health Percentage = {healthPercentage}, Target Width = {targetWidth}");
+
+            // 기존 Coroutine이 실행 중이면 중지
+            if (bossHealthCoroutine != null)
+            {
+                StopCoroutine(bossHealthCoroutine);
+                Debug.Log("Stopped existing bossHealthCoroutine.");
+            }
+
+            // 보스 체력바 애니메이션 시작
+            bossHealthCoroutine = StartCoroutine(AnimateHealthBar(bossHealthBarMaskRect, targetWidth, 0.5f)); // 애니메이션 시간 0.5초
+            Debug.Log("Started new bossHealthCoroutine.");
         }
         else
         {
-            Debug.LogWarning("PlayerUIManager: bossHealthFillImage가 할당되지 않았습니다.");
+            Debug.LogWarning("PlayerUIManager: bossHealthBarMaskRect 또는 bossHealthBarFullRect가 할당되지 않았습니다.");
         }
 
         if (bossHealthText != null)
@@ -359,6 +440,55 @@ public class PlayerUIManager : MonoBehaviour
         else
         {
             Debug.LogWarning("PlayerUIManager: bossHealthText가 할당되지 않았습니다.");
+        }
+
+        // 보스 체력이 0일 때 UI 패널을 비활성화하려면 아래 주석을 해제하세요.
+        /*
+        if (currentHealth <= 0 && bossHealthUIPanel != null)
+        {
+            bossHealthUIPanel.SetActive(false);
+            Debug.Log("Boss Health UI Panel 비활성화됨.");
+        }
+        */
+    }
+
+    /// <summary>
+    /// 체력바의 크기를 부드럽게 애니메이션하는 Coroutine
+    /// </summary>
+    /// <param name="rect">애니메이션할 RectTransform</param>
+    /// <param name="targetWidth">목표 너비</param>
+    /// <param name="duration">애니메이션 시간</param>
+    /// <returns></returns>
+    private IEnumerator AnimateHealthBar(RectTransform rect, float targetWidth, float duration)
+    {
+        float initialWidth = rect.sizeDelta.x;
+        Debug.Log($"Animating Health Bar from {initialWidth} to {targetWidth} over {duration} seconds.");
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float newWidth = Mathf.Lerp(initialWidth, targetWidth, elapsed / duration);
+            rect.sizeDelta = new Vector2(newWidth, rect.sizeDelta.y);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rect.sizeDelta = new Vector2(targetWidth, rect.sizeDelta.y);
+    }
+
+    /// <summary>
+    /// 보스 사망 후 보스 체력 UI 패널을 비활성화합니다.
+    /// </summary>
+    public void HideBossHealthUI()
+    {
+        if (bossHealthUIPanel != null)
+        {
+            bossHealthUIPanel.SetActive(false);
+            Debug.Log("Boss Health UI Panel 비활성화됨.");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager: bossHealthUIPanel이 할당되지 않았습니다.");
         }
     }
 }

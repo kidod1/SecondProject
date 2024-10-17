@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ActiveAbilities/MeteorSynergyAbility")]
-public class MeteorSynergyAbility : SynergyAbility
+public class MeteorAbility : SynergyAbility
 {
     [Header("메테오 파라미터")]
     [InspectorName("메테오 프리팹")] public GameObject meteorPrefab;        // 메테오 프리팹

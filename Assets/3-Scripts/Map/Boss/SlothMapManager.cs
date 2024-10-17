@@ -112,7 +112,6 @@ public class SlothMapManager : MonoBehaviour
 
         int deathTrack = 1;
         spineAnimationState.SetAnimation(deathTrack, secondDeathAnimationAsset.Animation.Name, false).MixDuration = 0.2f;
-        Debug.Log($"두 번째 애니메이션 설정: {secondDeathAnimationAsset.Animation.Name}");
     }
 
     private void OnAnimationComplete(TrackEntry trackEntry)
@@ -125,7 +124,6 @@ public class SlothMapManager : MonoBehaviour
             }
             else if (trackEntry.Animation.Name == secondDeathAnimationAsset.Animation.Name)
             {
-                Debug.Log("모든 죽음 애니메이션 완료");
 
                 // Standard 애니메이션 루프 시작
                 SetEndAnimation();

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8278c932a7f43f1459379c470a8756cc, type: 3}
   m_Name: SlothBossData
   m_EditorClassIdentifier: 
-  bulletPatternProbability: 17
-  warningAttackPatternProbability: 53
+  bulletPatternProbability: 0
+  warningAttackPatternProbability: 100
   laserPatternProbability: 0
-  groundSmashPatternProbability: 30
+  groundSmashPatternProbability: 0
   bulletPatternRepeatCount: 11
   bulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
   bulletSpawnPoints:
@@ -23,21 +23,33 @@ MonoBehaviour:
   - {fileID: 0}
   bulletFireInterval: 0.5
   bulletLifeTime: 5
-  warningAttackRepeatCount: 11
-  warningEffectPrefab: {fileID: 3232138096444110772, guid: aa020beab9ffbdd4ab86f44672fd8768, type: 3}
-  attackEffectPrefab: {fileID: 790626839866939137, guid: 6269083aa5b0d6a40847492a97938cd1, type: 3}
-  warningDuration: 2
-  attackInterval: 0.2
-  attackEffectDuration: 1.75
-  warningStartInterval: 0.5
+  warningAttackRepeatCount: 10
+  warningEffectPrefab: {fileID: 790626839866939137, guid: 6269083aa5b0d6a40847492a97938cd1, type: 3}
+  attackEffectPrefab: {fileID: 8160316657459305156, guid: 79ed1b550446e774c8c9465c62e2166a, type: 3}
+  warningDuration: 0.5
+  attackEffectDuration: 2
+  warningStartInterval: 0.3
   laserPrefab: {fileID: 790626839866939137, guid: fa397e6e481eb70458e31554976f55bb, type: 3}
   laserWarningPrefab: {fileID: 3232138096444110772, guid: 48320ca3a804c0044b7d047b4988bfcb, type: 3}
-  laserWarningDuration: 1
-  laserDuration: 2
+  laserWarningDuration: 3
+  laserDuration: 3
+  groundSmashMeteorPrefab: {fileID: 2319020122606181220, guid: 03b217e8e150e8a44899ada8fa5f5f6e, type: 3}
   groundSmashWarningPrefab: {fileID: 3232138096444110772, guid: 461b066af972aaf4a9d124cfac676996, type: 3}
-  groundSmashEffectPrefab: {fileID: 9165976067627717446, guid: bc247cca8209f1b4099b209771ff9453, type: 3}
   groundSmashWarningDuration: 2
-  groundSmashEffectDuration: 2
+  groundSmashMeteorDamage: 50
+  groundSmashMeteorRadius: 2
+  groundSmashMeteorFallSpeed: 25
+  groundSmashMeteorCount: 3
+  groundSmashSpawnRadius: 5
   groundSmashCooldown: 1
   groundSmashBulletCount: 12
   groundSmashBulletSpeed: 5
+  groundSmashBulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
+  groundSmashBulletDamage: 10
+  bulletDamage: 10
+  warningAttackDamage: 20
+  laserDamagePerSecond: 5
+  groundSmashDamage: 15
+  groundSmashAngle: 110
+  groundSmashObjectRotation: 25
+  groundSmashSpeed: 15

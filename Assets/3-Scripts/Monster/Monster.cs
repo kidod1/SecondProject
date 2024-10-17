@@ -202,12 +202,18 @@ public abstract class Monster : MonoBehaviour
 
     public virtual void TakeDamage(int damage, Vector3 damageSourcePosition)
     {
-        if (isDead || isInvincible) return;
+        if (isDead || isInvincible)
+        {
+            Debug.Log($"몬스터가 무적 상태이거나 이미 죽었습니다. 데미지 무시: {damage}");
+            return;
+        }
 
+        Debug.Log($"몬스터가 데미지를 받았습니다: {damage}");
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
 
         currentHP -= damage;
+        Debug.Log($"몬스터의 현재 체력: {currentHP}/{monsterBaseStat.maxHP}");
 
         if (currentHP <= 0)
         {
@@ -228,109 +234,108 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator ShowDamageTextCoroutine(int damage)
     {
-        // 데미지 분할 횟수 및 폰트 크기 결정
-        int splitCount = 1;
-        int fontSize = 18;
+        Debug.Log($"데미지 텍스트 표시: {damage}");
+
+        // 데미지 양에 따라 글자 크기 설정
+        int fontSize;
+        float additionalTime = 0f;
 
         if (damage >= 100)
         {
-            splitCount = 5;
             fontSize = 40;
+            additionalTime = 2f; // +2초
         }
         else if (damage >= 50)
         {
-            splitCount = 3;
             fontSize = 32;
+            additionalTime = 0.5f; // +0.5초
+        }
+        else
+        {
+            fontSize = 18;
+            additionalTime = 0f;
         }
 
-        // 각 분할된 데미지 계산
-        int splitDamage = Mathf.CeilToInt((float)damage / splitCount);
+        // DamageText 프리팹 로드
+        GameObject damageTextPrefab = Resources.Load<GameObject>(damageTextPrefabPath);
+        if (damageTextPrefab == null)
+        {
+            Debug.LogError("DamageTextPrefab을 Resources 폴더에서 찾을 수 없습니다.");
+            yield break;
+        }
 
-        // 머리 위치 계산 (월드 좌표)
+        // DamageCanvas 태그로 캔버스 찾기
+        GameObject canvasObject = GameObject.FindGameObjectWithTag("DamageCanvas");
+        if (canvasObject == null)
+        {
+            Debug.LogError("'DamageCanvas' 태그를 가진 캔버스를 찾을 수 없습니다.");
+            yield break;
+        }
+
+        Canvas screenCanvas = canvasObject.GetComponent<Canvas>();
+        if (screenCanvas == null)
+        {
+            Debug.LogError("'DamageCanvas' 오브젝트에서 Canvas 컴포넌트를 찾을 수 없습니다.");
+            yield break;
+        }
+
+        // UI 카메라 가져오기
+        Camera uiCamera = screenCanvas.worldCamera;
+        if (uiCamera == null)
+        {
+            uiCamera = Camera.main;
+        }
+
+        if (uiCamera == null)
+        {
+            Debug.LogError("UI 카메라를 찾을 수 없습니다.");
+            yield break;
+        }
+
+        // 데미지 텍스트 위치 설정 (몬스터 머리 위)
         float monsterHeightOffset = 1.0f; // 몬스터 머리 위로 얼마나 띄울지 조정 가능한 값
         Vector3 headPosition = transform.position + new Vector3(0, monsterHeightOffset, 0);
+        Vector3 screenPosition = uiCamera.WorldToScreenPoint(headPosition);
 
-        for (int i = 0; i < splitCount; i++)
+        // 스크린 좌표를 캔버스 로컬 좌표로 변환
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            screenCanvas.transform as RectTransform,
+            screenPosition,
+            uiCamera,
+            out Vector2 localPoint);
+
+        // 데미지 텍스트 인스턴스 생성
+        GameObject damageTextInstance = Instantiate(damageTextPrefab, screenCanvas.transform);
+        RectTransform rectTransform = damageTextInstance.GetComponent<RectTransform>();
+        rectTransform.localPosition = localPoint;
+
+        // DamageText 컴포넌트 설정
+        DamageText damageText = damageTextInstance.GetComponent<DamageText>();
+        if (damageText != null)
         {
-            // DamageText 프리팹 로드
-            GameObject damageTextPrefab = Resources.Load<GameObject>(damageTextPrefabPath);
-            if (damageTextPrefab == null)
+            // 폰트 로드
+            TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Maplestory Light SDF");
+            if (font == null)
             {
-                Debug.LogError("DamageTextPrefab을 Resources 폴더에서 찾을 수 없습니다.");
-                yield break;
+                Debug.LogWarning("폰트 에셋을 찾을 수 없습니다. 기본 폰트를 사용합니다.");
             }
 
-            // 태그로 캔버스를 찾습니다.
-            GameObject canvasObject = GameObject.FindGameObjectWithTag("DamageCanvas");
-            if (canvasObject == null)
-            {
-                Debug.LogError("'DamageCanvas' 태그를 가진 캔버스를 찾을 수 없습니다.");
-                yield break;
-            }
+            Color color = Color.white;
 
-            Canvas screenCanvas = canvasObject.GetComponent<Canvas>();
-            if (screenCanvas == null)
-            {
-                Debug.LogError("'DamageCanvas' 오브젝트에서 Canvas 컴포넌트를 찾을 수 없습니다.");
-                yield break;
-            }
-
-            // 캔버스의 Render Camera 설정 확인 및 가져오기
-            Camera uiCamera = screenCanvas.worldCamera;
-            if (uiCamera == null)
-            {
-                uiCamera = Camera.main;
-            }
-
-            if (uiCamera == null)
-            {
-                Debug.LogError("UI 카메라를 찾을 수 없습니다.");
-                yield break;
-            }
-
-            // 머리 위치를 스크린 좌표로 변환 (직선으로 위로 이동)
-            // 각 텍스트마다 Y축으로 20픽셀씩 위로 이동
-            Vector3 offset = new Vector3(0, i * 20f, 0);
-            Vector3 screenPosition = uiCamera.WorldToScreenPoint(headPosition + offset);
-
-            // 스크린 좌표를 캔버스 로컬 좌표로 변환
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                screenCanvas.transform as RectTransform,
-                screenPosition,
-                uiCamera,
-                out Vector2 localPoint);
-
-            // 데미지 텍스트 인스턴스 생성 및 부모 설정
-            GameObject damageTextInstance = Instantiate(damageTextPrefab, screenCanvas.transform);
-
-            // RectTransform의 로컬 좌표 설정
-            RectTransform rectTransform = damageTextInstance.GetComponent<RectTransform>();
-            rectTransform.localPosition = localPoint;
-
-            // 데미지 텍스트 설정
-            DamageText damageText = damageTextInstance.GetComponent<DamageText>();
-            if (damageText != null)
-            {
-                // 폰트와 글자 크기 설정 (원하는 폰트로 변경 가능)
-                TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Maplestory Light SDF");
-                if (font == null)
-                {
-                    Debug.LogWarning("폰트 에셋을 찾을 수 없습니다. 기본 폰트를 사용합니다.");
-                }
-
-                Color color = Color.white;
-
-                // 폰트 크기 설정
-                damageText.SetText(splitDamage.ToString(), font, fontSize, color);
-            }
-            else
-            {
-                Debug.LogError("DamageText 컴포넌트를 찾을 수 없습니다.");
-            }
-
-            // 0.05초 대기 후 다음 텍스트 생성
-            yield return new WaitForSeconds(0.05f);
+            // 텍스트 설정
+            damageText.SetText(damage.ToString(), font, fontSize, color);
         }
+        else
+        {
+            Debug.LogError("DamageText 컴포넌트를 찾을 수 없습니다.");
+        }
+
+        // 텍스트 제거 시간 계산
+        float totalDuration = 1f + additionalTime;
+
+        // 텍스트가 사라지도록 대기 (기존 시간 + 추가 시간)
+        yield return new WaitForSeconds(totalDuration);
+        Destroy(damageTextInstance);
     }
 
     private void ApplyKnockback(Vector3 damageSourcePosition)
@@ -360,6 +365,7 @@ public abstract class Monster : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+        Debug.Log("몬스터가 쓰러졌습니다!");
 
         if (player != null)
         {
@@ -405,14 +411,18 @@ public abstract class Monster : MonoBehaviour
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
+        Debug.Log("무적 상태 시작");
 
-        for (float i = 0; i < invincibilityDuration; i += blinkInterval)
+        float elapsed = 0f;
+
+        while (elapsed < invincibilityDuration)
         {
             if (meshRenderer != null)
             {
                 meshRenderer.enabled = !meshRenderer.enabled;
             }
             yield return new WaitForSeconds(blinkInterval);
+            elapsed += blinkInterval;
         }
 
         if (meshRenderer != null)
@@ -421,6 +431,7 @@ public abstract class Monster : MonoBehaviour
         }
 
         isInvincible = false;
+        Debug.Log("무적 상태 종료");
     }
 
     private void DropExperienceItem()
