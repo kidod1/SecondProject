@@ -28,9 +28,7 @@ public class MonsterSpawner : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI waveNumberText; // 웨이브 클리어 및 시작 UI 텍스트
     public Animator waveNumberAnimator; // 웨이브 텍스트의 Animator 컴포넌트
-    public Animator additionalImageAnimator; // 추가적인 이미지의 Animator 컴포넌트
     public GameObject midBossPrefab; // 씬에 미리 배치된 중간 보스 오브젝트 참조
-    // public Transform midBossSpawnPoint; // (사용되지 않음, 보스 오브젝트가 이미 배치되어 있으므로 필요 없음)
 
     private List<GameObject> spawnedMonsters = new List<GameObject>(); // 현재 활성화된 몬스터 리스트
     private int currentWaveIndex = 0; // 현재 웨이브 인덱스
@@ -73,12 +71,6 @@ public class MonsterSpawner : MonoBehaviour
                 Debug.LogWarning("waveNumberText에 Animator 컴포넌트가 없습니다. 애니메이션 기능이 비활성화됩니다.");
             }
         }
-
-        // 추가적인 Animator 참조 확인
-        if (additionalImageAnimator == null)
-        {
-            Debug.LogWarning("additionalImageAnimator가 할당되지 않았습니다. 추가 이미지 애니메이션이 비활성화됩니다.");
-        }
     }
 
     private IEnumerator SpawnWaves()
@@ -99,13 +91,6 @@ public class MonsterSpawner : MonoBehaviour
                 {
                     waveNumberAnimator.SetTrigger("StartWave"); // "StartWave" 트리거 설정
                     Debug.Log("Start웨이브 트리거 발동");
-                }
-
-                // 추가적인 Animator 트리거 설정
-                if (additionalImageAnimator != null)
-                {
-                    additionalImageAnimator.SetTrigger("StartWave"); // "StartWave" 트리거 설정
-                    Debug.Log("Start웨이브 추가 이미지 트리거 발동");
                 }
 
                 StartCoroutine(FadeOutWaveNumber(0.7f)); // 0.7초 후에 페이드 아웃 시작
@@ -209,13 +194,6 @@ public class MonsterSpawner : MonoBehaviour
             {
                 waveNumberAnimator.SetTrigger("Clear"); // "Clear" 트리거 설정
                 Debug.Log("Clear 트리거 발동");
-            }
-
-            // 추가적인 Animator 트리거 설정
-            if (additionalImageAnimator != null)
-            {
-                additionalImageAnimator.SetTrigger("Clear"); // "Clear" 트리거 설정
-                Debug.Log("Clear 추가 이미지 트리거 발동");
             }
 
             StartCoroutine(FadeOutWaveNumber(3f)); // 3초 후에 페이드 아웃 시작

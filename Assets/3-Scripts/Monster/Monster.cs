@@ -13,6 +13,7 @@ public interface IMonsterState
 
 public abstract class Monster : MonoBehaviour
 {
+    [Header("Monster Settings")]
     public MonsterData monsterBaseStat;
     protected Rigidbody2D rb;
     protected int currentHP;
@@ -62,6 +63,10 @@ public abstract class Monster : MonoBehaviour
 
     // 원래의 isKinematic 상태를 저장하기 위한 필드 추가
     private bool originalIsKinematic;
+
+    [Header("UI Manager")]
+    [SerializeField]
+    private PlayerUIManager playerUIManager;
 
     protected virtual void Start()
     {
@@ -204,16 +209,13 @@ public abstract class Monster : MonoBehaviour
     {
         if (isDead || isInvincible)
         {
-            Debug.Log($"몬스터가 무적 상태이거나 이미 죽었습니다. 데미지 무시: {damage}");
             return;
         }
 
-        Debug.Log($"몬스터가 데미지를 받았습니다: {damage}");
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
 
         currentHP -= damage;
-        Debug.Log($"몬스터의 현재 체력: {currentHP}/{monsterBaseStat.maxHP}");
 
         if (currentHP <= 0)
         {
@@ -234,9 +236,7 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator ShowDamageTextCoroutine(int damage)
     {
-        Debug.Log($"데미지 텍스트 표시: {damage}");
-
-        // 데미지 양에 따라 글자 크기 설정
+        // 데미지 양에 따라 글자 크기 및 추가 시간 설정
         int fontSize;
         float additionalTime = 0f;
 
@@ -411,7 +411,6 @@ public abstract class Monster : MonoBehaviour
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
-        Debug.Log("무적 상태 시작");
 
         float elapsed = 0f;
 
@@ -431,7 +430,6 @@ public abstract class Monster : MonoBehaviour
         }
 
         isInvincible = false;
-        Debug.Log("무적 상태 종료");
     }
 
     private void DropExperienceItem()
