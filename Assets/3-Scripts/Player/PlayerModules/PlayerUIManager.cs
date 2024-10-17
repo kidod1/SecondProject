@@ -462,7 +462,6 @@ public class PlayerUIManager : MonoBehaviour
     private IEnumerator AnimateHealthBar(RectTransform rect, float targetWidth, float duration)
     {
         float initialWidth = rect.sizeDelta.x;
-        Debug.Log($"Animating Health Bar from {initialWidth} to {targetWidth} over {duration} seconds.");
         float elapsed = 0f;
 
         while (elapsed < duration)
