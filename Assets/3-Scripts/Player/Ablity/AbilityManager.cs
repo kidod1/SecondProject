@@ -298,22 +298,37 @@ public class AbilityManager : MonoBehaviour
 
             var ability = availableAbilities[i];
 
-            if (categoryButtonImages.TryGetValue(ability.category, out Sprite buttonImage))
+            // **수정된 부분: 일반 능력의 경우 버튼 이미지를 변경하지 않음**
+            if (ability is SynergyAbility)
             {
-                // 버튼의 이미지를 변경합니다.
-                Image buttonImageComponent = abilityButtons[i].GetComponent<Image>();
-                if (buttonImageComponent != null)
+                // 시너지 능력의 경우 버튼 이미지를 변경합니다.
+                if (synergyCategoryButtonImages.TryGetValue(ability.category, out Sprite buttonImage))
                 {
-                    buttonImageComponent.sprite = buttonImage;
+                    // 버튼의 이미지를 변경합니다.
+                    Image buttonImageComponent = abilityButtons[i].GetComponent<Image>();
+                    if (buttonImageComponent != null)
+                    {
+                        buttonImageComponent.sprite = buttonImage;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Ability button at index {i} does not have an Image component.");
+                    }
                 }
                 else
                 {
-                    Debug.LogError($"Ability button at index {i} does not have an Image component.");
+                    Debug.LogWarning($"No synergy button image found for category '{ability.category}'.");
                 }
             }
             else
             {
-                Debug.LogWarning($"No button image found for category '{ability.category}'.");
+                // 일반 능력의 경우 버튼 이미지를 변경하지 않음
+                // 필요하다면 기본 버튼 이미지를 설정할 수 있습니다.
+                // Image buttonImageComponent = abilityButtons[i].GetComponent<Image>();
+                // if (buttonImageComponent != null)
+                // {
+                //     buttonImageComponent.sprite = defaultButtonSprite; // 기본 버튼 이미지로 설정
+                // }
             }
 
             abilityNameTexts[i].text = ability.abilityName;

@@ -70,7 +70,8 @@ public class PlayerData : ScriptableObject
     public void InitializeStats()
     {
         currentPlayerSpeed = defaultPlayerSpeed;
-        currentPlayerDamage = defaultPlayerDamage;
+        currentPlayerDamage = 10;
+        defaultPlayerDamage = 10;
         currentProjectileSpeed = defaultProjectileSpeed;
         currentProjectileRange = defaultProjectileRange;
         currentProjectileType = defaultProjectileType;

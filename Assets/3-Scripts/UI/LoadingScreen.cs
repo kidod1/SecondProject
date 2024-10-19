@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using Spine.Unity;
+using Spine;
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -23,9 +24,6 @@ public class LoadingScreen : MonoBehaviour
 
     [SerializeField]
     private SkeletonGraphic skeletonGraphic;
-
-    [SerializeField]
-    private AnimationReferenceAsset idleAnimationAsset;
 
     [SerializeField]
     private AnimationReferenceAsset completeAnimationAsset;
@@ -57,6 +55,7 @@ public class LoadingScreen : MonoBehaviour
 
     private void Start()
     {
+        // 초기 페이드 인 설정
         if (fadeImage != null)
         {
             Color c = fadeImage.color;
@@ -65,35 +64,52 @@ public class LoadingScreen : MonoBehaviour
             StartCoroutine(FadeIn());
         }
 
+        // 로딩 바 초기화 및 채우기 시작
         if (loadingBarFill != null)
         {
             loadingBarFill.fillAmount = 0f;
             StartCoroutine(FillLoadingBar());
         }
 
+        // "Press Space" 텍스트 비활성화
         if (pressSpaceText != null)
         {
             pressSpaceText.SetActive(false);
         }
 
-        // 트랙 0에서 배경 애니메이션 재생
+        // 트랙 0: 배경 애니메이션 재생
         if (skeletonGraphic != null && standardAnimationAsset != null && standardAnimationAsset.Animation != null)
         {
             skeletonGraphic.AnimationState.SetAnimation(0, standardAnimationAsset.Animation.Name, true);
         }
-
-        // 초기에는 플레이어가 없는 애니메이션을 트랙 1에서 재생
+        // 트랙 1: 초기에는 플레이어 없는 애니메이션 재생
         if (skeletonGraphic != null && deletePlayerAnimationAsset != null && deletePlayerAnimationAsset.Animation != null)
         {
             skeletonGraphic.AnimationState.SetAnimation(1, deletePlayerAnimationAsset.Animation.Name, true);
         }
 
+        // 결과 이미지 비활성화
         foreach (var resultImage in resultImages)
         {
             if (resultImage != null)
             {
                 resultImage.SetActive(false);
             }
+        }
+
+        // Spine 애니메이션 이벤트 구독
+        if (skeletonGraphic != null)
+        {
+            skeletonGraphic.AnimationState.Event += OnAnimationEvent;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Spine 애니메이션 이벤트 구독 해제
+        if (skeletonGraphic != null)
+        {
+            skeletonGraphic.AnimationState.Event -= OnAnimationEvent;
         }
     }
 
@@ -128,13 +144,19 @@ public class LoadingScreen : MonoBehaviour
             loadingImage.SetActive(false);
         }
 
-        // 트랙 1에서 플레이어 있는 애니메이션으로 전환
+        // 트랙 1: 플레이어 있는 애니메이션으로 전환
         if (skeletonGraphic != null && playerAnimationAsset != null && playerAnimationAsset.Animation != null)
         {
+            skeletonGraphic.AnimationState.ClearTracks(); // 애니메이션 설정 전에 트랙을 클리어
+            skeletonGraphic.Initialize(true);
+            skeletonGraphic.AnimationState.SetAnimation(0, standardAnimationAsset.Animation.Name, true);
             skeletonGraphic.AnimationState.SetAnimation(1, playerAnimationAsset.Animation.Name, true);
             Debug.Log(skeletonGraphic.AnimationState);
         }
 
+
+
+        // 결과 이미지 활성화
         foreach (var resultImage in resultImages)
         {
             if (resultImage != null)
@@ -221,5 +243,29 @@ public class LoadingScreen : MonoBehaviour
 
         c.a = 1f;
         fadeImage.color = c;
+    }
+
+    /// <summary>
+    /// Spine 애니메이션 이벤트 처리
+    /// </summary>
+    /// <param name="trackEntry">애니메이션 트랙 엔트리</param>
+    /// <param name="e">Spine 이벤트</param>
+    private void OnAnimationEvent(TrackEntry trackEntry, Spine.Event e)
+    {
+        if (e.Data.Name == "Reload")
+        {
+            Debug.Log("Spine Reload 이벤트 발생!");
+            ReloadFunction();
+        }
+    }
+
+    /// <summary>
+    /// Reload 이벤트 처리 함수
+    /// </summary>
+    private void ReloadFunction()
+    {
+        // Reload 버튼을 누르는 동작 구현
+        // 예시: 특정 함수 호출 또는 씬 리로드
+        Debug.Log("ReloadFunction이 호출되었습니다.");
     }
 }

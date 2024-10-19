@@ -10,11 +10,21 @@ public class EnchantingMelody : Ability
     [Header("레벨별 공격력 버프 수치")]
     public int[] attackDamageBuffs = { 10, 15, 20, 25, 30 };
 
-    [Header("레벨별 공격 속도 버프 수치 (예: 0.1 = 10% 증가)")]
+    [Header("레벨별 공격 속도 버프 수치 (예: 0.1 = 10% 감소 쿨타임)")]
     public float[] attackSpeedBuffs = { 0.1f, 0.15f, 0.2f, 0.25f, 0.3f };
 
     [Header("레벨별 이동 속도 버프 수치 (예: 1.0 = 1 단위 증가)")]
     public float[] movementSpeedBuffs = { 1f, 1.5f, 2f, 2.5f, 3f };
+
+    [Header("Buff Effects")]
+    [SerializeField]
+    private GameObject attackDamageEffectPrefab; // 공격력 버프 이펙트 프리팹
+
+    [SerializeField]
+    private GameObject attackSpeedEffectPrefab; // 공격 속도 버프 이펙트 프리팹
+
+    [SerializeField]
+    private GameObject movementSpeedEffectPrefab; // 이동 속도 버프 이펙트 프리팹
 
     private Player playerInstance;
 
@@ -90,6 +100,7 @@ public class EnchantingMelody : Ability
             case BuffType.AttackDamage:
                 lastAppliedAttackDamageBuff = GetAttackDamageBuff();
                 playerInstance.stat.currentPlayerDamage += lastAppliedAttackDamageBuff;
+                InstantiateBuffEffect(attackDamageEffectPrefab);
                 break;
             case BuffType.AttackSpeed:
                 lastAppliedAttackSpeedBuff = GetAttackSpeedBuff();
@@ -98,10 +109,12 @@ public class EnchantingMelody : Ability
                 {
                     playerInstance.stat.currentShootCooldown = 0.1f; // 최소 쿨다운 제한
                 }
+                InstantiateBuffEffect(attackSpeedEffectPrefab);
                 break;
             case BuffType.MovementSpeed:
                 lastAppliedMovementSpeedBuff = GetMovementSpeedBuff();
                 playerInstance.stat.currentPlayerSpeed += lastAppliedMovementSpeedBuff;
+                InstantiateBuffEffect(movementSpeedEffectPrefab);
                 break;
         }
     }
@@ -158,6 +171,26 @@ public class EnchantingMelody : Ability
             return movementSpeedBuffs[currentLevel];
         }
         return movementSpeedBuffs[movementSpeedBuffs.Length - 1];
+    }
+
+    private void InstantiateBuffEffect(GameObject effectPrefab)
+    {
+        if (playerInstance != null && effectPrefab != null)
+        {
+            // 이펙트를 플레이어의 자식으로 인스턴스화
+            GameObject effect = Instantiate(effectPrefab, playerInstance.transform);
+
+            // 이펙트의 위치와 회전을 조정 (필요시)
+            effect.transform.localPosition = Vector3.zero; // 중앙에 배치
+            effect.transform.localRotation = Quaternion.identity; // 기본 회전
+
+            // 이펙트가 일정 시간 후 자동으로 파괴되도록 설정 (옵션)
+            Destroy(effect, 5f); // 예: 5초 후 파괴
+        }
+        else
+        {
+            Debug.LogWarning("Buff effect prefab이 할당되지 않았거나 playerInstance가 null입니다.");
+        }
     }
 
     public override string GetDescription()

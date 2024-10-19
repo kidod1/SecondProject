@@ -121,7 +121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5561398464244497392
 Transform:
   m_ObjectHideFlags: 0
@@ -326,11 +326,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   patternData: {fileID: 11400000, guid: 907dbfe24db1ceb4da9611cbd027192e, type: 2}
-  bulletDamage: 10
-  warningAttackDamage: 20
-  laserDamagePerSecond: 5
-  groundSmashDamage: 15
-  slothMapManager: {fileID: 2864643810180034803, guid: bab4d3bbaa5afe6459a198b493a2662a, type: 3}
+  isAttackable: 1
+  patternParent: {fileID: 0}
+  isInvincible: 0
+  isDead: 0
+  invincibilityDuration: 0.2
+  blinkInterval: 0.1
+  meshRenderer: {fileID: 0}
+  damageTextPrefabPath: DamageTextPrefab
+  rb: {fileID: 0}
+  player: {fileID: 0}
   playerUIManager: {fileID: 0}
 --- !u!1001 &261346478545866626
 PrefabInstance:
