@@ -70,7 +70,7 @@ public class Projectile : MonoBehaviour
     /// <param name="isClone">클론 프로젝트일 여부</param>
     /// <param name="multiplier">데미지 배율</param>
     /// <param name="damage">프로젝트일의 데미지</param>
-    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f, int damage = 50)
+    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f, int damage = 10)
     {
         stat = playerStat;
         this.playerInstance = playerInstance;

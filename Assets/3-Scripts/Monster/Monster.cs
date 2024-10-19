@@ -64,9 +64,10 @@ public abstract class Monster : MonoBehaviour
     // 원래의 isKinematic 상태를 저장하기 위한 필드 추가
     private bool originalIsKinematic;
 
-    [Header("UI Manager")]
-    [SerializeField]
-    private PlayerUIManager playerUIManager;
+    [Header("Stun Effect")]
+    [Tooltip("스턴 상태일 때 표시할 이펙트 프리팹")]
+    public GameObject stunEffectPrefab;
+    private GameObject currentStunEffect;
 
     protected virtual void Start()
     {
@@ -154,6 +155,9 @@ public abstract class Monster : MonoBehaviour
                 rb.isKinematic = true;
             }
 
+            // 스턴 이펙트 표시
+            ShowStunEffect();
+
             StartCoroutine(StunCoroutine(duration));
         }
     }
@@ -173,6 +177,30 @@ public abstract class Monster : MonoBehaviour
         if (rb != null)
         {
             rb.isKinematic = originalIsKinematic;
+        }
+
+        // 스턴 이펙트 제거
+        RemoveStunEffect();
+    }
+
+    private void ShowStunEffect()
+    {
+        if (stunEffectPrefab == null)
+        {
+            Debug.LogWarning("StunEffectPrefab이 할당되지 않았습니다.");
+            return;
+        }
+
+        // 스턴 이펙트를 몬스터의 머리 위에 위치시킵니다.
+        Vector3 stunPosition = transform.position + new Vector3(0, 1.0f, 0); // 머리 위로 1.0f 오프셋
+        currentStunEffect = Instantiate(stunEffectPrefab, stunPosition, Quaternion.identity, transform);
+    }
+
+    private void RemoveStunEffect()
+    {
+        if (currentStunEffect != null)
+        {
+            Destroy(currentStunEffect);
         }
     }
 
@@ -211,7 +239,6 @@ public abstract class Monster : MonoBehaviour
         {
             return;
         }
-
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
 
@@ -236,6 +263,8 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator ShowDamageTextCoroutine(int damage)
     {
+        Debug.Log($"데미지 텍스트 표시: {damage}");
+
         // 데미지 양에 따라 글자 크기 및 추가 시간 설정
         int fontSize;
         float additionalTime = 0f;
@@ -411,6 +440,7 @@ public abstract class Monster : MonoBehaviour
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
+        Debug.Log("무적 상태 시작");
 
         float elapsed = 0f;
 
@@ -430,6 +460,7 @@ public abstract class Monster : MonoBehaviour
         }
 
         isInvincible = false;
+        Debug.Log("무적 상태 종료");
     }
 
     private void DropExperienceItem()
