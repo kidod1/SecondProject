@@ -10,7 +10,7 @@ public class Breath : Ability
     public float cooldownTime = 10f;        // 브레스의 기본 쿨타임
     public float breathDuration = 2f;       // 브레스의 지속 시간
     public float breathRange = 10f;         // 브레스의 사거리
-    public float breathAngle = 45f;         // 브레스의 각도 (양옆으로 22.5도씩)
+    public float breathAngle = 45f;         // 브레스의 각도 (전체 브레스 각도)
 
     [Tooltip("브레스 능력 업그레이드 시 레벨별 데미지 증가량")]
     public int[] damageIncrements = { 10, 15, 20, 25, 30 }; // 레벨 1~5
@@ -113,6 +113,9 @@ public class Breath : Ability
         return playerInstance.GetFacingDirection();
     }
 
+    /// <summary>
+    /// 브레스를 플레이어가 바라보는 방향으로 발사합니다. 방향은 0도, 90도, 180도, 270도 중 가장 가까운 방향으로 매핑됩니다.
+    /// </summary>
     private void FireBreath()
     {
         if (breathPrefab == null)
@@ -124,25 +127,42 @@ public class Breath : Ability
         Vector3 spawnPosition = playerInstance.transform.position;
 
         // 플레이어의 실제 방향을 가져옵니다.
-        Vector2 direction = GetPlayerDirection();
+        Vector2 baseDirection = GetPlayerDirection();
 
-        if (direction == Vector2.zero)
+        if (baseDirection == Vector2.zero)
         {
             Debug.LogWarning("Breath: 플레이어의 방향이 설정되지 않았습니다.");
             return;
         }
 
-        // 방향 벡터에서 각도 계산 (오른쪽을 기준으로 시계 반대 방향)
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // 플레이어가 보고 있는 방향의 각도 계산 (위쪽을 기준으로 시계 반대 방향)
+        float baseAngle = Mathf.Atan2(baseDirection.y, baseDirection.x) * Mathf.Rad2Deg;
 
-        // ParticleSystem의 초기 방향이 위쪽(90도)이므로, 이를 보정하기 위해 -90도 추가
-        float rotationOffset = -90f;
+        // 각도를 가장 가까운 90도로 매핑 (0, 90, 180, 270)
+        float mappedAngle = RoundToNearest90(baseAngle);
 
-        // 최종 각도 계산
-        float totalAngleDegrees = angle + rotationOffset;
-        float totalAngleRadians = totalAngleDegrees * Mathf.Deg2Rad;
+        if (mappedAngle == 90)
+        {
+            mappedAngle = 270;
+        }
+        else if (mappedAngle == 270)
+        {
+            mappedAngle = 90;
+        }
+        // 매핑된 방향 벡터 계산
+        Vector2 mappedDirection = new Vector2(Mathf.Cos(mappedAngle * Mathf.Deg2Rad), Mathf.Sin(mappedAngle * Mathf.Deg2Rad)).normalized;
 
-        GameObject breath = Instantiate(breathPrefab, spawnPosition, Quaternion.identity);
+        if (mappedDirection.y == 1)
+        {
+            mappedDirection.y = -1;
+        }
+        else if (mappedDirection.y == -1)
+        {
+            mappedDirection.y = 1;
+        }
+
+        // 브레스 인스턴스 생성 및 회전 설정
+        GameObject breath = Instantiate(breathPrefab, spawnPosition, Quaternion.Euler(0, 0, mappedAngle));
         BreathAttack breathAttackScript = breath.GetComponent<BreathAttack>();
 
         if (breathAttackScript != null)
@@ -150,27 +170,48 @@ public class Breath : Ability
             breathAttackScript.Initialize(breathDamage, breathRange, breathAngle, breathDuration, playerInstance);
 
             // Breath의 방향을 설정합니다.
-            breathAttackScript.SetDirection(direction);
+            breathAttackScript.SetDirection(mappedDirection);
         }
         else
         {
             Debug.LogError("BreathAttack 스크립트를 찾을 수 없습니다.");
         }
 
+        // 브레스 오브젝트의 스케일을 고정하여 플레이어의 스케일 변환이 영향을 미치지 않도록 합니다.
+        breath.transform.localScale = Vector3.one;
+
         // 자식 ParticleSystem의 Start Rotation 조정
         ParticleSystem ps = breath.GetComponentInChildren<ParticleSystem>();
         if (ps != null)
         {
             var main = ps.main;
-            main.startRotation = totalAngleRadians; // ParticleSystem은 라디안 단위로 회전
+            main.startRotation = (mappedAngle + 90f) * Mathf.Deg2Rad; // ParticleSystem은 라디안 단위로 회전
         }
         else
         {
             Debug.LogWarning("Breath 프리팹의 자식에 ParticleSystem이 없습니다.");
         }
+
+        // 브레스 오브젝트의 회전을 설정하여 ParticleSystem이 올바르게 회전하도록 합니다.
+        breath.transform.rotation = Quaternion.Euler(0, 0, mappedAngle);
     }
 
 
+    /// <summary>
+    /// 주어진 각도를 가장 가까운 90도로 반올림합니다.
+    /// </summary>
+    /// <param name="angle">반올림할 각도 (도 단위)</param>
+    /// <returns>가장 가까운 90도의 배수</returns>
+    private float RoundToNearest90(float angle)
+    {
+        // 0~360도 범위로 각도 보정
+        angle = Mathf.Repeat(angle, 360f);
+
+        // 각도를 45도로 나눈 후, 반올림하여 가장 가까운 90도 배수로 매핑
+        float correctionAngle = Mathf.Round(angle / 90f) * 90f;
+        return correctionAngle;
+
+    }
 
     /// <summary>
     /// 레벨 초기화 시 호출됩니다. 브레스 코루틴을 중지하고 변수들을 초기화합니다.

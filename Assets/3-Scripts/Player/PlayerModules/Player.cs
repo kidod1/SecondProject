@@ -22,19 +22,39 @@ public class Player : MonoBehaviour
     private Spine.Skeleton skeleton;
     private Spine.AnimationState spineAnimationState;
 
+    // 스킨 이름들
     [SpineSkin] public string frontSkinName;
     [SpineSkin] public string backSkinName;
     [SpineSkin] public string sideSkinName;
+    [SpineSkin] public string sideFrontSkinName;
+    [SpineSkin] public string sideBackSkinName;
 
-    [SpineAnimation] public string walkLowerAnimName;
-    [SpineAnimation] public string idleLowerAnimName;
-    [SpineAnimation] public string shootFrontUpperAnimName;
-    [SpineAnimation] public string shootBackUpperAnimName;
-    [SpineAnimation] public string shootSideUpperAnimName;
-    [SpineAnimation] public string idleUpperAnimName;
+    // 애니메이션 이름들
+    [SpineAnimation] public string walkBackAnimName;
+    [SpineAnimation] public string walkBackStopAnimName;
+    [SpineAnimation] public string walkStraightAnimName;
+    [SpineAnimation] public string walkStraightStopAnimName;
+
+    [SpineAnimation] public string upperWalkBackAnimName;
+    [SpineAnimation] public string upperWalkBackStopAnimName;
+    [SpineAnimation] public string upperWalkStraightAnimName;
+    [SpineAnimation] public string upperWalkStraightStopAnimName;
+
+    [SpineAnimation] public string attackFrontAnimName;
+    [SpineAnimation] public string attackBackAnimName;
+    [SpineAnimation] public string attackSideAnimName;
+    [SpineAnimation] public string attackSideFrontAnimName;
+    [SpineAnimation] public string attackSideBackAnimName;
+
+    [SpineAnimation] public string upperIdleAnimName;
+    [SpineAnimation] public string lowerIdleAnimName;
+
+    [Header("Heal Effect")]
+    [SerializeField]
+    private GameObject healEffectPrefab;
 
     private bool isMoving = false;
-
+    private Vector2 lastAttackDirection = Vector2.zero;
     private Vector2 moveInput;
     private Rigidbody2D rb;
 
@@ -44,9 +64,7 @@ public class Player : MonoBehaviour
     private float lastShootTime;
     public bool isShooting = false;
     private Vector2 shootDirection;
-    private Vector2 nextShootDirection;
     private Vector2 lastMoveDirection = Vector2.right;
-    private bool hasNextShootDirection = false;
 
     private PlayerInput playerInput;
 
@@ -76,8 +94,7 @@ public class Player : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         playerInput = new PlayerInput();
 
-        // 수정된 이벤트 초기화
-        OnShoot ??= new UnityEvent<Vector2, int, GameObject>(); // 초기화 수정
+        OnShoot ??= new UnityEvent<Vector2, int, GameObject>();
         OnMonsterEnter ??= new UnityEvent<Collider2D>();
         OnShootCanceled ??= new UnityEvent();
         OnTakeDamage ??= new UnityEvent();
@@ -85,8 +102,7 @@ public class Player : MonoBehaviour
         OnMonsterKilled ??= new UnityEvent();
         OnHitEnemy ??= new UnityEvent<Collider2D>();
         OnHeal ??= new UnityEvent();
-        OnGainExperience ??= new UnityEvent<int>(); // 이벤트 초기화
-
+        OnGainExperience ??= new UnityEvent<int>();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -112,7 +128,6 @@ public class Player : MonoBehaviour
         playerInput.Player.Enable();
         playerInput.Player.Move.performed += OnMovePerformed;
         playerInput.Player.Move.canceled += OnMoveCanceled;
-        playerInput.Player.Shoot.started += OnShootStarted;
         playerInput.Player.Shoot.performed += OnShootPerformed;
         playerInput.Player.Shoot.canceled += OnShootCanceledInputAction;
     }
@@ -122,7 +137,6 @@ public class Player : MonoBehaviour
         playerInput.Player.Disable();
         playerInput.Player.Move.performed -= OnMovePerformed;
         playerInput.Player.Move.canceled -= OnMoveCanceled;
-        playerInput.Player.Shoot.started -= OnShootStarted;
         playerInput.Player.Shoot.performed -= OnShootPerformed;
         playerInput.Player.Shoot.canceled -= OnShootCanceledInputAction;
 
@@ -152,69 +166,295 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 movement = moveInput * stat.currentPlayerSpeed * Time.fixedDeltaTime;
+        Vector2 movement = moveInput.normalized * stat.currentPlayerSpeed * Time.fixedDeltaTime;
         Vector2 newPosition = rb.position + movement;
         rb.MovePosition(newPosition);
     }
 
+    // 8방향을 나타내는 열거형 정의
+    private enum Direction8
+    {
+        North,
+        NorthEast,
+        East,
+        SouthEast,
+        South,
+        SouthWest,
+        West,
+        NorthWest
+    }
+
     private void UpdateAnimation()
     {
-        if (isShooting)
+        Vector2 currentDirection;
+
+        if (moveInput != Vector2.zero)
         {
-            PlayShootAnimation();
+            currentDirection = moveInput;
+            lastMoveDirection = moveInput.normalized; // 마지막 이동 방향 업데이트
+        }
+        else if (lastAttackDirection != Vector2.zero)
+        {
+            currentDirection = lastAttackDirection;
+        }
+        else if (lastMoveDirection != Vector2.zero)
+        {
+            currentDirection = lastMoveDirection;
         }
         else
         {
-            if (moveInput.y > 0)
-            {
-                SetSkinAndAnimation(backSkinName, idleUpperAnimName, true);
-            }
-            else if (moveInput.y < 0)
-            {
-                SetSkinAndAnimation(frontSkinName, idleUpperAnimName, true);
-            }
-            else if (moveInput.x != 0)
-            {
-                SetSkinAndAnimation(sideSkinName, idleUpperAnimName, true, moveInput.x < 0);
-            }
-            else
-            {
-                spineAnimationState.SetAnimation(1, idleUpperAnimName, true);
-            }
+            currentDirection = Vector2.down; // 기본값을 아래쪽으로 설정
         }
 
+        Direction8 direction = GetDirection8(currentDirection);
+
+        string skinName = GetSkinName(direction);
+        bool flipX = ShouldFlipX(direction);
+
+        skeleton.SetSkin(skinName);
         skeleton.SetSlotsToSetupPose();
+
+        // 좌우 반전을 게임 오브젝트의 로컬 스케일로 처리
+        transform.localScale = new Vector3(flipX ? 0.15f : -0.15f, 0.15f, 0.15f);
+
+        int upperBodyTrackIndex = 1; // 상체 애니메이션 트랙
+        int lowerBodyTrackIndex = 0; // 하체 애니메이션 트랙
 
         if (moveInput.magnitude > 0)
         {
-            if (!isMoving)
+            // 이동 중일 때
+            string upperAnimationName = GetUpperBodyAnimationName(direction, true);
+            string lowerAnimationName = GetLowerBodyAnimationName(direction, true);
+
+            // 상체 애니메이션 설정 (Idle 또는 이동 상체 애니메이션)
+            if (!isShooting)
             {
-                spineAnimationState.SetAnimation(0, walkLowerAnimName, true);
-                isMoving = true;
+                if (!spineAnimationState.GetCurrent(upperBodyTrackIndex)?.Animation?.Name.Equals(upperAnimationName) ?? true)
+                {
+                    spineAnimationState.SetAnimation(upperBodyTrackIndex, upperAnimationName, true);
+                }
+            }
+
+            // 하체 애니메이션 설정
+            if (!spineAnimationState.GetCurrent(lowerBodyTrackIndex)?.Animation?.Name.Equals(lowerAnimationName) ?? true)
+            {
+                spineAnimationState.SetAnimation(lowerBodyTrackIndex, lowerAnimationName, true);
             }
         }
         else
         {
-            if (isMoving)
+            // 멈춰 있을 때
+            string upperAnimationName = GetUpperIdleAnimationName(direction);
+            string lowerAnimationName = GetLowerIdleAnimationName(direction);
+
+            // 상체 애니메이션 설정 (Idle 애니메이션)
+            if (!isShooting)
             {
-                spineAnimationState.SetAnimation(0, idleLowerAnimName, true);
-                isMoving = false;
+                if (!spineAnimationState.GetCurrent(upperBodyTrackIndex)?.Animation?.Name.Equals(upperAnimationName) ?? true)
+                {
+                    spineAnimationState.SetAnimation(upperBodyTrackIndex, upperAnimationName, true);
+                }
+            }
+
+            // 하체 애니메이션 설정
+            if (!spineAnimationState.GetCurrent(lowerBodyTrackIndex)?.Animation?.Name.Equals(lowerAnimationName) ?? true)
+            {
+                spineAnimationState.SetAnimation(lowerBodyTrackIndex, lowerAnimationName, true);
             }
         }
     }
 
-    private void SetSkinAndAnimation(string skinName, string animationName, bool loop, bool flipX = false)
+
+
+    private string GetUpperIdleAnimationName(Direction8 direction)
     {
-        skeleton.SetSkin(skinName);
-        transform.localScale = new Vector3(flipX ? 0.1f : -0.1f, 0.1f, 0.1f);
-        spineAnimationState.SetAnimation(1, animationName, loop);
+        return upperIdleAnimName;
     }
+
+    private string GetLowerIdleAnimationName(Direction8 direction)
+    {
+        return lowerIdleAnimName;
+    }
+    private void PlayShootAnimation()
+    {
+        Direction8 direction = GetDirection8(shootDirection);
+
+        lastAttackDirection = shootDirection.normalized; // Update last attack direction
+
+        string skinName = GetSkinName(direction);
+        string attackAnimationName = GetAttackAnimationName(direction);
+        bool flipX = ShouldFlipX(direction);
+
+        skeleton.SetSkin(skinName);
+        skeleton.SetSlotsToSetupPose();
+
+        // Handle flipping by adjusting local scale
+        transform.localScale = new Vector3(flipX ? 0.15f : -0.15f, 0.15f, 0.15f);
+
+        int upperBodyTrackIndex = 1; // Upper body animation track
+
+        // Set attack animation on the upper body track
+        spineAnimationState.SetAnimation(upperBodyTrackIndex, attackAnimationName, false).Complete += delegate {
+            // Called when attack animation completes
+            if (!isShooting)
+            {
+                // Transition to upper body idle animation
+                string upperIdleAnimationName = GetUpperIdleAnimationName(direction);
+                spineAnimationState.SetAnimation(upperBodyTrackIndex, upperIdleAnimationName, true);
+            }
+        };
+    }
+
 
     private void OnSpineAnimationComplete(Spine.TrackEntry trackEntry)
     {
-        if (isShooting)
+        int upperBodyTrackIndex = 1; // 상체 애니메이션 트랙
+
+        if (trackEntry.TrackIndex == upperBodyTrackIndex && !isShooting)
         {
-            PlayShootAnimation();
+            UpdateAnimation();
+        }
+    }
+
+
+    private Direction8 GetDirection8(Vector2 direction)
+    {
+        if (direction == Vector2.zero)
+            return Direction8.South; // 기본값
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        angle = (angle + 360f) % 360f;
+
+        if (angle >= 22.5f && angle < 67.5f)
+            return Direction8.NorthEast;
+        else if (angle >= 67.5f && angle < 112.5f)
+            return Direction8.North;
+        else if (angle >= 112.5f && angle < 157.5f)
+            return Direction8.NorthWest;
+        else if (angle >= 157.5f && angle < 202.5f)
+            return Direction8.West;
+        else if (angle >= 202.5f && angle < 247.5f)
+            return Direction8.SouthWest;
+        else if (angle >= 247.5f && angle < 292.5f)
+            return Direction8.South;
+        else if (angle >= 292.5f && angle < 337.5f)
+            return Direction8.SouthEast;
+        else
+            return Direction8.East;
+    }
+
+    private string GetSkinName(Direction8 direction)
+    {
+        switch (direction)
+        {
+            case Direction8.North:
+                return backSkinName;
+            case Direction8.NorthEast:
+                return sideBackSkinName;
+            case Direction8.NorthWest:
+                return sideBackSkinName;
+            case Direction8.SouthEast:
+                return sideFrontSkinName;
+            case Direction8.SouthWest:
+                return sideFrontSkinName;
+            case Direction8.East:
+                return sideSkinName;
+            case Direction8.West:
+                return sideSkinName;
+            case Direction8.South:
+                return frontSkinName;
+            default:
+                return frontSkinName;
+        }
+    }
+
+    private bool ShouldFlipX(Direction8 direction)
+    {
+        switch (direction)
+        {
+            case Direction8.East:
+            case Direction8.NorthEast:
+            case Direction8.SouthEast:
+                return false; // 오른쪽을 향할 때
+            case Direction8.West:
+            case Direction8.NorthWest:
+            case Direction8.SouthWest:
+                return true; // 왼쪽을 향할 때
+            default:
+                return false;
+        }
+    }
+
+    private string GetAttackAnimationName(Direction8 direction)
+    {
+        switch (direction)
+        {
+            case Direction8.North:
+                return attackBackAnimName;
+            case Direction8.NorthEast:
+            case Direction8.NorthWest:
+                return attackSideBackAnimName;
+            case Direction8.SouthEast:
+            case Direction8.SouthWest:
+                return attackSideFrontAnimName;
+            case Direction8.East:
+            case Direction8.West:
+                return attackSideAnimName;
+            case Direction8.South:
+                return attackFrontAnimName;
+            default:
+                return attackFrontAnimName;
+        }
+    }
+
+
+    private string GetUpperBodyAnimationName(Direction8 direction, bool isMoving)
+    {
+        if (isMoving)
+        {
+            return GetUpperWalkAnimationName(direction);
+        }
+        else
+        {
+            return GetUpperIdleAnimationName(direction);
+        }
+    }
+
+    private string GetLowerBodyAnimationName(Direction8 direction, bool isMoving)
+    {
+        if (isMoving)
+        {
+            return GetLowerWalkAnimationName(direction);
+        }
+        else
+        {
+            return GetLowerIdleAnimationName(direction);
+        }
+    }
+
+    private string GetUpperWalkAnimationName(Direction8 direction)
+    {
+        switch (direction)
+        {
+            case Direction8.North:
+            case Direction8.NorthEast:
+            case Direction8.NorthWest:
+                return upperWalkBackAnimName;
+            default:
+                return upperWalkStraightAnimName;
+        }
+    }
+
+    private string GetLowerWalkAnimationName(Direction8 direction)
+    {
+        switch (direction)
+        {
+            case Direction8.North:
+            case Direction8.NorthEast:
+            case Direction8.NorthWest:
+                return walkBackAnimName;
+            default:
+                return walkStraightAnimName;
         }
     }
 
@@ -269,6 +509,7 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
@@ -303,7 +544,24 @@ public class Player : MonoBehaviour
         stat.Heal(amount);
         OnHeal.Invoke(); // 체력 회복 시 이벤트 호출
         UpdateUI();
+
+        // 힐 이펙트 생성
+        if (healEffectPrefab != null)
+        {
+            // 플레이어의 자식으로 힐 이펙트를 인스턴스화
+            GameObject healEffect = Instantiate(healEffectPrefab, transform);
+
+            healEffect.transform.localRotation = Quaternion.identity; // 기본 회전
+
+            Destroy(healEffect, 1f);
+        }
+        else
+        {
+            Debug.LogWarning("healEffectPrefab이 할당되지 않았습니다.");
+        }
     }
+
+
 
     public int GetCurrentHP()
     {
@@ -328,8 +586,6 @@ public class Player : MonoBehaviour
         {
             uiManager.UpdateExperienceUI();
             uiManager.Initialize(this); // UI 매니저 초기화 호출
-            uiManager.Initialize(this);
-            uiManager.UpdateExperienceUI();
             uiManager.UpdateHealthUI();
             uiManager.UpdateCurrencyUI(stat.currentCurrency);
         }
@@ -359,33 +615,26 @@ public class Player : MonoBehaviour
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector2.zero;
+        UpdateAnimation(); // 이동이 멈췄을 때 애니메이션 업데이트
     }
 
-    private void OnShootStarted(InputAction.CallbackContext context)
+
+    private void OnShootPerformed(InputAction.CallbackContext context)
     {
-        if (context.control != null)
+        if (!isShooting)
         {
-            Vector2 newDirection = context.ReadValue<Vector2>();
-            newDirection = ConvertToFourDirections(newDirection);
-            if (newDirection != Vector2.zero)
-            {
-                shootDirection = newDirection;
-                isShooting = true;
-                StartCoroutine(ShootContinuously());
-            }
+            isShooting = true;
+            StartCoroutine(DelayedShootStart());
         }
     }
 
-    private Vector2 ConvertToFourDirections(Vector2 direction)
+    private IEnumerator DelayedShootStart()
     {
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-        {
-            return new Vector2(Mathf.Sign(direction.x), 0);
-        }
-        else
-        {
-            return new Vector2(0, Mathf.Sign(direction.y));
-        }
+        // 짧은 시간 동안 대기하여 입력을 수집합니다.
+        yield return new WaitForSeconds(0.05f); // 50밀리초 대기
+
+        UpdateShootDirection(); // 대기 후에 공격 방향 업데이트
+        StartCoroutine(ShootContinuously());
     }
 
     private IEnumerator ShootContinuously()
@@ -394,62 +643,45 @@ public class Player : MonoBehaviour
         {
             if (Time.time >= lastShootTime + stat.currentShootCooldown)
             {
+                UpdateShootDirection();
                 Shoot(shootDirection, stat.currentProjectileType);
                 lastShootTime = Time.time;
 
                 PlayShootAnimation();
-
-                if (hasNextShootDirection)
-                {
-                    shootDirection = nextShootDirection;
-                    hasNextShootDirection = false;
-                }
             }
 
             yield return null;
         }
     }
 
-    private void PlayShootAnimation()
-    {
-        int trackIndex = 2;
 
-        if (shootDirection.y > 0)
+    private void UpdateShootDirection()
+    {
+        Vector2 newDirection = playerInput.Player.Shoot.ReadValue<Vector2>();
+        if (newDirection == Vector2.zero)
         {
-            skeleton.SetSkin(backSkinName);
-            spineAnimationState.SetAnimation(trackIndex, shootBackUpperAnimName, false);
+            newDirection = moveInput;
         }
-        else if (shootDirection.y < 0)
+
+        if (newDirection != Vector2.zero)
         {
-            skeleton.SetSkin(frontSkinName);
-            spineAnimationState.SetAnimation(trackIndex, shootFrontUpperAnimName, false);
+            shootDirection = newDirection.normalized;
         }
         else
         {
-            skeleton.SetSkin(sideSkinName);
-            transform.localScale = new Vector3(shootDirection.x < 0 ? 0.1f : -0.1f, 0.1f, 0.1f);
-            spineAnimationState.SetAnimation(trackIndex, shootSideUpperAnimName, false);
-        }
-
-        skeleton.SetSlotsToSetupPose();
-    }
-
-    private void OnShootPerformed(InputAction.CallbackContext context)
-    {
-        Vector2 newDirection = context.ReadValue<Vector2>();
-        newDirection = ConvertToFourDirections(newDirection);
-        if (newDirection != Vector2.zero)
-        {
-            nextShootDirection = newDirection;
-            hasNextShootDirection = true;
+            shootDirection = GetFacingDirection();
         }
     }
+
+
 
     private void OnShootCanceledInputAction(InputAction.CallbackContext context)
     {
         isShooting = false;
         OnShootCanceled.Invoke();
+        UpdateAnimation();
     }
+
 
     public void Shoot(Vector2 direction, int prefabIndex)
     {
@@ -459,22 +691,15 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // 3방향으로 투사체 발사
-        float angleOffset = 10f; // 각도 오프셋 설정
+        // 중앙 방향과 좌우로 10도 회전된 방향 계산
         Vector2[] shootDirections = new Vector2[3];
+        shootDirections[0] = direction; // 중앙
+        shootDirections[1] = RotateVector(direction, -10f); // 좌측 10도
+        shootDirections[2] = RotateVector(direction, 10f);  // 우측 10도
 
-        // 중앙 방향
-        shootDirections[0] = direction;
-
-        // 왼쪽 방향
-        shootDirections[1] = RotateVector(direction, angleOffset);
-
-        // 오른쪽 방향
-        shootDirections[2] = RotateVector(direction, -angleOffset);
-
-        // 각 방향으로 투사체 생성
-        foreach (var dir in shootDirections)
+        foreach (Vector2 dir in shootDirections)
         {
+            // 투사체 발사
             GameObject projectile = objectPool.GetObject(prefabIndex);
             if (projectile == null)
             {
@@ -499,30 +724,28 @@ public class Player : MonoBehaviour
                 int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
 
                 // Projectile.Initialize의 5개 매개변수에 맞게 전달
-                projScript.Initialize(stat, this, false, 1.0f, stat.currentPlayerDamage);
-                projScript.SetDirection(dir);
+                projScript.Initialize(stat, this, false, 1.0f, adjustedDamage);
+                projScript.SetDirection(dir.normalized);
             }
             else
             {
-                Debug.LogError("CardStrike: Projectile 스크립트를 찾을 수 없습니다.");
+                Debug.LogError("Projectile 스크립트를 찾을 수 없습니다.");
             }
 
-            // 수정된 OnShoot 이벤트 호출 (프로젝트트 전달)
-            OnShoot.Invoke(dir, prefabIndex, projectile); // 세 번째 인수 추가
+            OnShoot.Invoke(dir.normalized, prefabIndex, projectile);
         }
     }
-
     private Vector2 RotateVector(Vector2 vector, float degrees)
     {
         float radians = degrees * Mathf.Deg2Rad;
-        float sin = Mathf.Sin(radians);
         float cos = Mathf.Cos(radians);
-
-        float x = vector.x * cos - vector.y * sin;
-        float y = vector.x * sin + vector.y * cos;
-
-        return new Vector2(x, y);
+        float sin = Mathf.Sin(radians);
+        return new Vector2(
+            vector.x * cos - vector.y * sin,
+            vector.x * sin + vector.y * cos
+        );
     }
+
 
     public bool CanStun()
     {
@@ -543,7 +766,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // 이동도 사격도 하지 않을 때 마지막 이동 방향을 반환
             return lastMoveDirection;
         }
     }

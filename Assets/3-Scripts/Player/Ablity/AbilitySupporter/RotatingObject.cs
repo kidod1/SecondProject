@@ -45,11 +45,10 @@ public class RotatingObject : MonoBehaviour
             Debug.LogError("RotatingObject: 전달된 프로젝트트가 null입니다.");
             return;
         }
-
         Projectile projScript = projectile.GetComponent<Projectile>();
         if (projScript != null)
         {
-            projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier);
+            projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier, playerShooting.stat.currentPlayerDamage);
             projScript.SetDirection(direction);
         }
         else
