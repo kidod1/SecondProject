@@ -9,8 +9,8 @@ public class Barrier : Ability
     [Tooltip("방패의 프리팹")]
     public GameObject shieldPrefab;
 
-    [Tooltip("방패 비활성화 이펙트 프리팹")]
-    public GameObject shieldDeactivateEffectPrefab;
+    [Tooltip("실드 브레이크 이펙트 프리팹")] // 추가된 변수
+    public GameObject shieldBreakEffectPrefab;
 
     [Header("Cooldown Settings")]
     [Tooltip("각 레벨에서 방패의 쿨타임 시간 (초)")]
@@ -120,7 +120,7 @@ public class Barrier : Ability
     {
         if (playerInstance == null)
         {
-            Debug.LogWarning("Barrier Deactivate: playerInstance가 설정되지 않았습니다. Apply 메서드를 먼저 호출하세요.");
+            Debug.LogWarning("Barrier Deactivate: playerInstance가 설정되지 않았습니다.");
             return;
         }
 
@@ -128,17 +128,22 @@ public class Barrier : Ability
 
         if (activeShield != null)
         {
-            Destroy(activeShield);
-
-            if (shieldDeactivateEffectPrefab != null)
+            // 실드 브레이크 이펙트 생성
+            if (shieldBreakEffectPrefab != null)
             {
-                // 이펙트 생성
-                GameObject effectInstance = Instantiate(shieldDeactivateEffectPrefab, playerInstance.transform.position, Quaternion.identity);
-                Destroy(effectInstance, 1f);
+                Instantiate(shieldBreakEffectPrefab, activeShield.transform.position, Quaternion.identity);
             }
+            else
+            {
+                Debug.LogWarning("Barrier: shieldBreakEffectPrefab이 할당되지 않았습니다.");
+            }
+
+            // 실드 오브젝트 파괴
+            Destroy(activeShield);
+            activeShield = null;
         }
 
-        // 방패 비활성화 후 쿨타임 시작
+        // 쿨다운 시작
         StartCooldown();
     }
 
@@ -149,7 +154,6 @@ public class Barrier : Ability
     {
         return isShieldActive;
     }
-
     /// <summary>
     /// 쿨타임을 시작합니다. 이미 쿨타임이 진행 중인 경우 중복으로 시작하지 않습니다.
     /// </summary>
@@ -206,12 +210,12 @@ public class Barrier : Ability
         if (currentLevel < maxLevel)
         {
             int currentCooldown = GetNextLevelIncrease();
-            return $"{baseDescription}{Environment.NewLine}Level {currentLevel + 1}: {currentCooldown}초 쿨타임";
+            return $"{baseDescription}\nLevel {currentLevel + 1}: {currentCooldown}초 쿨타임";
         }
         else
         {
             int finalCooldown = GetNextLevelIncrease();
-            return $"{baseDescription}{Environment.NewLine}(Max Level: {finalCooldown}초 쿨타임)";
+            return $"{baseDescription}\n(Max Level: {finalCooldown}초 쿨타임)";
         }
     }
 
@@ -222,12 +226,6 @@ public class Barrier : Ability
     {
         base.ResetLevel();
 
-        if (playerInstance == null)
-        {
-            Debug.LogWarning("Barrier ResetLevel: playerInstance가 설정되지 않았습니다. Apply 메서드를 먼저 호출하세요.");
-            return;
-        }
-
         if (cooldownCoroutine != null)
         {
             playerInstance.StopCoroutine(cooldownCoroutine);
@@ -237,6 +235,7 @@ public class Barrier : Ability
         DeactivateBarrierVisual();
         currentLevel = 0;
     }
+
     private void OnValidate()
     {
         if (cooldownTimes.Length != maxLevel)

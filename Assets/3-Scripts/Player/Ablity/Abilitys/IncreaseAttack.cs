@@ -22,7 +22,8 @@ public class IncreaseAttack : Ability
         // 현재 레벨에 따른 공격력 증가 적용
         if (currentLevel < attackIncreases.Length)
         {
-            player.stat.currentPlayerDamage += attackIncreases[currentLevel];
+            player.stat.defaultPlayerDamage += attackIncreases[currentLevel];
+            player.stat.currentPlayerDamage = player.stat.defaultPlayerDamage;
         }
         else
         {
@@ -44,7 +45,8 @@ public class IncreaseAttack : Ability
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < attackIncreases.Length)
             {
-                player.stat.currentPlayerDamage += attackIncreases[currentLevel];
+                player.stat.defaultPlayerDamage += attackIncreases[currentLevel];
+                player.stat.currentPlayerDamage = player.stat.defaultPlayerDamage;
             }
         }
         else

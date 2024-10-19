@@ -16,6 +16,9 @@ public class CoinBetting : Ability
     [Tooltip("생성할 코인 폭탄 프리팹")]
     public GameObject coinBombPrefab;
 
+    [Tooltip("폭발 시 생성할 이펙트 프리팹")]
+    public GameObject explosionEffectPrefab; // 추가된 변수
+
     private Player playerInstance;
     private Coroutine bombCoroutine;
 
@@ -41,7 +44,7 @@ public class CoinBetting : Ability
     }
 
     /// <summary>
-    /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 피해량이 증가합니다.
+    /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 쿨타임이 감소합니다.
     /// </summary>
     public override void Upgrade()
     {
@@ -123,7 +126,8 @@ public class CoinBetting : Ability
         CoinBomb coinBombScript = coinBombInstance.GetComponent<CoinBomb>();
         if (coinBombScript != null)
         {
-            coinBombScript.Initialize(damage, bombDuration);
+            // 폭발 이펙트 프리팹을 함께 초기화
+            coinBombScript.Initialize(damage, bombDuration, explosionEffectPrefab);
         }
         else
         {
@@ -151,5 +155,4 @@ public class CoinBetting : Ability
                $"쿨다운: {cooldown}초\n" +
                $"폭탄 지속 시간: {bombDuration}초";
     }
-
 }

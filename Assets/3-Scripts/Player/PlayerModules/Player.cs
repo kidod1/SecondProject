@@ -49,6 +49,14 @@ public class Player : MonoBehaviour
     [SpineAnimation] public string upperIdleAnimName;
     [SpineAnimation] public string lowerIdleAnimName;
 
+    [Header("Game Start Animations")]
+    // === 추가된 부분 시작 ===
+    [SpineAnimation] public string gameStartAnim1;
+    [SpineAnimation] public string gameStartAnim2;
+    [SpineAnimation] public string gameStartAnim3;
+    private bool isGameStartAnimationPlaying = false;
+    // === 추가된 부분 끝 ===
+
     [Header("Heal Effect")]
     [SerializeField]
     private GameObject healEffectPrefab;
@@ -109,7 +117,7 @@ public class Player : MonoBehaviour
         skeleton = skeletonAnimation.Skeleton;
         spineAnimationState = skeletonAnimation.AnimationState;
 
-        skeleton.SetSkin(frontSkinName);
+        skeleton.SetSkin(sideSkinName);
         skeleton.SetSlotsToSetupPose();
 
         spineAnimationState.Complete += OnSpineAnimationComplete;
@@ -121,20 +129,85 @@ public class Player : MonoBehaviour
         InitializePlayer();
         UpdateUI();
         SavePlayerData();
+
+        // === 추가된 부분 시작 ===
+        PlayRandomGameStartAnimation();
+        // === 추가된 부분 끝 ===
     }
 
-    private void OnEnable()
+    // === 추가된 부분 시작 ===
+    private void PlayRandomGameStartAnimation()
     {
+        string[] gameStartAnimations = { gameStartAnim1, gameStartAnim2, gameStartAnim3 };
+        int randomIndex = UnityEngine.Random.Range(0, gameStartAnimations.Length);
+        string selectedAnimation = gameStartAnimations[randomIndex];
+
+        isGameStartAnimationPlaying = true;
+
+        // 플레이어 입력 비활성화
+        playerInput.Player.Disable();
+
+        // SkeletonAnimation의 자동 업데이트 비활성화
+        skeletonAnimation.enabled = false;
+
+        // 높은 트랙 인덱스에서 애니메이션 재생
+        int trackIndex = 1; // 트랙 인덱스를 최대한 높게 설정
+        spineAnimationState.SetAnimation(trackIndex, selectedAnimation, false);
+
+        // 애니메이션 완료 시 콜백 설정
+        Spine.TrackEntry trackEntry = spineAnimationState.GetCurrent(trackIndex);
+        if (trackEntry != null)
+        {
+            trackEntry.Complete += OnGameStartAnimationComplete;
+        }
+    }
+
+
+    private void OnGameStartAnimationComplete(Spine.TrackEntry trackEntry)
+    {
+        isGameStartAnimationPlaying = false;
+        trackEntry.Complete -= OnGameStartAnimationComplete;
+
+        // SkeletonAnimation의 자동 업데이트 재활성화
+        skeletonAnimation.enabled = true;
+
+        // 플레이어 입력 활성화
         playerInput.Player.Enable();
+
+        // 입력 이벤트 핸들러 연결
         playerInput.Player.Move.performed += OnMovePerformed;
         playerInput.Player.Move.canceled += OnMoveCanceled;
         playerInput.Player.Shoot.performed += OnShootPerformed;
         playerInput.Player.Shoot.canceled += OnShootCanceledInputAction;
+
+        // 애니메이션 업데이트
+        UpdateAnimation();
     }
+
+
+
+    // === 추가된 부분 끝 ===
+
+    private void OnEnable()
+    {
+        if (!isGameStartAnimationPlaying)
+        {
+            playerInput.Player.Enable();
+
+            playerInput.Player.Move.performed += OnMovePerformed;
+            playerInput.Player.Move.canceled += OnMoveCanceled;
+            playerInput.Player.Shoot.performed += OnShootPerformed;
+            playerInput.Player.Shoot.canceled += OnShootCanceledInputAction;
+        }
+
+        spineAnimationState.Complete += OnSpineAnimationComplete;
+    }
+
 
     private void OnDisable()
     {
         playerInput.Player.Disable();
+
         playerInput.Player.Move.performed -= OnMovePerformed;
         playerInput.Player.Move.canceled -= OnMoveCanceled;
         playerInput.Player.Shoot.performed -= OnShootPerformed;
@@ -143,26 +216,37 @@ public class Player : MonoBehaviour
         spineAnimationState.Complete -= OnSpineAnimationComplete;
     }
 
+
     private void Update()
     {
-        if (!isShooting)
+        if (isGameStartAnimationPlaying)
         {
-            UpdateAnimation();
+            // 수동으로 SkeletonAnimation 업데이트
+            skeletonAnimation.Update(Time.unscaledDeltaTime);
+            skeletonAnimation.LateUpdate();
         }
-
-        if (Keyboard.current.rKey.wasPressedThisFrame)
+        else
         {
-            if (currentSynergyAbility != null)
+            if (!isShooting)
             {
-                Debug.Log($"Activating ability: {currentSynergyAbility.abilityName}");
-                currentSynergyAbility.Activate(this);
+                UpdateAnimation();
             }
-            else
+
+            if (Keyboard.current.rKey.wasPressedThisFrame)
             {
-                Debug.Log("No synergy ability assigned.");
+                if (currentSynergyAbility != null)
+                {
+                    Debug.Log($"Activating ability: {currentSynergyAbility.abilityName}");
+                    currentSynergyAbility.Activate(this);
+                }
+                else
+                {
+                    Debug.Log("No synergy ability assigned.");
+                }
             }
         }
     }
+
 
     private void FixedUpdate()
     {
@@ -186,6 +270,8 @@ public class Player : MonoBehaviour
 
     private void UpdateAnimation()
     {
+        if (isGameStartAnimationPlaying)
+            return;
         Vector2 currentDirection;
 
         if (moveInput != Vector2.zero)
@@ -264,8 +350,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
     private string GetUpperIdleAnimationName(Direction8 direction)
     {
         return upperIdleAnimName;
@@ -275,8 +359,11 @@ public class Player : MonoBehaviour
     {
         return lowerIdleAnimName;
     }
+
     private void PlayShootAnimation()
     {
+        if (isGameStartAnimationPlaying)
+            return;
         Direction8 direction = GetDirection8(shootDirection);
 
         lastAttackDirection = shootDirection.normalized; // Update last attack direction
@@ -305,7 +392,6 @@ public class Player : MonoBehaviour
         };
     }
 
-
     private void OnSpineAnimationComplete(Spine.TrackEntry trackEntry)
     {
         int upperBodyTrackIndex = 1; // 상체 애니메이션 트랙
@@ -315,7 +401,6 @@ public class Player : MonoBehaviour
             UpdateAnimation();
         }
     }
-
 
     private Direction8 GetDirection8(Vector2 direction)
     {
@@ -350,15 +435,12 @@ public class Player : MonoBehaviour
             case Direction8.North:
                 return backSkinName;
             case Direction8.NorthEast:
-                return sideBackSkinName;
             case Direction8.NorthWest:
                 return sideBackSkinName;
             case Direction8.SouthEast:
-                return sideFrontSkinName;
             case Direction8.SouthWest:
                 return sideFrontSkinName;
             case Direction8.East:
-                return sideSkinName;
             case Direction8.West:
                 return sideSkinName;
             case Direction8.South:
@@ -406,7 +488,6 @@ public class Player : MonoBehaviour
                 return attackFrontAnimName;
         }
     }
-
 
     private string GetUpperBodyAnimationName(Direction8 direction, bool isMoving)
     {
@@ -470,13 +551,9 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        GameObject activeBarrier = GameObject.FindGameObjectWithTag("Barrier");
-
-        if (activeBarrier != null)
+        if (barrierAbility != null && barrierAbility.IsShieldActive())
         {
-            Destroy(activeBarrier);
             barrierAbility.DeactivateBarrierVisual();
-            barrierAbility.StartCooldown();
             return;
         }
 
@@ -561,8 +638,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
     public int GetCurrentHP()
     {
         return stat.currentHP;
@@ -618,7 +693,6 @@ public class Player : MonoBehaviour
         UpdateAnimation(); // 이동이 멈췄을 때 애니메이션 업데이트
     }
 
-
     private void OnShootPerformed(InputAction.CallbackContext context)
     {
         if (!isShooting)
@@ -654,7 +728,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     private void UpdateShootDirection()
     {
         Vector2 newDirection = playerInput.Player.Shoot.ReadValue<Vector2>();
@@ -673,15 +746,12 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
     private void OnShootCanceledInputAction(InputAction.CallbackContext context)
     {
         isShooting = false;
         OnShootCanceled.Invoke();
         UpdateAnimation();
     }
-
 
     public void Shoot(Vector2 direction, int prefabIndex)
     {
@@ -724,7 +794,7 @@ public class Player : MonoBehaviour
                 int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
 
                 // Projectile.Initialize의 5개 매개변수에 맞게 전달
-                projScript.Initialize(stat, this, false, 1.0f, adjustedDamage);
+                projScript.Initialize(stat, this, false, 1.0f, stat.currentPlayerDamage);
                 projScript.SetDirection(dir.normalized);
             }
             else
@@ -735,6 +805,7 @@ public class Player : MonoBehaviour
             OnShoot.Invoke(dir.normalized, prefabIndex, projectile);
         }
     }
+
     private Vector2 RotateVector(Vector2 vector, float degrees)
     {
         float radians = degrees * Mathf.Deg2Rad;
@@ -745,7 +816,6 @@ public class Player : MonoBehaviour
             vector.x * sin + vector.y * cos
         );
     }
-
 
     public bool CanStun()
     {

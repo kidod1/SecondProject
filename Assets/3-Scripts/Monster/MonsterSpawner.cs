@@ -75,12 +75,15 @@ public class MonsterSpawner : MonoBehaviour
 
     private IEnumerator SpawnWaves()
     {
+        yield return new WaitForSeconds(3f);
         while (currentWaveIndex < waves.Count)
         {
             Wave currentWave = waves[currentWaveIndex];
             Transform[] spawnPointsToUse = currentWave.customSpawnPoints.Length > 0 ? currentWave.customSpawnPoints : spawnPoints;
 
             // *** 웨이브 시작 메시지 표시 ***
+            float messageDisplayDuration = 0.7f; // 메시지 표시 시간 설정 (예: 0.7초)
+
             if (waveNumberText != null)
             {
                 waveNumberText.text = $"웨이브 {currentWaveIndex + 1}";
@@ -93,7 +96,7 @@ public class MonsterSpawner : MonoBehaviour
                     Debug.Log("Start웨이브 트리거 발동");
                 }
 
-                StartCoroutine(FadeOutWaveNumber(0.7f)); // 0.7초 후에 페이드 아웃 시작
+                StartCoroutine(FadeOutWaveNumber(messageDisplayDuration)); // 메시지 표시 시간 후에 페이드 아웃 시작
             }
             else
             {
@@ -101,6 +104,10 @@ public class MonsterSpawner : MonoBehaviour
             }
             // *** 웨이브 시작 메시지 표시 끝 ***
 
+            // 메시지 표시 시간만큼 대기
+            yield return new WaitForSeconds(messageDisplayDuration);
+
+            // 몬스터 스폰 시작
             foreach (var spawnInfo in currentWave.spawnInfos)
             {
                 for (int i = 0; i < spawnInfo.count; i++)
@@ -128,10 +135,10 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 씬에 미리 배치된 중간 보스 오브젝트를 활성화합니다.
-    /// </summary>
-    private void SpawnMidBoss()
+        /// <summary>
+        /// 씬에 미리 배치된 중간 보스 오브젝트를 활성화합니다.
+        /// </summary>
+        private void SpawnMidBoss()
     {
         if (midBossPrefab != null)
         {
