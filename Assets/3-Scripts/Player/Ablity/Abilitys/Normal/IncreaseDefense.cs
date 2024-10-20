@@ -35,7 +35,7 @@ public class IncreaseDefense : Ability
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < defenseIncreases.Length)
             {
-                player.stat.currentDefense += defenseIncreases[currentLevel];
+                player.stat.currentDefense += defenseIncreases[currentLevel - 1];
             }
         }
     }
@@ -46,15 +46,23 @@ public class IncreaseDefense : Ability
     /// <returns>능력의 설명 문자열</returns>
     public override string GetDescription()
     {
+        // 총 방어력 증가량 계산
+        int totalIncrease = 0;
+        for (int i = 0; i < currentLevel; i++)
+        {
+            if (i < defenseIncreases.Length)
+                totalIncrease += defenseIncreases[i];
+        }
+
         if (currentLevel < defenseIncreases.Length)
         {
             int currentIncrease = defenseIncreases[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 방어력 +{currentIncrease}";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 방어력 +{currentIncrease}\n지금까지 총 {totalIncrease}만큼 상승";
         }
         else
         {
-            int finalIncrease = defenseIncreases[defenseIncreases.Length - 1];
-            return $"{baseDescription}\nMax Level: 방어력 +{finalIncrease}";
+            int finalIncrease = defenseIncreases.Length > 0 ? defenseIncreases[defenseIncreases.Length - 1] : 0;
+            return $"{baseDescription}\nMax Level: 방어력 +{finalIncrease}\n지금까지 총 {totalIncrease}만큼 상승";
         }
     }
 

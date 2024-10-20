@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4969147204634151223}
@@ -75,7 +75,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2406a64f3f612904b9521c4d4fc9648b, type: 2}
+  - {fileID: 2100000, guid: 3d94743db1f2f234ea40e8ff1a273890, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 3d73d8eed57992642943ff698828cf26, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: c5ded7d3731a2b84db702dd5f4494679, type: 2}
   initialSkinName: front
   initialFlipX: 0
   initialFlipY: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: 
+  _animationName: nomal_(side_only)/game_start/game_start_1
   loop: 1
   timeScale: 1
 --- !u!114 &3779828176673064323
@@ -243,7 +243,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.051759005, y: 3.8529973}
+  m_Offset: {x: -0.22657418, y: 3.7655888}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -254,7 +254,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.59027, y: 8.849968}
+  m_Size: {x: 2.968042, y: 8.675152}
   m_EdgeRadius: 0
 --- !u!114 &495770380768138954
 MonoBehaviour:
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}
-  currentSynergyAbility: {fileID: 0}
+  currentSynergyAbility: {fileID: 11400000, guid: ce7d564935c5a634c95641818d15d16f, type: 2}
   objectPool: {fileID: 5018752986689712375}
   abilityManager: {fileID: 287484265595492415}
   barrierAbility: {fileID: 11400000, guid: 4d43d418a14cc9b47a713a1e2655fb46, type: 2}
@@ -293,17 +293,44 @@ MonoBehaviour:
   frontSkinName: front
   backSkinName: back
   sideSkinName: side
-  walkLowerAnimName: under_body/under_walking
-  idleLowerAnimName: under_body/under_idle
-  shootFrontUpperAnimName: top_body/shot/front_shot
-  shootBackUpperAnimName: top_body/shot/back_shot
-  shootSideUpperAnimName: top_body/shot/side_shot
-  idleUpperAnimName: top_body/top_idle
+  sideFrontSkinName: side_front
+  sideBackSkinName: side_back
+  walkBackAnimName: under_body/move/d_back_move
+  walkBackStopAnimName: under_body/move/d_back_stop
+  walkStraightAnimName: under_body/move/d_straight_move
+  walkStraightStopAnimName: under_body/move/d_straight_stop
+  upperWalkBackAnimName: upper_body/move/u_back_move
+  upperWalkBackStopAnimName: upper_body/move/u_back_stop
+  upperWalkStraightAnimName: upper_body/move/u_straight_move
+  upperWalkStraightStopAnimName: upper_body/move/u_straight_stop
+  attackFrontAnimName: upper_body/shot/front_shot
+  attackBackAnimName: upper_body/shot/back_shot
+  attackSideAnimName: upper_body/shot/side_shot
+  attackSideFrontAnimName: upper_body/shot/sidefront_shot
+  attackSideBackAnimName: upper_body/shot/sideback_shot
+  upperIdleAnimName: upper_body/upper_idle
+  lowerIdleAnimName: under_body/under_idle
+  gameStartAnim1: nomal_(side_only)/game_start/game_start_1
+  gameStartAnim2: nomal_(side_only)/game_start/game_start_2
+  gameStartAnim3: nomal_(side_only)/game_start/game_start_3
+  healEffectPrefab: {fileID: 4827307089432063622, guid: d3a11797afca8eb42a674e1ffb0ebc67, type: 3}
   isShooting: 0
   shootPoint: {fileID: 4969147204634151223}
   OnShoot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: PlaySpecificSound
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: d2417c94855307740a3125bb6a29ee32, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnLevelUp:
     m_PersistentCalls:
       m_Calls: []
@@ -358,6 +385,10 @@ MonoBehaviour:
   experienceBarFullRect: {fileID: 0}
   abilitiesContainer: {fileID: 0}
   abilityIconPrefab: {fileID: 555140338843336192, guid: 42a03bad828053b46a5290f072b41f6f, type: 3}
+  bossHealthUIPanel: {fileID: 0}
+  bossHealthText: {fileID: 0}
+  bossHealthBarMaskRect: {fileID: 0}
+  bossHealthBarFullRect: {fileID: 0}
 --- !u!114 &5018752986689712375
 MonoBehaviour:
   m_ObjectHideFlags: 0

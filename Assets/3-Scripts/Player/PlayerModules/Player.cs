@@ -221,8 +221,7 @@ public class Player : MonoBehaviour
     {
         if (isGameStartAnimationPlaying)
         {
-            // 수동으로 SkeletonAnimation 업데이트
-            skeletonAnimation.Update(Time.unscaledDeltaTime);
+            skeletonAnimation.Update(Time.deltaTime);
             skeletonAnimation.LateUpdate();
         }
         else

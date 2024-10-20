@@ -18,9 +18,16 @@ public class IncreaseSpeed : Ability
     // 어빌리티 업그레이드
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel)
+        if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
             currentLevel++;
+
+            // 레벨 업 시 이동 속도 증가 적용
+            Player player = FindObjectOfType<Player>();
+            if (player != null && currentLevel < speedIncreases.Length)
+            {
+                player.stat.currentPlayerSpeed += speedIncreases[currentLevel - 1];
+            }
         }
         else
         {
@@ -41,19 +48,28 @@ public class IncreaseSpeed : Ability
     // 능력의 설명을 반환
     public override string GetDescription()
     {
+        // 총 이동 속도 증가량 계산
+        float totalIncrease = 0f;
+        for (int i = 0; i < currentLevel; i++)
+        {
+            if (i < speedIncreases.Length)
+                totalIncrease += speedIncreases[i];
+        }
+        float totalSpeedIncrease = Mathf.Round(totalIncrease * 100f) / 100f; // 소수점 두 자리까지 반올림
+
         if (currentLevel < maxLevel && currentLevel < speedIncreases.Length)
         {
             float speedIncrease = speedIncreases[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease} 단위";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease} 단위\n지금까지 총 {totalSpeedIncrease} 단위 상승";
         }
         else if (currentLevel == maxLevel && currentLevel < speedIncreases.Length)
         {
             float speedIncrease = speedIncreases[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease} 단위\n최대 레벨 도달";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease} 단위\n지금까지 총 {totalSpeedIncrease} 단위 상승\n최대 레벨 도달";
         }
         else
         {
-            return $"{baseDescription}\n최대 레벨 도달";
+            return $"{baseDescription}\n최대 레벨 도달\n총 {totalSpeedIncrease} 단위 상승";
         }
     }
 
@@ -61,7 +77,5 @@ public class IncreaseSpeed : Ability
     public override void ResetLevel()
     {
         base.ResetLevel();
-        // 필요 시 플레이어의 속도 초기화 로직 추가
-        // 예: player.stat.currentPlayerSpeed -= speedIncreases[currentLevel - 1];
     }
 }

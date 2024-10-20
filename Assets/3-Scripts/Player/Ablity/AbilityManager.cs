@@ -150,39 +150,8 @@ public class AbilityManager : MonoBehaviour
         {
             Debug.LogError("AbilityManager: highlightImage가 할당되지 않았습니다.");
         }
-        LoadCategoryButtonImages();
     }
 
-    private void LoadCategoryButtonImages()
-    {
-        // 카테고리 이름 배열 (Null 포함)
-        string[] categories = { "Lust", "Envy", "Sloth", "Gluttony", "Greed", "Wrath", "Pride", "Null" };
-
-        foreach (string category in categories)
-        {
-            // 일반 능력의 버튼 이미지 로드
-            Sprite buttonImage = Resources.Load<Sprite>($"CategoryButtonImages/{category}");
-            if (buttonImage != null)
-            {
-                categoryButtonImages.Add(category, buttonImage);
-            }
-            else
-            {
-                Debug.LogWarning($"Button image for category '{category}' not found.");
-            }
-
-            // 시너지 능력의 버튼 이미지 로드
-            Sprite synergyButtonImage = Resources.Load<Sprite>($"SynergyCategoryButtonImages/{category}");
-            if (synergyButtonImage != null)
-            {
-                synergyCategoryButtonImages.Add(category, synergyButtonImage);
-            }
-            else
-            {
-                Debug.LogWarning($"Synergy button image for category '{category}' not found.");
-            }
-        }
-    }
 
     private void OnEnable()
     {
