@@ -39,13 +39,12 @@ public class IncreaseAttack : Ability
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
             currentLevel++;
-            Debug.Log($"IncreaseAttack 업그레이드: 현재 레벨 {currentLevel + 1}");
 
             // 레벨 업 시 공격력 증가 적용
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < attackIncreases.Length)
             {
-                player.stat.defaultPlayerDamage += attackIncreases[currentLevel];
+                player.stat.defaultPlayerDamage += attackIncreases[currentLevel - 1];
                 player.stat.currentPlayerDamage = player.stat.defaultPlayerDamage;
             }
         }
@@ -61,15 +60,23 @@ public class IncreaseAttack : Ability
     /// <returns>능력의 설명 문자열</returns>
     public override string GetDescription()
     {
+        // 총 공격력 증가량 계산
+        int totalIncrease = 0;
+        for (int i = 0; i < currentLevel; i++)
+        {
+            if (i < attackIncreases.Length)
+                totalIncrease += attackIncreases[i];
+        }
+
         if (currentLevel < attackIncreases.Length)
         {
             int currentIncrease = attackIncreases[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 공격력 +{currentIncrease}";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 공격력 +{currentIncrease}\n지금까지 총 {totalIncrease}만큼 상승";
         }
         else
         {
-            Debug.LogWarning($"IncreaseAttack: currentLevel ({currentLevel})이 attackIncreases 배열의 범위를 벗어났습니다. 최대 레벨 설명을 반환합니다.");
-            return $"{baseDescription}\nMax Level: 공격력 +{attackIncreases[attackIncreases.Length - 1]}";
+            int finalIncrease = attackIncreases.Length > 0 ? attackIncreases[attackIncreases.Length - 1] : 0;
+            return $"{baseDescription}\nMax Level: 공격력 +{finalIncrease}\n지금까지 총 {totalIncrease}만큼 상승";
         }
     }
 

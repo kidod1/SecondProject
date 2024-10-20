@@ -252,7 +252,6 @@ public abstract class Monster : MonoBehaviour
         if (isInstantKilled)
         {
             currentHP = 0;
-            Debug.Log("즉사 발동");
         }
         else
         {
@@ -278,7 +277,6 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator ShowDamageTextCoroutine(int damage)
     {
-        Debug.Log($"데미지 텍스트 표시: {damage}");
 
         // 데미지 양에 따라 글자 크기 및 추가 시간 설정
         int fontSize;
@@ -409,7 +407,6 @@ public abstract class Monster : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
-        Debug.Log("몬스터가 쓰러졌습니다!");
 
         if (player != null)
         {
@@ -463,7 +460,6 @@ public abstract class Monster : MonoBehaviour
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
-        Debug.Log("무적 상태 시작");
 
         float elapsed = 0f;
 
@@ -483,7 +479,6 @@ public abstract class Monster : MonoBehaviour
         }
 
         isInvincible = false;
-        Debug.Log("무적 상태 종료");
     }
 
     private void DropExperienceItem()

@@ -46,13 +46,12 @@ public class IncreaseAttackSpeed : Ability
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
             currentLevel++;
-            Debug.Log($"IncreaseAttackSpeed 업그레이드: 현재 레벨 {currentLevel + 1}");
 
             // 레벨 업 시 공격 속도 감소 적용
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < cooldownReductions.Length)
             {
-                player.stat.currentShootCooldown -= cooldownReductions[currentLevel];
+                player.stat.currentShootCooldown -= cooldownReductions[currentLevel - 1];
                 // 최소 쿨다운 제한
                 if (player.stat.currentShootCooldown < 0.1f)
                 {
@@ -76,16 +75,23 @@ public class IncreaseAttackSpeed : Ability
     /// <returns>능력의 설명 문자열</returns>
     public override string GetDescription()
     {
+        // 총 공격 속도 감소량 계산
+        float totalReduction = 0f;
+        for (int i = 0; i < currentLevel; i++)
+        {
+            if (i < cooldownReductions.Length)
+                totalReduction += cooldownReductions[i];
+        }
+
         if (currentLevel < cooldownReductions.Length)
         {
             float currentReduction = cooldownReductions[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 공격 쿨다운 감소 {currentReduction}초";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 공격 쿨다운 감소 {currentReduction}초\n지금까지 총 {totalReduction}초 감소";
         }
         else
         {
-            Debug.LogWarning($"IncreaseAttackSpeed: currentLevel ({currentLevel})이 cooldownReductions 배열의 범위를 벗어났습니다. 최대 레벨 설명을 반환합니다.");
-            float finalReduction = cooldownReductions[cooldownReductions.Length - 1];
-            return $"{baseDescription}\nMax Level: 공격 쿨다운 감소 {finalReduction}초";
+            float finalReduction = cooldownReductions.Length > 0 ? cooldownReductions[cooldownReductions.Length - 1] : 0f;
+            return $"{baseDescription}\nMax Level: 공격 쿨다운 감소 {finalReduction}초\n지금까지 총 {totalReduction}초 감소";
         }
     }
 

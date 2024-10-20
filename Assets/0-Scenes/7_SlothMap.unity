@@ -832,17 +832,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &430824217 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6506804764859402517, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
-  m_PrefabInstance: {fileID: 2328123864751208078}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &434854232 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7334856938543571108, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
@@ -1773,7 +1762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1934801322940994144, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: midBossPrefab
@@ -3582,6 +3571,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1181416145}
+    - target: {fileID: 2632851158319035852, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_text
+      value: "\uC6E8\uC774\uBE0C 1"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3002844131367384765, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3032510522085509942, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -565
@@ -3593,6 +3590,10 @@ PrefabInstance:
     - target: {fileID: 4504680133990077603, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934265066424118301, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6620576420766886479, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4273,7 +4274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1934801322940994144, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: midBossPrefab
@@ -4341,14 +4342,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1938186841634636955, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1938186841634636955, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1938186841634636955, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.348
       objectReference: {fileID: 0}
@@ -4393,13 +4386,9 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2840855477679601058, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: skeletonDataAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: c5ded7d3731a2b84db702dd5f4494679, type: 2}
-    - target: {fileID: 3044285267058392146, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3d94743db1f2f234ea40e8ff1a273890, type: 2}
+      propertyPath: timeScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3772776399309296988, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: playerSpeedText
       value: 
@@ -4441,17 +4430,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 593667779}
     - target: {fileID: 6097180407724964633, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: bossHealthSlider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6097180407724964633, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: levelTextPrimary
       value: 
       objectReference: {fileID: 640183787}
-    - target: {fileID: 6097180407724964633, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: abilityIconPrefab
-      value: 
-      objectReference: {fileID: 555140338843336192, guid: 42a03bad828053b46a5290f072b41f6f, type: 3}
     - target: {fileID: 6097180407724964633, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: bossHealthUIPanel
       value: 
@@ -4473,10 +4454,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8380969}
     - target: {fileID: 6097180407724964633, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: bossHealthFillImage
-      value: 
-      objectReference: {fileID: 430824217}
-    - target: {fileID: 6097180407724964633, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: experienceScrollbar
       value: 
       objectReference: {fileID: 528843257}
@@ -4497,184 +4474,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1928833208}
     - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: gameStartAnim1
-      value: nomal_(side_only)/game_start/game_start_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: gameStartAnim2
-      value: nomal_(side_only)/game_start/game_start_2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: gameStartAnim3
-      value: nomal_(side_only)/game_start/game_start_3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: healEffectPrefab
-      value: 
-      objectReference: {fileID: 4827307089432063622, guid: d3a11797afca8eb42a674e1ffb0ebc67, type: 3}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: sideBackSkinName
-      value: side_back
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: walkBackAnimName
-      value: under_body/move/d_back_move
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: idleLowerAnimName
-      value: under_body/under_idle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: idleUpperAnimName
-      value: upper_body/upper_idle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: lowerIdleAnimName
-      value: under_body/under_idle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: sideFrontSkinName
-      value: side_front
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: upperIdleAnimName
-      value: upper_body/upper_idle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: walkLowerAnimName
-      value: under_body/move/d_straight_move
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: attackBackAnimName
-      value: upper_body/shot/back_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: attackSideAnimName
-      value: upper_body/shot/side_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: attackFrontAnimName
-      value: upper_body/shot/front_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: walkBackStopAnimName
-      value: under_body/move/d_back_stop
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: walkStraightAnimName
-      value: under_body/move/d_straight_move
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: currentSynergyAbility
-      value: 
-      objectReference: {fileID: 11400000, guid: ce7d564935c5a634c95641818d15d16f, type: 2}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: upperWalkBackAnimName
-      value: upper_body/move/u_back_move
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: attackSideBackAnimName
-      value: upper_body/shot/sideback_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: shootBackUpperAnimName
-      value: upper_body/shot/back_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: shootSideUpperAnimName
-      value: upper_body/shot/side_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: attackSideFrontAnimName
-      value: upper_body/shot/sidefront_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: shootFrontUpperAnimName
-      value: upper_body/shot/front_shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: walkStraightStopAnimName
-      value: under_body/move/d_straight_stop
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: upperWalkBackStopAnimName
-      value: upper_body/move/u_back_stop
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: upperWalkStraightAnimName
-      value: upper_body/move/u_straight_move
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: upperWalkStraightStopAnimName
-      value: upper_body/move/u_straight_stop
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnHeal.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnMonsterKilled.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 150138474}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnHeal.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlaySpecificSound
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnMonsterKilled.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SoundManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 8300000, guid: d2417c94855307740a3125bb6a29ee32, type: 3}
-    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: OnShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.AudioClip, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7710056644381216942, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8475579253013589249, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_Size.x
-      value: 2.968042
-      objectReference: {fileID: 0}
-    - target: {fileID: 8475579253013589249, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_Size.y
-      value: 8.675152
-      objectReference: {fileID: 0}
-    - target: {fileID: 8475579253013589249, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.22657418
-      objectReference: {fileID: 0}
-    - target: {fileID: 8475579253013589249, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
-      propertyPath: m_Offset.y
-      value: 3.7655888
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
