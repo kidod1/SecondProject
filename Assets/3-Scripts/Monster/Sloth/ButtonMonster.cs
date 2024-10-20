@@ -7,8 +7,10 @@ public class ButtonMonster : Monster
 {
     [SerializeField]
     private ButtonMonsterData stat;
+
     [SerializeField]
-    private GameObject attackEffect;
+    private ParticleSystem attackEffect; // GameObject에서 ParticleSystem으로 변경
+
     [SpineAnimation] public string summonAnimation;
     [SpineAnimation] public string idleAnimation;
     [SpineAnimation] public string attackAnimation;
@@ -57,11 +59,15 @@ public class ButtonMonster : Monster
         if (attackEffect != null)
         {
             yield return new WaitForSeconds(0.72f);
-            GameObject effect = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
-            effect.SetActive(true);
-            StartCoroutine(DeactivateAfterAnimation(effect)); // 이펙트 비활성화
 
-            // 이펙트가 0.2초간 활성화된 후 데미지 입히기
+            // 파티클 시스템 인스턴스화 및 재생
+            ParticleSystem effectInstance = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
+            effectInstance.Play();
+
+            // 파티클 재생이 끝난 후 파괴
+            Destroy(effectInstance.gameObject, effectInstance.main.duration);
+
+            // 데미지 입히기
             yield return new WaitForSeconds(0.2f);
             ExecuteAttack();
         }
@@ -91,11 +97,14 @@ public class ButtonMonster : Monster
         }
     }
 
+    /*
+    // DeactivateAfterAnimation 코루틴은 더 이상 필요하지 않으므로 제거했습니다.
     private IEnumerator DeactivateAfterAnimation(GameObject effect)
     {
         yield return new WaitForSeconds(0.5f);
         effect.SetActive(false);
     }
+    */
 
     public void PlayAnimation(string animationName, bool loop)
     {
@@ -108,7 +117,6 @@ public class ButtonMonster : Monster
             }
         }
     }
-
 
     private void OnDrawGizmosSelected()
     {
