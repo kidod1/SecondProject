@@ -32,9 +32,15 @@ public class JokerDraw : Ability
         if (monster != null && !monster.isElite)
         {
             float currentChance = GetCurrentInstantKillChance();
+
             if (Random.value < currentChance)
             {
-                monster.TakeDamage(monster.GetCurrentHP(), PlayManager.I.GetPlayerPosition());
+                Debug.Log("JokerDraw: 즉사 확률 성공! 몬스터를 즉시 죽입니다.");
+                monster.TakeDamage(monster.GetCurrentHP(), PlayManager.I.GetPlayerPosition()); // 즉사 플래그 전달
+                monster.isInstantKilled = true;
+            }
+            else
+            {
             }
         }
     }

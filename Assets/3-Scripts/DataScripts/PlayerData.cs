@@ -86,7 +86,6 @@ public class PlayerData : ScriptableObject
         OnStatsChanged?.Invoke();
     }
 
-    // 프로퍼티를 통해 스탯 접근 및 변경 (이름을 기존 변수와 동일하게 유지)
     public float currentPlayerSpeed
     {
         get => _currentPlayerSpeed;
