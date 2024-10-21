@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public interface IMonsterDeathAbility
+{
+    void OnMonsterDeath(Monster monster);
+}
 public class PlayerAbilityManager : MonoBehaviour
 {
     private Player player;
@@ -91,14 +95,19 @@ public class PlayerAbilityManager : MonoBehaviour
     /// </summary>
     public void ActivateAbilitiesOnMonsterDeath(Monster monster)
     {
+
         foreach (var ability in abilities)
         {
+            if (ability is HoneyDrop honeyDrop)
+            {
+                Debug.Log($"Activating OnMonsterDeath for ability: {ability.abilityName}");
+                honeyDrop.OnMonsterDeath(monster);
+            }
+            
             if (ability is KillSpeedBoostAbility killSpeedBoostAbility)
             {
-                killSpeedBoostAbility.OnMonsterKilled();
+                 killSpeedBoostAbility.OnMonsterKilled();
             }
-            // ParasiticNest는 OnMonsterKilled 메서드를 필요로 하지 않으므로 호출을 제거합니다.
-            // 다른 능력들의 OnMonsterKilled 메서드가 있다면 여기에 추가
         }
     }
 

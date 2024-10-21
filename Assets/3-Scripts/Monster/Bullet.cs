@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private CircleCollider2D bulletCollider;
     [SerializeField]
-    private float maxLifetime = 3f;
+    private float maxLifetime = 5f;
     private float currentLifetime = 0f;
     private Vector3 initialSpriteScale;
     private bool scaleStart = false;

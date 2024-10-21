@@ -132,6 +132,7 @@ public class LoadingScreen : MonoBehaviour
         if (skeletonGraphic != null && playerAnimationAsset != null && playerAnimationAsset.Animation != null)
         {
             skeletonGraphic.AnimationState.SetAnimation(1, playerAnimationAsset.Animation.Name, true);
+            Debug.Log(skeletonGraphic.AnimationState);
         }
 
         foreach (var resultImage in resultImages)

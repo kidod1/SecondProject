@@ -83,7 +83,8 @@ public class AbilityManager : MonoBehaviour
     private SynergyAbility currentSynergyAbility;
     // 능력 변경 시 호출할 이벤트
     public UnityEvent OnAbilitiesChanged;
-
+    // 추가: 코루틴 참조 변수
+    private Coroutine delayedUpdateHighlightCoroutine;
     private void Awake()
     {
         // 초기 크기 배열 초기화
@@ -206,6 +207,12 @@ public class AbilityManager : MonoBehaviour
         if (currentHighlightEffect != null)
         {
             Destroy(currentHighlightEffect);
+        }
+        // 모든 활성 코루틴 중지
+        if (delayedUpdateHighlightCoroutine != null)
+        {
+            StopCoroutine(delayedUpdateHighlightCoroutine);
+            delayedUpdateHighlightCoroutine = null;
         }
     }
 
@@ -337,11 +344,6 @@ public class AbilityManager : MonoBehaviour
             }
 
             // 애니메이터의 상태를 초기화
-            Animator animator = abilityButtons[i].GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.Play("Idle", 0, 0f);
-            }
         }
 
         for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
@@ -380,7 +382,11 @@ public class AbilityManager : MonoBehaviour
 
         // 애니메이션이 완료된 후 하이라이트 위치 업데이트 및 표시
         float animationDuration = 0.5f; // 버튼 애니메이션의 실제 길이로 설정
-        StartCoroutine(DelayedUpdateHighlightPosition(animationDuration));
+        if (delayedUpdateHighlightCoroutine != null)
+        {
+            StopCoroutine(delayedUpdateHighlightCoroutine);
+        }
+        delayedUpdateHighlightCoroutine = StartCoroutine(DelayedUpdateHighlightPosition(animationDuration));
     }
 
     private IEnumerator DelayedUpdateHighlightPosition(float delay)
@@ -1065,8 +1071,12 @@ public class AbilityManager : MonoBehaviour
         {
             Debug.LogError("AbilityManager: highlightImage가 할당되지 않았습니다.");
         }
-
-        UpdateHighlightPosition();
+        float animationDuration = 0.5f; // 버튼 애니메이션의 실제 길이로 설정
+        if (delayedUpdateHighlightCoroutine != null)
+        {
+            StopCoroutine(delayedUpdateHighlightCoroutine);
+        }
+        delayedUpdateHighlightCoroutine = StartCoroutine(DelayedUpdateHighlightPosition(animationDuration));
     }
     public void TriggerShowSynergyAbility(SynergyAbility synergyAbility)
     {

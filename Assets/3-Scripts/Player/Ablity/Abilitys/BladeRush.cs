@@ -92,7 +92,7 @@ public class BladeRush : Ability
 
         // 칼날의 회전을 방향에 맞게 설정합니다.
         float angle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
-        Quaternion spawnRotation = Quaternion.Euler(0f, 0f, angle);
+        Quaternion spawnRotation = Quaternion.Euler(0f, 0f, angle - 90);
 
         GameObject bladeInstance = Instantiate(bladePrefab, spawnPosition, spawnRotation);
         BladeProjectile bladeProjectile = bladeInstance.GetComponent<BladeProjectile>();

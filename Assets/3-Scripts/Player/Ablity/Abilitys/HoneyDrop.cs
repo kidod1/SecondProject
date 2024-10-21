@@ -24,16 +24,21 @@ public class HoneyDrop : Ability
     {
         playerInstance = player;
     }
-
     /// <summary>
     /// 몬스터가 죽었을 때 호출되는 메서드입니다.
     /// </summary>
     /// <param name="monster">죽은 몬스터</param>
     public void OnMonsterDeath(Monster monster)
     {
+
         if (Random.value <= GetCurrentHoneyDropChance())
         {
+            Debug.Log("HoneyDrop: Spawning honey.");
             SpawnHoney(monster.transform.position);
+        }
+        else
+        {
+            Debug.Log("HoneyDrop: Honey drop chance failed.");
         }
     }
 
@@ -44,7 +49,7 @@ public class HoneyDrop : Ability
     private void SpawnHoney(Vector3 position)
     {
         GameObject honeyPrefab = Resources.Load<GameObject>(honeyItemPrefabPath);
-
+        Debug.Log("호출");
         if (honeyPrefab != null)
         {
             GameObject honeyItem = Instantiate(honeyPrefab, position, Quaternion.identity);
@@ -52,10 +57,11 @@ public class HoneyDrop : Ability
             if (honeyScript != null)
             {
                 honeyScript.ItemData.healAmount = GetCurrentHealthRecoveryAmount();
+                Debug.Log("HoneyDrop: Honey item spawned successfully.");
             }
             else
             {
-                Debug.LogWarning("HoneyDrop: HoneyItem 스크립트를 찾을 수 없습니다.");
+                Debug.LogWarning("HoneyDrop: HoneyItem 컴포넌트를 찾을 수 없습니다.");
             }
         }
         else
