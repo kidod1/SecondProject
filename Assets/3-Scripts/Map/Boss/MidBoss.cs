@@ -3,13 +3,14 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using Spine.Unity;
+using System.Collections.Generic;
 
-public class MidBoss : MonoBehaviour
+public class MidBoss : Monster
 {
     [Header("Mid-Boss Settings")]
     [InspectorName("최대 체력")]
     public int maxHealth = 100;
-    private int currentHP;
 
     [Header("패턴 데이터")]
     [InspectorName("패턴 데이터")]
@@ -21,40 +22,45 @@ public class MidBoss : MonoBehaviour
     [SerializeField, InspectorName("패턴 부모 Transform")]
     private Transform patternParent;
 
-    [Header("데미지 및 무적 설정")]
-    [SerializeField, InspectorName("무적 여부")]
-    private bool isInvincible = false;
-
-    [SerializeField, InspectorName("사망 여부")]
-    private bool isDead = false;
-
-    [SerializeField, InspectorName("무적 지속 시간")]
-    private float invincibilityDuration = 0.2f;
-
-    [SerializeField, InspectorName("깜빡임 간격")]
-    private float blinkInterval = 0.1f;
-
-    [SerializeField, InspectorName("Mesh Renderer")]
-    private MeshRenderer meshRenderer;
-
-    [SerializeField, InspectorName("데미지 텍스트 프리팹 경로")]
-    private string damageTextPrefabPath = "DamageTextPrefab";
-
-    [SerializeField, InspectorName("Rigidbody2D")]
-    private Rigidbody2D rb;
-
-    [SerializeField, InspectorName("플레이어")]
-    private Player player;
-
     [Header("UI Manager")]
     [SerializeField, InspectorName("PlayerUIManager")]
     private PlayerUIManager playerUIManager;
 
     private SlothMapManager slothMapManager;
 
-    private void Start()
+    // ExecutePatterns 코루틴을 제어하기 위한 변수
+    private Coroutine executePatternsCoroutine;
+
+    // 현재 사용 중인 스폰 포인트 인덱스
+    private int currentSpawnPointIndex = 0;
+
+    [Header("탄환 스폰 포인트 설정")]
+    [SerializeField, InspectorName("탄환 스폰 포인트 배열")]
+    [Tooltip("탄환이 발사될 여러 위치의 Transform 배열")]
+    private Transform[] bulletSpawnPoints;
+
+    // 추가된 부분: 경고 레이저 위치 배열
+    [Header("경고 레이저 위치 설정")]
+    [SerializeField, InspectorName("경고 레이저 위치 배열")]
+    [Tooltip("경고 레이저 공격이 발생할 5개의 위치")]
+    private Transform[] warningLaserPositions;
+
+    protected override void Start()
     {
-        currentHP = maxHealth;
+        base.Start();
+
+        // 몬스터 기본 스탯 설정
+        if (monsterBaseStat != null)
+        {
+            monsterBaseStat.maxHP = maxHealth;
+            currentHP = maxHealth;
+        }
+        else
+        {
+            Debug.LogError("MidBoss: MonsterData(monsterBaseStat)가 할당되지 않았습니다.");
+            currentHP = maxHealth;
+        }
+
         Debug.Log($"중간 보스 등장! 체력: {currentHP}/{maxHealth}");
 
         if (playerUIManager != null)
@@ -69,15 +75,6 @@ public class MidBoss : MonoBehaviour
         patternParent = new GameObject("BossPatterns").transform;
         isAttackable = false;
 
-        meshRenderer = GetComponent<MeshRenderer>();
-        rb = GetComponent<Rigidbody2D>();
-
-        player = FindObjectOfType<Player>();
-        if (player == null)
-        {
-            Debug.LogError("플레이어 오브젝트를 찾을 수 없습니다.");
-        }
-
         if (patternData == null)
         {
             Debug.LogError("MidBoss: BossPatternData가 할당되지 않았습니다.");
@@ -91,6 +88,23 @@ public class MidBoss : MonoBehaviour
                 Debug.LogError("SlothMapManager를 찾을 수 없습니다.");
             }
         }
+
+        // 스폰 포인트가 설정되지 않은 경우 경고 메시지 출력
+        if (bulletSpawnPoints == null || bulletSpawnPoints.Length == 0)
+        {
+            Debug.LogWarning("MidBoss: 탄환 스폰 포인트 배열이 설정되지 않았습니다.");
+        }
+
+        // 경고 레이저 위치 배열이 설정되지 않은 경우 경고 메시지 출력
+        if (warningLaserPositions == null || warningLaserPositions.Length < 5)
+        {
+            Debug.LogWarning("MidBoss: 경고 레이저 위치 배열이 올바르게 설정되지 않았습니다.");
+        }
+    }
+
+    protected override void InitializeStates()
+    {
+        // MidBoss는 상태 시스템을 사용하지 않으므로 구현하지 않습니다.
     }
 
     /// <summary>
@@ -102,25 +116,26 @@ public class MidBoss : MonoBehaviour
         isAttackable = value;
         if (isAttackable)
         {
-            StartCoroutine(ExecutePatterns());
+            // ExecutePatterns 코루틴을 시작하고 참조를 저장합니다.
+            executePatternsCoroutine = StartCoroutine(ExecutePatterns());
             Debug.Log("보스 몬스터가 공격을 시작합니다.");
+        }
+        else
+        {
+            // 공격 불가능 시 코루틴 정지
+            if (executePatternsCoroutine != null)
+            {
+                StopCoroutine(executePatternsCoroutine);
+                executePatternsCoroutine = null;
+                Debug.Log("보스 몬스터의 공격이 중지되었습니다.");
+            }
         }
     }
 
-    /// <summary>
-    /// 데미지를 입었을 때 호출됩니다.
-    /// </summary>
-    /// <param name="damage">입은 데미지 양</param>
-    /// <param name="damageSourcePosition">데미지를 준 위치</param>
-    public void TakeDamage(int damage, Vector3 damageSourcePosition)
+    public override void TakeDamage(int damage, Vector3 damageSourcePosition, bool Nun = false)
     {
-        if (isDead || isInvincible)
-            return;
+        base.TakeDamage(damage, damageSourcePosition);
 
-        ShowDamageText(damage);
-        ApplyKnockback(damageSourcePosition);
-
-        currentHP -= damage;
         Debug.Log($"중간 보스가 데미지를 입었습니다! 남은 체력: {currentHP}/{maxHealth}");
 
         if (playerUIManager != null)
@@ -131,152 +146,22 @@ public class MidBoss : MonoBehaviour
         {
             Debug.LogWarning("MidBoss: PlayerUIManager가 할당되지 않았습니다.");
         }
-
-        if (currentHP <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            StartCoroutine(InvincibilityCoroutine());
-        }
     }
 
-    private void ShowDamageText(int damage)
-    {
-        StartCoroutine(ShowDamageTextCoroutine(damage));
-    }
-
-    private IEnumerator ShowDamageTextCoroutine(int damage)
-    {
-        // 단일 데미지 텍스트 생성
-        GameObject damageTextPrefab = Resources.Load<GameObject>(damageTextPrefabPath);
-        if (damageTextPrefab == null)
-        {
-            Debug.LogError("DamageTextPrefab을 Resources 폴더에서 찾을 수 없습니다.");
-            yield break;
-        }
-
-        GameObject canvasObject = GameObject.FindGameObjectWithTag("DamageCanvas");
-        if (canvasObject == null)
-        {
-            Debug.LogError("'DamageCanvas' 태그를 가진 캔버스를 찾을 수 없습니다.");
-            yield break;
-        }
-
-        Canvas screenCanvas = canvasObject.GetComponent<Canvas>();
-        if (screenCanvas == null)
-        {
-            Debug.LogError("'DamageCanvas' 오브젝트에서 Canvas 컴포넌트를 찾을 수 없습니다.");
-            yield break;
-        }
-
-        Camera uiCamera = screenCanvas.worldCamera;
-        if (uiCamera == null)
-        {
-            uiCamera = Camera.main;
-        }
-
-        if (uiCamera == null)
-        {
-            Debug.LogError("UI 카메라를 찾을 수 없습니다.");
-            yield break;
-        }
-
-        // 데미지 텍스트 위치 설정 (보스 머리 위)
-        float monsterHeightOffset = 1.0f;
-        Vector3 headPosition = transform.position + new Vector3(0, monsterHeightOffset, 0);
-        Vector3 screenPosition = uiCamera.WorldToScreenPoint(headPosition);
-
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            screenCanvas.transform as RectTransform,
-            screenPosition,
-            uiCamera,
-            out Vector2 localPoint);
-
-        GameObject damageTextInstance = Instantiate(damageTextPrefab, screenCanvas.transform);
-        RectTransform rectTransform = damageTextInstance.GetComponent<RectTransform>();
-        rectTransform.localPosition = localPoint;
-
-        DamageText damageText = damageTextInstance.GetComponent<DamageText>();
-        if (damageText != null)
-        {
-            // 데미지 양에 따라 글자 크기 설정
-            int fontSize;
-            if (damage >= 100)
-            {
-                fontSize = 40;
-            }
-            else if (damage >= 50)
-            {
-                fontSize = 32;
-            }
-            else
-            {
-                fontSize = 18;
-            }
-
-            TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Maplestory Light SDF");
-            if (font == null)
-            {
-                Debug.LogWarning("폰트 에셋을 찾을 수 없습니다. 기본 폰트를 사용합니다.");
-            }
-
-            Color color = Color.white;
-            damageText.SetText(damage.ToString(), font, fontSize, color);
-        }
-        else
-        {
-            Debug.LogError("DamageText 컴포넌트를 찾을 수 없습니다.");
-        }
-
-        // 데미지 텍스트가 사라지도록 대기 (예: 1초 후 제거)
-        yield return new WaitForSeconds(1f);
-        Destroy(damageTextInstance);
-    }
-
-    private void ApplyKnockback(Vector3 damageSourcePosition)
-    {
-        if (rb != null)
-        {
-            Vector2 knockbackDirection = (transform.position - damageSourcePosition).normalized;
-            float knockbackForce = 2f;
-            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-        }
-        else
-        {
-            Debug.LogWarning("Rigidbody2D가 보스에 없습니다.");
-        }
-    }
-
-    private IEnumerator InvincibilityCoroutine()
-    {
-        isInvincible = true;
-        float elapsed = 0f;
-
-        while (elapsed < invincibilityDuration)
-        {
-            if (meshRenderer != null)
-            {
-                meshRenderer.enabled = !meshRenderer.enabled;
-            }
-            yield return new WaitForSeconds(blinkInterval);
-            elapsed += blinkInterval;
-        }
-
-        if (meshRenderer != null)
-        {
-            meshRenderer.enabled = true;
-        }
-
-        isInvincible = false;
-    }
-
-    private void Die()
+    protected override void Die()
     {
         if (isDead) return;
 
-        isDead = true;
+        // 보스가 죽을 때 공격 패턴 코루틴을 정지합니다.
+        if (executePatternsCoroutine != null)
+        {
+            StopCoroutine(executePatternsCoroutine);
+            executePatternsCoroutine = null;
+            Debug.Log("보스 몬스터의 공격 패턴이 정지되었습니다.");
+        }
+
+        base.Die();
+
         Debug.Log("중간 보스가 쓰러졌습니다!");
 
         if (playerUIManager != null)
@@ -322,7 +207,16 @@ public class MidBoss : MonoBehaviour
     {
         while (true)
         {
-            float randomValue = UnityEngine.Random.Range(0f, 100f);
+            if (isDead)
+            {
+                yield break;
+            }
+
+            // 총 확률 계산 (레이저 패턴 확률 제거)
+            float totalProbability = patternData.bulletPatternProbability + patternData.warningAttackPatternProbability +
+                                     patternData.warningLaserPatternProbability + patternData.groundSmashPatternProbability;
+
+            float randomValue = UnityEngine.Random.Range(0f, totalProbability);
 
             if (randomValue < patternData.bulletPatternProbability)
             {
@@ -332,9 +226,9 @@ public class MidBoss : MonoBehaviour
             {
                 yield return StartCoroutine(WarningAttackPattern());
             }
-            else if (randomValue < patternData.bulletPatternProbability + patternData.warningAttackPatternProbability + patternData.laserPatternProbability)
+            else if (randomValue < patternData.bulletPatternProbability + patternData.warningAttackPatternProbability + patternData.warningLaserPatternProbability)
             {
-                yield return StartCoroutine(LaserPattern());
+                yield return StartCoroutine(WarningLaserPattern());
             }
             else
             {
@@ -345,18 +239,91 @@ public class MidBoss : MonoBehaviour
         }
     }
 
+    private IEnumerator WarningLaserPattern()
+    {
+        Debug.Log("경고 레이저 패턴 시작");
+
+        if (warningLaserPositions == null || warningLaserPositions.Length < 5)
+        {
+            Debug.LogError("경고 레이저 위치가 제대로 설정되지 않았습니다.");
+            yield break;
+        }
+
+        // 5개의 위치 중 4개를 랜덤하게 선택
+        List<Transform> positionsList = warningLaserPositions.ToList();
+        List<Transform> selectedPositions = new List<Transform>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, positionsList.Count);
+            selectedPositions.Add(positionsList[randomIndex]);
+            positionsList.RemoveAt(randomIndex);
+        }
+
+        // 선택된 위치에서 순서대로 경고 표시
+        foreach (Transform position in selectedPositions)
+        {
+            // 경고 프리팹 인스턴스화
+            GameObject warning = Instantiate(patternData.warningLaserWarningPrefab, position.position, Quaternion.identity, patternParent);
+            Destroy(warning, patternData.warningLaserWarningDuration);
+
+            // 경고 지속 시간만큼 대기
+            yield return new WaitForSeconds(patternData.warningLaserWarningDuration);
+        }
+
+        // 경고 표시 순서대로 레이저 공격 실행
+        foreach (Transform position in selectedPositions)
+        {
+            // 레이저 공격 프리팹 인스턴스화
+            GameObject laserAttack = Instantiate(patternData.warningLaserAttackPrefab, position.position, Quaternion.identity, patternParent);
+            Destroy(laserAttack, patternData.warningLaserAttackDuration);
+
+            // 데미지 적용을 위한 DamageArea 컴포넌트 추가
+            DamageArea damageArea = laserAttack.AddComponent<DamageArea>();
+            damageArea.damage = patternData.warningLaserAttackDamage;
+            damageArea.duration = patternData.warningLaserAttackDuration;
+            damageArea.isContinuous = true;
+
+            // 레이저 공격 지속 시간만큼 대기
+            yield return new WaitForSeconds(patternData.warningLaserAttackDuration);
+        }
+
+        Debug.Log("경고 레이저 패턴 완료");
+    }
+
+    // 레이저 패턴 제거
+    /*
+    private IEnumerator LaserPattern()
+    {
+        // 해당 패턴은 제거되었습니다.
+    }
+    */
+
     private IEnumerator BulletPattern()
     {
         Debug.Log("탄막 패턴 시작");
         for (int i = 0; i < patternData.bulletPatternRepeatCount; i++)
         {
-            FireBullets(transform.position);
+            FireBullets();
             yield return new WaitForSeconds(patternData.bulletFireInterval);
         }
     }
 
-    private void FireBullets(Vector3 spawnPosition)
+    /// <summary>
+    /// 현재 스폰 포인트에서 탄환을 발사합니다.
+    /// </summary>
+    private void FireBullets()
     {
+        if (bulletSpawnPoints == null || bulletSpawnPoints.Length == 0)
+        {
+            Debug.LogError("MidBoss: 탄환 스폰 포인트 배열이 설정되지 않았습니다.");
+            return;
+        }
+
+        // 현재 스폰 포인트 인덱스에 해당하는 Transform 가져오기
+        Transform spawnPoint = bulletSpawnPoints[currentSpawnPointIndex];
+        Vector3 spawnPosition = spawnPoint.position;
+
         Vector3 playerPosition = GetPlayerPosition();
         Vector3 direction = (playerPosition - spawnPosition).normalized;
         float spreadAngle = 12f;
@@ -385,6 +352,9 @@ public class MidBoss : MonoBehaviour
                 Debug.LogError("Bullet prefab에 Bullet 컴포넌트가 없습니다.");
             }
         }
+
+        // 다음 스폰 포인트로 인덱스 업데이트 (순환)
+        currentSpawnPointIndex = (currentSpawnPointIndex + 1) % bulletSpawnPoints.Length;
     }
 
     private IEnumerator WarningAttackPattern()
@@ -404,10 +374,10 @@ public class MidBoss : MonoBehaviour
                 Debug.LogError("Warning Effect Prefab이 할당되지 않았습니다.");
             }
 
-            // 2. 경고 이펙트 지속 시간만큼 대기
+            // 3. 경고 이펙트 지속 시간만큼 대기
             yield return new WaitForSeconds(patternData.warningDuration);
 
-            // 3. 공격 이펙트 생성 및 데미지 적용
+            // 4. 공격 이펙트 생성 및 데미지 적용
             if (patternData.attackEffectPrefab != null)
             {
                 GameObject attackEffect = Instantiate(patternData.attackEffectPrefab, targetPosition, Quaternion.identity, patternParent);
@@ -424,28 +394,11 @@ public class MidBoss : MonoBehaviour
                 Debug.LogError("Attack Effect Prefab이 할당되지 않았습니다.");
             }
 
-            // 4. 다음 반복까지 대기
+            // 5. 다음 반복까지 대기
             yield return new WaitForSeconds(patternData.warningStartInterval);
         }
 
         Debug.Log("경고 후 공격 패턴 완료");
-    }
-
-    private IEnumerator LaserPattern()
-    {
-        Debug.Log("레이저 패턴 시작");
-        Vector3 laserPosition = transform.position + Vector3.down * 4f;
-        GameObject warning = Instantiate(patternData.laserWarningPrefab, laserPosition, Quaternion.identity, patternParent);
-        Destroy(warning, patternData.laserWarningDuration);
-        yield return new WaitForSeconds(patternData.laserWarningDuration);
-
-        GameObject laser = Instantiate(patternData.laserPrefab, laserPosition, Quaternion.identity, patternParent);
-        Destroy(laser, patternData.laserDuration);
-
-        DamageArea damageArea = laser.AddComponent<DamageArea>();
-        damageArea.damage = patternData.laserDamagePerSecond;
-        damageArea.duration = patternData.laserDuration;
-        damageArea.isContinuous = true;
     }
 
     private IEnumerator GroundSmashPattern()
@@ -467,18 +420,14 @@ public class MidBoss : MonoBehaviour
     {
         for (int i = 0; i < patternData.groundSmashMeteorCount; i++)
         {
-            // 패턴 데이터에서 지정한 각도와 스폰 반경을 사용하여 스폰 위치 계산
             float angleRad = patternData.groundSmashAngle * Mathf.Deg2Rad;
             Vector3 offset = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0) * patternData.groundSmashSpawnRadius;
             Vector3 spawnPosition = targetPosition + offset;
 
-            // 패턴 데이터에서 지정한 각도로 회전 설정
             Quaternion rotation = Quaternion.Euler(0f, 0f, patternData.groundSmashObjectRotation);
 
-            // 바닥 찍기 오브젝트 생성
             GameObject groundSmashObject = Instantiate(patternData.groundSmashMeteorPrefab, spawnPosition, rotation, patternParent);
 
-            // 바닥 찍기 오브젝트에 SpriteRenderer가 있는지 확인
             SpriteRenderer spriteRenderer = groundSmashObject.GetComponent<SpriteRenderer>();
             if (spriteRenderer == null)
             {
@@ -487,10 +436,8 @@ public class MidBoss : MonoBehaviour
                 continue;
             }
 
-            // 바닥 찍기 오브젝트에 이동 속도 설정
             float fallSpeed = patternData.groundSmashMeteorFallSpeed;
 
-            // 바닥 찍기 오브젝트가 타겟 위치에 도달하면 피해를 주고, 위로 올라가도록 변경
             StartCoroutine(FallAndApplyDamage(groundSmashObject, targetPosition, fallSpeed));
         }
     }
@@ -499,7 +446,6 @@ public class MidBoss : MonoBehaviour
     {
         while (groundSmashObject != null)
         {
-            // 오브젝트가 타겟 위치에 도달할 때까지 아래로 이동
             if (Vector3.Distance(groundSmashObject.transform.position, targetPosition) > 0.1f)
             {
                 groundSmashObject.transform.position = Vector3.MoveTowards(groundSmashObject.transform.position, targetPosition, fallSpeed * Time.deltaTime);
@@ -507,11 +453,9 @@ public class MidBoss : MonoBehaviour
             }
             else
             {
-                // 타겟 위치에 도달했을 때 피해를 주기
                 ApplyGroundSmashDamage(targetPosition);
 
                 yield return new WaitForSeconds(0.5f);
-                // 바닥 찍기 오브젝트를 위로 이동시키기 시작
                 StartCoroutine(MoveUpAndDestroy(groundSmashObject, patternData.groundSmashSpeed, 3f));
 
                 yield break;
@@ -521,7 +465,6 @@ public class MidBoss : MonoBehaviour
 
     private void ApplyGroundSmashDamage(Vector3 position)
     {
-        // 충돌 반경 내의 적들에게 피해 적용
         Collider2D[] hits = Physics2D.OverlapCircleAll(position, patternData.groundSmashMeteorRadius);
         foreach (Collider2D hit in hits)
         {
@@ -529,11 +472,9 @@ public class MidBoss : MonoBehaviour
             if (monster != null && !monster.IsDead)
             {
                 monster.TakeDamage(patternData.groundSmashDamage, position);
-                // 추가 효과나 이펙트 적용 가능
             }
         }
 
-        // 바닥 찍기 공격 시 주변으로 탄환 발사
         SpawnGroundSmashBullets(position);
     }
 
@@ -573,16 +514,12 @@ public class MidBoss : MonoBehaviour
             float angleRad = angle * Mathf.Deg2Rad;
             Vector3 direction = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0).normalized;
 
-            // 탄환 스폰 위치 (바닥 찍기 공격이 터진 위치)
             Vector3 spawnPosition = position;
 
-            // 탄환 회전 설정
             Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-            // 탄환 생성
             GameObject bullet = Instantiate(patternData.groundSmashBulletPrefab, spawnPosition, rotation, patternParent);
 
-            // Bullet 스크립트 설정
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
@@ -606,10 +543,9 @@ public class MidBoss : MonoBehaviour
 
     private Vector3 GetPlayerPosition()
     {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
+        if (player != null)
         {
-            return playerObj.transform.position;
+            return player.transform.position;
         }
         return Vector3.zero;
     }
@@ -618,11 +554,9 @@ public class MidBoss : MonoBehaviour
     {
         if (patternData != null)
         {
-            // Ground Smash 충돌 반경 시각화
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(GetPlayerPosition(), patternData.groundSmashMeteorRadius);
 
-            // Ground Smash 탄환 발사 각도 시각화
             Gizmos.color = Color.blue;
             float angleStep = 360f / patternData.groundSmashBulletCount;
             for (int i = 0; i < patternData.groundSmashBulletCount; i++)
@@ -632,6 +566,37 @@ public class MidBoss : MonoBehaviour
                 Vector3 direction = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0).normalized;
                 Gizmos.DrawLine(GetPlayerPosition(), GetPlayerPosition() + direction * 2f);
             }
+
+            // 탄환 스폰 포인트 시각화
+            if (bulletSpawnPoints != null && bulletSpawnPoints.Length > 0)
+            {
+                Gizmos.color = Color.yellow;
+                foreach (Transform spawnPoint in bulletSpawnPoints)
+                {
+                    if (spawnPoint != null)
+                    {
+                        Gizmos.DrawWireSphere(spawnPoint.position, 0.5f);
+                    }
+                }
+            }
+
+            // 경고 레이저 위치 시각화
+            if (warningLaserPositions != null && warningLaserPositions.Length > 0)
+            {
+                Gizmos.color = Color.magenta;
+                foreach (Transform position in warningLaserPositions)
+                {
+                    if (position != null)
+                    {
+                        Gizmos.DrawWireSphere(position.position, 0.5f);
+                    }
+                }
+            }
         }
+    }
+
+    public override void Attack()
+    {
+        // MidBoss는 이 메서드를 사용하지 않습니다.
     }
 }

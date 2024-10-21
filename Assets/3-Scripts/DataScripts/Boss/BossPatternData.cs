@@ -14,10 +14,10 @@ public class BossPatternData : ScriptableObject
     [Range(0, 100)]
     public float warningAttackPatternProbability = 25f;
 
-    [InspectorName("레이저 패턴 확률")]
-    [Tooltip("레이저 패턴 확률")]
+    [InspectorName("경고 레이저 패턴 확률")]
+    [Tooltip("경고 레이저 패턴 확률")]
     [Range(0, 100)]
-    public float laserPatternProbability = 25f;
+    public float warningLaserPatternProbability = 25f;
 
     [InspectorName("바닥 찍기 패턴 확률")]
     [Tooltip("바닥 찍기 패턴 확률")]
@@ -31,7 +31,8 @@ public class BossPatternData : ScriptableObject
     [InspectorName("탄환 프리팹")]
     public GameObject bulletPrefab;
 
-    [InspectorName("탄환 스폰 포인트")]
+    [InspectorName("탄막 스폰 포인트 배열")]
+    [Tooltip("탄환이 발사될 여러 위치의 Transform 배열")]
     public Transform[] bulletSpawnPoints;
 
     [InspectorName("탄막 발사 간격")]
@@ -60,25 +61,29 @@ public class BossPatternData : ScriptableObject
     [Tooltip("다음 경고가 시작되기까지의 딜레이 (이 값이 warningDuration보다 작으면 경고가 겹칩니다)")]
     public float warningStartInterval = 0.5f;
 
-    [Header("레이저 패턴 설정")]
-    [InspectorName("레이저 프리팹")]
-    public GameObject laserPrefab;
 
-    [InspectorName("레이저 경고 프리팹")]
-    public GameObject laserWarningPrefab;
+    [Header("기억력 패턴 설정")]
+    [InspectorName("경고 레이저 경고 프리팹")]
+    public GameObject warningLaserWarningPrefab;
 
-    [InspectorName("레이저 경고 지속 시간")]
-    public float laserWarningDuration = 2f;
+    [InspectorName("경고 레이저 공격 프리팹")]
+    public GameObject warningLaserAttackPrefab;
 
-    [InspectorName("레이저 지속 시간")]
-    public float laserDuration = 5f;
+    [InspectorName("경고 레이저 경고 지속 시간")]
+    public float warningLaserWarningDuration = 2f;
+
+    [InspectorName("경고 레이저 공격 지속 시간")]
+    public float warningLaserAttackDuration = 2f;
+
+    [InspectorName("경고 레이저 공격 데미지")]
+    public int warningLaserAttackDamage = 20;
 
     [Header("바닥 찍기 패턴 설정")]
     [InspectorName("바닥 찍기 오브젝트 프리팹")]
-    public GameObject groundSmashMeteorPrefab; // 바닥 찍기 오브젝트 프리팹
+    public GameObject groundSmashMeteorPrefab;
 
     [InspectorName("바닥 찍기 경고 프리팹")]
-    public GameObject groundSmashWarningPrefab; // 바닥 찍기 경고 프리팹
+    public GameObject groundSmashWarningPrefab;
 
     [InspectorName("바닥 찍기 경고 지속 시간")]
     public float groundSmashWarningDuration = 2f;
@@ -96,19 +101,19 @@ public class BossPatternData : ScriptableObject
     public int groundSmashMeteorCount = 3;
 
     [InspectorName("바닥 찍기 스폰 반경")]
-    public float groundSmashSpawnRadius = 0f; // 동일한 위치에서 스폰
+    public float groundSmashSpawnRadius = 0f;
 
     [InspectorName("바닥 찍기 쿨다운 시간")]
     public float groundSmashCooldown = 1f;
 
     [InspectorName("바닥 찍기 탄환 개수")]
-    public int groundSmashBulletCount = 12; // 예: 12개 탄환
+    public int groundSmashBulletCount = 12;
 
     [InspectorName("바닥 찍기 탄환 속도")]
     public float groundSmashBulletSpeed = 5f;
 
     [InspectorName("바닥 찍기 탄환 프리팹")]
-    public GameObject groundSmashBulletPrefab; // 탄환 프리팹
+    public GameObject groundSmashBulletPrefab;
 
     [InspectorName("바닥 찍기 탄환 피해량")]
     public int groundSmashBulletDamage = 10;
@@ -119,21 +124,16 @@ public class BossPatternData : ScriptableObject
 
     [InspectorName("경고 공격 데미지")]
     public int warningAttackDamage = 20;
-
-    [InspectorName("레이저 초당 데미지")]
-    public int laserDamagePerSecond = 5;
-
     [InspectorName("바닥 찍기 데미지")]
     public int groundSmashDamage = 15;
 
     [Header("Ground Smash Parameters")]
     [InspectorName("바닥 찍기 날아오는 각도")]
-    public float groundSmashAngle = 270f; // 날아오는 각도 (예: 270도는 아래쪽)
+    public float groundSmashAngle = 270f;
 
     [InspectorName("바닥 찍기 오브젝트 회전 각도")]
-    public float groundSmashObjectRotation = 0f; // 인스턴스화 시 회전 각도
+    public float groundSmashObjectRotation = 0f;
 
     [InspectorName("바닥 찍기 날아오는 속도")]
     public float groundSmashSpeed = 10f;
-
 }

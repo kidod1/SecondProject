@@ -31,6 +31,10 @@ public abstract class Monster : MonoBehaviour
     public GameObject monsterDeathEffectPrefab;
     [SerializeField]
     private float deathEffectDuration = 0.2f;
+    [SerializeField]
+    private float abilityDeathEffectDuration = 1f;
+    [SerializeField]
+    private GameObject monsterInstantKillEffectPrefab;
 
     public bool isElite = false;
     public bool isInCooldown = false;
@@ -68,6 +72,9 @@ public abstract class Monster : MonoBehaviour
     [Tooltip("스턴 상태일 때 표시할 이펙트 프리팹")]
     public GameObject stunEffectPrefab;
     private GameObject currentStunEffect;
+
+    // 즉사 여부를 추적하기 위한 변수 추가
+    public bool isInstantKilled = false;
 
     protected virtual void Start()
     {
@@ -233,7 +240,7 @@ public abstract class Monster : MonoBehaviour
         transform.position += direction * monsterBaseStat.monsterSpeed * Time.deltaTime;
     }
 
-    public virtual void TakeDamage(int damage, Vector3 damageSourcePosition)
+    public virtual void TakeDamage(int damage, Vector3 damageSourcePosition, bool deathAbilityKill = false)
     {
         if (isDead || isInvincible)
         {
@@ -242,7 +249,15 @@ public abstract class Monster : MonoBehaviour
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
 
-        currentHP -= damage;
+        if (isInstantKilled)
+        {
+            currentHP = 0;
+            Debug.Log("즉사 발동");
+        }
+        else
+        {
+            currentHP -= damage;
+        }
 
         if (currentHP <= 0)
         {
@@ -413,10 +428,18 @@ public abstract class Monster : MonoBehaviour
             SpawnParasite();
         }
 
+        // 죽음 이펙트 생성
         if (monsterDeathEffectPrefab != null)
         {
             GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);
             Destroy(deathEffect, deathEffectDuration);
+        }
+
+        // 즉사 이펙트 생성 (즉사일 경우)
+        if (isInstantKilled && monsterInstantKillEffectPrefab != null)
+        {
+            GameObject instantKillEffect = Instantiate(monsterInstantKillEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(instantKillEffect, abilityDeathEffectDuration);
         }
 
         DropExperienceItem();
