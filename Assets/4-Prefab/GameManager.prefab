@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7830138363668230166}
   - component: {fileID: 2179610003863932489}
   - component: {fileID: 5884513831875480101}
-  - component: {fileID: 1099919919815183396}
   - component: {fileID: 5628610526488224300}
   m_Layer: 0
   m_Name: GameManager
@@ -51,6 +50,29 @@ MonoBehaviour:
   uiManager: {fileID: 0}
   abilityManager: {fileID: 0}
   abilityUIManager: {fileID: 5884513831875480101}
+  playTime: 5
+  monstersKilled: 5
+  floorsCleared: 5
+  bossesKilled: 5
+  moneyEarned: 5
+  gameResultPanel: {fileID: 0}
+  rankImage: {fileID: 0}
+  playTimeText: {fileID: 0}
+  monstersKilledText: {fileID: 0}
+  floorsClearedText: {fileID: 0}
+  bossesKilledText: {fileID: 0}
+  moneyEarnedText: {fileID: 0}
+  totalScoreText: {fileID: 0}
+  rankSprites:
+  - {fileID: 21300000, guid: 369c5ea5c1a08014981808c907b55478, type: 3}
+  - {fileID: 21300000, guid: 7c0c995a6abee454da20878e1d1455f5, type: 3}
+  - {fileID: 21300000, guid: 1424719f7f2e17f48a70235832606144, type: 3}
+  - {fileID: 21300000, guid: 1424719f7f2e17f48a70235832606144, type: 3}
+  - {fileID: 21300000, guid: 1424719f7f2e17f48a70235832606144, type: 3}
+  scoreForMonsterKill: 10
+  scoreForFloorClear: 100
+  scoreForBossKill: 500
+  scoreForMoney: 1
 --- !u!114 &5884513831875480101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,18 +116,6 @@ MonoBehaviour:
   OnAbilitiesChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1099919919815183396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9061210660560196682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 025e8ceb251af8943974df23e59a929d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5628610526488224300
 MonoBehaviour:
   m_ObjectHideFlags: 0

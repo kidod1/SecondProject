@@ -41,12 +41,6 @@ public class UIManager : MonoBehaviour
         {
             QuitGame();
         }
-
-        // L 키가 눌렸을 때 지정된 씬으로 이동
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            ChangeScene(6); // 씬 인덱스를 원하는 대로 변경
-        }
     }
 
     public void ChangeScene(int sceneIndex)
