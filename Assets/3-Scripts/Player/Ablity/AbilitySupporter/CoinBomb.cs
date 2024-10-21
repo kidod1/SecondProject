@@ -47,7 +47,7 @@ public class CoinBomb : MonoBehaviour
         }
 
         // 주변 몬스터들에게 피해를 입히는 로직 (예시)
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 5f); // 폭발 반경 5f
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 2); // 폭발 반경 5f
 
         foreach (var hitCollider in hitColliders)
         {
@@ -70,6 +70,6 @@ public class CoinBomb : MonoBehaviour
     {
         // 폭발 반경 시각화
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 5f); // 폭발 반경 5f
+        Gizmos.DrawWireSphere(transform.position, 2f); // 폭발 반경 5f
     }
 }

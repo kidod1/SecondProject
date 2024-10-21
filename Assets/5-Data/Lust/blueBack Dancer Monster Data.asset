@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf9d10b79a060e4c98b00b8127d05b0, type: 3}
+  m_Name: blueBack Dancer Monster Data
+  m_EditorClassIdentifier: 
+  monsterSpeed: 2
+  maxHP: 55
+  contectDamage: 5
+  attackDamage: 5
+  experiencePoints: 5
+  detectionRange: 10
+  attackRange: 5
+  attackDelay: 1
+  rewardCurrency: 5
+  highExperiencePoints: 200
+  highExperienceDropChance: 0.1
+  danceCooldown: 3
+  danceSpeed: 2
