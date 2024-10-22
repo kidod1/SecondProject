@@ -10,6 +10,7 @@ public class MeteorController : MonoBehaviour
 
     private bool hasLanded = false;
 
+    [Tooltip("메테오 충돌 시 이펙트 프리팹")]
     public GameObject explosionEffectPrefab; // 메테오 충돌 시 이펙트 프리팹 (옵션)
 
     public void Initialize(float damage, float radius, float fallSpeed, Vector2 targetPosition)
@@ -40,12 +41,14 @@ public class MeteorController : MonoBehaviour
 
     private IEnumerator Explode()
     {
-        // 메테오가 타겟 위치에 도착한 후 1초간 대기
+        // 메테오가 타겟 위치에 도착한 후 0초 대기 (즉시 실행)
         yield return new WaitForSeconds(0f);
 
+        // 번개 이펙트 생성
+        GameObject explosionEffectInstance = null;
         if (explosionEffectPrefab != null)
         {
-            Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+            explosionEffectInstance = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
         }
 
         // 충돌 범위 내의 적들에게 피해 적용
@@ -59,6 +62,25 @@ public class MeteorController : MonoBehaviour
                 // 추가 효과나 이펙트 적용 가능
             }
         }
+
+        // 이펙트 클린업
+        if (explosionEffectInstance != null)
+        {
+            ParticleSystem ps = explosionEffectInstance.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                // 파티클 시스템이 완료될 때까지 기다림
+                yield return new WaitUntil(() => !ps.IsAlive());
+            }
+            else
+            {
+                // 파티클 시스템이 없을 경우, 일정 시간 후 제거
+                yield return new WaitForSeconds(1f); // 필요에 따라 조정
+            }
+
+            Destroy(explosionEffectInstance);
+        }
+
         // 메테오 오브젝트 제거
         Destroy(gameObject);
 

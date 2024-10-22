@@ -26,7 +26,7 @@ public class DialogueData
     public string sentence; // 대사 내용
     public bool isConditional; // 조건부 대사인지 여부
     public ConditionType conditionType; // 조건 타입
-    public GameObject associatedImage; // 대사와 함께 보여줄 이미지 (옵션)
+    public Sprite associatedSprite; // 대사와 함께 보여줄 Sprite (옵션)
 }
 
 /// <summary>
@@ -46,21 +46,41 @@ public class TutorialDialogueManager : MonoBehaviour
     public float conditionTimeout = 10f; // 조건 충족 대기 시간
     public float autoAdvanceDuration = 3f; // 일반 대사 자동 진행 시간
 
-    private int currentDialogueIndex = 0; // 현재 대사 인덱스
-    private Coroutine textAnimationCoroutine; // 텍스트 애니메이션 코루틴
-    private Coroutine conditionCoroutine; // 조건 대기 코루틴
+    [Header("몬스터 스폰 설정")]
+    public GameObject monsterPrefab; // 스폰할 몬스터 프리팹
+    public Transform[] spawnPoints; // 몬스터 스폰 위치 배열
+    public int monstersToSpawn = 5; // 스폰할 몬스터 수
 
-    private bool conditionMet = false; // 조건 충족 여부
+    private int currentDialogueIndex = 0; // 현재 대사 인덱스
+
+    [SerializeField]
+    private GameObject PortalObject;
 
     // 플레이어 입력 및 상태 체크를 위한 변수들
     private bool hasMoved = false; // 플레이어가 WASD를 눌렀는지
     private bool hasUsedAbility = false; // 플레이어가 R 키를 눌러 능력을 사용했는지
     private bool allMonstersDefeated = false; // 모든 몬스터를 물리쳤는지
 
+    private int lastDefeatAllMonstersDialogueIndex = -1; // 마지막 DefeatAllMonsters 대사 인덱스
+
     private void Start()
     {
-        // 시작 시 첫 번째 대사를 출력
-        DisplayNextDialogue();
+        // 시작 시 마지막 DefeatAllMonsters 대사 인덱스 찾기
+        for (int i = 0; i < dialogues.Count; i++)
+        {
+            if (dialogues[i].isConditional && dialogues[i].conditionType == ConditionType.DefeatAllMonsters)
+            {
+                lastDefeatAllMonstersDialogueIndex = i;
+            }
+        }
+
+        if (lastDefeatAllMonstersDialogueIndex == -1)
+        {
+            Debug.LogWarning("DefeatAllMonsters 조건을 가진 대사가 없습니다.");
+        }
+        PortalObject.SetActive(false);
+        // 시작 시 대화 시퀀스 시작
+        StartCoroutine(DialogueSequence());
     }
 
     private void Update()
@@ -82,6 +102,7 @@ public class TutorialDialogueManager : MonoBehaviour
         if (!allMonstersDefeated && AreAllMonstersDefeated())
         {
             allMonstersDefeated = true;
+            Debug.Log("모두 처치");
         }
     }
 
@@ -96,109 +117,100 @@ public class TutorialDialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 다음 대사를 화면에 표시하는 메서드
+    /// 대화 시퀀스를 진행하는 코루틴
     /// </summary>
-    public void DisplayNextDialogue()
+    /// <returns></returns>
+    private IEnumerator DialogueSequence()
     {
-        if (currentDialogueIndex >= dialogues.Count)
+        while (currentDialogueIndex < dialogues.Count)
         {
-            EndDialogue();
-            return;
-        }
+            DialogueData dialogue = dialogues[currentDialogueIndex];
 
-        DialogueData dialogue = dialogues[currentDialogueIndex];
-
-        // 이전 텍스트 애니메이션 중지
-        if (textAnimationCoroutine != null)
-        {
-            StopCoroutine(textAnimationCoroutine);
-        }
-
-        // 대사와 이미지 설정
-        if (dialogueImage != null)
-        {
-            dialogueImage.sprite = dialogue.associatedImage != null ? dialogue.associatedImage.GetComponent<SpriteRenderer>().sprite : null;
-            dialogueImage.gameObject.SetActive(dialogue.associatedImage != null);
-        }
-
-        // 텍스트 애니메이션 시작
-        textAnimationCoroutine = StartCoroutine(AnimateText(dialogue.sentence));
-
-        if (dialogue.isConditional)
-        {
-            // 조건부 대사의 경우 조건 대기 코루틴 시작
-            if (conditionCoroutine != null)
+            // Set up image
+            if (dialogueImage != null)
             {
-                StopCoroutine(conditionCoroutine);
-            }
-            conditionCoroutine = StartCoroutine(WaitForCondition(dialogue.conditionType));
-        }
-        else
-        {
-            // 일반 대사의 경우 자동 진행 코루틴 시작
-            StartCoroutine(WaitForAutoAdvance());
-        }
-    }
-
-    /// <summary>
-    /// 텍스트를 한 글자씩 표시하는 애니메이션 코루틴
-    /// </summary>
-    /// <param name="sentence">표시할 대사</param>
-    /// <returns></returns>
-    private IEnumerator AnimateText(string sentence)
-    {
-        dialogueText.text = "";
-
-        foreach (char letter in sentence.ToCharArray())
-        {
-            dialogueText.text += letter;
-            yield return new WaitForSecondsRealtime(textAnimationSpeed);
-        }
-    }
-
-    /// <summary>
-    /// 일반 대사를 일정 시간 후 자동으로 다음 대사로 진행하는 코루틴
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator WaitForAutoAdvance()
-    {
-        yield return new WaitForSecondsRealtime(autoAdvanceDuration);
-        currentDialogueIndex++;
-        DisplayNextDialogue();
-    }
-
-    /// <summary>
-    /// 조건부 대사를 위한 조건 충족을 기다리는 코루틴
-    /// </summary>
-    /// <param name="conditionType">대사의 조건 타입</param>
-    /// <returns></returns>
-    private IEnumerator WaitForCondition(ConditionType conditionType)
-    {
-        float elapsedTime = 0f;
-        conditionMet = false;
-
-        while (elapsedTime < conditionTimeout)
-        {
-            if (CheckConditionMet(conditionType))
-            {
-                conditionMet = true;
-                break;
+                if (dialogue.associatedSprite != null)
+                {
+                    dialogueImage.sprite = dialogue.associatedSprite;
+                    dialogueImage.gameObject.SetActive(true);
+                }
+                else
+                {
+                    // Sprite가 null인 경우 이미지를 비활성화
+                    dialogueImage.gameObject.SetActive(false);
+                }
             }
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            // Set up text
+            if (dialogueText != null)
+            {
+                dialogueText.color = new Color(dialogueText.color.r, dialogueText.color.g, dialogueText.color.b, 1f); // 텍스트가 완전히 보이도록 설정
+                dialogueText.text = "";
+                dialogueText.gameObject.SetActive(true);
+            }
+
+            // Animate text
+            foreach (char letter in dialogue.sentence.ToCharArray())
+            {
+                dialogueText.text += letter;
+                yield return new WaitForSecondsRealtime(textAnimationSpeed);
+            }
+
+            // Wait autoAdvanceDuration after text animation
+            yield return new WaitForSecondsRealtime(autoAdvanceDuration);
+
+            if (dialogue.isConditional)
+            {
+                // DefeatAllMonsters 조건일 경우 몬스터 스폰
+                if (dialogue.conditionType == ConditionType.DefeatAllMonsters)
+                {
+                    SpawnMonsters();
+                    allMonstersDefeated = false; // 몬스터가 스폰되었으므로 초기화
+                }
+
+                // 조건 충족을 기다림
+                bool conditionSatisfied = false;
+                while (!conditionSatisfied)
+                {
+                    // 조건이 충족되었는지 확인
+                    if (CheckConditionMet(dialogue.conditionType))
+                    {
+                        conditionSatisfied = true;
+                        currentDialogueIndex++;
+
+                        // 마지막 DefeatAllMonsters 대사가 완료되면 추가 몬스터 스폰 (필요 시)
+                        if (currentDialogueIndex - 1 == lastDefeatAllMonstersDialogueIndex)
+                        {
+                            // 예를 들어, 추가 몬스터 스폰이 필요하다면 여기서 호출
+                            // SpawnMonsters();
+                        }
+
+                        break;
+                    }
+
+                    // 조건이 충족되지 않았을 경우, autoAdvanceDuration 만큼 대기 후 대화 재출력
+                    yield return new WaitForSecondsRealtime(autoAdvanceDuration);
+
+                    // 대화 텍스트를 다시 애니메이션으로 표시
+                    dialogueText.text = "";
+                    foreach (char letter in dialogue.sentence.ToCharArray())
+                    {
+                        dialogueText.text += letter;
+                        yield return new WaitForSecondsRealtime(textAnimationSpeed);
+                    }
+
+                    // 다시 autoAdvanceDuration 대기
+                    yield return new WaitForSecondsRealtime(autoAdvanceDuration);
+                }
+            }
+            else
+            {
+                // 조건이 없는 대사는 다음 대사로 자동 진행
+                currentDialogueIndex++;
+            }
         }
 
-        if (conditionMet)
-        {
-            currentDialogueIndex++;
-            DisplayNextDialogue();
-        }
-        else
-        {
-            // 조건 미충족 시 대사와 이미지 재출력
-            DisplayNextDialogue();
-        }
+        EndDialogue();
     }
 
     /// <summary>
@@ -211,10 +223,13 @@ public class TutorialDialogueManager : MonoBehaviour
         switch (conditionType)
         {
             case ConditionType.PressWASD:
+                Debug.Log("PressWASD");
                 return hasMoved;
             case ConditionType.PressR:
+                Debug.Log("PressR");
                 return hasUsedAbility;
             case ConditionType.DefeatAllMonsters:
+                Debug.Log("DefeatAllMonsters");
                 return allMonstersDefeated;
             default:
                 return false;
@@ -226,8 +241,37 @@ public class TutorialDialogueManager : MonoBehaviour
     /// </summary>
     private void EndDialogue()
     {
-        // 튜토리얼 종료 또는 다음 씬으로 이동 등의 처리
+        PortalObject.SetActive(true);
         Debug.Log("튜토리얼 종료");
-        // 예: SceneManager.LoadScene("NextSceneName");
+    }
+
+    /// <summary>
+    /// 몬스터를 스폰하는 메서드
+    /// </summary>
+    private void SpawnMonsters()
+    {
+        if (monsterPrefab == null)
+        {
+            Debug.LogError("Monster Prefab이 할당되지 않았습니다.");
+            return;
+        }
+
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogError("Spawn Points가 할당되지 않았거나, 배열이 비어 있습니다.");
+            return;
+        }
+
+        for (int i = 0; i < monstersToSpawn; i++)
+        {
+            // 랜덤한 스폰 포인트 선택
+            int spawnIndex = Random.Range(0, spawnPoints.Length);
+            Transform spawnPoint = spawnPoints[spawnIndex];
+
+            // 몬스터 스폰
+            Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+
+        Debug.Log($"{monstersToSpawn}마리의 몬스터가 스폰되었습니다.");
     }
 }

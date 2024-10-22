@@ -5,6 +5,19 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Fade 애니메이션을 제어하기 위한 트리거 타입
+/// </summary>
+public enum FadeTrigger
+{
+    None,    // 트리거 없음
+    FadeIn,  // FadeIn 트리거 실행
+    FadeOut  // FadeOut 트리거 실행
+}
+
+/// <summary>
+/// 컷신 다이얼로그를 관리하는 매니저 클래스
+/// </summary>
 public class CutsceneManager : MonoBehaviour
 {
     [System.Serializable]
@@ -22,6 +35,12 @@ public class CutsceneManager : MonoBehaviour
         public string[] sentences;
         public DialogueEntry[] dialogueEntries; // 대사와 함께 캐릭터 정보를 저장하는 구조체 배열
         public int[] characterImageTogglePoints; // 특정 대사에서 캐릭터 이미지를 활성화할 인덱스
+        public FadeTrigger[] fadeTriggers; // 각 대사에 대한 Fade 트리거 배열
+
+        // New fields for 임프
+        [Header("Imp Configuration")]
+        public int impAppearAfterSentenceIndex = -1; // 대화 인덱스 이후에 임프가 등장
+        public int impFadeOutAfterDialogueCount = 2; // 등장 후 몇 번째 대화에서 FadeOut 할지
     }
 
     public CutsceneDialogue cutsceneDialogue;
@@ -37,6 +56,11 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField]
     public Animator speechBubbleAnimator; // 말풍선의 Animator 컴포넌트
 
+    // New fields for 임프
+    [Header("Imp Specific Configuration")]
+    public GameObject impCharacterImage; // 임프의 캐릭터 이미지 오브젝트
+    public string impCharacterName = "Imp"; // 임프의 이름
+
     private Queue<string> sentences;
     private int currentSentenceIndex = 0;
     private Coroutine textAnimationCoroutine;
@@ -44,6 +68,8 @@ public class CutsceneManager : MonoBehaviour
     private bool isAnimating = false; // 텍스트 애니메이션 중인지 확인하는 플래그
     private bool cutsceneEnded = false;
     private string currentSentence = ""; // 현재 대사 저장
+
+    private int impFadeOutSentenceIndex = -1; // 임프가 FadeOut 될 대화 인덱스
 
     private void Start()
     {
@@ -56,6 +82,12 @@ public class CutsceneManager : MonoBehaviour
             {
                 entry.characterImage.SetActive(false);
             }
+        }
+
+        // Initialize 임프's image
+        if (impCharacterImage != null)
+        {
+            impCharacterImage.SetActive(false);
         }
 
         if (speechBubble != null)
@@ -114,6 +146,12 @@ public class CutsceneManager : MonoBehaviour
 
         ToggleCharacterImagesAndNames();
 
+        // Handle 임프's appearance and fade triggers
+        HandleImpAppearanceAndFade();
+
+        // 현재 대사에 대한 Fade 트리거 확인 및 실행
+        ExecuteFadeTrigger(currentSentenceIndex - 1); // 배열은 0부터 시작
+
         // 첫 번째 대사에만 딜레이 추가
         if (currentSentenceIndex == 1)
         {
@@ -122,6 +160,93 @@ public class CutsceneManager : MonoBehaviour
         else
         {
             DisplayNameAndSentence(currentSentence);
+        }
+    }
+
+    private void HandleImpAppearanceAndFade()
+    {
+        // Check if 임프 should appear after the previous sentence
+        if (cutsceneDialogue.impAppearAfterSentenceIndex != -1 &&
+            currentSentenceIndex - 1 == cutsceneDialogue.impAppearAfterSentenceIndex)
+        {
+            // Activate 임프's image
+            if (impCharacterImage != null)
+            {
+                impCharacterImage.SetActive(true);
+            }
+
+            // Set 임프's name
+            if (nameText != null)
+            {
+                nameText.text = impCharacterName;
+            }
+
+            // Trigger FadeIn for 임프
+            if (speechBubbleAnimator != null)
+            {
+                speechBubbleAnimator.SetTrigger("FadeIn");
+            }
+
+            // Calculate when to fade out 임프
+            impFadeOutSentenceIndex = currentSentenceIndex + cutsceneDialogue.impFadeOutAfterDialogueCount;
+        }
+
+        // Check if it's time to fade out 임프
+        if (impFadeOutSentenceIndex != -1 && currentSentenceIndex == impFadeOutSentenceIndex)
+        {
+            // Trigger FadeOut for 임프
+            if (speechBubbleAnimator != null)
+            {
+                speechBubbleAnimator.SetTrigger("FadeOut");
+            }
+
+            // Deactivate 임프's image after fade out (assuming fade out takes some time, adjust as needed)
+            StartCoroutine(DeactivateImpAfterFadeOut());
+        }
+    }
+
+    private IEnumerator DeactivateImpAfterFadeOut()
+    {
+        // Wait for the duration of the fade-out animation
+        // Replace 1.0f with your actual fade-out animation duration
+        yield return new WaitForSeconds(1.0f);
+
+        if (impCharacterImage != null)
+        {
+            impCharacterImage.SetActive(false);
+        }
+
+        impFadeOutSentenceIndex = -1; // Reset
+    }
+
+    private void ExecuteFadeTrigger(int sentenceIndex)
+    {
+        if (cutsceneDialogue.fadeTriggers == null || sentenceIndex >= cutsceneDialogue.fadeTriggers.Length)
+        {
+            Debug.LogWarning("FadeTriggers 배열이 설정되지 않았거나, 인덱스가 범위를 벗어났습니다.");
+            return;
+        }
+
+        FadeTrigger trigger = cutsceneDialogue.fadeTriggers[sentenceIndex];
+
+        switch (trigger)
+        {
+            case FadeTrigger.FadeIn:
+                if (speechBubbleAnimator != null)
+                {
+                    speechBubbleAnimator.SetTrigger("FadeIn");
+                }
+                break;
+            case FadeTrigger.FadeOut:
+                if (speechBubbleAnimator != null)
+                {
+                    speechBubbleAnimator.SetTrigger("FadeOut");
+                }
+                break;
+            case FadeTrigger.None:
+            default:
+                // 아무 트리거도 실행하지 않음
+                break;
         }
     }
 
@@ -181,7 +306,7 @@ public class CutsceneManager : MonoBehaviour
             }
         }
 
-        // 현재 대사 인덱스보다 큰 hideAfterSentence 값을 가진 캐릭터 이미지를 비활성화
+        // 현재 대사 인덱스보다 hideAfterSentence 값을 가진 캐릭터 이미지를 비활성화
         foreach (var entry in cutsceneDialogue.dialogueEntries)
         {
             if (entry.characterImage != null && currentSentenceIndex > entry.hideAfterSentence)
@@ -206,6 +331,14 @@ public class CutsceneManager : MonoBehaviour
     private void EndCutscene()
     {
         cutsceneEnded = true;
+        // 필요 시, FadeOut 트리거를 추가로 실행
+        if (speechBubbleAnimator != null)
+        {
+            speechBubbleAnimator.SetTrigger("FadeOut");
+        }
+
+        // 다음 씬 로드 (옵션)
+        // LoadNextScene();
     }
 
     private void Update()

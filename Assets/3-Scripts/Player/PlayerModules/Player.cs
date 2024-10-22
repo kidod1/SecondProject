@@ -60,6 +60,8 @@ public class Player : MonoBehaviour
     [Header("Heal Effect")]
     [SerializeField]
     private GameObject healEffectPrefab;
+    [SerializeField]
+    private HitEffectController hitEffectController;
 
     private bool isMoving = false;
     private Vector2 lastAttackDirection = Vector2.zero;
@@ -162,7 +164,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     private void OnGameStartAnimationComplete(Spine.TrackEntry trackEntry)
     {
         isGameStartAnimationPlaying = false;
@@ -183,9 +184,6 @@ public class Player : MonoBehaviour
         // 애니메이션 업데이트
         UpdateAnimation();
     }
-
-
-
     // === 추가된 부분 끝 ===
 
     private void OnEnable()
@@ -203,7 +201,6 @@ public class Player : MonoBehaviour
         spineAnimationState.Complete += OnSpineAnimationComplete;
     }
 
-
     private void OnDisable()
     {
         playerInput.Player.Disable();
@@ -215,7 +212,6 @@ public class Player : MonoBehaviour
 
         spineAnimationState.Complete -= OnSpineAnimationComplete;
     }
-
 
     private void Update()
     {
@@ -245,7 +241,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
 
     private void FixedUpdate()
     {
@@ -380,7 +375,8 @@ public class Player : MonoBehaviour
         int upperBodyTrackIndex = 1; // Upper body animation track
 
         // Set attack animation on the upper body track
-        spineAnimationState.SetAnimation(upperBodyTrackIndex, attackAnimationName, false).Complete += delegate {
+        spineAnimationState.SetAnimation(upperBodyTrackIndex, attackAnimationName, false).Complete += delegate
+        {
             // Called when attack animation completes
             if (!isShooting)
             {
@@ -579,6 +575,13 @@ public class Player : MonoBehaviour
 
             StartCoroutine(InvincibilityCoroutine());
 
+            // 히트 애니메이션 재생
+            if (hitEffectController != null)
+            {
+                hitEffectController.PlayRandomHitAnimation();
+                Debug.Log("실행");
+            }
+
             if (stat.currentHP <= 0)
             {
                 Die();
@@ -756,7 +759,7 @@ public class Player : MonoBehaviour
     {
         if (objectPool == null)
         {
-            Debug.LogError("objectPool is not assigned.");
+            Debug.LogError("objectPool가 할당되지 않았습니다.");
             return;
         }
 
@@ -772,7 +775,7 @@ public class Player : MonoBehaviour
             GameObject projectile = objectPool.GetObject(prefabIndex);
             if (projectile == null)
             {
-                Debug.LogError("Projectile could not be instantiated.");
+                Debug.LogError("Projectile을 인스턴스화할 수 없습니다.");
                 continue;
             }
 
@@ -896,7 +899,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Save file not found, using default player data.");
+            Debug.LogWarning("저장 파일을 찾을 수 없어 기본 플레이어 데이터 사용.");
         }
     }
 
@@ -904,28 +907,28 @@ public class Player : MonoBehaviour
     {
         SavePlayerData();
     }
-}
 
-[System.Serializable]
-public class PlayerCurrencyToJson
-{
-    public int currentCurrency;
-}
+    [System.Serializable]
+    public class PlayerCurrencyToJson
+    {
+        public int currentCurrency;
+    }
 
-[System.Serializable]
-public class PlayerDataToJson
-{
-    public float currentPlayerSpeed;
-    public int currentPlayerDamage;
-    public float currentProjectileSpeed;
-    public float currentProjectileRange;
-    public int currentProjectileType;
-    public int currentMaxHP;
-    public int currentHP;
-    public int currentShield;
-    public float currentShootCooldown;
-    public int currentDefense;
-    public int currentExperience;
-    public int currentCurrency;
-    public int currentLevel;
+    [System.Serializable]
+    public class PlayerDataToJson
+    {
+        public float currentPlayerSpeed;
+        public int currentPlayerDamage;
+        public float currentProjectileSpeed;
+        public float currentProjectileRange;
+        public int currentProjectileType;
+        public int currentMaxHP;
+        public int currentHP;
+        public int currentShield;
+        public float currentShootCooldown;
+        public int currentDefense;
+        public int currentExperience;
+        public int currentCurrency;
+        public int currentLevel;
+    }
 }

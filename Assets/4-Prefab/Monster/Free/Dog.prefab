@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 4a732e55351a8ab46a596f61276fd4e9, type: 2}
-  initialSkinName: 
+  initialSkinName: 0.nomal
   initialFlipX: 0
   initialFlipY: 0
   updateWhenInvisible: 3
@@ -121,7 +121,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: 
+  _animationName: idle_move
   loop: 1
   timeScale: 1
 --- !u!50 &2336044391891397573
@@ -203,6 +203,8 @@ MonoBehaviour:
   blinkInterval: 0.05
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
+  abilityDeathEffectDuration: 1
+  monsterInstantKillEffectPrefab: {fileID: 0}
   isElite: 0
   isInCooldown: 0
   isInfected: 0
@@ -210,6 +212,7 @@ MonoBehaviour:
   areaDamage: 10
   damageInterval: 1
   stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
+  isInstantKilled: 0
   stat: {fileID: 11400000, guid: af5aece43d137e64c89499d91461f0af, type: 2}
   idleAnimation: idle_move
   attackAnimation: attack

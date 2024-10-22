@@ -20,6 +20,12 @@ public class BladeRush : Ability
     [Tooltip("칼날의 프리팹")]
     public GameObject bladePrefab;
 
+    [Tooltip("각 레벨별 피해량 증가치")]
+    public int[] damageIncreases;
+
+    [Tooltip("각 레벨별 사거리 증가치")]
+    public float[] rangeIncreases;
+
     private Player playerInstance;
     private Coroutine abilityCoroutine;
 
@@ -44,8 +50,25 @@ public class BladeRush : Ability
         if (currentLevel < maxLevel - 1)
         {
             currentLevel++;
-            damage += 10;
-            range += 2f;
+
+            // 레벨별 증가량이 배열에 정의되어 있는지 확인
+            if (damageIncreases != null && damageIncreases.Length > currentLevel - 1)
+            {
+                damage += damageIncreases[currentLevel - 1];
+            }
+            else
+            {
+                Debug.LogWarning($"BladeRush: damageIncreases 배열에 레벨 {currentLevel}의 증가치가 정의되어 있지 않습니다.");
+            }
+
+            if (rangeIncreases != null && rangeIncreases.Length > currentLevel - 1)
+            {
+                range += rangeIncreases[currentLevel - 1];
+            }
+            else
+            {
+                Debug.LogWarning($"BladeRush: rangeIncreases 배열에 레벨 {currentLevel}의 증가치가 정의되어 있지 않습니다.");
+            }
         }
         else
         {
@@ -120,9 +143,9 @@ public class BladeRush : Ability
     // GetNextLevelIncrease 메서드 구현
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel + 1 < maxLevel)
+        if (currentLevel + 1 < maxLevel && damageIncreases != null && damageIncreases.Length > currentLevel)
         {
-            int nextDamageIncrease = 10;  // 다음 레벨에서 추가될 피해량
+            int nextDamageIncrease = damageIncreases[currentLevel];
             return nextDamageIncrease;
         }
 
