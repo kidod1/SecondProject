@@ -12,32 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8278c932a7f43f1459379c470a8756cc, type: 3}
   m_Name: SlothBossData
   m_EditorClassIdentifier: 
-  bulletPatternProbability: 0
-  warningAttackPatternProbability: 0
-  warningLaserPatternProbability: 100
-  groundSmashPatternProbability: 0
+  bulletPatternProbability: 20
+  warningAttackPatternProbability: 25
+  warningLaserPatternProbability: 25
+  groundSmashPatternProbability: 30
   bulletPatternRepeatCount: 11
   bulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
   bulletSpawnPoints:
   - {fileID: 0}
   - {fileID: 0}
-  bulletFireInterval: 0.5
-  bulletLifeTime: 5
+  bulletFireInterval: 1.5
+  bulletLifeTime: 6
   warningAttackRepeatCount: 10
   warningEffectPrefab: {fileID: 790626839866939137, guid: 6269083aa5b0d6a40847492a97938cd1, type: 3}
   attackEffectPrefab: {fileID: 8160316657459305156, guid: 79ed1b550446e774c8c9465c62e2166a, type: 3}
   warningDuration: 0.5
   attackEffectDuration: 1
-  warningStartInterval: 0.3
+  warningStartInterval: 0.5
   warningLaserWarningPrefab: {fileID: 7049469409557426139, guid: 07233fdb2158d0544bf53aafb81387b7, type: 3}
   warningLaserAttackPrefab: {fileID: 3746210406427164875, guid: aef1db9c4c2cb70429bb26f6216a88a9, type: 3}
   warningLaserWarningDuration: 0.5
-  warningLaserAttackDuration: 0.25
+  warningLaserAttackDuration: 0.5
   warningLaserAttackDamage: 20
   groundSmashMeteorPrefab: {fileID: 2319020122606181220, guid: 03b217e8e150e8a44899ada8fa5f5f6e, type: 3}
   groundSmashWarningPrefab: {fileID: 3232138096444110772, guid: 461b066af972aaf4a9d124cfac676996, type: 3}
-  groundSmashWarningDuration: 2
-  groundSmashMeteorDamage: 50
+  groundSmashWarningDuration: 0.7
+  groundSmashMeteorDamage: 30
   groundSmashMeteorRadius: 2
   groundSmashMeteorFallSpeed: 25
   groundSmashMeteorCount: 3
