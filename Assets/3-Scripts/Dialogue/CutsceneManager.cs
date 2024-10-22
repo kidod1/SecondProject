@@ -70,7 +70,6 @@ public class CutsceneManager : MonoBehaviour
     private string currentSentence = ""; // 현재 대사 저장
 
     private int impFadeOutSentenceIndex = -1; // 임프가 FadeOut 될 대화 인덱스
-
     private void Start()
     {
         sentences = new Queue<string>();

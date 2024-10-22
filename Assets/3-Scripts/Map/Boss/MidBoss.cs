@@ -26,6 +26,7 @@ public class MidBoss : Monster
     [SerializeField, InspectorName("PlayerUIManager")]
     private PlayerUIManager playerUIManager;
 
+    [SerializeField]
     private SlothMapManager slothMapManager;
 
     // ExecutePatterns 코루틴을 제어하기 위한 변수
@@ -45,6 +46,8 @@ public class MidBoss : Monster
     [Tooltip("경고 레이저 공격이 발생할 5개의 위치")]
     private Transform[] warningLaserPositions;
 
+    [SerializeField]
+    private GameManager gameManager;
     protected override void Start()
     {
         base.Start();
@@ -161,9 +164,7 @@ public class MidBoss : Monster
         }
 
         base.Die();
-
-        Debug.Log("중간 보스가 쓰러졌습니다!");
-
+        gameManager.ShowGameResultPanelTest();
         if (playerUIManager != null)
         {
             playerUIManager.UpdateBossHealth(0);

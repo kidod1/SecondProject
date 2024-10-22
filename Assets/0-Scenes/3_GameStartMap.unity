@@ -354,31 +354,31 @@ MonoBehaviour:
       \uB09C \uC9C4\uC9DC \uC8FD\uC5C8\uB2E4..."
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "\uC5EC\uAE30\uAC00 \uC5B4\uB514\uB0D0\uACE0...? \uB0B4\uAC00 \uC65C
       \uB2F5\uD574\uC918\uC57C \uD558\uC9C0?"
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "\uC544\uC544\uC545!!! \uC7A0\uC2DC\uB9CC! \uC5EC\uAE30\uB294 \uC9C0\uC625\uC758
       \uCD5C\uD558\uCE35\uC778 \uC218\uAC10\uB3D9\uC774\uC57C!"
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "\uB108 \uAC19\uC740 \uC8C4\uC218\uB4E4\uC744 \uAC00\uB46C\uB450\uB294
       \uACF3\uC774\uC9C0..."
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "\uB9D0 \uD588\uC73C\uB2C8 \uBA39\uC9C0 \uB9C8!!!"
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "\uC704\uB85C \uC62C\uB77C\uAC00\uB824\uBA74 \uC5B4\uB5BB\uAC8C \uD574\uC57C
       \uD558\uB0D0\uACE0...?"
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "(\uC18C\uB780\uC2A4\uB7EC\uC6B4 \uC18C\uB9AC\uAC00 \uB4E4\uB9B0\uB2E4.)"
     isConditional: 0
     conditionType: 0
@@ -392,10 +392,10 @@ MonoBehaviour:
     isConditional: 1
     conditionType: 3
     associatedSprite: {fileID: 0}
-  - sentence: "\uD6C4\uC6B0..."
+  - sentence: "\uD3EC... \uD3EC\uD0C8\uC774?"
     isConditional: 0
     conditionType: 0
-    associatedSprite: {fileID: 21300000, guid: 0713006da5f4d354a9d9c10193b43e27, type: 3}
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   dialogueText: {fileID: 8270764398637468542}
   dialogueImage: {fileID: 6441984679370857347}
   textAnimationSpeed: 0.05
@@ -18614,6 +18614,26 @@ PrefabInstance:
       propertyPath: m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1527196430346211344, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 92b456c7086d788499198b1535887cc1, type: 3}
+    - target: {fileID: 2161605463911825571, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1274
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161605463911825571, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1114
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161605463911825571, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161605463911825571, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2161605463911825571, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -760
@@ -18622,6 +18642,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -364
       objectReference: {fileID: 0}
+    - target: {fileID: 3662988739325429048, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
     - target: {fileID: 4419115312631651617, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_SizeDelta.x
       value: 450
@@ -18736,19 +18760,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041508252843228452, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 550
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 8041508252843228452, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 206
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8041508252843228452, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -368
+      value: -268
       objectReference: {fileID: 0}
     - target: {fileID: 8041508252843228452, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -372
+      value: -363
       objectReference: {fileID: 0}
     - target: {fileID: 8348162724885141168, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_Name

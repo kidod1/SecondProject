@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviour
     }
 
     // --- 추가된 부분 시작 ---
-    private void ShowGameResultPanelTest()
+    public void ShowGameResultPanelTest()
     {
         // 총점 계산 및 랭크 결정
         CalculateTotalScore();
