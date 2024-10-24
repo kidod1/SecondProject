@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayManager : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayManager : MonoBehaviour
     public static PlayManager I { get; private set; }
 
     private Player player;
+    public bool isPlayerDied = false;
 
     private void Awake()
     {
@@ -50,5 +52,15 @@ public class PlayManager : MonoBehaviour
             Debug.LogError("Player is not assigned!");
             return null;
         }
+    }
+
+    /// <summary>
+    /// 플레이어가 죽었는지 여부를 처리하는 메서드
+    /// </summary>
+    /// <param name="isDie">플레이어 사망 여부</param>
+    /// <returns>isDie 값 반환</returns>
+    public void isPlayerDie()
+    {
+        isPlayerDied = true;
     }
 }

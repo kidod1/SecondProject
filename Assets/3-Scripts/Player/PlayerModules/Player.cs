@@ -611,6 +611,7 @@ public class Player : MonoBehaviour
         Debug.Log("플레이어 사망");
 
         OnPlayerDeath.Invoke();
+        PlayManager.I.isPlayerDie();
     }
 
     public void KillMonster()

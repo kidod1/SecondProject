@@ -51,10 +51,11 @@ public class TutorialDialogueManager : MonoBehaviour
     public Transform[] spawnPoints; // 몬스터 스폰 위치 배열
     public int monstersToSpawn = 5; // 스폰할 몬스터 수
 
-    private int currentDialogueIndex = 0; // 현재 대사 인덱스
-
+    [Header("포탈 오브젝트")]
     [SerializeField]
     private GameObject PortalObject;
+
+    private int currentDialogueIndex = 0; // 현재 대사 인덱스
 
     // 플레이어 입력 및 상태 체크를 위한 변수들
     private bool hasMoved = false; // 플레이어가 WASD를 눌렀는지
@@ -63,24 +64,34 @@ public class TutorialDialogueManager : MonoBehaviour
 
     private int lastDefeatAllMonstersDialogueIndex = -1; // 마지막 DefeatAllMonsters 대사 인덱스
 
+    [SerializeField]
+    private Sprite diedImpSprite;
+
     private void Start()
     {
-        // 시작 시 마지막 DefeatAllMonsters 대사 인덱스 찾기
-        for (int i = 0; i < dialogues.Count; i++)
+        if (!PlayManager.I.isPlayerDied)
         {
-            if (dialogues[i].isConditional && dialogues[i].conditionType == ConditionType.DefeatAllMonsters)
+            // 시작 시 마지막 DefeatAllMonsters 대사 인덱스 찾기
+            for (int i = 0; i < dialogues.Count; i++)
             {
-                lastDefeatAllMonstersDialogueIndex = i;
+                if (dialogues[i].isConditional && dialogues[i].conditionType == ConditionType.DefeatAllMonsters)
+                {
+                    lastDefeatAllMonstersDialogueIndex = i;
+                }
             }
-        }
 
-        if (lastDefeatAllMonstersDialogueIndex == -1)
-        {
-            Debug.LogWarning("DefeatAllMonsters 조건을 가진 대사가 없습니다.");
+            if (lastDefeatAllMonstersDialogueIndex == -1)
+            {
+                Debug.LogWarning("DefeatAllMonsters 조건을 가진 대사가 없습니다.");
+            }
+            PortalObject.SetActive(false);
+            // 시작 시 대화 시퀀스 시작
+            StartCoroutine(DialogueSequence());
         }
-        PortalObject.SetActive(false);
-        // 시작 시 대화 시퀀스 시작
-        StartCoroutine(DialogueSequence());
+        if (PlayManager.I.isPlayerDied)
+        {
+            OpenPortalAndShowNewDialogue();
+        }
     }
 
     private void Update()
@@ -265,7 +276,7 @@ public class TutorialDialogueManager : MonoBehaviour
         for (int i = 0; i < monstersToSpawn; i++)
         {
             // 랜덤한 스폰 포인트 선택
-            int spawnIndex = Random.Range(0, spawnPoints.Length);
+            int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
             Transform spawnPoint = spawnPoints[spawnIndex];
 
             // 몬스터 스폰
@@ -273,5 +284,33 @@ public class TutorialDialogueManager : MonoBehaviour
         }
 
         Debug.Log($"{monstersToSpawn}마리의 몬스터가 스폰되었습니다.");
+    }
+
+    /// <summary>
+    /// 플레이어 사망 시 포탈을 열고 새로운 다이얼로그를 표시하는 메서드
+    /// </summary>
+    public void OpenPortalAndShowNewDialogue()
+    {
+        // 포탈 활성화
+        PortalObject.SetActive(true);
+
+        // 새로운 다이얼로그 생성
+        DialogueData deathDialogue = new DialogueData
+        {
+            sentence = "또 죽은거야?. 포탈은 열어뒀어.", // 새로운 다이얼로그 문장
+            isConditional = false,
+            conditionType = ConditionType.None,
+            associatedSprite = diedImpSprite // 필요 시 스프라이트 추가
+        };
+
+        // 새로운 다이얼로그를 현재 대화 목록에 추가
+        dialogues.Add(deathDialogue);
+
+        // 현재 대화 인덱스를 새로운 대화로 설정
+        currentDialogueIndex = dialogues.Count - 1;
+
+        // 새로운 대화를 즉시 표시하기 위해 현재 대화 시퀀스를 다시 시작
+        StopAllCoroutines();
+        StartCoroutine(DialogueSequence());
     }
 }

@@ -164,7 +164,6 @@ public class MidBoss : Monster
         }
 
         base.Die();
-        gameManager.ShowGameResultPanelTest();
         if (playerUIManager != null)
         {
             playerUIManager.UpdateBossHealth(0);
