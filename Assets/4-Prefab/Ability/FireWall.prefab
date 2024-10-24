@@ -305,7 +305,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8066038, b: 0.8066038, a: 0.29803923}
+      maxColor: {r: 1, g: 0.31826016, b: 0.15566039, a: 0.43137255}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4979,9 +4979,9 @@ GameObject:
   - component: {fileID: 5952334502235585481}
   - component: {fileID: 6312602189409127833}
   - component: {fileID: 7030108926936341209}
-  - component: {fileID: 7727493627564041016}
-  - component: {fileID: 4407890361020476547}
-  - component: {fileID: 5579345085382303432}
+  - component: {fileID: 214446405086355427}
+  - component: {fileID: 2476504632003198745}
+  - component: {fileID: 5631035602058071717}
   m_Layer: 0
   m_Name: FireWall
   m_TagString: Untagged
@@ -5196,7 +5196,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.230614, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9801,7 +9801,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!58 &7727493627564041016
+--- !u!114 &214446405086355427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6709667976772189601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8cc44df4bd392489e00b63034897c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &2476504632003198745
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9833,10 +9845,10 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 1}
   serializedVersion: 2
-  m_Radius: 2
---- !u!50 &4407890361020476547
+  m_Radius: 3
+--- !u!50 &5631035602058071717
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -9863,15 +9875,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &5579345085382303432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6709667976772189601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c8cc44df4bd392489e00b63034897c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

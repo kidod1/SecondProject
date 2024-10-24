@@ -1,11 +1,10 @@
 using UnityEngine;
-using System.Collections;
 
 [CreateAssetMenu(menuName = "Abilities/SharkStrike")]
 public class SharkStrike : Ability
 {
     [Tooltip("레벨별 상어 데미지 증가량")]
-    public int[] damageIncreases;  // 레벨별 상어 데미지 증가량 배열
+    public int[] damageIncreases = { 10, 20, 30, 40, 50 };  // 레벨 1~5
 
     public GameObject sharkPrefab;  // 상어 프리팹
     public int hitThreshold = 5;  // 적중 임계값
@@ -34,7 +33,7 @@ public class SharkStrike : Ability
 
     private void SpawnShark()
     {
-        if (sharkPrefab != null)
+        if (sharkPrefab != null && playerInstance != null)
         {
             GameObject sharkObject = Instantiate(sharkPrefab, playerInstance.transform.position, Quaternion.identity);
             Shark sharkInstance = sharkObject.GetComponent<Shark>();
@@ -44,6 +43,14 @@ public class SharkStrike : Ability
                 int damageIncrease = GetSharkDamageIncrease();
                 sharkInstance.Initialize(sharkSpeed, chaseDelay, maxSearchTime, damageIncrease);
             }
+            else
+            {
+                Debug.LogError("Shark 컴포넌트를 찾을 수 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("SharkPrefab 또는 PlayerInstance가 설정되지 않았습니다.");
         }
     }
 

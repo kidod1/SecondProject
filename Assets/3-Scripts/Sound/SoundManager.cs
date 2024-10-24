@@ -21,7 +21,21 @@ public class SoundEvent
 public class SoundManager : MonoBehaviour
 {
     // 싱글톤 인스턴스
-    public static SoundManager Instance { get; private set; }
+    private static SoundManager instance;
+    public static SoundManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                // 씬 내에 SoundManager가 없으면 새로 생성
+                GameObject obj = new GameObject("SoundManager");
+                instance = obj.AddComponent<SoundManager>();
+                DontDestroyOnLoad(obj);
+            }
+            return instance;
+        }
+    }
 
     [Header("Sound Events")]
     [Tooltip("재생할 사운드 이벤트 리스트")]
@@ -32,13 +46,13 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        // 싱글톤 패턴 구현
-        if (Instance == null)
+        // 기존 인스턴스와 비교하여 싱글톤 유지
+        if (instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않도록 설정
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;

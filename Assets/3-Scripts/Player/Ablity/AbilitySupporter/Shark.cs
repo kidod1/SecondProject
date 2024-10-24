@@ -9,6 +9,9 @@ public class Shark : MonoBehaviour
     private int damage;
     private bool isChasing = false;
 
+    private SpriteRenderer spriteRenderer; // SpriteRenderer 참조 추가
+    private bool hasSetRotation = false; // 회전 설정 여부를 추적하는 변수
+
     /// <summary>
     /// 상어를 초기화합니다.
     /// </summary>
@@ -22,6 +25,9 @@ public class Shark : MonoBehaviour
         chaseDelay = delay;
         maxSearchTime = maxTime;
         damage = sharkDamage;
+
+        spriteRenderer = GetComponent<SpriteRenderer>(); // SpriteRenderer 초기화
+
         StartCoroutine(StartChasing());
     }
 
@@ -86,8 +92,19 @@ public class Shark : MonoBehaviour
 
     private IEnumerator MoveTowards(Monster target)
     {
+        Vector3 targetPosition = target.transform.position;
+
+        // 이동 시작 시 방향 설정
+        if (!hasSetRotation && target != null)
+        {
+            Vector3 direction = (targetPosition - transform.position).normalized;
+            SetInitialRotation(direction);
+            hasSetRotation = true;
+        }
+
         while (target != null && !target.IsDead && Vector3.Distance(transform.position, target.transform.position) > 0.5f)
         {
+            // 이동 방향 고정
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             yield return null;
         }
@@ -100,6 +117,17 @@ public class Shark : MonoBehaviour
 
         // 데미지 적용 후 상어 파괴
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 초기 이동 방향에 따라 스프라이트의 Z축 회전을 설정합니다.
+    /// </summary>
+    /// <param name="direction">이동 방향 벡터</param>
+    private void SetInitialRotation(Vector3 direction)
+    {
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle - 90);
+        transform.rotation = targetRotation;
     }
 
     private void OnDrawGizmosSelected()
