@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
     private float lastShootTime;
     public bool isShooting = false;
     private Vector2 shootDirection;
-    private Vector2 lastMoveDirection = Vector2.right;
+    private Vector2 lastMoveDirection = Vector2.zero;
 
     private PlayerInput playerInput;
 

@@ -18,10 +18,6 @@ public class PlayManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
         player = FindObjectOfType<Player>();
 
         if (player == null)

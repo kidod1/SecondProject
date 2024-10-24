@@ -87,6 +87,13 @@ public class PlayerUIManager : MonoBehaviour
             Debug.LogWarning("PlayerUIManager: bossHealthUIPanel이 할당되지 않았습니다.");
         }
     }
+    private void Start()
+    {
+        if (player == null)
+        {
+            player = PlayManager.I.GetPlayer();
+        }
+    }
 
     public void Initialize(Player player)
     {
