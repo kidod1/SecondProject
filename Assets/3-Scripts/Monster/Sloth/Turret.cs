@@ -32,6 +32,7 @@ public class Turret : Monster
     {
         base.Start();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
+        skeletonAnimation.Initialize(true);
         if (skeletonAnimation == null)
         {
             Debug.LogError("½ºÄÌ·¹Åæ ¾Ö´Ï¸ÞÀÌ¼Ç is null");

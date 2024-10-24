@@ -56,6 +56,7 @@ public class ButtonMonster : Monster
     {
         PlayAnimation(attackAnimation, false);
 
+
         if (attackEffect != null)
         {
             yield return new WaitForSeconds(0.72f);
@@ -77,6 +78,8 @@ public class ButtonMonster : Monster
         }
 
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
+        skeletonAnimation.Initialize(true);
+        PlayAnimation(idleAnimation, false);
         TransitionToState(cooldownState);
     }
 

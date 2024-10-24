@@ -81,6 +81,11 @@ public class FlashBlade : Ability
 
         // 칼날의 회전을 후방 방향에 맞게 설정합니다.
         float angle = Mathf.Atan2(backwardDirection.y, backwardDirection.x) * Mathf.Rad2Deg;
+
+        // 프리팹의 기본 방향에 따라 각도 보정 (필요 시)
+        float angleOffset = -90f; // 필요에 따라 조정 (예: 90f)
+        angle += angleOffset;
+
         Quaternion spawnRotation = Quaternion.Euler(0f, 0f, angle);
 
         GameObject blade = Instantiate(bladePrefab, spawnPosition, spawnRotation);
@@ -91,6 +96,9 @@ public class FlashBlade : Ability
             int currentDamage = GetCurrentDamage();
             bladeScript.Initialize(currentDamage, range, bladeSpeed, playerInstance, backwardDirection);
         }
+
+        // Debugging: 방향 확인을 위한 로그 추가
+        Debug.Log($"Firing blade at angle: {angle}, Direction: {backwardDirection}, Spawn Position: {spawnPosition}");
     }
 
     /// <summary>
@@ -157,6 +165,25 @@ public class FlashBlade : Ability
         if (damageLevels.Length != maxLevel)
         {
             Array.Resize(ref damageLevels, maxLevel);
+        }
+    }
+
+    /// <summary>
+    /// Gizmos를 사용하여 칼날 발사 방향 시각화
+    /// </summary>
+    private void OnDrawGizmosSelected()
+    {
+        if (playerInstance != null)
+        {
+            Vector2 facingDirection = playerInstance.GetFacingDirection();
+            Vector2 backwardDirection = -facingDirection;
+
+            Vector3 origin = playerInstance.transform.position;
+            Vector3 direction = backwardDirection * 5f; // 예시: 5 단위 길이
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(origin, origin + (Vector3)direction);
+            Gizmos.DrawSphere(origin + (Vector3)direction, 0.2f);
         }
     }
 }

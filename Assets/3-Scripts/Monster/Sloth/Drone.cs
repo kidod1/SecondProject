@@ -22,6 +22,7 @@ public class Drone : Monster
     {
         base.Start();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
+        skeletonAnimation.Initialize(true);
         if (skeletonAnimation == null)
         {
             Debug.LogError("½ºÄÌ·¹Åæ ¾Ö´Ï¸ÞÀÌ¼Ç is null");
@@ -65,6 +66,8 @@ public class Drone : Monster
         FireBulletWithParticle();
         TransitionToState(cooldownState);
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
+        skeletonAnimation.Initialize(true);
+        PlayAnimation(idleMoveAnimation, false);
     }
 
     private void FireBulletWithParticle()
