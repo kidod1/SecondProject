@@ -39,7 +39,7 @@ public class IncreaseExperience : Ability
     {
         if (currentLevel < maxLevel && currentLevel < experienceMultipliers.Length)
         {
-            return Mathf.RoundToInt(experienceMultipliers[currentLevel] * 100); // 퍼센트로 변환
+            return Mathf.RoundToInt(experienceMultipliers[currentLevel] * 100);
         }
         return 0;
     }
@@ -67,6 +67,5 @@ public class IncreaseExperience : Ability
     public override void ResetLevel()
     {
         base.ResetLevel();
-        // 필요 시 플레이어의 경험치 배수 초기화 로직 추가
     }
 }

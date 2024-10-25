@@ -271,7 +271,7 @@ public class Player : MonoBehaviour
         if (moveInput != Vector2.zero)
         {
             currentDirection = moveInput;
-            lastMoveDirection = moveInput.normalized; // 마지막 이동 방향 업데이트
+            lastMoveDirection = moveInput.normalized;
         }
         else if (lastAttackDirection != Vector2.zero)
         {
@@ -283,7 +283,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            currentDirection = Vector2.down; // 기본값을 아래쪽으로 설정
+            currentDirection = Vector2.down;
         }
 
         Direction8 direction = GetDirection8(currentDirection);
@@ -400,7 +400,7 @@ public class Player : MonoBehaviour
     private Direction8 GetDirection8(Vector2 direction)
     {
         if (direction == Vector2.zero)
-            return Direction8.South; // 기본값
+            return Direction8.South;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         angle = (angle + 360f) % 360f;
