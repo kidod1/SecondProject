@@ -2,6 +2,7 @@ using UnityEngine;
 using Spine.Unity;
 using System.Collections;
 using Spine;
+using UnityEngine.SceneManagement;
 
 public class SlothCutSceneAnimationController : MonoBehaviour
 {
@@ -114,7 +115,8 @@ public class SlothCutSceneAnimationController : MonoBehaviour
             // ¾À ÀüÈ¯
             if (cutsceneManager != null)
             {
-                cutsceneManager.LoadNextScene();
+                Debug.Log("µð¹ö±ë");
+                //SceneManager.LoadScene(targetSceneName);
             }
         }
     }

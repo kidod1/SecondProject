@@ -4,10 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
-/// <summary>
-/// 튜토리얼 다이얼로그의 조건 타입을 정의하는 열거형
-/// </summary>
 public enum ConditionType
 {
     None,                // 조건 없음
@@ -16,9 +14,6 @@ public enum ConditionType
     DefeatAllMonsters    // 모든 몬스터 처치
 }
 
-/// <summary>
-/// 각 대화 데이터를 저장하는 클래스
-/// </summary>
 [System.Serializable]
 public class DialogueData
 {
@@ -29,17 +24,29 @@ public class DialogueData
     public Sprite associatedSprite; // 대사와 함께 보여줄 Sprite (옵션)
 }
 
-/// <summary>
-/// 튜토리얼 다이얼로그를 관리하는 매니저 클래스
-/// </summary>
 public class TutorialDialogueManager : MonoBehaviour
 {
     [Header("대화 목록")]
     public List<DialogueData> dialogues; // 대사 목록
 
     [Header("UI 요소")]
-    public TMP_Text dialogueText; // 대사 텍스트 UI
-    public Image dialogueImage; // 대사 이미지 UI
+    [SerializeField]
+    private TMP_Text dialogueText; // 대사 텍스트 UI
+    [SerializeField]
+    private Image dialogueImage; // 대사 이미지 UI
+    [SerializeField]
+    private Image TutoConditionsImage;
+    [SerializeField]
+    private TMP_Text conditionDescriptionText; // 조건 설명 텍스트 UI
+    [SerializeField]
+    private Image conditionIconImage; // 조건 아이콘 이미지 UI
+    [SerializeField]
+    private Sprite defaultConditionIcon; // 기본 아이콘 스프라이트
+    [SerializeField]
+    private Sprite completedConditionIcon; // 조건 완료 시 아이콘 스프라이트
+    [SerializeField]
+    private TMP_Text progressText; // 튜토리얼 진행도 표시용 텍스트
+
 
     [Header("애니메이션 및 이미지 설정")]
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
@@ -55,6 +62,9 @@ public class TutorialDialogueManager : MonoBehaviour
     [SerializeField]
     private GameObject PortalObject;
 
+    [SerializeField]
+    private Sprite diedImpSprite;
+
     private int currentDialogueIndex = 0; // 현재 대사 인덱스
 
     // 플레이어 입력 및 상태 체크를 위한 변수들
@@ -64,16 +74,34 @@ public class TutorialDialogueManager : MonoBehaviour
 
     private int lastDefeatAllMonstersDialogueIndex = -1; // 마지막 DefeatAllMonsters 대사 인덱스
 
-    [SerializeField]
-    private Sprite diedImpSprite;
+    // UnityEvent 선언 (Inspector에 표시됨)
+    [Header("이벤트")]
+    public UnityEvent OnDialogueStartUnityEvent; // 각 대화 시작 시 호출되는 이벤트
+    public UnityEvent OnDialogueEndUnityEvent; // 각 대화 종료 시 호출되는 이벤트
+    public UnityEvent OnConditionMetUnityEvent; // 조건 충족 시 호출되는 이벤트
+    public UnityEvent<int> OnMonstersSpawnedUnityEvent; // 몬스터 스폰 시 호출되는 이벤트, 스폰된 몬스터 수 전달
+    public UnityEvent OnPortalOpenedUnityEvent; // 포탈 열림 시 호출되는 이벤트
+    public UnityEvent OnPlayerDiedUnityEvent; // 플레이어 사망 시 호출되는 이벤트
+
+    [Header("조건 이벤트")]
+    public UnityEvent<string> OnConditionStartedUnityEvent; // 조건 시작 시 호출되는 이벤트, 조건 설명 전달
+    public UnityEvent OnConditionCompletedUnityEvent; // 조건 완료 시 호출되는 이벤트
+
+    private int totalSpecialDialogues = 0; // 총 특수 대화 수
+    private int processedSpecialDialogues = 0; // 처리된 특수 대화 수
 
     private void Start()
     {
         if (!PlayManager.I.isPlayerDied)
         {
-            // 시작 시 마지막 DefeatAllMonsters 대사 인덱스 찾기
+            // 시작 시 특수 대화(조건부 대화) 수 계산
             for (int i = 0; i < dialogues.Count; i++)
             {
+                if (dialogues[i].isConditional && dialogues[i].conditionType != ConditionType.None)
+                {
+                    totalSpecialDialogues++;
+                }
+
                 if (dialogues[i].isConditional && dialogues[i].conditionType == ConditionType.DefeatAllMonsters)
                 {
                     lastDefeatAllMonstersDialogueIndex = i;
@@ -84,13 +112,17 @@ public class TutorialDialogueManager : MonoBehaviour
             {
                 Debug.LogWarning("DefeatAllMonsters 조건을 가진 대사가 없습니다.");
             }
+
             PortalObject.SetActive(false);
             // 시작 시 대화 시퀀스 시작
             StartCoroutine(DialogueSequence());
         }
+
         if (PlayManager.I.isPlayerDied)
         {
             OpenPortalAndShowNewDialogue();
+            // 플레이어가 죽었을 때 이벤트 호출
+            OnPlayerDiedUnityEvent?.Invoke();
         }
     }
 
@@ -101,19 +133,21 @@ public class TutorialDialogueManager : MonoBehaviour
                           Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)))
         {
             hasMoved = true;
+            Debug.Log("플레이어가 움직였습니다.");
         }
 
         // 플레이어의 능력 사용 체크 (R 키 입력)
         if (!hasUsedAbility && Input.GetKeyDown(KeyCode.R))
         {
             hasUsedAbility = true;
+            Debug.Log("플레이어가 능력을 사용했습니다.");
         }
 
         // 몬스터 처치 여부 체크
         if (!allMonstersDefeated && AreAllMonstersDefeated())
         {
             allMonstersDefeated = true;
-            Debug.Log("모두 처치");
+            Debug.Log("모든 몬스터를 처치했습니다.");
         }
     }
 
@@ -136,6 +170,12 @@ public class TutorialDialogueManager : MonoBehaviour
         while (currentDialogueIndex < dialogues.Count)
         {
             DialogueData dialogue = dialogues[currentDialogueIndex];
+
+            // 이벤트: 대화 시작
+            OnDialogueStartUnityEvent?.Invoke();
+
+            // 애니메이션을 자연스럽게 만들기 위해 대기
+            yield return new WaitForSeconds(0.5f);
 
             // Set up image
             if (dialogueImage != null)
@@ -172,6 +212,22 @@ public class TutorialDialogueManager : MonoBehaviour
 
             if (dialogue.isConditional)
             {
+                TutoConditionsImage.gameObject.SetActive(true);
+                string conditionDescription = GetConditionDescription(dialogue.conditionType);
+                OnConditionStartedUnityEvent?.Invoke(conditionDescription);
+
+                // 조건 설명 UI 업데이트
+                if (conditionDescriptionText != null)
+                {
+                    conditionDescriptionText.text = conditionDescription;
+                }
+
+                // 아이콘 초기화
+                if (conditionIconImage != null && defaultConditionIcon != null)
+                {
+                    conditionIconImage.sprite = defaultConditionIcon;
+                }
+
                 // DefeatAllMonsters 조건일 경우 몬스터 스폰
                 if (dialogue.conditionType == ConditionType.DefeatAllMonsters)
                 {
@@ -187,31 +243,32 @@ public class TutorialDialogueManager : MonoBehaviour
                     if (CheckConditionMet(dialogue.conditionType))
                     {
                         conditionSatisfied = true;
-                        currentDialogueIndex++;
 
-                        // 마지막 DefeatAllMonsters 대사가 완료되면 추가 몬스터 스폰 (필요 시)
-                        if (currentDialogueIndex - 1 == lastDefeatAllMonstersDialogueIndex)
+                        // 조건 충족 이벤트 호출
+                        OnConditionMetUnityEvent?.Invoke();
+
+                        // 아이콘 변경
+                        if (conditionIconImage != null && completedConditionIcon != null)
                         {
-                            // 예를 들어, 추가 몬스터 스폰이 필요하다면 여기서 호출
-                            // SpawnMonsters();
+                            conditionIconImage.sprite = completedConditionIcon;
                         }
 
+                        // 조건 완료 이벤트 호출
+                        OnConditionCompletedUnityEvent?.Invoke();
+
+                        // 특수 대화 처리 완료
+                        processedSpecialDialogues++;
+                        Debug.Log($"특수 대화 처리 완료: {processedSpecialDialogues}/{totalSpecialDialogues}");
+
+                        // 다음 대사로 진행
+                        currentDialogueIndex++;
+
+                        // 루프 종료
                         break;
                     }
 
-                    // 조건이 충족되지 않았을 경우, autoAdvanceDuration 만큼 대기 후 대화 재출력
-                    yield return new WaitForSecondsRealtime(autoAdvanceDuration);
-
-                    // 대화 텍스트를 다시 애니메이션으로 표시
-                    dialogueText.text = "";
-                    foreach (char letter in dialogue.sentence.ToCharArray())
-                    {
-                        dialogueText.text += letter;
-                        yield return new WaitForSecondsRealtime(textAnimationSpeed);
-                    }
-
-                    // 다시 autoAdvanceDuration 대기
-                    yield return new WaitForSecondsRealtime(autoAdvanceDuration);
+                    // 대기
+                    yield return null;
                 }
             }
             else
@@ -219,9 +276,52 @@ public class TutorialDialogueManager : MonoBehaviour
                 // 조건이 없는 대사는 다음 대사로 자동 진행
                 currentDialogueIndex++;
             }
+
+            // 이벤트: 대화 종료
+            OnDialogueEndUnityEvent?.Invoke();
         }
 
         EndDialogue();
+    }
+
+    /// <summary>
+    /// 주어진 조건 타입에 대한 설명을 반환하는 메서드
+    /// </summary>
+    /// <param name="conditionType">조건 타입</param>
+    /// <returns>조건 설명 문자열</returns>
+    private string GetConditionDescription(ConditionType conditionType)
+    {
+        switch (conditionType)
+        {
+            case ConditionType.PressWASD:
+                return "WASD 누르기";
+            case ConditionType.PressR:
+                return "R키 누르기";
+            case ConditionType.DefeatAllMonsters:
+                return "맵에 있는 모든 적 처치";
+            default:
+                return "";
+        }
+    }
+    /// <summary>
+    /// 튜토리얼 진행도를 업데이트하는 메서드
+    /// </summary>
+    public void UpdateProgressText()
+    {
+        if (progressText != null)
+        {
+            progressText.text = $"튜토리얼 진행 {processedSpecialDialogues}/{totalSpecialDialogues}";
+        }
+    }
+    /// <summary>
+    /// 튜토리얼 시작 시 진행도를 초기화하는 메서드
+    /// </summary>
+    public void InitializeProgressText()
+    {
+        if (progressText != null)
+        {
+            progressText.text = $"튜토리얼 진행 {processedSpecialDialogues}/{totalSpecialDialogues}";
+        }
     }
 
     /// <summary>
@@ -234,13 +334,10 @@ public class TutorialDialogueManager : MonoBehaviour
         switch (conditionType)
         {
             case ConditionType.PressWASD:
-                Debug.Log("PressWASD");
                 return hasMoved;
             case ConditionType.PressR:
-                Debug.Log("PressR");
                 return hasUsedAbility;
             case ConditionType.DefeatAllMonsters:
-                Debug.Log("DefeatAllMonsters");
                 return allMonstersDefeated;
             default:
                 return false;
@@ -254,6 +351,9 @@ public class TutorialDialogueManager : MonoBehaviour
     {
         PortalObject.SetActive(true);
         Debug.Log("튜토리얼 종료");
+
+        // 포탈 열림 이벤트 호출
+        OnPortalOpenedUnityEvent?.Invoke();
     }
 
     /// <summary>
@@ -284,6 +384,9 @@ public class TutorialDialogueManager : MonoBehaviour
         }
 
         Debug.Log($"{monstersToSpawn}마리의 몬스터가 스폰되었습니다.");
+
+        // 몬스터 스폰 이벤트 호출
+        OnMonstersSpawnedUnityEvent?.Invoke(monstersToSpawn);
     }
 
     /// <summary>

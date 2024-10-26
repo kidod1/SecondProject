@@ -47,7 +47,7 @@ public class CutsceneManager : MonoBehaviour
     public TMP_Text nameText;
     public TMP_Text dialogueText;
     public Image animationImage;
-    public int nextSceneIndex = -1;
+    public string nextSceneName;
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
     [Header("UI Elements")]
@@ -70,6 +70,9 @@ public class CutsceneManager : MonoBehaviour
     private string currentSentence = ""; // 현재 대사 저장
 
     private int impFadeOutSentenceIndex = -1; // 임프가 FadeOut 될 대화 인덱스
+
+    [SerializeField]
+    private SceneChangeSkeleton sceneChangeSkeleton;
     private void Start()
     {
         sentences = new Queue<string>();
@@ -199,15 +202,12 @@ public class CutsceneManager : MonoBehaviour
                 speechBubbleAnimator.SetTrigger("FadeOut");
             }
 
-            // Deactivate 임프's image after fade out (assuming fade out takes some time, adjust as needed)
             StartCoroutine(DeactivateImpAfterFadeOut());
         }
     }
 
     private IEnumerator DeactivateImpAfterFadeOut()
     {
-        // Wait for the duration of the fade-out animation
-        // Replace 1.0f with your actual fade-out animation duration
         yield return new WaitForSeconds(1.0f);
 
         if (impCharacterImage != null)
@@ -314,32 +314,31 @@ public class CutsceneManager : MonoBehaviour
             }
         }
     }
-
-    public void LoadNextScene()
-    {
-        if (nextSceneIndex >= 0 && nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            Debug.LogError("다음 씬의 인덱스가 유효하지 않습니다.");
-        }
-    }
-
     private void EndCutscene()
     {
         cutsceneEnded = true;
-        // 필요 시, FadeOut 트리거를 추가로 실행
+
         if (speechBubbleAnimator != null)
         {
             speechBubbleAnimator.SetTrigger("FadeOut");
         }
 
-        // 다음 씬 로드 (옵션)
-        // LoadNextScene();
+        if (sceneChangeSkeleton != null)
+        {
+            sceneChangeSkeleton.gameObject.SetActive(true);
+            sceneChangeSkeleton.PlayCloseAnimation("7_SlothMap");
+        }
+        else
+        {
+            Debug.LogWarning("SceneChangeSkeleton이 존재하지 않습니다. 바로 다음 씬으로 이동합니다.");
+        }
     }
-
+    private IEnumerator DelayForEndCutSence(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        sceneChangeSkeleton.gameObject.SetActive(true);
+        sceneChangeSkeleton.PlayCloseAnimation("7_SlothMap");
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

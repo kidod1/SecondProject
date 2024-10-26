@@ -27,7 +27,6 @@ public class PlayManager : MonoBehaviour
             Debug.LogError("Player not found in the scene!");
         }
     }
-
     public Vector2 GetPlayerPosition()
     {
         if (player != null)
