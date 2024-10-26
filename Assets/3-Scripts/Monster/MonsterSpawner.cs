@@ -34,6 +34,9 @@ public class MonsterSpawner : MonoBehaviour
     private int currentWaveIndex = 0; // 현재 웨이브 인덱스
     private MidBoss midBossInstance; // 중간 보스 인스턴스 참조
 
+    [Header("Experience Items")]
+    public Transform experienceItemsParent; // 경험치 아이템의 공통 부모
+
     private void Start()
     {
         if (waves.Count > 0)
@@ -44,6 +47,9 @@ public class MonsterSpawner : MonoBehaviour
         {
             Debug.LogWarning("MonsterSpawner: 웨이브 설정이 없습니다.");
         }
+
+        // 경험치 아이템 부모 오브젝트 초기화
+        InitializeExperienceItemsParent();
 
         // 씬에 배치된 중간 보스 오브젝트가 할당되어 있는지 확인하고, 초기에는 비활성화 상태로 설정
         if (midBossPrefab != null)
@@ -70,6 +76,25 @@ public class MonsterSpawner : MonoBehaviour
             {
                 Debug.LogWarning("waveNumberText에 Animator 컴포넌트가 없습니다. 애니메이션 기능이 비활성화됩니다.");
             }
+        }
+    }
+
+    /// <summary>
+    /// 경험치 아이템의 부모 오브젝트를 초기화합니다.
+    /// </summary>
+    private void InitializeExperienceItemsParent()
+    {
+        if (experienceItemsParent == null)
+        {
+            // 씬에 "ExperienceItems"라는 이름의 오브젝트가 있는지 찾기
+            GameObject parentObj = GameObject.Find("ExperienceItems");
+            if (parentObj == null)
+            {
+                // 없다면 새로 생성
+                parentObj = new GameObject("ExperienceItems");
+                parentObj.transform.SetParent(this.transform);
+            }
+            experienceItemsParent = parentObj.transform;
         }
     }
 
@@ -135,10 +160,10 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-        /// <summary>
-        /// 씬에 미리 배치된 중간 보스 오브젝트를 활성화합니다.
-        /// </summary>
-        private void SpawnMidBoss()
+    /// <summary>
+    /// 씬에 미리 배치된 중간 보스 오브젝트를 활성화합니다.
+    /// </summary>
+    private void SpawnMidBoss()
     {
         if (midBossPrefab != null)
         {
@@ -167,7 +192,7 @@ public class MonsterSpawner : MonoBehaviour
         int spawnPointIndex = Random.Range(0, spawnPointsToUse.Length);
         Transform spawnPoint = spawnPointsToUse[spawnPointIndex];
 
-        GameObject monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation, this.transform);
         spawnedMonsters.Add(monster);
     }
 

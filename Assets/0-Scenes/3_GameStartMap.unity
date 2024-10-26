@@ -703,6 +703,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogues:
+  - sentence: "\uD14C\uC2A4\uD2B8 \uD14D\uC2A4\uD2B8\uC785\uB2C8\uB2E4. R\uD0A4\uB97C
+      \uB20C\uB7EC\uC8FC\uC138\uC694."
+    isConditional: 1
+    conditionType: 2
+    associatedSprite: {fileID: 21300000, guid: c21faabd83d92e6469ae2bf90ac5f98a, type: 3}
   - sentence: "\uD14C\uC2A4\uD2B8 \uD14D\uC2A4\uD2B8\uC785\uB2C8\uB2E4."
     isConditional: 0
     conditionType: 0
@@ -13544,6 +13549,10 @@ PrefabInstance:
       propertyPath: hitEffectController
       value: 
       objectReference: {fileID: 36208196}
+    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+      propertyPath: currentSynergyAbility
+      value: 
+      objectReference: {fileID: 11400000, guid: 9db5af75696df354eb551c3ad34c283f, type: 2}
     - target: {fileID: 7710056644381216942, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: m_Mesh
       value: 

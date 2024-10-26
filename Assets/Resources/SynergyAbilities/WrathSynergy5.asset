@@ -19,14 +19,16 @@ MonoBehaviour:
   maxLevel: 5
   currentLevel: 0
   abilityIcon: {fileID: 21300000, guid: c27ab9a1dcf38a24ea272f9f65b8b61f, type: 3}
-  cooldownDuration: 20
+  cooldownDuration: 0
   lastUsedTime: 0
   meteorPrefab: {fileID: 6834745467385703543, guid: 843d277d85153144d8c54cb14496eae9, type: 3}
   meteorDamage: 10
-  meteorRadius: 2
+  meteorRadius: 5
   warningDuration: 1.5
   fallSpeed: 8
-  meteorCount: 1
-  spawnRadius: 1
-  MeteorCooldownDurations: 20
-  warningPrefab: {fileID: 3232138096444110772, guid: 1ff05148fc60e1a46af95b0619b0e339, type: 3}
+  meteorCount: 6
+  spawnRadius: 4
+  meteorSpawnDelay: 0.5
+  MeteorCooldownDurations: 0
+  warningStartEffectPrefab: {fileID: 1494000278837599384, guid: 75489e6bd657f27439cc9bcd0715cbdf, type: 3}
+  warningEndEffectPrefab: {fileID: 1643995740679275099, guid: 5d1e7c0b4e999ae4d91504878cf3167a, type: 3}

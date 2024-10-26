@@ -12,6 +12,14 @@ public class RotatingObject : MonoBehaviour
 
     private void Start()
     {
+        if (playerShooting == null)
+        {
+            playerShooting = PlayManager.I.GetPlayer();
+        }
+        if (player == null)
+        {
+            player = playerShooting.transform;
+        }
         if (player != null)
         {
             playerShooting = player.GetComponent<Player>();
@@ -38,17 +46,20 @@ public class RotatingObject : MonoBehaviour
         }
     }
 
-    private void FollowAttackHandler(Vector2 direction, int prefabIndex, GameObject projectile)
+    private void FollowAttackHandler(Vector2 direction, int prefabIndex, GameObject originalProjectile)
     {
-        if (projectile == null)
+        if (originalProjectile == null)
         {
-            Debug.LogError("RotatingObject: 전달된 프로젝트트가 null입니다.");
+            Debug.LogError("RotatingObject: 전달된 원본 프로젝트타일이 null입니다.");
             return;
         }
-        Projectile projScript = projectile.GetComponent<Projectile>();
+
+        // 새로운 프로젝트타일 생성
+        GameObject cloneProjectile = Instantiate(originalProjectile, transform.position, Quaternion.identity);
+        Projectile projScript = cloneProjectile.GetComponent<Projectile>();
         if (projScript != null)
         {
-            projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier, playerShooting.stat.currentPlayerDamage);
+            projScript.Initialize(playerShooting.stat, playerShooting, false, damageMultiplier, playerShooting.stat.buffedPlayerDamage);
             projScript.SetDirection(direction);
         }
         else
@@ -56,6 +67,8 @@ public class RotatingObject : MonoBehaviour
             Debug.LogError("RotatingObject: Projectile 스크립트를 찾을 수 없습니다.");
         }
     }
+
+
 
     private void OnDestroy()
     {

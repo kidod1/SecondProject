@@ -69,7 +69,7 @@ public class PlayerStatsUI : MonoBehaviour
             return;
 
         if (playerDamageText != null)
-            playerDamageText.text = $"공격력: {player.stat.currentPlayerDamage}";
+            playerDamageText.text = $"공격력: {player.stat.buffedPlayerDamage}";
 
         if (playerSpeedText != null)
             playerSpeedText.text = $"속도: {player.stat.currentPlayerSpeed:F2}";

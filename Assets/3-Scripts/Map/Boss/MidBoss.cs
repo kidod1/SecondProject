@@ -154,7 +154,7 @@ public class MidBoss : Monster
     protected override void Die()
     {
         if (isDead) return;
-
+        GameManager gameManager = FindFirstObjectByType<GameManager>();
         // 보스가 죽을 때 공격 패턴 코루틴을 정지합니다.
         if (executePatternsCoroutine != null)
         {
@@ -163,7 +163,6 @@ public class MidBoss : Monster
             Debug.Log("보스 몬스터의 공격 패턴이 정지되었습니다.");
         }
 
-        base.Die();
         if (playerUIManager != null)
         {
             playerUIManager.UpdateBossHealth(0);
@@ -178,6 +177,8 @@ public class MidBoss : Monster
             }
 
             slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
+            gameManager.AddBossKill();
+            gameManager.AddFloorClear();
             StartCoroutine(PlayDeathAnimationsCoroutine());
         }
         else

@@ -718,11 +718,13 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-        // 이전 이펙트가 있으면 삭제
+        // 기존 이펙트가 존재하고 활성화되어 있는지 확인
         if (currentHighlightEffect != null)
         {
             Destroy(currentHighlightEffect);
+            currentHighlightEffect = null;
         }
+
 
         // 새로운 이펙트 인스턴스 생성
         currentHighlightEffect = Instantiate(highlightEffectPrefab, highlightImage.transform.parent);
@@ -875,7 +877,6 @@ public class AbilityManager : MonoBehaviour
             Animator animator = abilityButtons[i].GetComponent<Animator>();
             if (animator != null)
             {
-                animator.updateMode = AnimatorUpdateMode.UnscaledTime; // Unscaled Time으로 설정
                 if (availableAbilities[i] == selectedAbility)
                 {
                     // 선택된 능력은 "Choice" 트리거 발동

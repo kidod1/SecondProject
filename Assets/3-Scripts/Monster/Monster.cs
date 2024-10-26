@@ -76,6 +76,7 @@ public abstract class Monster : MonoBehaviour
     // 즉사 여부를 추적하기 위한 변수 추가
     public bool isInstantKilled = false;
 
+    private static Transform experienceItemsParent;
     protected virtual void Start()
     {
         skeletonAnimations = GetComponent<SkeletonAnimation>();
@@ -84,7 +85,7 @@ public abstract class Monster : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         player = FindObjectOfType<Player>();
-
+        InitializeExperienceItemsParent();
         if (player == null)
         {
             Debug.LogError("플레이어 오브젝트를 찾을 수 없습니다. Update 메서드에서 재시도합니다.");
@@ -408,6 +409,15 @@ public abstract class Monster : MonoBehaviour
 
         isDead = true;
 
+        GameManager gameManager = FindFirstObjectByType<GameManager>();
+        if (!isElite)
+        {
+            gameManager.AddMonsterKill();
+        }
+        else
+        {
+            gameManager.AddMonsterKill(); // 추후 엘리트 몬스터로 변경
+        }
         if (player != null)
         {
             player.KillMonster();
@@ -480,8 +490,19 @@ public abstract class Monster : MonoBehaviour
 
         isInvincible = false;
     }
-
-    private void DropExperienceItem()
+    private void InitializeExperienceItemsParent()
+    {
+        if (experienceItemsParent == null)
+        {
+            GameObject parentObj = GameObject.Find("ExperienceItems");
+            if (parentObj == null)
+            {
+                parentObj = new GameObject("ExperienceItems");
+            }
+            experienceItemsParent = parentObj.transform;
+        }
+    }
+    protected virtual void DropExperienceItem()
     {
         if (player != null && monsterBaseStat != null)
         {
@@ -508,7 +529,13 @@ public abstract class Monster : MonoBehaviour
             GameObject experienceItemPrefab = Resources.Load<GameObject>(prefabName);
             if (experienceItemPrefab != null)
             {
-                GameObject expItem = Instantiate(experienceItemPrefab, transform.position, Quaternion.identity);
+                if (experienceItemsParent == null)
+                {
+                    InitializeExperienceItemsParent();
+                }
+
+                // 경험치 아이템 생성 시 부모 설정
+                GameObject expItem = Instantiate(experienceItemPrefab, transform.position, Quaternion.identity, experienceItemsParent);
                 ExperienceItem expScript = expItem.GetComponent<ExperienceItem>();
                 if (expScript != null)
                 {

@@ -63,6 +63,12 @@ public class MeteorController : MonoBehaviour
             }
         }
 
+        // 폭발 이펙트가 있으면 3초 후 파괴
+        if (explosionEffectInstance != null)
+        {
+            Destroy(explosionEffectInstance, 3f);
+        }
+
         // 메테오 오브젝트 제거
         Destroy(gameObject);
 

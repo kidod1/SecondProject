@@ -67,8 +67,6 @@ public class BreathAttack : MonoBehaviour
                 if (angleToTarget <= angle / 2f)
                 {
                     monster.TakeDamage(Mathf.RoundToInt(damage), PlayManager.I.GetPlayerPosition());
-                    // 디버그 메시지 추가
-                    Debug.Log($"[Breath Attack] {monster.gameObject.name}에게 {damage} 피해를 입힘.");
                 }
             }
         }

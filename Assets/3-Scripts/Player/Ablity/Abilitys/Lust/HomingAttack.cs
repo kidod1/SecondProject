@@ -30,18 +30,22 @@ public class HomingAttack : Ability
             Debug.LogError("HomingAttack Apply: player 인스턴스가 null입니다.");
             return;
         }
-
-        // 기존 플레이어 인스턴스에 리스너가 등록되어 있으면 제거
-        if (playerInstance != null)
+        if (currentLevel == 0)
         {
-            playerInstance.OnShoot.RemoveListener(OnShootHandler);
-        }
+            // 기존 플레이어 인스턴스에 리스너가 등록되어 있으면 제거
+            if (playerInstance != null)
+            {
+                playerInstance.OnShoot.RemoveListener(OnShootHandler);
+            }
 
-        playerInstance = player;
-        // 이벤트 리스너 추가 전에 중복 제거
-        playerInstance.OnShoot.RemoveListener(OnShootHandler);
-        playerInstance.OnShoot.AddListener(OnShootHandler);
+            playerInstance = player;
+
+            // 리스너 중복 등록 방지
+            playerInstance.OnShoot.RemoveListener(OnShootHandler);
+            playerInstance.OnShoot.AddListener(OnShootHandler);
+        }
     }
+
 
     /// <summary>
     /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 Homing 파라미터가 증가합니다.
@@ -77,9 +81,8 @@ public class HomingAttack : Ability
 
         // 공격 카운터 초기화
         attackCounter = 0;
-
-        Debug.Log("HomingAttack 레벨이 초기화되었습니다.");
     }
+
 
     /// <summary>
     /// 능력의 설명을 반환합니다.

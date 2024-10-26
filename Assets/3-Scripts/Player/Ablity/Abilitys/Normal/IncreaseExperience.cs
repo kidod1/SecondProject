@@ -9,7 +9,7 @@ public class IncreaseExperience : Ability
 
     public override void Apply(Player player)
     {
-        if (currentLevel < experienceMultipliers.Length)
+        if (currentLevel < experienceMultipliers.Length && currentLevel == 0)
         {
             player.stat.experienceMultiplier += experienceMultipliers[currentLevel];
         }

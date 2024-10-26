@@ -1,6 +1,5 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayManager : MonoBehaviour
 {
@@ -19,14 +18,37 @@ public class PlayManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+
+        // 현재 씬에서 Player 찾기
+        player = FindObjectOfType<Player>();
+
+        // 씬 로드 이벤트 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // 씬 로드 이벤트 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 새로운 씬이 로드될 때마다 Player를 찾습니다.
         player = FindObjectOfType<Player>();
 
         if (player == null)
         {
-            Debug.LogError("Player not found in the scene!");
+            Debug.Log("Player not found in the scene. This scene might not require a Player.");
+        }
+        else
+        {
+            Debug.Log("Player found in the scene.");
         }
     }
+
     public Vector2 GetPlayerPosition()
     {
         if (player != null)
@@ -35,7 +57,7 @@ public class PlayManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Player is not assigned!");
+            Debug.LogWarning("Player is not assigned!");
             return Vector2.zero;
         }
     }
@@ -48,16 +70,11 @@ public class PlayManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Player is not assigned!");
+            Debug.LogWarning("Player is not assigned!");
             return null;
         }
     }
 
-    /// <summary>
-    /// 플레이어가 죽었는지 여부를 처리하는 메서드
-    /// </summary>
-    /// <param name="isDie">플레이어 사망 여부</param>
-    /// <returns>isDie 값 반환</returns>
     public void isPlayerDie()
     {
         isPlayerDied = true;

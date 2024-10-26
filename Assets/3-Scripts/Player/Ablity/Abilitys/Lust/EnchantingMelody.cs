@@ -26,31 +26,25 @@ public class EnchantingMelody : Ability
     [SerializeField]
     private GameObject movementSpeedEffectPrefab; // 이동 속도 버프 이펙트 프리팹
 
+    private PlayerData playerData;
     private Player playerInstance;
 
-    private enum BuffType
-    {
-        AttackDamage,   // 공격력 버프
-        AttackSpeed,    // 공격 속도 버프
-        MovementSpeed   // 이동 속도 버프
-    }
-
+    // 전역 BuffType 열거형 사용
     private BuffType currentBuffType = BuffType.AttackDamage;
     private Coroutine buffCoroutine;
-
-    // 현재 적용된 버프 값을 저장하는 변수
-    private int lastAppliedAttackDamageBuff = 0;
-    private float lastAppliedAttackSpeedBuff = 0f;
-    private float lastAppliedMovementSpeedBuff = 0f;
 
     public override void Apply(Player player)
     {
         if (player == null)
+        {
+            Debug.LogError("EnchantingMelody Apply: player 인스턴스가 null입니다.");
             return;
+        }
 
         playerInstance = player;
+        playerData = player.stat; // PlayerData 참조
 
-        if (buffCoroutine == null)
+        if (buffCoroutine == null && currentLevel >= 0)
         {
             buffCoroutine = player.StartCoroutine(BuffRotationCoroutine());
         }
@@ -63,6 +57,10 @@ public class EnchantingMelody : Ability
             currentLevel++;
             RemoveCurrentBuff();
             ApplyCurrentBuff();
+        }
+        else
+        {
+            Debug.LogWarning("EnchantingMelody: 이미 최대 레벨에 도달했습니다.");
         }
     }
 
@@ -95,50 +93,48 @@ public class EnchantingMelody : Ability
 
     private void ApplyCurrentBuff()
     {
+        if (playerData == null || playerInstance == null)
+        {
+            Debug.LogWarning("EnchantingMelody ApplyCurrentBuff: playerData 또는 playerInstance가 null입니다.");
+            return;
+        }
+
+        float buffValue = 0f;
+        GameObject effectPrefab = null;
+
         switch (currentBuffType)
         {
             case BuffType.AttackDamage:
-                lastAppliedAttackDamageBuff = GetAttackDamageBuff();
-                playerInstance.stat.currentPlayerDamage += lastAppliedAttackDamageBuff;
-                InstantiateBuffEffect(attackDamageEffectPrefab);
+                buffValue = GetAttackDamageBuff();
+                effectPrefab = attackDamageEffectPrefab;
                 break;
             case BuffType.AttackSpeed:
-                lastAppliedAttackSpeedBuff = GetAttackSpeedBuff();
-                playerInstance.stat.currentShootCooldown -= lastAppliedAttackSpeedBuff;
-                if (playerInstance.stat.currentShootCooldown < 0.1f)
-                {
-                    playerInstance.stat.currentShootCooldown = 0.1f; // 최소 쿨다운 제한
-                }
-                InstantiateBuffEffect(attackSpeedEffectPrefab);
+                buffValue = GetAttackSpeedBuff();
+                effectPrefab = attackSpeedEffectPrefab;
                 break;
             case BuffType.MovementSpeed:
-                lastAppliedMovementSpeedBuff = GetMovementSpeedBuff();
-                playerInstance.stat.currentPlayerSpeed += lastAppliedMovementSpeedBuff;
-                InstantiateBuffEffect(movementSpeedEffectPrefab);
+                buffValue = GetMovementSpeedBuff();
+                effectPrefab = movementSpeedEffectPrefab;
                 break;
         }
+
+        // 버프 적용
+        playerData.AddBuff(this.name, currentBuffType, buffValue);
+
+        // 이펙트 생성 및 3초 후 파괴
+        InstantiateBuffEffect(effectPrefab);
     }
 
     private void RemoveCurrentBuff()
     {
-        if (playerInstance == null || playerInstance.stat == null)
-            return;
-
-        switch (currentBuffType)
+        if (playerData == null)
         {
-            case BuffType.AttackDamage:
-                playerInstance.stat.currentPlayerDamage -= lastAppliedAttackDamageBuff;
-                lastAppliedAttackDamageBuff = 0;
-                break;
-            case BuffType.AttackSpeed:
-                playerInstance.stat.currentShootCooldown += lastAppliedAttackSpeedBuff;
-                lastAppliedAttackSpeedBuff = 0f;
-                break;
-            case BuffType.MovementSpeed:
-                playerInstance.stat.currentPlayerSpeed -= lastAppliedMovementSpeedBuff;
-                lastAppliedMovementSpeedBuff = 0f;
-                break;
+            Debug.LogWarning("EnchantingMelody RemoveCurrentBuff: playerData가 null입니다.");
+            return;
         }
+
+        // 버프 제거
+        playerData.RemoveBuff(this.name, currentBuffType);
     }
 
     private void AdvanceToNextBuff()
@@ -175,22 +171,19 @@ public class EnchantingMelody : Ability
 
     private void InstantiateBuffEffect(GameObject effectPrefab)
     {
-        if (playerInstance != null && effectPrefab != null)
+        if (playerInstance == null || effectPrefab == null)
         {
-            // 이펙트를 플레이어의 자식으로 인스턴스화
-            GameObject effect = Instantiate(effectPrefab, playerInstance.transform);
-
-            // 이펙트의 위치와 회전을 조정 (필요시)
-            effect.transform.localPosition = Vector3.zero; // 중앙에 배치
-            effect.transform.localRotation = Quaternion.identity; // 기본 회전
-
-            // 이펙트가 일정 시간 후 자동으로 파괴되도록 설정 (옵션)
-            Destroy(effect, 5f); // 예: 5초 후 파괴
+            Debug.LogWarning("EnchantingMelody InstantiateBuffEffect: playerInstance가 null이거나 effectPrefab이 할당되지 않았습니다.");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("Buff effect prefab이 할당되지 않았거나 playerInstance가 null입니다.");
-        }
+
+        // 이펙트를 플레이어의 자식으로 인스턴스화
+        GameObject effectInstance = Instantiate(effectPrefab, playerInstance.transform);
+        effectInstance.transform.localPosition = Vector3.zero; // 중앙에 배치
+        effectInstance.transform.localRotation = Quaternion.identity; // 기본 회전
+
+        // 3초 후 이펙트 파괴
+        Destroy(effectInstance, 3f);
     }
 
     public override string GetDescription()

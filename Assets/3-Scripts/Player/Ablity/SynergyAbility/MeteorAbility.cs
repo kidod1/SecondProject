@@ -12,10 +12,12 @@ public class MeteorAbility : SynergyAbility
     [InspectorName("메테오 낙하 속도")] public float fallSpeed = 10f;      // 메테오 낙하 속도
     [InspectorName("메테오 개수")] public int meteorCount = 3;             // 메테오 개수
     [InspectorName("스폰 반경")] public float spawnRadius = 5f;             // 플레이어 주변 메테오 스폰 반경
+    [InspectorName("메테오 스폰 간격")] public float meteorSpawnDelay = 0.5f; // 메테오 스폰 간격 (초)
     [InspectorName("쿨다운 시간")] public float MeteorCooldownDurations = 5f;  // 쿨다운 시간
 
-    [Header("경고 프리팹")]
-    [InspectorName("경고 프리팹")] public GameObject warningPrefab;       // 경고 표시 프리팹
+    [Header("경고 이펙트 프리팹")]
+    [InspectorName("경고 시작 이펙트 프리팹")] public GameObject warningStartEffectPrefab;  // 경고 시작 이펙트 프리팹
+    [InspectorName("경고 종료 이펙트 프리팹")] public GameObject warningEndEffectPrefab;    // 경고 종료 이펙트 프리팹
 
     private Player playerInstance;
 
@@ -31,37 +33,68 @@ public class MeteorAbility : SynergyAbility
 
         Debug.Log($"Applying {abilityName} to {playerInstance.name}");
 
-        // 메테오 생성 로직 실행
-        SpawnMeteors();
+        // 메테오 스폰 코루틴 시작
+        playerInstance.StartCoroutine(SpawnMeteorsCoroutine());
     }
 
-    private void SpawnMeteors()
+    private IEnumerator SpawnMeteorsCoroutine()
     {
-        for (int i = 0; i < meteorCount; i++)
+        // 첫 번째 메테오는 플레이어 위치에 떨어지도록 설정
+        Vector2 spawnPosition = playerInstance.transform.position;
+
+        // 경고 시작 이펙트 생성
+        GameObject warningStartEffect = CreateWarningStartEffect(spawnPosition);
+
+        // 경고 시작 이펙트가 2초 후에 삭제되도록 설정
+        if (warningStartEffect != null)
         {
-            Vector2 spawnPosition = (Vector2)playerInstance.transform.position + Random.insideUnitCircle * spawnRadius;
+            Destroy(warningStartEffect, 2.5f);
+        }
 
-            // 경고 표시 생성
-            GameObject warning = CreateWarningPrefab(spawnPosition);
+        // 경고 후 메테오 생성
+        playerInstance.StartCoroutine(MeteorSpawnAfterWarning(spawnPosition));
 
-            if (warning != null)
+        // 다음 메테오 스폰 전 대기
+        yield return new WaitForSeconds(meteorSpawnDelay);
+
+        // 나머지 메테오들 처리
+        for (int i = 1; i < meteorCount; i++)
+        {
+            spawnPosition = (Vector2)playerInstance.transform.position + Random.insideUnitCircle * spawnRadius;
+
+            // 경고 시작 이펙트 생성
+            warningStartEffect = CreateWarningStartEffect(spawnPosition);
+
+            // 경고 시작 이펙트가 2초 후에 삭제되도록 설정
+            if (warningStartEffect != null)
             {
-                // 경고 후 메테오 생성
-                playerInstance.StartCoroutine(MeteorSpawnAfterWarning(warning, spawnPosition));
+                Destroy(warningStartEffect, 2f);
             }
+
+            // 경고 후 메테오 생성
+            playerInstance.StartCoroutine(MeteorSpawnAfterWarning(spawnPosition));
+
+            // 다음 메테오 스폰 전 대기
+            yield return new WaitForSeconds(meteorSpawnDelay);
         }
     }
 
-    private IEnumerator MeteorSpawnAfterWarning(GameObject warning, Vector2 spawnPosition)
+    private IEnumerator MeteorSpawnAfterWarning(Vector2 spawnPosition)
     {
         yield return new WaitForSeconds(warningDuration);
 
-        // 경고 표시 제거
-        Destroy(warning);
+        // 경고 종료 이펙트 생성
+        GameObject warningEndEffect = CreateWarningEndEffect(spawnPosition);
+
+        // 경고 종료 이펙트가 2초 후에 삭제되도록 설정
+        if (warningEndEffect != null)
+        {
+            Destroy(warningEndEffect, 2f);
+        }
 
         // 메테오 시작 위치 계산
         float spawnDistance = 10f;
-        float angle = 45 * Mathf.Deg2Rad;
+        float angle = 45f * Mathf.Deg2Rad; // 각도는 그대로 유지
         Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * spawnDistance;
         Vector2 meteorStartPosition = spawnPosition + offset;
 
@@ -85,18 +118,32 @@ public class MeteorAbility : SynergyAbility
         }
     }
 
-    private GameObject CreateWarningPrefab(Vector2 position)
+    private GameObject CreateWarningStartEffect(Vector2 position)
     {
-        if (warningPrefab != null)
+        if (warningStartEffectPrefab != null)
         {
-            // -45도 회전된 상태로 경고 프리팹 인스턴스화
-            Quaternion rotation = Quaternion.Euler(-45f, 0f, 0f);
-            GameObject warning = Instantiate(warningPrefab, position, rotation);
-            return warning;
+            // 경고 시작 이펙트 생성
+            GameObject effect = Instantiate(warningStartEffectPrefab, position, Quaternion.identity);
+            return effect;
         }
         else
         {
-            Debug.LogError("경고 프리팹이 할당되지 않았습니다.");
+            Debug.LogError("경고 시작 이펙트 프리팹이 할당되지 않았습니다.");
+            return null;
+        }
+    }
+
+    private GameObject CreateWarningEndEffect(Vector2 position)
+    {
+        if (warningEndEffectPrefab != null)
+        {
+            // 경고 종료 이펙트 생성
+            GameObject effect = Instantiate(warningEndEffectPrefab, position, Quaternion.identity);
+            return effect;
+        }
+        else
+        {
+            Debug.LogError("경고 종료 이펙트 프리팹이 할당되지 않았습니다.");
             return null;
         }
     }

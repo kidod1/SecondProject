@@ -16,6 +16,7 @@ public class PlayerAbilityManager : MonoBehaviour
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
+    private Coroutine selectionAnimationCoroutine;
     // 능력 변경 시 호출할 이벤트
     public UnityEvent OnAbilitiesChanged;
 
@@ -27,10 +28,18 @@ public class PlayerAbilityManager : MonoBehaviour
         InitializeSynergyDictionaries();
         ResetAllAbilities();
 
-        // Player의 OnHitEnemy 이벤트에 대한 리스너를 추가
+        // 이미 리스너가 등록되어 있는지 확인
+        player.OnHitEnemy.RemoveListener(ActivateAbilitiesOnHit);
         player.OnHitEnemy.AddListener(ActivateAbilitiesOnHit);
     }
 
+    private void OnDisable()
+    {
+        if (player != null)
+        {
+            player.OnHitEnemy.RemoveListener(ActivateAbilitiesOnHit);
+        }
+    }
     public void SelectAbility(Ability ability)
     {
         ability.Apply(player);
@@ -145,7 +154,6 @@ public class PlayerAbilityManager : MonoBehaviour
 
         foreach (var ability in loadedAbilities)
         {
-            Debug.Log($"Loaded ability: {ability.abilityName}");
         }
     }
 

@@ -756,7 +756,7 @@ public class Player : MonoBehaviour
         UpdateAnimation();
     }
 
-    public void Shoot(Vector2 direction, int prefabIndex)
+    private void Shoot(Vector2 direction, int prefabIndex)
     {
         if (objectPool == null)
         {
@@ -794,10 +794,10 @@ public class Player : MonoBehaviour
                 }
 
                 // 능력의 데미지가 아닌 기본 공격의 데미지 설정
-                int adjustedDamage = Mathf.RoundToInt(stat.currentPlayerDamage * damageMultiplier);
+                int adjustedDamage = Mathf.RoundToInt(stat.buffedPlayerDamage * damageMultiplier);
 
                 // Projectile.Initialize의 5개 매개변수에 맞게 전달
-                projScript.Initialize(stat, this, false, 1.0f, stat.currentPlayerDamage);
+                projScript.Initialize(stat, this, false, 1.0f, stat.buffedPlayerDamage);
                 projScript.SetDirection(dir.normalized);
             }
             else

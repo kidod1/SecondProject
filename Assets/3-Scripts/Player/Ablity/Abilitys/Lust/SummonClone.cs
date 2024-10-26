@@ -13,7 +13,7 @@ public class SummonClone : Ability
 
     public override void Apply(Player player)
     {
-        if (currentLevel < damageMultipliers.Length)
+        if (currentLevel < damageMultipliers.Length && currentLevel == 0)
         {
             if (cloneInstance == null)
             {
@@ -25,6 +25,8 @@ public class SummonClone : Ability
                     rotatingObject.playerShooting = player;
                     rotatingObject.damageMultiplier = damageMultipliers[currentLevel];
 
+                    // 리스너 중복 등록 방지
+                    player.OnShoot.RemoveListener(CloneShoot);
                     player.OnShoot.AddListener(CloneShoot);
                 }
             }
@@ -38,6 +40,7 @@ public class SummonClone : Ability
         }
     }
 
+
     private void CloneShoot(Vector2 direction, int prefabIndex, GameObject originalProjectile)
     {
         if (rotatingObject == null || cloneInstance == null)
@@ -47,11 +50,12 @@ public class SummonClone : Ability
 
         GameObject cloneProjectile = Instantiate(originalProjectile, rotatingObject.transform.position, Quaternion.identity);
         Projectile projScript = cloneProjectile.GetComponent<Projectile>();
+        PlayerData data = PlayManager.I.GetPlayer().stat;
 
         if (projScript != null)
         {
             float damageMultiplier = damageMultipliers[currentLevel];
-            int adjustedDamage = Mathf.RoundToInt(projScript.projectileCurrentDamage * damageMultiplier);
+            int adjustedDamage = Mathf.RoundToInt(data.buffedPlayerDamage * damageMultiplier);
             projScript.Initialize(rotatingObject.playerShooting.stat, rotatingObject.playerShooting, false, 1.0f, adjustedDamage);
             projScript.SetDirection(direction);
         }
@@ -91,6 +95,7 @@ public class SummonClone : Ability
             }
         }
     }
+
 
     public override string GetDescription()
     {

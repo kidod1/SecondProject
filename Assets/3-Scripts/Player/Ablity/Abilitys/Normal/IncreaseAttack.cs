@@ -18,9 +18,8 @@ public class IncreaseAttack : Ability
             Debug.LogError("IncreaseAttack Apply: player 인스턴스가 null입니다.");
             return;
         }
-
         // 현재 레벨에 따른 공격력 증가 적용
-        if (currentLevel < attackIncreases.Length)
+        if (currentLevel < attackIncreases.Length && currentLevel == 0)
         {
             player.stat.defaultPlayerDamage += attackIncreases[currentLevel];
             player.stat.currentPlayerDamage = player.stat.defaultPlayerDamage;

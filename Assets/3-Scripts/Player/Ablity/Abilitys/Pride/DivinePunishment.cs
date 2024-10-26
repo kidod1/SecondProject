@@ -98,7 +98,10 @@ public class DivinePunishment : Ability
 
             // 번개 이펙트 생성
             Vector3 strikePosition = monster.transform.position;
-            Instantiate(lightningPrefab, strikePosition, Quaternion.identity);
+            GameObject lightningInstance = Instantiate(lightningPrefab, strikePosition, Quaternion.identity);
+
+            // 2초 후에 번개 이펙트 삭제
+            Destroy(lightningInstance, 2f);
 
             // 몬스터에게 피해 적용
             monster.TakeDamage(damage, playerInstance.transform.position);

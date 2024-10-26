@@ -16,7 +16,7 @@ public class IncreaseDefense : Ability
         if (player == null) return;
 
         // 현재 레벨에 따른 방어력 증가 적용
-        if (currentLevel < defenseIncreases.Length)
+        if (currentLevel < defenseIncreases.Length && currentLevel == 0)
         {
             player.stat.currentDefense += defenseIncreases[currentLevel];
         }

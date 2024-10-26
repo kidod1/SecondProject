@@ -1,13 +1,25 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+
+/// <summary>
+/// 버프 타입을 정의하는 열거형
+/// </summary>
+public enum BuffType
+{
+    AttackDamage,   // 공격력 버프
+    AttackSpeed,    // 공격 속도 버프
+    MovementSpeed   // 이동 속도 버프
+}
 
 [CreateAssetMenu(menuName = "Data/PlayerData")]
 public class PlayerData : ScriptableObject
 {
-    // Default stats
+    // 기본 스탯
     [Header("Default Stats")]
     public float defaultPlayerSpeed = 5f;
-    public int defaultPlayerDamage = 5;
+    public int defaultPlayerDamage = 10;
     public float defaultProjectileSpeed = 10f;
     public float defaultProjectileRange = 2f;
     public int defaultProjectileType = 0;
@@ -16,7 +28,10 @@ public class PlayerData : ScriptableObject
     public float defaultShootCooldown = 0.5f;
     public int defaultDefense = 0;
 
-    // Current stats (프라이빗 필드 이름 변경)
+    [SerializeField]
+    private float defaultExperienceMultiplier = 1.0f;
+
+    // 현재 스탯 (프라이빗 필드)
     [Header("Current Stats")]
     [SerializeField]
     private float _currentPlayerSpeed;
@@ -52,14 +67,16 @@ public class PlayerData : ScriptableObject
     [SerializeField]
     private float _experienceMultiplier;
 
-    [SerializeField]
-    private float defaultExperienceMultiplier = 1.0f;
-
     [Header("Reverse Attack Stats")]
     [Tooltip("현재 반전 공격 데미지 퍼센트 (0.0f ~ 1.0f)")]
     [Range(0f, 1.0f)]
     [SerializeField]
     private float _reverseAttackDamagePercentage = 1.0f; // 기본값 100%
+
+    // 버프 관리용 딕셔너리
+    private Dictionary<string, float> attackDamageBuffs = new Dictionary<string, float>();
+    private Dictionary<string, float> attackSpeedBuffs = new Dictionary<string, float>();
+    private Dictionary<string, float> movementSpeedBuffs = new Dictionary<string, float>();
 
     // 스탯 변경 시 호출되는 이벤트
     public event UnityAction OnStatsChanged;
@@ -70,8 +87,8 @@ public class PlayerData : ScriptableObject
     public void InitializeStats()
     {
         currentPlayerSpeed = defaultPlayerSpeed;
-        currentPlayerDamage = 10;
         defaultPlayerDamage = 10;
+        currentPlayerDamage = defaultPlayerDamage;
         currentProjectileSpeed = defaultProjectileSpeed;
         currentProjectileRange = defaultProjectileRange;
         currentProjectileType = defaultProjectileType;
@@ -83,9 +100,16 @@ public class PlayerData : ScriptableObject
         currentExperience = 0;
         currentLevel = 1;
         reverseAttackDamagePercentage = 1.0f; // 초기화
+
+        // 버프 딕셔너리 초기화
+        attackDamageBuffs.Clear();
+        attackSpeedBuffs.Clear();
+        movementSpeedBuffs.Clear();
+
         OnStatsChanged?.Invoke();
     }
 
+    // 현재 스탯 프로퍼티들
     public float currentPlayerSpeed
     {
         get => _currentPlayerSpeed;
@@ -279,6 +303,87 @@ public class PlayerData : ScriptableObject
                 OnStatsChanged?.Invoke();
             }
         }
+    }
+
+    // 버프된 스탯 계산 프로퍼티들
+    public int buffedPlayerDamage
+    {
+        get
+        {
+            float totalBuff = 0f;
+            foreach (var buff in attackDamageBuffs.Values)
+            {
+                totalBuff += buff;
+            }
+            return Mathf.RoundToInt(defaultPlayerDamage + totalBuff);
+        }
+    }
+
+    public float buffedShootCooldown
+    {
+        get
+        {
+            float totalBuff = 0f;
+            foreach (var buff in attackSpeedBuffs.Values)
+            {
+                totalBuff += buff;
+            }
+            float newCooldown = defaultShootCooldown - totalBuff;
+            return Mathf.Max(newCooldown, 0.1f); // 최소 쿨다운 제한
+        }
+    }
+
+    public float buffedPlayerSpeed
+    {
+        get
+        {
+            float totalBuff = 0f;
+            foreach (var buff in movementSpeedBuffs.Values)
+            {
+                totalBuff += buff;
+            }
+            return defaultPlayerSpeed + totalBuff;
+        }
+    }
+
+    /// <summary>
+    /// 버프를 추가합니다.
+    /// </summary>
+    public void AddBuff(string abilityName, BuffType buffType, float value)
+    {
+        switch (buffType)
+        {
+            case BuffType.AttackDamage:
+                attackDamageBuffs[abilityName] = value;
+                break;
+            case BuffType.AttackSpeed:
+                attackSpeedBuffs[abilityName] = value;
+                break;
+            case BuffType.MovementSpeed:
+                movementSpeedBuffs[abilityName] = value;
+                break;
+        }
+        OnStatsChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// 버프를 제거합니다.
+    /// </summary>
+    public void RemoveBuff(string abilityName, BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case BuffType.AttackDamage:
+                attackDamageBuffs.Remove(abilityName);
+                break;
+            case BuffType.AttackSpeed:
+                attackSpeedBuffs.Remove(abilityName);
+                break;
+            case BuffType.MovementSpeed:
+                movementSpeedBuffs.Remove(abilityName);
+                break;
+        }
+        OnStatsChanged?.Invoke();
     }
 
     /// <summary>
