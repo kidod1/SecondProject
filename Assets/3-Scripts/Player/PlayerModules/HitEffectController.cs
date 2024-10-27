@@ -8,15 +8,23 @@ public class HitEffectController : MonoBehaviour
     // Spine의 SkeletonGraphic을 사용하여 히트 이펙트를 제어합니다.
     public SkeletonGraphic hitEffectSkeletonGraphic;
 
-    // Spine 애니메이션 이름을 선택할 수 있도록 [SpineAnimation] 어트리뷰트를 사용합니다.
+    // Hit 애니메이션 이름들
     [SpineAnimation] public string hitAnim1;
     [SpineAnimation] public string hitAnim2;
     [SpineAnimation] public string hitAnim3;
 
+    [Header("Pain Animations")]
+    // 체력에 따른 Pain 애니메이션 이름들
+    [SpineAnimation] public string painAnim1; // 체력 50% 이상 ~ 70% 미만
+    [SpineAnimation] public string painAnim2; // 체력 30% 이상 ~ 50% 미만
+    [SpineAnimation] public string painAnim3; // 체력 30% 미만
+
     [Header("Idle Animation")]
-    [SpineAnimation] public string idleAnimName; // 기본 Idle 애니메이션 이름
+    [SpineAnimation] public string idleAnimName; // 기본 Idle 애니메이션 이름 (체력 70% 이상)
 
     private bool isHitAnimating = false; // Hit 애니메이션 재생 중인지 추적
+
+    private Player player; // 플레이어 참조
 
     private void Start()
     {
@@ -26,8 +34,85 @@ public class HitEffectController : MonoBehaviour
             return;
         }
 
-        // 기본 Idle 애니메이션 설정
-        SetIdleAnimation();
+        // Player 오브젝트 찾기
+        player = FindObjectOfType<Player>();
+        if (player == null)
+        {
+            Debug.LogError("Player 오브젝트를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 초기 표정 업데이트
+        UpdateExpressionBasedOnHealth();
+    }
+
+    private void OnEnable()
+    {
+        if (player != null && player.stat != null)
+        {
+            player.stat.OnStatsChanged += OnPlayerStatsChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (player != null && player.stat != null)
+        {
+            player.stat.OnStatsChanged -= OnPlayerStatsChanged;
+        }
+    }
+
+    private void OnPlayerStatsChanged()
+    {
+        if (!isHitAnimating)
+        {
+            UpdateExpressionBasedOnHealth();
+        }
+    }
+
+    /// <summary>
+    /// 플레이어의 체력 비율에 따라 표정 애니메이션을 업데이트합니다.
+    /// </summary>
+    public void UpdateExpressionBasedOnHealth()
+    {
+        if (player == null || player.stat == null)
+        {
+            Debug.LogError("플레이어 또는 플레이어 데이터가 설정되지 않았습니다.");
+            return;
+        }
+
+        // 체력 비율 계산
+        float healthPercentage = (float)player.stat.currentHP / player.stat.currentMaxHP * 100f;
+
+        // 애니메이션 이름 결정
+        string expressionAnimName = "";
+
+        if (healthPercentage < 30f)
+        {
+            expressionAnimName = painAnim3;
+        }
+        else if (healthPercentage < 50f)
+        {
+            expressionAnimName = painAnim2;
+        }
+        else if (healthPercentage < 70f)
+        {
+            expressionAnimName = painAnim1;
+        }
+        else
+        {
+            expressionAnimName = idleAnimName; // 기본 Idle 애니메이션
+        }
+
+        // 애니메이션 변경
+        if (!string.IsNullOrEmpty(expressionAnimName))
+        {
+            hitEffectSkeletonGraphic.AnimationState.SetAnimation(0, expressionAnimName, true);
+        }
+        else
+        {
+            Debug.LogError("표정 애니메이션 이름이 유효하지 않습니다.");
+        }
     }
 
     /// <summary>
@@ -52,8 +137,6 @@ public class HitEffectController : MonoBehaviour
         hitEffectSkeletonGraphic.AnimationState.SetAnimation(0, selectedHitAnim, false);
 
         isHitAnimating = true; // Hit 애니메이션 재생 중으로 설정
-
-        Debug.Log("Hit 애니메이션 실행: " + selectedHitAnim);
 
         // 애니메이션 완료 시 콜백을 위해 코루틴 시작
         StartCoroutine(HitAnimationCoroutine());
@@ -82,23 +165,9 @@ public class HitEffectController : MonoBehaviour
         // 애니메이션이 끝날 때까지 대기
         yield return new WaitForSeconds(animationDuration);
 
-        // 기본 Idle 애니메이션으로 돌아가기
-        SetIdleAnimation();
-
         isHitAnimating = false; // Hit 애니메이션 재생 완료
-    }
 
-    /// <summary>
-    /// 기본 Idle 애니메이션을 설정합니다.
-    /// </summary>
-    private void SetIdleAnimation()
-    {
-        if (string.IsNullOrEmpty(idleAnimName))
-        {
-            Debug.LogError("Idle 애니메이션 이름이 설정되지 않았습니다.");
-            return;
-        }
-
-        hitEffectSkeletonGraphic.AnimationState.SetAnimation(0, idleAnimName, true);
+        // Hit 애니메이션이 끝난 후 현재 체력에 맞는 표정 업데이트
+        UpdateExpressionBasedOnHealth();
     }
 }

@@ -12113,6 +12113,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5683454292554750422, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: painAnim1
+      value: pain/3_low_pain
+      objectReference: {fileID: 0}
+    - target: {fileID: 5683454292554750422, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: painAnim2
+      value: pain/2_middle_pain
+      objectReference: {fileID: 0}
+    - target: {fileID: 5683454292554750422, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: painAnim3
+      value: pain/1_high_pain
+      objectReference: {fileID: 0}
+    - target: {fileID: 6013496689567763022, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6620576420766886479, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -19180,6 +19196,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 943164217102923099, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: startingAnimation
+      value: open
+      objectReference: {fileID: 0}
+    - target: {fileID: 4336928917362738940, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7839414251744496593, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -19263,6 +19287,10 @@ PrefabInstance:
     - target: {fileID: 7901102735948294672, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_Name
       value: SceneChangeSkeleton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7901102735948294672, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8348162724885141168, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: m_Name
@@ -19456,6 +19484,7 @@ SceneRoots:
   - {fileID: 521760808}
   - {fileID: 5267597140432598440}
   - {fileID: 4164494326851534757}
+  - {fileID: 1309791176}
   - {fileID: 1743023130}
   - {fileID: 2011235192}
   - {fileID: 616850289}
@@ -19463,7 +19492,6 @@ SceneRoots:
   - {fileID: 139155200}
   - {fileID: 246182643}
   - {fileID: 1947615365}
-  - {fileID: 1309791176}
   - {fileID: 846764573}
   - {fileID: 1617815745}
   - {fileID: 982854806}

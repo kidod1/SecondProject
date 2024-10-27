@@ -6,6 +6,7 @@ public interface IMonsterDeathAbility
 {
     void OnMonsterDeath(Monster monster);
 }
+
 public class PlayerAbilityManager : MonoBehaviour
 {
     private Player player;
@@ -17,8 +18,9 @@ public class PlayerAbilityManager : MonoBehaviour
     private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
     private Coroutine selectionAnimationCoroutine;
-    // 능력 변경 시 호출할 이벤트
-    public UnityEvent OnAbilitiesChanged;
+
+    // 능력 변경 시 호출할 C# 이벤트로 변경
+    public event System.Action OnAbilitiesChanged;
 
     public void Initialize(Player player)
     {
@@ -28,7 +30,7 @@ public class PlayerAbilityManager : MonoBehaviour
         InitializeSynergyDictionaries();
         ResetAllAbilities();
 
-        // 이미 리스너가 등록되어 있는지 확인
+        // 리스너 중복 등록 방지를 위해 먼저 제거한 후 추가
         player.OnHitEnemy.RemoveListener(ActivateAbilitiesOnHit);
         player.OnHitEnemy.AddListener(ActivateAbilitiesOnHit);
     }
@@ -40,6 +42,7 @@ public class PlayerAbilityManager : MonoBehaviour
             player.OnHitEnemy.RemoveListener(ActivateAbilitiesOnHit);
         }
     }
+
     public void SelectAbility(Ability ability)
     {
         ability.Apply(player);
@@ -61,8 +64,14 @@ public class PlayerAbilityManager : MonoBehaviour
 
         CheckForSynergy(ability.category);
 
-        // 능력이 변경되었음을 알림
+        // 능력이 변경되었음을 알림 (C# 이벤트 호출)
         OnAbilitiesChanged?.Invoke();
+
+        // 리스너 수 로그 출력 (디버깅 용도)
+#if UNITY_EDITOR
+        int listenerCount = OnAbilitiesChanged?.GetInvocationList().Length ?? 0;
+        Debug.Log($"OnAbilitiesChanged 리스너 수: {listenerCount}");
+#endif
     }
 
     /// <summary>
@@ -104,7 +113,6 @@ public class PlayerAbilityManager : MonoBehaviour
     /// </summary>
     public void ActivateAbilitiesOnMonsterDeath(Monster monster)
     {
-
         foreach (var ability in abilities)
         {
             if (ability is HoneyDrop honeyDrop)
@@ -112,10 +120,10 @@ public class PlayerAbilityManager : MonoBehaviour
                 Debug.Log($"Activating OnMonsterDeath for ability: {ability.abilityName}");
                 honeyDrop.OnMonsterDeath(monster);
             }
-            
+
             if (ability is KillSpeedBoostAbility killSpeedBoostAbility)
             {
-                 killSpeedBoostAbility.OnMonsterKilled();
+                killSpeedBoostAbility.OnMonsterKilled();
             }
         }
     }
@@ -154,6 +162,7 @@ public class PlayerAbilityManager : MonoBehaviour
 
         foreach (var ability in loadedAbilities)
         {
+            // 추가 초기화가 필요한 경우 여기에 작성
         }
     }
 
@@ -233,7 +242,6 @@ public class PlayerAbilityManager : MonoBehaviour
             Debug.LogError($"Failed to load Synergy Ability: {synergyAbilityName}");
         }
     }
-
 
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {

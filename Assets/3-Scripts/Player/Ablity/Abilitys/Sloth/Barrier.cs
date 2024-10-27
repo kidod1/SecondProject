@@ -21,6 +21,11 @@ public class Barrier : Ability
     private Coroutine cooldownCoroutine;
     private bool isShieldActive;
 
+
+    private void Awake()
+    {
+       playerInstance = PlayManager.I.GetPlayer();
+    }
     /// <summary>
     /// Ability 클래스의 GetNextLevelIncrease() 메서드를 오버라이드하여 현재 레벨에 해당하는 쿨타임 시간을 반환합니다.
     /// </summary>

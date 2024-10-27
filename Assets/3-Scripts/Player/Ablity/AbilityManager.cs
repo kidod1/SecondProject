@@ -14,6 +14,8 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private GameObject abilitySelectionPanel;
     [SerializeField]
+    private CanvasGroup abilitySelectionCanvasGroup; // CanvasGroup 추가
+    [SerializeField]
     private GameObject synergyAbilityPanel;
     [SerializeField]
     private TMP_Text synergyAbilityNameText;
@@ -38,30 +40,22 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private PlayerUIManager uiManager;
     private List<Ability> availableAbilities;
-    // 카테고리별 버튼 이미지 매핑 딕셔너리
-    private Dictionary<string, Sprite> categoryButtonImages = new Dictionary<string, Sprite>();
-    private Dictionary<string, Sprite> synergyCategoryButtonImages = new Dictionary<string, Sprite>();
 
-    // 강조 표시 관련 변수 추가
+    // 강조 표시 관련 변수
     [SerializeField]
     private Image highlightImage; // 강조 표시 이미지
     private int currentIndex = 0; // 현재 선택된 능력의 인덱스
     private bool isAbilitySelectionActive = false; // 능력 선택 UI 활성화 여부
     private bool isSynergyAbilityActive = false; // 시너지 능력 활성화 여부
 
-    private int abilitiesToShow = 0; // 표시되는 능력의 수 추가
+    private int abilitiesToShow = 0; // 표시되는 능력의 수
 
-    // 회전 관련 변수 추가
+    // 회전 관련 변수
     private float highlightRotationSpeed = 50f; // 강조 이미지 회전 속도 (도/초)
     private float currentHighlightRotation = 0f; // 현재 회전 각도
 
-    // 크기 조정 관련 변수 추가
+    // 크기 조정 관련 변수
     private float highlightScale = 1.1f; // 강조된 요소들의 스케일 배율
-
-    // 이펙트 관련 변수 추가
-    [SerializeField]
-    private GameObject highlightEffectPrefab; // 이펙트 프리팹
-    private GameObject currentHighlightEffect; // 현재 재생 중인 이펙트 인스턴스
 
     // Coroutine references to manage scaling animations
     private Coroutine highlightScaleCoroutine;
@@ -72,19 +66,27 @@ public class AbilityManager : MonoBehaviour
     private Vector2[] originalButtonSizes;
     private Vector2[] originalIconSizes;
 
-    // 초기 크기 저장을 위한 배열 추가
+    // 초기 크기 저장을 위한 배열
     private Vector2[] initialButtonSizes;
     private Vector2[] initialIconSizes;
 
     // 새로운 변수 선언 (하이라이트 스케일 통일)
     private Vector3 originalHighlightScale;
 
-    // 현재 시너지 능력을 저장하는 변수 추가
+    // 현재 시너지 능력을 저장하는 변수
     private SynergyAbility currentSynergyAbility;
+
     // 능력 변경 시 호출할 이벤트
     public UnityEvent OnAbilitiesChanged;
+
     // 추가: 코루틴 참조 변수
     private Coroutine delayedUpdateHighlightCoroutine;
+    private Coroutine playSelectionAnimationCoroutine;
+    private Coroutine delayedShowSynergyAbilityCoroutine;
+
+    // 선택된 능력을 저장하는 변수
+    private Ability selectedAbility;
+
     private void Awake()
     {
         // 초기 크기 배열 초기화
@@ -152,7 +154,6 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-
     private void OnEnable()
     {
         if (player != null)
@@ -172,17 +173,8 @@ public class AbilityManager : MonoBehaviour
             player.OnLevelUp.RemoveListener(ShowAbilitySelection);
         }
 
-        // 이펙트 정리
-        if (currentHighlightEffect != null)
-        {
-            Destroy(currentHighlightEffect);
-        }
         // 모든 활성 코루틴 중지
-        if (delayedUpdateHighlightCoroutine != null)
-        {
-            StopCoroutine(delayedUpdateHighlightCoroutine);
-            delayedUpdateHighlightCoroutine = null;
-        }
+        StopAllCoroutines();
     }
 
     private void Update()
@@ -223,15 +215,7 @@ public class AbilityManager : MonoBehaviour
         isAbilitySelectionActive = true;
         isSynergyAbilityActive = false; // 일반 능력 선택 시 시너지 비활성화
 
-        if (abilitySelectionPanel != null)
-        {
-            abilitySelectionPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("AbilityManager: abilitySelectionPanel이 할당되지 않았습니다.");
-            return;
-        }
+        ShowAbilitySelectionPanel();
 
         if (synergyAbilityPanel != null)
         {
@@ -267,45 +251,12 @@ public class AbilityManager : MonoBehaviour
 
             var ability = availableAbilities[i];
 
-            // **수정된 부분: 일반 능력의 경우 버튼 이미지를 변경하지 않음**
-            if (ability is SynergyAbility)
-            {
-                // 시너지 능력의 경우 버튼 이미지를 변경합니다.
-                if (synergyCategoryButtonImages.TryGetValue(ability.category, out Sprite buttonImage))
-                {
-                    // 버튼의 이미지를 변경합니다.
-                    Image buttonImageComponent = abilityButtons[i].GetComponent<Image>();
-                    if (buttonImageComponent != null)
-                    {
-                        buttonImageComponent.sprite = buttonImage;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Ability button at index {i} does not have an Image component.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"No synergy button image found for category '{ability.category}'.");
-                }
-            }
-            else
-            {
-                // 일반 능력의 경우 버튼 이미지를 변경하지 않음
-                // 필요하다면 기본 버튼 이미지를 설정할 수 있습니다.
-                // Image buttonImageComponent = abilityButtons[i].GetComponent<Image>();
-                // if (buttonImageComponent != null)
-                // {
-                //     buttonImageComponent.sprite = defaultButtonSprite; // 기본 버튼 이미지로 설정
-                // }
-            }
-
             abilityNameTexts[i].text = ability.abilityName;
             abilityDescriptionTexts[i].text = ability.GetDescription();
             abilityIcons[i].sprite = ability.abilityIcon;
             abilityButtons[i].onClick.RemoveAllListeners();
             int index = i;
-            abilityButtons[i].onClick.AddListener(() => SelectAbility(availableAbilities[index]));
+            abilityButtons[i].onClick.AddListener(() => OnAbilityButtonClicked(index));
             abilityButtons[i].gameObject.SetActive(true);
 
             // 모든 능력의 이름과 설명을 비활성화
@@ -326,8 +277,6 @@ public class AbilityManager : MonoBehaviour
                 // 초기 크기로 리셋
                 iconRect.sizeDelta = originalIconSizes[i];
             }
-
-            // 애니메이터의 상태를 초기화
         }
 
         for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
@@ -364,13 +313,12 @@ public class AbilityManager : MonoBehaviour
             Debug.LogError("AbilityManager: highlightImage가 할당되지 않았습니다.");
         }
 
-        // 애니메이션이 완료된 후 하이라이트 위치 업데이트 및 표시
-        float animationDuration = 0.5f; // 버튼 애니메이션의 실제 길이로 설정
+        // 기존 코루틴 중지 및 새로운 코루틴 시작
         if (delayedUpdateHighlightCoroutine != null)
         {
             StopCoroutine(delayedUpdateHighlightCoroutine);
         }
-        delayedUpdateHighlightCoroutine = StartCoroutine(DelayedUpdateHighlightPosition(animationDuration));
+        delayedUpdateHighlightCoroutine = StartCoroutine(DelayedUpdateHighlightPosition(0.5f)); // 애니메이션의 실제 길이로 설정
     }
 
     private IEnumerator DelayedUpdateHighlightPosition(float delay)
@@ -380,6 +328,9 @@ public class AbilityManager : MonoBehaviour
 
         // 하이라이트 위치 업데이트
         UpdateHighlightPosition();
+
+        // 코루틴 참조 변수 초기화
+        delayedUpdateHighlightCoroutine = null;
     }
 
     private void HandleKeyboardInput()
@@ -426,7 +377,6 @@ public class AbilityManager : MonoBehaviour
 
     private void UpdateHighlightPosition()
     {
-
         if (isSynergyAbilityActive)
         {
             if (highlightImage != null && synergyAbilityIcon != null)
@@ -449,9 +399,6 @@ public class AbilityManager : MonoBehaviour
                 // 강조 이미지를 시너지 능력 아이콘의 위치로 이동
                 highlightRect.anchoredPosition = iconRect.anchoredPosition;
                 highlightRect.localScale = originalHighlightScale;
-
-                // 이펙트 업데이트
-                UpdateHighlightEffect(iconRect);
 
                 // 일반 능력 버튼들의 이름과 설명을 비활성화
                 for (int i = 0; i < abilitiesToShow; i++)
@@ -486,12 +433,10 @@ public class AbilityManager : MonoBehaviour
             if (currentIndex < 0)
             {
                 currentIndex = abilitiesToShow - 1;
-                Debug.Log($"currentIndex adjusted to: {currentIndex}");
             }
             else if (currentIndex >= abilitiesToShow)
             {
                 currentIndex = 0;
-                Debug.Log($"currentIndex adjusted to: {currentIndex}");
             }
 
             // 현재 선택된 인덱스가 유효한지 확인
@@ -540,9 +485,6 @@ public class AbilityManager : MonoBehaviour
 
             // 원래 스케일로 초기화
             highlightRect.localScale = originalHighlightScale;
-
-            // 이펙트 업데이트
-            UpdateHighlightEffect(buttonRect);
 
             // 모든 버튼과 아이콘의 크기를 원본 크기로 초기화
             for (int i = 0; i < abilitiesToShow; i++)
@@ -652,7 +594,6 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// RectTransform의 sizeDelta를 애니메이션으로 조정하는 코루틴
     /// </summary>
@@ -710,45 +651,6 @@ public class AbilityManager : MonoBehaviour
         target.localScale = originalScale;
     }
 
-    private void UpdateHighlightEffect(RectTransform targetRect)
-    {
-        if (highlightEffectPrefab == null)
-        {
-            Debug.LogError("AbilityManager: highlightEffectPrefab이 할당되지 않았습니다.");
-            return;
-        }
-
-        // 기존 이펙트가 존재하고 활성화되어 있는지 확인
-        if (currentHighlightEffect != null)
-        {
-            Destroy(currentHighlightEffect);
-            currentHighlightEffect = null;
-        }
-
-
-        // 새로운 이펙트 인스턴스 생성
-        currentHighlightEffect = Instantiate(highlightEffectPrefab, highlightImage.transform.parent);
-
-        // 이펙트의 RectTransform 설정
-        RectTransform effectRect = currentHighlightEffect.GetComponent<RectTransform>();
-        if (effectRect != null)
-        {
-            // 이펙트 위치 및 크기 설정
-            effectRect.position = targetRect.position;
-            effectRect.sizeDelta = Vector2.one; // 필요에 따라 크기 조정
-
-            // 이펙트가 하이라이트 이미지 뒤에 있도록 설정
-            effectRect.SetSiblingIndex(highlightImage.transform.GetSiblingIndex());
-        }
-
-        // 이펙트 재생 (파티클 시스템인 경우)
-        ParticleSystem particleSystem = currentHighlightEffect.GetComponent<ParticleSystem>();
-        if (particleSystem != null)
-        {
-            particleSystem.Play();
-        }
-    }
-
     /// <summary>
     /// 시너지 능력을 표시하는 메서드
     /// </summary>
@@ -766,14 +668,7 @@ public class AbilityManager : MonoBehaviour
 
         currentSynergyAbility = synergyAbility; // 현재 시너지 능력 저장
 
-        if (abilitySelectionPanel != null)
-        {
-            abilitySelectionPanel.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("AbilityManager: abilitySelectionPanel이 할당되지 않았습니다.");
-        }
+        HideAbilitySelectionPanel();
 
         if (synergyAbilityPanel != null)
         {
@@ -840,20 +735,30 @@ public class AbilityManager : MonoBehaviour
         Time.timeScale = 1f;
         isAbilitySelectionActive = false;
         isSynergyAbilityActive = false; // 시너지 능력 비활성화
-
-        // 이펙트 정리
-        if (currentHighlightEffect != null)
-        {
-            Destroy(currentHighlightEffect);
-        }
     }
 
     public IEnumerator DelayedShowSynergyAbility(SynergyAbility synergyAbility)
     {
+        // 기존 코루틴 중지
+        if (delayedShowSynergyAbilityCoroutine != null)
+        {
+            StopCoroutine(delayedShowSynergyAbilityCoroutine);
+        }
+
+        delayedShowSynergyAbilityCoroutine = StartCoroutine(DelayedShowSynergyAbilityCoroutine(synergyAbility));
+        yield return null;
+    }
+
+    private IEnumerator DelayedShowSynergyAbilityCoroutine(SynergyAbility synergyAbility)
+    {
         yield return new WaitForSecondsRealtime(0.2f); // 0.2초 지연
 
         ShowSynergyAbility(synergyAbility);
+
+        // 코루틴 참조 변수 초기화
+        delayedShowSynergyAbilityCoroutine = null;
     }
+
     private void SelectAbility(Ability ability)
     {
         if (ability == null)
@@ -862,12 +767,21 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-        // 애니메이션을 실행하고 선택 완료 후에 능력을 적용
-        StartCoroutine(PlaySelectionAnimation(ability));
+        selectedAbility = ability;
+
+        // 기존 코루틴 중지
+        if (playSelectionAnimationCoroutine != null)
+        {
+            StopCoroutine(playSelectionAnimationCoroutine);
+        }
+
+        // 새로운 코루틴 시작
+        playSelectionAnimationCoroutine = StartCoroutine(PlaySelectionAnimation());
     }
 
-    private IEnumerator PlaySelectionAnimation(Ability selectedAbility)
+    private IEnumerator PlaySelectionAnimation()
     {
+        Debug.Log("플레이 셀렉트 애니메이션");
         // 애니메이션 중 입력 비활성화
         isAbilitySelectionActive = false;
 
@@ -894,18 +808,24 @@ public class AbilityManager : MonoBehaviour
             }
         }
 
-        // 애니메이션 길이만큼 대기 (예: 0.5초)
-        float animationDuration = 0.5f; // 실제 애니메이션 길이에 맞게 조정
+        // 애니메이션 길이만큼 대기
+        float animationDuration = 0.5f; // 애니메이션의 실제 길이로 설정
         yield return new WaitForSecondsRealtime(animationDuration);
 
-        // 애니메이션이 끝난 후에 능력 적용
+        // 애니메이션 완료 후 메서드 호출
+        OnSelectionAnimationComplete();
+
+        // 코루틴 참조 변수 초기화
+        Debug.Log("셀렉트 애니메이션 종료");
+        playSelectionAnimationCoroutine = null;
+    }
+  
+    private void OnSelectionAnimationComplete()
+    {
         ApplySelectedAbility(selectedAbility);
 
         // 패널을 애니메이션 이후에 비활성화
-        if (abilitySelectionPanel != null)
-        {
-            abilitySelectionPanel.SetActive(false);
-        }
+        HideAbilitySelectionPanel();
     }
 
     private void ApplySelectedAbility(Ability ability)
@@ -920,7 +840,11 @@ public class AbilityManager : MonoBehaviour
                 Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
 
                 // 시너지 능력 창을 표시하기 전에 0.5초 지연 시간 추가
-                StartCoroutine(DelayedShowSynergyAbility(synergyAbility));
+                if (delayedShowSynergyAbilityCoroutine != null)
+                {
+                    StopCoroutine(delayedShowSynergyAbilityCoroutine);
+                }
+                delayedShowSynergyAbilityCoroutine = StartCoroutine(DelayedShowSynergyAbilityCoroutine(synergyAbility));
 
                 // Time.timeScale을 다시 1로 설정하지 않음
                 return;
@@ -945,12 +869,6 @@ public class AbilityManager : MonoBehaviour
         Time.timeScale = 1f;
         isAbilitySelectionActive = false;
         isSynergyAbilityActive = false; // 선택 완료 후 시너지 비활성화
-
-        // 이펙트 정리
-        if (currentHighlightEffect != null)
-        {
-            Destroy(currentHighlightEffect);
-        }
     }
 
     private void RerollAbilities()
@@ -991,7 +909,7 @@ public class AbilityManager : MonoBehaviour
             abilityIcons[i].sprite = ability.abilityIcon;
             abilityButtons[i].onClick.RemoveAllListeners();
             int index = i;
-            abilityButtons[i].onClick.AddListener(() => SelectAbility(availableAbilities[index]));
+            abilityButtons[i].onClick.AddListener(() => OnAbilityButtonClicked(index));
             abilityButtons[i].gameObject.SetActive(true);
 
             // 모든 능력의 이름과 설명을 비활성화
@@ -1011,13 +929,6 @@ public class AbilityManager : MonoBehaviour
             {
                 iconRect.sizeDelta = initialIconSizes[i];
                 originalIconSizes[i] = initialIconSizes[i];
-            }
-
-            // 애니메이터의 상태를 초기화
-            Animator animator = abilityButtons[i].GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.Play("Idle", 0, 0f);
             }
         }
 
@@ -1056,17 +967,38 @@ public class AbilityManager : MonoBehaviour
         {
             Debug.LogError("AbilityManager: highlightImage가 할당되지 않았습니다.");
         }
-        float animationDuration = 0.5f; // 버튼 애니메이션의 실제 길이로 설정
+
+        // 기존 코루틴 중지 및 새로운 코루틴 시작
         if (delayedUpdateHighlightCoroutine != null)
         {
             StopCoroutine(delayedUpdateHighlightCoroutine);
         }
-        delayedUpdateHighlightCoroutine = StartCoroutine(DelayedUpdateHighlightPosition(animationDuration));
+        delayedUpdateHighlightCoroutine = StartCoroutine(DelayedUpdateHighlightPosition(0.5f)); // 애니메이션의 실제 길이로 설정
     }
+
+    private void OnAbilityButtonClicked(int index)
+    {
+        if (index >= 0 && index < availableAbilities.Count)
+        {
+            SelectAbility(availableAbilities[index]);
+        }
+        else
+        {
+            Debug.LogError($"AbilityManager: OnAbilityButtonClicked - 인덱스 {index}가 유효하지 않습니다.");
+        }
+    }
+
     public void TriggerShowSynergyAbility(SynergyAbility synergyAbility)
     {
-        StartCoroutine(DelayedShowSynergyAbility(synergyAbility));
+        // 기존 코루틴 중지
+        if (delayedShowSynergyAbilityCoroutine != null)
+        {
+            StopCoroutine(delayedShowSynergyAbilityCoroutine);
+        }
+
+        delayedShowSynergyAbilityCoroutine = StartCoroutine(DelayedShowSynergyAbilityCoroutine(synergyAbility));
     }
+
     private void ShuffleAbilities()
     {
         if (availableAbilities == null)
@@ -1081,6 +1013,34 @@ public class AbilityManager : MonoBehaviour
             int randomIndex = Random.Range(i, availableAbilities.Count);
             availableAbilities[i] = availableAbilities[randomIndex];
             availableAbilities[randomIndex] = temp;
+        }
+    }
+
+    private void HideAbilitySelectionPanel()
+    {
+        if (abilitySelectionCanvasGroup != null)
+        {
+            abilitySelectionCanvasGroup.alpha = 0f;
+            abilitySelectionCanvasGroup.blocksRaycasts = false;
+            abilitySelectionCanvasGroup.interactable = false;
+        }
+        else if (abilitySelectionPanel != null)
+        {
+            abilitySelectionPanel.SetActive(false);
+        }
+    }
+
+    private void ShowAbilitySelectionPanel()
+    {
+        if (abilitySelectionCanvasGroup != null)
+        {
+            abilitySelectionCanvasGroup.alpha = 1f;
+            abilitySelectionCanvasGroup.blocksRaycasts = true;
+            abilitySelectionCanvasGroup.interactable = true;
+        }
+        else if (abilitySelectionPanel != null)
+        {
+            abilitySelectionPanel.SetActive(true);
         }
     }
 }
