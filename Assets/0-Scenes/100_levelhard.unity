@@ -2294,8 +2294,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 581859668}
     - target: {fileID: 66229779930256887, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
+      propertyPath: isElite
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 66229779930256887, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
       propertyPath: maxHealth
-      value: 600
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 66229779930256887, guid: b69e20d0fae99104494674b03e93a40b, type: 3}
       propertyPath: meshRenderer
@@ -4390,6 +4394,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6061806338049767781, guid: c92231f5304171e4790edd930989859f, type: 3}
+      propertyPath: maxSpawnInterval
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061806338049767781, guid: c92231f5304171e4790edd930989859f, type: 3}
+      propertyPath: minSpawnInterval
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061806338049767781, guid: c92231f5304171e4790edd930989859f, type: 3}
+      propertyPath: maxSpawnedObjects
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6273630003926898464, guid: c92231f5304171e4790edd930989859f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.3
@@ -4427,22 +4443,6 @@ PrefabInstance:
       propertyPath: waveNumberAnimator
       value: 
       objectReference: {fileID: 907636870}
-    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
-      propertyPath: waves.Array.data[0].spawnInfos.Array.data[7].count
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
-      propertyPath: waves.Array.data[2].spawnInfos.Array.data[0].count
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
-      propertyPath: waves.Array.data[3].spawnInfos.Array.data[2].count
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
-      propertyPath: waves.Array.data[4].spawnInfos.Array.data[2].monsterPrefab
-      value: 
-      objectReference: {fileID: 5257169338272492925, guid: fe2a2b2e8a924fb4189408c31a45ab61, type: 3}
     - target: {fileID: 4904552654199749081, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.82

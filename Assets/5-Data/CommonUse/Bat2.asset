@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3883c2c15b46fe46b312262d0edcc7f, type: 3}
-  m_Name: Button
+  m_Script: {fileID: 11500000, guid: 593facb25f22cfe45bc0fc3c870211ec, type: 3}
+  m_Name: Bat2
   m_EditorClassIdentifier: 
-  monsterSpeed: 0
-  maxHP: 100
-  contectDamage: 5
-  attackDamage: 7
-  experiencePoints: 500
+  monsterSpeed: 0.6
+  maxHP: 25
+  contectDamage: 4
+  attackDamage: 6
+  experiencePoints: 50
   detectionRange: 100
   attackRange: 3
-  attackDelay: 2
+  attackDelay: 3
   rewardCurrency: 0
-  highExperiencePoints: 700
-  highExperienceDropChance: 0.25
-  buttonMosnterAttackRange: 7
+  highExperiencePoints: 150
+  highExperienceDropChance: 0.11
+  skillDashSpeed: 1
