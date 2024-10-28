@@ -247,14 +247,15 @@ public class TutorialDialogueManager : MonoBehaviour
                         // 조건 충족 이벤트 호출
                         OnConditionMetUnityEvent?.Invoke();
 
+                        // 조건 완료 이벤트 호출
+                        OnConditionCompletedUnityEvent?.Invoke();
+
                         // 아이콘 변경
                         if (conditionIconImage != null && completedConditionIcon != null)
                         {
                             conditionIconImage.sprite = completedConditionIcon;
                         }
 
-                        // 조건 완료 이벤트 호출
-                        OnConditionCompletedUnityEvent?.Invoke();
 
                         // 특수 대화 처리 완료
                         processedSpecialDialogues++;

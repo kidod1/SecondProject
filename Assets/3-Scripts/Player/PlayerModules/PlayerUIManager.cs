@@ -201,9 +201,8 @@ public class PlayerUIManager : MonoBehaviour
         {
             experienceRatio = 1f;
         }
-
         experienceRatio = Mathf.Clamp01(experienceRatio);
-
+        experienceRatio *= 2;
         float newMaskWidth = fullExperienceBarWidth * experienceRatio;
         experienceBarMaskRect.sizeDelta = new Vector2(newMaskWidth, experienceBarMaskRect.sizeDelta.y);
 

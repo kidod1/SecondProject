@@ -244,7 +244,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.22657418, y: 3.7655888}
+  m_Offset: {x: -0.10764432, y: 3.2456536}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -255,7 +255,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.968042, y: 8.675152}
+  m_Size: {x: 2.7301822, y: 4.655097}
   m_EdgeRadius: 0
 --- !u!114 &495770380768138954
 MonoBehaviour:
@@ -326,7 +326,7 @@ MonoBehaviour:
         m_MethodName: PlaySpecificSound
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: d2417c94855307740a3125bb6a29ee32, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: a46ec3985ab6f8841b276d75ee40d788, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -421,9 +421,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilities: []
-  OnAbilitiesChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3772776399309296988
 MonoBehaviour:
   m_ObjectHideFlags: 0

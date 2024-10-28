@@ -18,6 +18,7 @@ public abstract class Monster : MonoBehaviour
     protected Rigidbody2D rb;
     protected int currentHP;
     protected MeshRenderer meshRenderer;
+    private Color originalColor; // 원래 색상을 저장하기 위한 필드 추가
     protected bool isInvincible = false;
     protected bool isDead = false;
     public bool IsDead => isDead;
@@ -82,6 +83,18 @@ public abstract class Monster : MonoBehaviour
         skeletonAnimations = GetComponent<SkeletonAnimation>();
         currentHP = monsterBaseStat.maxHP;
         meshRenderer = GetComponent<MeshRenderer>();
+
+        // 메테리얼 인스턴스화 및 원래 색상 저장
+        if (meshRenderer != null)
+        {
+            meshRenderer.material = new Material(meshRenderer.material);
+            originalColor = meshRenderer.material.color;
+        }
+        else
+        {
+            Debug.LogWarning("MeshRenderer를 찾을 수 없습니다.");
+        }
+
         rb = GetComponent<Rigidbody2D>();
 
         player = FindObjectOfType<Player>();
@@ -270,7 +283,7 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-    private void ShowDamageText(int damage)
+    public void ShowDamageText(int damage)
     {
         // StartCoroutine을 통해 코루틴 시작
         StartCoroutine(ShowDamageTextCoroutine(damage));
@@ -278,7 +291,6 @@ public abstract class Monster : MonoBehaviour
 
     private IEnumerator ShowDamageTextCoroutine(int damage)
     {
-
         // 데미지 양에 따라 글자 크기 및 추가 시간 설정
         int fontSize;
         float additionalTime = 0f;
@@ -472,24 +484,39 @@ public abstract class Monster : MonoBehaviour
         isInvincible = true;
 
         float elapsed = 0f;
+        bool isRed = false; // 색상 전환을 위한 플래그
 
         while (elapsed < invincibilityDuration)
         {
-            if (meshRenderer != null)
+            if (meshRenderer != null && meshRenderer.material != null)
             {
-                meshRenderer.enabled = !meshRenderer.enabled;
+                if (isRed)
+                {
+                    // 원래 색상으로 변경
+                    meshRenderer.material.color = originalColor;
+                }
+                else
+                {
+                    // 빨간색으로 변경
+                    meshRenderer.material.color = Color.red;
+                }
+
+                isRed = !isRed; // 플래그 전환
             }
+
             yield return new WaitForSeconds(blinkInterval);
             elapsed += blinkInterval;
         }
 
-        if (meshRenderer != null)
+        // 최종적으로 원래 색상으로 복원
+        if (meshRenderer != null && meshRenderer.material != null)
         {
-            meshRenderer.enabled = true;
+            meshRenderer.material.color = originalColor;
         }
 
         isInvincible = false;
     }
+
     private void InitializeExperienceItemsParent()
     {
         if (experienceItemsParent == null)

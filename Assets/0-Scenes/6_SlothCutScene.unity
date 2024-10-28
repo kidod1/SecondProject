@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -45.2}
-  m_SizeDelta: {x: 700, y: 50}
+  m_AnchoredPosition: {x: -57, y: 43}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &38448555
 MonoBehaviour:
@@ -180,7 +180,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 567b787e797038b499babf5c0cf5e3fd, type: 2}
   m_sharedMaterial: {fileID: -3989935685223603372, guid: 567b787e797038b499babf5c0cf5e3fd, type: 2}
@@ -268,6 +270,7 @@ GameObject:
   - component: {fileID: 192503908}
   - component: {fileID: 192503910}
   - component: {fileID: 192503909}
+  - component: {fileID: 192503911}
   m_Layer: 0
   m_Name: Screen
   m_TagString: Untagged
@@ -291,7 +294,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1.4}
+  m_AnchoredPosition: {x: 19.19, y: -8.04}
   m_SizeDelta: {x: 1419, y: 1049}
   m_Pivot: {x: 0.48610994, y: 0.41335556}
 --- !u!114 &192503909
@@ -307,7 +310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: b66cf7a186d13054989b33a5c90044e4, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6862745}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -348,6 +351,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192503907}
   m_CullTransparentMesh: 1
+--- !u!95 &192503911
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192503907}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b7f0c51e6cd6de2498c02f8bd9892257, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &275401240
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,7 +924,7 @@ RectTransform:
   m_GameObject: {fileID: 674500512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 841893377}
@@ -909,8 +933,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7, y: -423.6}
-  m_SizeDelta: {x: 820, y: 206}
+  m_AnchoredPosition: {x: -510, y: 226}
+  m_SizeDelta: {x: 607, y: 370}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &674500514
 MonoBehaviour:
@@ -932,8 +956,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e097c79990cddae409b95c57c18fe540, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 5b9c1208fce6bba4f8775758eb2e1998, type: 3}
+  m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -988,7 +1012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &740680056
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1444,30 +1468,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutsceneDialogue:
     sentences:
-    - "\uBAA8\uB2C8\uD130\uC758 \uBE5B\uC774 \uBC29 \uC548\uC744 \uAC00\uB4DD \uCC44\uC6B0\uACE0
-      \uC788\uB2E4."
     - ....?
     - "\uCE68\uC785\uC790?"
     - "\uC73C\uC73C\uC73C \uADC0\uCC2E\uAC8C \uB410\uB124..."
     dialogueEntries:
-    - characterName: '    '
-      characterImage: {fileID: 0}
-      hideAfterSentence: 1
     - characterName: "\uBCA8\uD398\uACE0\uB974"
       characterImage: {fileID: 192503907}
       hideAfterSentence: 6
-    characterImageTogglePoints: 0200000004000000
-    fadeTriggers: 0000000000000000010000000000000002000000
-    impAppearAfterSentenceIndex: 4
-    impFadeOutAfterDialogueCount: 2
+      speechBubbleSprite: {fileID: 21300000, guid: 5b9c1208fce6bba4f8775758eb2e1998, type: 3}
+    characterImageTogglePoints: 01000000
+    fadeTriggers: 00000000010000000000000002000000
+    impAppearAfterSentenceIndex: 3
+    impFadeOutAfterDialogueCount: 1
+    speechBubbleSprites:
+    - {fileID: 21300000, guid: 5b9c1208fce6bba4f8775758eb2e1998, type: 3}
+    - {fileID: 21300000, guid: 5b9c1208fce6bba4f8775758eb2e1998, type: 3}
   nameText: {fileID: 841893378}
   dialogueText: {fileID: 38448555}
   animationImage: {fileID: 300900859}
-  nextSceneName: 
+  nextSceneName: 7_SlothMap
   textAnimationSpeed: 0.05
   speechBubble: {fileID: 900040802}
   speechBubble2: {fileID: 900040802}
   speechBubbleAnimator: {fileID: 900040804}
+  speechBubbleImage: {fileID: 674500514}
   impCharacterImage: {fileID: 900040802}
   impCharacterName: Imp
   sceneChangeSkeleton: {fileID: 285038837}

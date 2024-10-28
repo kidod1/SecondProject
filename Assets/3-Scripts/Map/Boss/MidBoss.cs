@@ -48,6 +48,11 @@ public class MidBoss : Monster
 
     [SerializeField]
     private GameManager gameManager;
+
+    // 피격 시 색상 변경을 위한 필드 추가
+    private MeshRenderer meshRenderer;
+    private Color originalColor;
+
     protected override void Start()
     {
         base.Start();
@@ -103,6 +108,19 @@ public class MidBoss : Monster
         {
             Debug.LogWarning("MidBoss: 경고 레이저 위치 배열이 올바르게 설정되지 않았습니다.");
         }
+
+        // MeshRenderer와 원래 색상 저장
+        meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            // 메테리얼 인스턴스화
+            meshRenderer.material = new Material(meshRenderer.material);
+            originalColor = meshRenderer.material.color;
+        }
+        else
+        {
+            Debug.LogWarning("MeshRenderer를 찾을 수 없습니다.");
+        }
     }
 
     protected override void InitializeStates()
@@ -137,7 +155,25 @@ public class MidBoss : Monster
 
     public override void TakeDamage(int damage, Vector3 damageSourcePosition, bool Nun = false)
     {
-        base.TakeDamage(damage, damageSourcePosition);
+        if (isDead)
+        {
+            return;
+        }
+
+        ShowDamageText(damage);
+
+        currentHP -= damage;
+
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            Die();
+        }
+        else
+        {
+            // 피격 시 빨간색으로 깜빡이게 함
+            StartCoroutine(FlashRedCoroutine());
+        }
 
         Debug.Log($"중간 보스가 데미지를 입었습니다! 남은 체력: {currentHP}/{maxHealth}");
 
@@ -151,9 +187,21 @@ public class MidBoss : Monster
         }
     }
 
+    private IEnumerator FlashRedCoroutine()
+    {
+        if (meshRenderer != null && meshRenderer.material != null)
+        {
+            meshRenderer.material.color = Color.red;
+            yield return new WaitForSeconds(0.1f); // 빨간색 유지 시간
+            meshRenderer.material.color = originalColor;
+        }
+    }
+
     protected override void Die()
     {
         if (isDead) return;
+        isDead = true;
+
         GameManager gameManager = FindFirstObjectByType<GameManager>();
         // 보스가 죽을 때 공격 패턴 코루틴을 정지합니다.
         if (executePatternsCoroutine != null)
@@ -213,7 +261,7 @@ public class MidBoss : Monster
                 yield break;
             }
 
-            // 총 확률 계산 (레이저 패턴 확률 제거)
+            // 총 확률 계산
             float totalProbability = patternData.bulletPatternProbability + patternData.warningAttackPatternProbability +
                                      patternData.warningLaserPatternProbability + patternData.groundSmashPatternProbability;
 
@@ -291,14 +339,6 @@ public class MidBoss : Monster
 
         Debug.Log("경고 레이저 패턴 완료");
     }
-
-    // 레이저 패턴 제거
-    /*
-    private IEnumerator LaserPattern()
-    {
-        // 해당 패턴은 제거되었습니다.
-    }
-    */
 
     private IEnumerator BulletPattern()
     {

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events; // UnityEvent를 사용하기 위해 추가
 
 /// <summary>
 /// Fade 애니메이션을 제어하기 위한 트리거 타입
@@ -23,14 +24,6 @@ public class CutsceneManager : MonoBehaviour
     [System.Serializable]
     public class CutsceneDialogue
     {
-        [System.Serializable]
-        public struct DialogueEntry
-        {
-            public string characterName; // 캐릭터 이름
-            public GameObject characterImage; // 캐릭터 이미지 오브젝트
-            public int hideAfterSentence; // 이 대사 이후에 캐릭터 이미지를 비활성화할 인덱스
-        }
-
         [TextArea(3, 10)]
         public string[] sentences;
         public DialogueEntry[] dialogueEntries; // 대사와 함께 캐릭터 정보를 저장하는 구조체 배열
@@ -41,6 +34,19 @@ public class CutsceneManager : MonoBehaviour
         [Header("Imp Configuration")]
         public int impAppearAfterSentenceIndex = -1; // 대화 인덱스 이후에 임프가 등장
         public int impFadeOutAfterDialogueCount = 2; // 등장 후 몇 번째 대화에서 FadeOut 할지
+
+        // 새로운 필드 추가: 말풍선 스프라이트 배열
+        [Header("Speech Bubble Sprites")]
+        public Sprite[] speechBubbleSprites; // 각 대사에 대응하는 말풍선 스프라이트 배열
+    }
+
+    [System.Serializable]
+    public struct DialogueEntry
+    {
+        public string characterName; // 캐릭터 이름
+        public GameObject characterImage; // 캐릭터 이미지 오브젝트
+        public int hideAfterSentence; // 이 대사 이후에 캐릭터 이미지를 비활성화할 인덱스
+        public Sprite speechBubbleSprite; // 말풍선 이미지 스프라이트 추가
     }
 
     public CutsceneDialogue cutsceneDialogue;
@@ -56,10 +62,18 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField]
     public Animator speechBubbleAnimator; // 말풍선의 Animator 컴포넌트
 
+    // 새로 추가된 필드: 말풍선 이미지 컴포넌트
+    [Header("Speech Bubble Image")]
+    public Image speechBubbleImage; // 말풍선의 Image 컴포넌트
+
     // New fields for 임프
     [Header("Imp Specific Configuration")]
     public GameObject impCharacterImage; // 임프의 캐릭터 이미지 오브젝트
     public string impCharacterName = "Imp"; // 임프의 이름
+
+    // 추가된 부분: 컷신 종료 UnityEvent
+    [Header("Cutscene Events")]
+    public UnityEvent OnCutsceneEnded; // UnityEvent로 변경
 
     private Queue<string> sentences;
     private int currentSentenceIndex = 0;
@@ -73,6 +87,9 @@ public class CutsceneManager : MonoBehaviour
 
     [SerializeField]
     private SceneChangeSkeleton sceneChangeSkeleton;
+    [SerializeField]
+    private bool lastCut = false;
+
     private void Start()
     {
         sentences = new Queue<string>();
@@ -100,6 +117,11 @@ public class CutsceneManager : MonoBehaviour
         if (speechBubbleAnimator != null)
         {
             speechBubbleAnimator.ResetTrigger("FadeOut"); // 초기화 시 트리거 리셋
+        }
+
+        if (speechBubbleImage != null && cutsceneDialogue.speechBubbleSprites.Length > 0)
+        {
+            speechBubbleImage.sprite = cutsceneDialogue.speechBubbleSprites[0]; // 첫 번째 말풍선 이미지 설정
         }
 
         animationImage.gameObject.SetActive(false); // 초기화할 때 애니메이션 이미지를 비활성화
@@ -147,6 +169,9 @@ public class CutsceneManager : MonoBehaviour
         currentSentenceIndex++;
 
         ToggleCharacterImagesAndNames();
+
+        // 말풍선 이미지 설정
+        SetSpeechBubbleImage(currentSentenceIndex - 1); // 배열은 0부터 시작
 
         // Handle 임프's appearance and fade triggers
         HandleImpAppearanceAndFade();
@@ -280,7 +305,7 @@ public class CutsceneManager : MonoBehaviour
 
         // 애니메이션이 끝나면 이미지를 활성화하고, 진행 가능하도록 설정
         animationImage.gameObject.SetActive(true);
-        canProceed = true;
+        canProceed = true; // 다음 대사로 넘어갈 수 있도록 설정
     }
 
     private void ToggleCharacterImagesAndNames()
@@ -301,6 +326,11 @@ public class CutsceneManager : MonoBehaviour
                     {
                         nameText.text = entry.characterName;
                     }
+
+                    // 해당 캐릭터에 맞는 말풍선 이미지 설정
+                    // 여기서는 현재 대사 인덱스를 기준으로 설정합니다.
+                    // 필요에 따라 더 정교한 매핑이 필요할 수 있습니다.
+                    SetSpeechBubbleImage(currentSentenceIndex - 1); // 현재 대사 인덱스로 설정
                 }
             }
         }
@@ -314,31 +344,55 @@ public class CutsceneManager : MonoBehaviour
             }
         }
     }
+
+    private void SetSpeechBubbleImage(int sentenceIndex)
+    {
+        if (cutsceneDialogue.speechBubbleSprites != null && sentenceIndex < cutsceneDialogue.speechBubbleSprites.Length)
+        {
+            if (speechBubbleImage != null)
+            {
+                speechBubbleImage.sprite = cutsceneDialogue.speechBubbleSprites[sentenceIndex];
+            }
+            else
+            {
+                Debug.LogWarning("CutsceneManager: speechBubbleImage이 할당되지 않았습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("CutsceneManager: speechBubbleSprites 배열이 충분히 설정되지 않았습니다.");
+        }
+    }
+
     private void EndCutscene()
     {
         cutsceneEnded = true;
+
+        // UnityEvent 호출 추가
+        if (OnCutsceneEnded != null)
+        {
+            OnCutsceneEnded.Invoke();
+        }
 
         if (speechBubbleAnimator != null)
         {
             speechBubbleAnimator.SetTrigger("FadeOut");
         }
 
-        if (sceneChangeSkeleton != null)
+        if (sceneChangeSkeleton != null && !lastCut)
         {
             sceneChangeSkeleton.gameObject.SetActive(true);
-            sceneChangeSkeleton.PlayCloseAnimation("7_SlothMap");
-        }
-        else
-        {
-            Debug.LogWarning("SceneChangeSkeleton이 존재하지 않습니다. 바로 다음 씬으로 이동합니다.");
+            sceneChangeSkeleton.PlayCloseAnimation(nextSceneName);
         }
     }
+
     private IEnumerator DelayForEndCutSence(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);
         sceneChangeSkeleton.gameObject.SetActive(true);
-        sceneChangeSkeleton.PlayCloseAnimation("7_SlothMap");
+        sceneChangeSkeleton.PlayCloseAnimation(nextSceneName);
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
