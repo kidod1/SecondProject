@@ -400,7 +400,7 @@ public abstract class Monster : MonoBehaviour
             // 노크백 방향 계산 (몬스터 위치 - 공격자 위치)
             Vector2 knockbackDirection = (transform.position - damageSourcePosition).normalized;
 
-            float knockbackForce = 2f;
+            float knockbackForce = 10f;
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
         else
