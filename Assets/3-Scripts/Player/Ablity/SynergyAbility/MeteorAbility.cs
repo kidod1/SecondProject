@@ -13,18 +13,12 @@ public class MeteorAbility : SynergyAbility
     [InspectorName("메테오 개수")] public int meteorCount = 3;             // 메테오 개수
     [InspectorName("스폰 반경")] public float spawnRadius = 5f;             // 플레이어 주변 메테오 스폰 반경
     [InspectorName("메테오 스폰 간격")] public float meteorSpawnDelay = 0.5f; // 메테오 스폰 간격 (초)
-    [InspectorName("쿨다운 시간")] public float MeteorCooldownDurations = 5f;  // 쿨다운 시간
 
     [Header("경고 이펙트 프리팹")]
     [InspectorName("경고 시작 이펙트 프리팹")] public GameObject warningStartEffectPrefab;  // 경고 시작 이펙트 프리팹
     [InspectorName("경고 종료 이펙트 프리팹")] public GameObject warningEndEffectPrefab;    // 경고 종료 이펙트 프리팹
 
     private Player playerInstance;
-
-    private void OnEnable()
-    {
-        cooldownDuration = MeteorCooldownDurations; // 쿨다운 시간 설정
-    }
 
     public override void Apply(Player player)
     {

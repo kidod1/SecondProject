@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class AbilityManager : MonoBehaviour
 {
@@ -87,6 +87,11 @@ public class AbilityManager : MonoBehaviour
     // 선택된 능력을 저장하는 변수
     private Ability selectedAbility;
 
+    [System.Serializable]
+    public class SynergyAbilityEvent : UnityEvent<SynergyAbility> { }
+    [Header("Ability Events")]
+    public SynergyAbilityEvent OnSynergyAbilityChanged; // 새로운 이벤트 추가
+
     private void Awake()
     {
         // 초기 크기 배열 초기화
@@ -95,6 +100,8 @@ public class AbilityManager : MonoBehaviour
         originalIconSizes = new Vector2[numButtons];
         initialButtonSizes = new Vector2[numButtons];
         initialIconSizes = new Vector2[numButtons];
+        // UnityEvent 초기화
+        OnSynergyAbilityChanged ??= new SynergyAbilityEvent();
 
         for (int i = 0; i < numButtons; i++)
         {
@@ -276,6 +283,13 @@ public class AbilityManager : MonoBehaviour
             {
                 // 초기 크기로 리셋
                 iconRect.sizeDelta = originalIconSizes[i];
+            }
+
+            // 쿨타임 초기화 및 이벤트 구독 (SynergyAbility인 경우)
+            if (ability is SynergyAbility synergyAbility)
+            {
+                synergyAbility.OnCooldownComplete.AddListener(() => OnAbilityCooldownComplete(synergyAbility, i));
+                UpdateAbilityCooldownUI(synergyAbility, i);
             }
         }
 
@@ -621,7 +635,6 @@ public class AbilityManager : MonoBehaviour
         }
         target.sizeDelta = originalSize;
     }
-
     /// <summary>
     /// Transform의 scale을 애니메이션으로 조정하는 코루틴 (하이라이트 이미지용)
     /// </summary>
@@ -714,6 +727,7 @@ public class AbilityManager : MonoBehaviour
         {
             playerAbilityManager.ApplySynergyAbility(synergyAbility);
             player.AcquireSynergyAbility(synergyAbility);
+            OnSynergyAbilityChanged.Invoke(synergyAbility);
             Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
         }
         else
@@ -819,7 +833,7 @@ public class AbilityManager : MonoBehaviour
         Debug.Log("셀렉트 애니메이션 종료");
         playSelectionAnimationCoroutine = null;
     }
-  
+
     private void OnSelectionAnimationComplete()
     {
         ApplySelectedAbility(selectedAbility);
@@ -837,9 +851,10 @@ public class AbilityManager : MonoBehaviour
             if (ability is SynergyAbility synergyAbility)
             {
                 player.AcquireSynergyAbility(synergyAbility);
+                OnSynergyAbilityChanged.Invoke(synergyAbility);
                 Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
 
-                // 시너지 능력 창을 표시하기 전에 0.5초 지연 시간 추가
+                // 시너지 능력 창을 표시하기 전에 0.2초 지연 시간 추가
                 if (delayedShowSynergyAbilityCoroutine != null)
                 {
                     StopCoroutine(delayedShowSynergyAbilityCoroutine);
@@ -929,6 +944,13 @@ public class AbilityManager : MonoBehaviour
             {
                 iconRect.sizeDelta = initialIconSizes[i];
                 originalIconSizes[i] = initialIconSizes[i];
+            }
+
+            // 쿨타임 초기화 및 이벤트 구독 (SynergyAbility인 경우)
+            if (ability is SynergyAbility synergyAbility)
+            {
+                synergyAbility.OnCooldownComplete.AddListener(() => OnAbilityCooldownComplete(synergyAbility, i));
+                UpdateAbilityCooldownUI(synergyAbility, i);
             }
         }
 
@@ -1042,5 +1064,53 @@ public class AbilityManager : MonoBehaviour
         {
             abilitySelectionPanel.SetActive(true);
         }
+    }
+
+    /// <summary>
+    /// 어빌리티의 쿨타임 상태를 UI에 반영합니다.
+    /// </summary>
+    /// <param name="synergyAbility">쿨타임을 적용할 SynergyAbility</param>
+    /// <param name="index">어빌리티의 인덱스</param>
+    private void UpdateAbilityCooldownUI(SynergyAbility synergyAbility, int index)
+    {
+        if (abilityIcons[index] == null)
+        {
+            Debug.LogError($"AbilityManager: abilityIcons[{index}]가 null입니다.");
+            return;
+        }
+
+        Image iconImage = abilityIcons[index];
+        Button abilityButton = abilityButtons[index];
+
+        // 초기 상태 설정
+        if (synergyAbility.IsReady)
+        {
+            iconImage.color = Color.white; // 원래 색상
+            abilityButton.interactable = true;
+        }
+        else
+        {
+            iconImage.color = Color.gray; // 어둡게 표시
+            abilityButton.interactable = false;
+        }
+    }
+
+    /// <summary>
+    /// 어빌리티의 쿨타임 완료 시 UI를 업데이트합니다.
+    /// </summary>
+    /// <param name="synergyAbility">쿨타임이 완료된 SynergyAbility</param>
+    /// <param name="index">어빌리티의 인덱스</param>
+    private void OnAbilityCooldownComplete(SynergyAbility synergyAbility, int index)
+    {
+        UpdateAbilityCooldownUI(synergyAbility, index);
+    }
+
+    /// <summary>
+    /// 쿨타임이 완료되었을 때 호출되는 UnityEvent에 연결되는 메서드
+    /// </summary>
+    /// <param name="synergyAbility">쿨타임이 완료된 SynergyAbility</param>
+    private void HandleCooldownComplete(SynergyAbility synergyAbility)
+    {
+        // 이 메서드는 이미 OnAbilityCooldownComplete로 대체됨
     }
 }

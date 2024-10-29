@@ -25,6 +25,8 @@ public class SlothMapManager : MonoBehaviour
 
     private Spine.AnimationState spineAnimationState;
     public event Action OnDeathAnimationsCompleted;
+
+    public GameObject PortalObjectNextScene;
     private void Awake()
     {
         if (skeletonAnimation == null)
@@ -112,6 +114,7 @@ public class SlothMapManager : MonoBehaviour
 
         int deathTrack = 1;
         spineAnimationState.SetAnimation(deathTrack, secondDeathAnimationAsset.Animation.Name, false).MixDuration = 0.2f;
+        PortalObjectNextScene.SetActive(true);
     }
 
     private void OnAnimationComplete(TrackEntry trackEntry)

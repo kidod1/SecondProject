@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -60,6 +61,12 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private RectTransform bossHealthBarFullRect;
 
+    [Header("Synergy Ability UI")]
+    [SerializeField]
+    private Image synergyAbilityIcon; // Synergy Ability Icon Image 추가
+    [SerializeField]
+    private Image synergyAbilityOverlay; // Synergy Ability Overlay Image 추가
+
     private DepthOfField depthOfField;
 
     private int maxHP;
@@ -68,7 +75,9 @@ public class PlayerUIManager : MonoBehaviour
 
     private float fullHealthBarWidth;
     private float fullExperienceBarWidth;
-    private PlayerAbilityManager abilityManager;
+    private PlayerAbilityManager playerAbilityManager;
+    [SerializeField]
+    private AbilityManager abilityManager;
 
     private int bossMaxHealth;
 
@@ -84,6 +93,16 @@ public class PlayerUIManager : MonoBehaviour
         {
             bossHealthUIPanel.SetActive(false);
         }
+
+        // 초기 오버레이 상태 설정
+        if (synergyAbilityOverlay != null)
+        {
+            synergyAbilityOverlay.gameObject.SetActive(false); // 초기에는 비활성화
+        }
+        else
+        {
+            Debug.LogError("PlayerUIManager: synergyAbilityOverlay가 할당되지 않았습니다.");
+        }
     }
 
     private void Start()
@@ -91,6 +110,15 @@ public class PlayerUIManager : MonoBehaviour
         if (player == null)
         {
             player = PlayManager.I.GetPlayer();
+        }
+        // Synergy Ability Icon 초기 상태 설정
+        if (synergyAbilityIcon != null)
+        {
+            synergyAbilityIcon.gameObject.SetActive(false); // 초기에는 비활성화
+        }
+        else
+        {
+            Debug.LogError("PlayerUIManager: synergyAbilityIcon이 할당되지 않았습니다.");
         }
     }
 
@@ -109,10 +137,15 @@ public class PlayerUIManager : MonoBehaviour
         player.OnLevelUp.AddListener(UpdateExperienceUIWithoutParam);
         player.OnPlayerDeath.AddListener(OnPlayerDeath);
 
-        abilityManager = player.abilityManager;
-        if (abilityManager != null)
+        playerAbilityManager = player.abilityManager;
+        if (playerAbilityManager != null)
         {
-            abilityManager.OnAbilitiesChanged += UpdateSelectedAbilitiesUI;
+            playerAbilityManager.OnAbilitiesChanged += UpdateSelectedAbilitiesUI;
+            abilityManager.OnSynergyAbilityChanged.AddListener(UpdateSynergyAbilityIcon);
+        }
+        else
+        {
+            Debug.LogError("PlayerUIManager: AbilityManager가 할당되지 않았습니다.");
         }
 
         maxHP = player.stat.currentMaxHP;
@@ -134,6 +167,29 @@ public class PlayerUIManager : MonoBehaviour
         UpdateSelectedAbilitiesUI();
     }
 
+    /// <summary>
+    /// Synergy Ability가 변경될 때 UI를 업데이트하는 메서드
+    /// </summary>
+    /// <param name="synergyAbility">새로운 Synergy Ability</param>
+    public void UpdateSynergyAbilityIcon(SynergyAbility synergyAbility)
+    {
+        Debug.Log("업데이트 시너지 어빌리티 아이콘");
+        if (synergyAbilityIcon == null)
+        {
+            Debug.LogError("PlayerUIManager: synergyAbilityIcon이 할당되지 않았습니다.");
+            return;
+        }
+
+        if (synergyAbility != null)
+        {
+            synergyAbilityIcon.sprite = synergyAbility.abilityIcon;
+            synergyAbilityIcon.gameObject.SetActive(true);
+        }
+        else
+        {
+            synergyAbilityIcon.gameObject.SetActive(false);
+        }
+    }
 
     private void UpdateUI()
     {
@@ -269,13 +325,13 @@ public class PlayerUIManager : MonoBehaviour
     /// </summary>
     public void UpdateSelectedAbilitiesUI()
     {
-        if (abilitiesContainer == null || abilityIconPrefab == null || abilityManager == null)
+        if (abilitiesContainer == null || abilityIconPrefab == null || playerAbilityManager == null)
         {
             return;
         }
 
         // 현재 능력 수와 풀에 있는 아이콘 수 비교
-        int requiredIcons = abilityManager.abilities.Count;
+        int requiredIcons = playerAbilityManager.abilities.Count;
         int currentPoolCount = abilityIconPool.Count;
 
         // 필요한 만큼 아이콘을 풀에서 가져오기 또는 추가 생성
@@ -298,9 +354,9 @@ public class PlayerUIManager : MonoBehaviour
             GameObject iconObj = abilityIconPool[i];
             iconObj.SetActive(true);
             Image iconImage = iconObj.GetComponent<Image>();
-            if (iconImage != null && abilityManager.abilities[i] != null)
+            if (iconImage != null && playerAbilityManager.abilities[i] != null)
             {
-                iconImage.sprite = abilityManager.abilities[i].abilityIcon;
+                iconImage.sprite = playerAbilityManager.abilities[i].abilityIcon;
             }
             else
             {
@@ -372,6 +428,52 @@ public class PlayerUIManager : MonoBehaviour
         if (bossHealthUIPanel != null)
         {
             bossHealthUIPanel.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Synergy Ability의 쿨타임을 관리하고 오버레이 이미지를 업데이트하는 메서드
+    /// </summary>
+    /// <param name="ability">쿨타임을 관리할 SynergyAbility 인스턴스</param>
+    public void StartSynergyAbilityCooldown(SynergyAbility ability)
+    {
+        if (synergyAbilityOverlay == null)
+        {
+            Debug.LogError("PlayerUIManager: synergyAbilityOverlay가 할당되지 않았습니다.");
+            return;
+        }
+
+        synergyAbilityOverlay.fillAmount = 1f;
+        synergyAbilityOverlay.gameObject.SetActive(true);
+
+        UnityAction onCooldownComplete = () => OnSynergyAbilityCooldownComplete();
+
+        ability.OnCooldownComplete.AddListener(onCooldownComplete);
+
+        StartCoroutine(UpdateSynergyAbilityCooldown(ability, onCooldownComplete));
+    }
+
+    private IEnumerator UpdateSynergyAbilityCooldown(SynergyAbility ability, UnityAction onCooldownComplete)
+    {
+        float elapsed = 0f;
+        while (!ability.IsReady)
+        {
+            elapsed = Time.time - ability.lastUsedTime;
+            float fill = 1f - (elapsed / ability.cooldownDuration);
+            fill = Mathf.Clamp01(fill);
+            synergyAbilityOverlay.fillAmount = fill;
+            yield return null;
+        }
+
+        ability.OnCooldownComplete.RemoveListener(onCooldownComplete);
+        OnSynergyAbilityCooldownComplete();
+    }
+
+    private void OnSynergyAbilityCooldownComplete()
+    {
+        if (synergyAbilityOverlay != null)
+        {
+            synergyAbilityOverlay.gameObject.SetActive(false);
         }
     }
 }

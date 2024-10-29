@@ -38,7 +38,7 @@ public class FlameBarrierEffect : MonoBehaviour
         damageInterval = interval;
 
         // Collider 반경 업데이트
-        transform.localScale = new Vector3(barrierRadius * 2, barrierRadius * 2, 1);
+        transform.localScale = new Vector3(barrierRadius, barrierRadius, 1);
     }
 
     private IEnumerator DamageRoutine()

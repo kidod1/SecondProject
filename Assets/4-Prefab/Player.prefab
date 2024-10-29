@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: 4cbf9ea474d51e64eb4f644b8285d99c, type: 2}
-  currentSynergyAbility: {fileID: 11400000, guid: 9db5af75696df354eb551c3ad34c283f, type: 2}
+  currentSynergyAbility: {fileID: 0}
   objectPool: {fileID: 5018752986689712375}
   abilityManager: {fileID: 287484265595492415}
   barrierAbility: {fileID: 11400000, guid: 4d43d418a14cc9b47a713a1e2655fb46, type: 2}
@@ -326,7 +326,7 @@ MonoBehaviour:
         m_MethodName: PlaySpecificSound
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: a46ec3985ab6f8841b276d75ee40d788, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: 94451c9ffd9e9614597d624310b531c9, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0

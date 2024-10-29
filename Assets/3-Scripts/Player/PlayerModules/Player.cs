@@ -132,12 +132,9 @@ public class Player : MonoBehaviour
         UpdateUI();
         SavePlayerData();
 
-        // === 추가된 부분 시작 ===
         PlayRandomGameStartAnimation();
-        // === 추가된 부분 끝 ===
     }
 
-    // === 추가된 부분 시작 ===
     private void PlayRandomGameStartAnimation()
     {
         string[] gameStartAnimations = { gameStartAnim1, gameStartAnim2, gameStartAnim3 };
@@ -184,7 +181,6 @@ public class Player : MonoBehaviour
         // 애니메이션 업데이트
         UpdateAnimation();
     }
-    // === 추가된 부분 끝 ===
 
     private void OnEnable()
     {

@@ -17,9 +17,6 @@ public class MyChildrenAbility : SynergyAbility
     [InspectorName("플레이어 주변에서 맴도는 시간")]
     public float hoverDuration = 3f;
 
-    [InspectorName("능력의 쿨다운 시간")]
-    public float abilityCooldown = 15f;
-
     [InspectorName("벌의 이동 속도")]
     public float beeSpeed = 5f;
 
@@ -33,12 +30,6 @@ public class MyChildrenAbility : SynergyAbility
     public float attackRange = 0.5f;
 
     private Player playerInstance;
-
-    private void OnEnable()
-    {
-        cooldownDuration = abilityCooldown;
-    }
-
     public override void Apply(Player player)
     {
         base.Apply(player);

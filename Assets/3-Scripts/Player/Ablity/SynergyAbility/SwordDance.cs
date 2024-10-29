@@ -20,17 +20,10 @@ public class SwordDance : SynergyAbility
     [InspectorName("데미지 양")]
     public int damageAmount = 20;
 
-    [InspectorName("능력 쿨다운")]
-    public float abilityCooldown = 10f;
 
     private Player playerInstance;
     private GameObject[] swords;
     private bool isAbilityActive = false;
-
-    private void OnEnable()
-    {
-        cooldownDuration = abilityCooldown;
-    }
 
     public override void Apply(Player player)
     {

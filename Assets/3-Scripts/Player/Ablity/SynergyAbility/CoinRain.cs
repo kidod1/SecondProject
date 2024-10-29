@@ -17,18 +17,11 @@ public class CoinRain : SynergyAbility
     [InspectorName("데미지 양")]
     public int damageAmount = 20;
 
-    [InspectorName("쿨다운 지속 시간(초)")]
-    public float coinAbilityCooldownDurations = 8f;
-
     private Player playerInstance;
     private GameObject activeCoinRain;
     private Camera mainCamera;
     private ParticleSystem particleSystem;
 
-    private void OnEnable()
-    {
-        cooldownDuration = coinAbilityCooldownDurations;
-    }
 
     public override void Apply(Player player)
     {

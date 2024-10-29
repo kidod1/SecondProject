@@ -17,21 +17,12 @@ public class ElectricField : SynergyAbility
     [InspectorName("데미지 양")]
     public int damageAmount = 20;             // 데미지 양
 
-    [InspectorName("능력 쿨다운 시간")]
-    public float abilityCooldown = 5f;        // 이 능력의 쿨다운 시간 설정
-
     [InspectorName("경고용 스프라이트")]
     public Sprite warningSprite;              // 전기장 경고용 스프라이트 (선택 사항)
 
     private Player playerInstance;
     private GameObject activeDamageField;
     private ParticleSystem particleSystem;    // 파티클 시스템 추가
-
-    private void OnEnable()
-    {
-        // 쿨다운 시간을 설정
-        cooldownDuration = abilityCooldown;
-    }
 
     public override void Apply(Player player)
     {

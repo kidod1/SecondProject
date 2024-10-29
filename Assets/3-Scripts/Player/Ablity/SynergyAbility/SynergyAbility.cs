@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using UnityEngine.Events;
+using System.Collections;
 [CreateAssetMenu(menuName = "ActiveAbilities/SynergyAbility")]
 public class SynergyAbility : Ability
 {
@@ -8,39 +9,55 @@ public class SynergyAbility : Ability
 
     public bool IsReady => Time.time >= lastUsedTime + cooldownDuration;
 
+    public UnityEvent OnCooldownComplete; // 쿨타임 완료 이벤트
+
     public virtual void Activate(Player player)
     {
         if (IsReady)
         {
-            lastUsedTime = Time.time; // 쿨타임 시작
+            lastUsedTime = Time.time;
             Apply(player);
-            Debug.Log("능력 적용 완료, 쿨타임 시작");
+            player.StartCoroutine(HandleCooldown());
         }
         else
         {
             float remainingCooldown = (lastUsedTime + cooldownDuration) - Time.time;
-            Debug.Log($"Ability {abilityName} is on cooldown. Remaining: {remainingCooldown:F2} seconds.");
         }
+    }
+
+    private IEnumerator HandleCooldown()
+    {
+        float elapsed = 0f;
+        while (elapsed < cooldownDuration)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 쿨타임 완료 시 이벤트 호출
+        OnCooldownComplete?.Invoke();
+        Debug.Log($"Ability {abilityName} cooldown complete.");
     }
 
     public override void Apply(Player player)
     {
-        lastUsedTime = 0;
     }
 
     public override void Upgrade()
     {
+        // 어빌리티 레벨업 로직 구현
     }
 
     public override string GetDescription()
     {
-        return baseDescription;
+        return baseDescription + $" (Cooldown: {cooldownDuration} seconds)";
     }
 
     protected override int GetNextLevelIncrease()
     {
         return 0;
     }
+
     public override void ResetLevel()
     {
         base.ResetLevel();

@@ -11,9 +11,6 @@ public class SentryAbility : SynergyAbility
     [InspectorName("센트리 지속 시간")]
     public float abilityDuration = 10f;
 
-    [InspectorName("쿨다운 시간")]
-    public float abilityCooldown = 15f;
-
     [InspectorName("센트리 공격력")]
     public int sentryDamage = 20;
 
@@ -21,11 +18,6 @@ public class SentryAbility : SynergyAbility
     public float sentryAttackSpeed = 1f;
 
     private Player playerInstance;
-
-    private void OnEnable()
-    {
-        cooldownDuration = abilityCooldown;
-    }
 
     public override void Apply(Player player)
     {

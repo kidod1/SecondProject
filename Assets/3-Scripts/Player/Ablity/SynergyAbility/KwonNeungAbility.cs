@@ -8,15 +8,7 @@ public class KwonNeungAbility : SynergyAbility
     [InspectorName("스턴 시간")]
     public float stunDuration = 5f;
 
-    [InspectorName("쿨다운 시간")]
-    public float abilityCooldown = 15f;
-
     private Player playerInstance;
-
-    private void OnEnable()
-    {
-        cooldownDuration = abilityCooldown;
-    }
 
     public override void Apply(Player player)
     {

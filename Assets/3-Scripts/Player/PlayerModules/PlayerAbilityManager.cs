@@ -70,7 +70,6 @@ public class PlayerAbilityManager : MonoBehaviour
         // 리스너 수 로그 출력 (디버깅 용도)
 #if UNITY_EDITOR
         int listenerCount = OnAbilitiesChanged?.GetInvocationList().Length ?? 0;
-        Debug.Log($"OnAbilitiesChanged 리스너 수: {listenerCount}");
 #endif
     }
 
