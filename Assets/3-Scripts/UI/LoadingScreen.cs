@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using Spine.Unity;
 using Spine;
+using Cinemachine;
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class LoadingScreen : MonoBehaviour
     private float loadingDuration = 5f;
 
     [SerializeField]
-    private int nextSceneIndex;
+    private int nextSceneIndex; // 다음 씬의 인덱스
 
     [SerializeField]
     private GameObject pressSpaceText;
@@ -48,6 +49,7 @@ public class LoadingScreen : MonoBehaviour
 
     [SerializeField]
     private SceneChangeSkeleton sceneChanageSkeleton;
+
     [Header("Animator Controllers")]
     [SerializeField]
     private Animator fadeInAnimator; // FadeIn 및 Loop 애니메이터
@@ -156,8 +158,6 @@ public class LoadingScreen : MonoBehaviour
             Debug.Log(skeletonGraphic.AnimationState);
         }
 
-
-
         // 결과 이미지 활성화
         foreach (var resultImage in resultImages)
         {
@@ -180,7 +180,7 @@ public class LoadingScreen : MonoBehaviour
 
         StartCoroutine(FadeIn());
 
-        StartCoroutine(WaitForInputAndFadeOut());
+        StartCoroutine(WaitForInputAndLoadNextScene());
     }
 
     private IEnumerator TriggerLoopAfterDelay(float delay)
@@ -192,7 +192,7 @@ public class LoadingScreen : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForInputAndFadeOut()
+    private IEnumerator WaitForInputAndLoadNextScene()
     {
         while (!Input.GetKeyDown(KeyCode.Space))
         {
@@ -210,7 +210,8 @@ public class LoadingScreen : MonoBehaviour
             yield return new WaitForSeconds(1f); // 페이드 아웃 완료 후 1초 대기
         }
 
-        sceneChanageSkeleton.PlayCloseAnimation("6_SlothCutScene");
+        // 클로즈 애니메이션 실행 대신 다음 씬으로 전환
+        SceneManager.LoadScene(nextSceneIndex);
     }
 
     private IEnumerator FadeIn()

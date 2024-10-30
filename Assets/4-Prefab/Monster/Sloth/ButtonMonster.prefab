@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1135140664417893172}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48,12 +48,12 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 0.61
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Intensity: 0.92
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000d336a7cf63108f8783312791f7a1af34439a1952e17bb6e125415537
+  m_ApplyToSortingLayers: 1d4efc11
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -71,8 +71,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 2
+  m_PointLightInnerRadius: 0.19
+  m_PointLightOuterRadius: 1.13
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -98,7 +98,7 @@ MonoBehaviour:
   light2D: {fileID: 688857844542417297}
   flickerDuration: 1
   minIntensity: 0
-  maxIntensity: 0.15
+  maxIntensity: 0.6
 --- !u!1 &4395618813426290027
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -508134431
+  m_SortingLayerID: 301747741
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
@@ -239,10 +239,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: 81b730c9b325c1b4c97fbf421dbc9d39, type: 2}
-  invincibilityDuration: 0.1
   blinkInterval: 0.05
+  blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
+  abilityDeathEffectDuration: 1
+  monsterInstantKillEffectPrefab: {fileID: 0}
   isElite: 0
   isInCooldown: 0
   isInfected: 0
@@ -250,6 +252,7 @@ MonoBehaviour:
   areaDamage: 10
   damageInterval: 1
   stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
+  isInstantKilled: 0
   stat: {fileID: 11400000, guid: 81b730c9b325c1b4c97fbf421dbc9d39, type: 2}
   attackEffect: {fileID: 4682675703305972221, guid: c67bced6071de4c4e9fefc1ec10c0115, type: 3}
   summonAnimation: summon

@@ -13,22 +13,31 @@ public interface IMonsterState
 
 public abstract class Monster : MonoBehaviour
 {
-    [Header("Monster Settings")]
+    [Header("몬스터 설정")]
     public MonsterData monsterBaseStat;
     protected Rigidbody2D rb;
     protected int currentHP;
     protected MeshRenderer meshRenderer;
-    private Color originalColor; // 원래 색상을 저장하기 위한 필드 추가
-    protected bool isInvincible = false;
+    private Color originalColor; // 몬스터의 원래 색상
+    // 무적 관련 필드 제거
+    // protected bool isInvincible = false;
     protected bool isDead = false;
     public bool IsDead => isDead;
 
     protected internal Player player;
 
-    [SerializeField]
-    private float invincibilityDuration = 0.5f;
+    // 무적 관련 직렬화 필드 제거
+    // [SerializeField]
+    // private float invincibilityDuration = 0.5f;
+
+    // 빨간색 깜빡임을 위한 기존 blinkInterval 유지
     [SerializeField]
     private float blinkInterval = 0.1f;
+
+    // 빨간색 깜빡임 지속 시간을 위한 새로운 필드 추가
+    [SerializeField]
+    private float blinkDuration = 0.5f;
+
     public GameObject monsterDeathEffectPrefab;
     [SerializeField]
     private float deathEffectDuration = 0.2f;
@@ -44,7 +53,7 @@ public abstract class Monster : MonoBehaviour
     private string damageTextPrefabPath = "DamageTextPrefab";
     protected SkeletonAnimation skeletonAnimations;
 
-    // 새로운 필드 추가: Betting 능력에 의해 한 번만 발동하도록 관리
+    // 베팅 능력에 의해 한 번만 발동하도록 관리하는 새로운 필드
     public bool HasBeenHitByBetting { get; set; } = false;
 
     public IMonsterState currentState;
@@ -69,7 +78,7 @@ public abstract class Monster : MonoBehaviour
     // 원래의 isKinematic 상태를 저장하기 위한 필드 추가
     private bool originalIsKinematic;
 
-    [Header("Stun Effect")]
+    [Header("스턴 효과")]
     [Tooltip("스턴 상태일 때 표시할 이펙트 프리팹")]
     public GameObject stunEffectPrefab;
     private GameObject currentStunEffect;
@@ -256,10 +265,11 @@ public abstract class Monster : MonoBehaviour
 
     public virtual void TakeDamage(int damage, Vector3 damageSourcePosition, bool deathAbilityKill = false)
     {
-        if (isDead || isInvincible)
+        if (isDead)
         {
             return;
         }
+
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
 
@@ -279,13 +289,14 @@ public abstract class Monster : MonoBehaviour
         }
         else
         {
-            StartCoroutine(InvincibilityCoroutine());
+            // 무적 없이 빨간색 깜빡임 시작
+            StartCoroutine(BlinkRedCoroutine());
         }
     }
 
     public void ShowDamageText(int damage)
     {
-        // StartCoroutine을 통해 코루틴 시작
+        // 데미지 텍스트를 표시하기 위한 코루틴 시작
         StartCoroutine(ShowDamageTextCoroutine(damage));
     }
 
@@ -479,6 +490,8 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    // 무적 코루틴 제거
+    /*
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
@@ -516,6 +529,32 @@ public abstract class Monster : MonoBehaviour
 
         isInvincible = false;
     }
+    */
+
+    // 무적 없이 빨간색 깜빡임을 위한 새로운 코루틴 추가
+    private IEnumerator BlinkRedCoroutine()
+    {
+        float elapsed = 0f;
+        bool isRed = false;
+
+        while (elapsed < blinkDuration)
+        {
+            if (meshRenderer != null && meshRenderer.material != null)
+            {
+                meshRenderer.material.color = isRed ? originalColor : Color.red;
+                isRed = !isRed;
+            }
+
+            yield return new WaitForSeconds(blinkInterval);
+            elapsed += blinkInterval;
+        }
+
+        // 최종적으로 원래 색상으로 복원
+        if (meshRenderer != null && meshRenderer.material != null)
+        {
+            meshRenderer.material.color = originalColor;
+        }
+    }
 
     private void InitializeExperienceItemsParent()
     {
@@ -529,6 +568,7 @@ public abstract class Monster : MonoBehaviour
             experienceItemsParent = parentObj.transform;
         }
     }
+
     protected virtual void DropExperienceItem()
     {
         if (player != null && monsterBaseStat != null)
