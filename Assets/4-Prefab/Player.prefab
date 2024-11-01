@@ -425,6 +425,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilities: []
+  resultImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  levelTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &3772776399309296988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,11 +890,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
       propertyPath: m_Intensity
-      value: 0.5
+      value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 0.47
       objectReference: {fileID: 0}
     - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.size
-      value: 7
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[0]
+      value: -508134431
       objectReference: {fileID: 0}
     - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.data[6]
@@ -927,11 +989,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
       propertyPath: m_Intensity
-      value: 0.4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.size
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7362839450344081734, guid: 9806716e3bde94c4d81630f71ba0f8af, type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.data[6]

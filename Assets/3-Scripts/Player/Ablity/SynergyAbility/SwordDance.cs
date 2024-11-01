@@ -78,7 +78,6 @@ public class SwordDance : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
         isAbilityActive = false;
     }

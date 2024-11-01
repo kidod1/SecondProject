@@ -90,7 +90,7 @@ public class EmergencyHealing : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
+        lastUsedTime = 0;
 
         // 리스너 제거
         if (playerInstance != null)

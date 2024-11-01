@@ -38,8 +38,6 @@ public class ElectricBeamAbility : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         lastUsedTime = 0;
         if (activeBeam != null)
         {

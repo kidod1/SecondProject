@@ -50,8 +50,8 @@ public class MidBoss : Monster
     private GameManager gameManager;
 
     // 피격 시 색상 변경을 위한 필드 추가
-    private MeshRenderer meshRenderer;
-    private Color originalColor;
+    private MeshRenderer redMeshRenderer;
+    private Color bossOriginalColor;
 
     protected override void Start()
     {
@@ -110,12 +110,12 @@ public class MidBoss : Monster
         }
 
         // MeshRenderer와 원래 색상 저장
-        meshRenderer = GetComponent<MeshRenderer>();
-        if (meshRenderer != null)
+        redMeshRenderer = GetComponent<MeshRenderer>();
+        if (redMeshRenderer != null)
         {
             // 메테리얼 인스턴스화
-            meshRenderer.material = new Material(meshRenderer.material);
-            originalColor = meshRenderer.material.color;
+            redMeshRenderer.material = new Material(redMeshRenderer.material);
+            bossOriginalColor = redMeshRenderer.material.color;
         }
         else
         {
@@ -189,11 +189,11 @@ public class MidBoss : Monster
 
     private IEnumerator FlashRedCoroutine()
     {
-        if (meshRenderer != null && meshRenderer.material != null)
+        if (redMeshRenderer != null && redMeshRenderer.material != null)
         {
-            meshRenderer.material.color = Color.red;
+            redMeshRenderer.material.color = Color.red;
             yield return new WaitForSeconds(0.1f); // 빨간색 유지 시간
-            meshRenderer.material.color = originalColor;
+            redMeshRenderer.material.color = bossOriginalColor;
         }
     }
 

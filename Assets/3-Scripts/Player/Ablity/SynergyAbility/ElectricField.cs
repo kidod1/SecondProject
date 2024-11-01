@@ -115,7 +115,6 @@ public class ElectricField : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
     }
 }

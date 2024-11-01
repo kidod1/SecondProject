@@ -35,7 +35,6 @@ public class KwonNeungAbility : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
     }
 }

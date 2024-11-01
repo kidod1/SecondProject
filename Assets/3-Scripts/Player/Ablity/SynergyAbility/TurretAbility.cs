@@ -66,7 +66,6 @@ public class SentryAbility : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
     }
 }

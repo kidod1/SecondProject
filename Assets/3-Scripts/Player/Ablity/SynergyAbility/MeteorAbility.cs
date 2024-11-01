@@ -144,7 +144,6 @@ public class MeteorAbility : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
     }
 

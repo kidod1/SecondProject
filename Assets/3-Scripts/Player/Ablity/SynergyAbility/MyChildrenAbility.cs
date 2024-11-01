@@ -76,7 +76,6 @@ public class MyChildrenAbility : SynergyAbility
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
     }
 }

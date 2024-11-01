@@ -14,8 +14,6 @@ public class AbilityManager : MonoBehaviour
     [SerializeField]
     private GameObject abilitySelectionPanel;
     [SerializeField]
-    private CanvasGroup abilitySelectionCanvasGroup; // CanvasGroup 추가
-    [SerializeField]
     private GameObject synergyAbilityPanel;
     [SerializeField]
     private TMP_Text synergyAbilityNameText;
@@ -39,6 +37,7 @@ public class AbilityManager : MonoBehaviour
     private PlayerAbilityManager playerAbilityManager;
     [SerializeField]
     private PlayerUIManager uiManager;
+
     private List<Ability> availableAbilities;
 
     // 강조 표시 관련 변수
@@ -1010,15 +1009,81 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    public void TriggerShowSynergyAbility(SynergyAbility synergyAbility)
+    /// <summary>
+    /// 시너지 어빌리티와 해당 카테고리의 버튼 스프라이트를 받아 UI 버튼을 생성하는 메서드
+    /// </summary>
+    /// <param name="synergyAbility">시너지 어빌리티 객체</param>
+    /// <param name="buttonSprite">카테고리에 맞는 버튼 스프라이트</param>
+    public void TriggerShowSynergyAbility(SynergyAbility synergyAbility, Sprite buttonSprite)
     {
-        // 기존 코루틴 중지
-        if (delayedShowSynergyAbilityCoroutine != null)
+        if (synergyAbility == null)
         {
-            StopCoroutine(delayedShowSynergyAbilityCoroutine);
+            Debug.LogError("AbilityManager: SynergyAbility가 null입니다.");
+            return;
         }
 
-        delayedShowSynergyAbilityCoroutine = StartCoroutine(DelayedShowSynergyAbilityCoroutine(synergyAbility));
+        if (synergyAbilityButton == null || synergyAbilityIcon == null ||
+            synergyAbilityNameText == null || synergyAbilityDescriptionText == null)
+        {
+            Debug.LogError("AbilityManager: 시너지 어빌리티 UI 요소들이 할당되지 않았습니다.");
+            return;
+        }
+
+        Button button = synergyAbilityButton;
+        Image buttonImage = button.GetComponent<Image>();
+        Image iconImage = synergyAbilityIcon;
+        TMP_Text nameText = synergyAbilityNameText;
+        TMP_Text descriptionText = synergyAbilityDescriptionText;
+
+        if (buttonImage != null && buttonSprite != null)
+        {
+            buttonImage.sprite = buttonSprite; // 카테고리별 스프라이트 설정
+        }
+        else
+        {
+            Debug.LogWarning("AbilityManager: 버튼 이미지 또는 스프라이트가 할당되지 않았습니다.");
+        }
+
+        if (iconImage != null)
+        {
+            iconImage.sprite = synergyAbility.abilityIcon; // 시너지 어빌리티 아이콘 설정
+        }
+        else
+        {
+            Debug.LogWarning("AbilityManager: 시너지 어빌리티 아이콘 이미지가 할당되지 않았습니다.");
+        }
+
+        if (nameText != null)
+        {
+            nameText.text = synergyAbility.abilityName; // 시너지 어빌리티 이름 설정
+        }
+        else
+        {
+            Debug.LogWarning("AbilityManager: 시너지 어빌리티 이름 텍스트가 할당되지 않았습니다.");
+        }
+
+        if (descriptionText != null)
+        {
+            descriptionText.text = synergyAbility.GetDescription(); // 시너지 어빌리티 설명 설정
+        }
+        else
+        {
+            Debug.LogWarning("AbilityManager: 시너지 어빌리티 설명 텍스트가 할당되지 않았습니다.");
+        }
+
+        // 버튼 클릭 시 시너지 어빌리티 적용
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => ApplySynergyAbility(synergyAbility));
+
+        // 시너지 어빌리티 UI 패널 활성화
+        if (synergyAbilityPanel != null)
+        {
+            synergyAbilityPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("AbilityManager: synergyAbilitiesPanel이 할당되지 않았습니다.");
+        }
     }
 
     private void ShuffleAbilities()
@@ -1040,30 +1105,12 @@ public class AbilityManager : MonoBehaviour
 
     private void HideAbilitySelectionPanel()
     {
-        if (abilitySelectionCanvasGroup != null)
-        {
-            abilitySelectionCanvasGroup.alpha = 0f;
-            abilitySelectionCanvasGroup.blocksRaycasts = false;
-            abilitySelectionCanvasGroup.interactable = false;
-        }
-        else if (abilitySelectionPanel != null)
-        {
             abilitySelectionPanel.SetActive(false);
-        }
     }
 
     private void ShowAbilitySelectionPanel()
     {
-        if (abilitySelectionCanvasGroup != null)
-        {
-            abilitySelectionCanvasGroup.alpha = 1f;
-            abilitySelectionCanvasGroup.blocksRaycasts = true;
-            abilitySelectionCanvasGroup.interactable = true;
-        }
-        else if (abilitySelectionPanel != null)
-        {
             abilitySelectionPanel.SetActive(true);
-        }
     }
 
     /// <summary>
