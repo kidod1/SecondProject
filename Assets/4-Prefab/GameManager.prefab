@@ -67,8 +67,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 369c5ea5c1a08014981808c907b55478, type: 3}
   - {fileID: 21300000, guid: 7c0c995a6abee454da20878e1d1455f5, type: 3}
   - {fileID: 21300000, guid: 1424719f7f2e17f48a70235832606144, type: 3}
-  - {fileID: 21300000, guid: c308acdb54139d941a7dc27e2b96c596, type: 3}
   - {fileID: 21300000, guid: e8a78babc23bf2741be1199f75c9e69f, type: 3}
+  - {fileID: 21300000, guid: c308acdb54139d941a7dc27e2b96c596, type: 3}
   scoreForMonsterKill: 10
   scoreForFloorClear: 100
   scoreForBossKill: 500
@@ -112,8 +112,10 @@ MonoBehaviour:
   playerAbilityManager: {fileID: 0}
   uiManager: {fileID: 0}
   highlightImage: {fileID: 0}
-  highlightEffectPrefab: {fileID: 7903745549271283525, guid: 783eabb3d55e33b468e622608fc8cc4b, type: 3}
   OnAbilitiesChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSynergyAbilityChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5628610526488224300

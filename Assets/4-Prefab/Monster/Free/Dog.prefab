@@ -65,7 +65,8 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials: []
+  m_Materials:
+  - {fileID: 2100000, guid: 625e426c2e69a4d468811f7fa90ab58d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -206,7 +207,7 @@ MonoBehaviour:
   abilityDeathEffectDuration: 1
   monsterInstantKillEffectPrefab: {fileID: 0}
   isElite: 0
-  isInCooldown: 0
+  isInCooldown: 1
   isInfected: 0
   damageArea: {fileID: 0}
   areaDamage: 10

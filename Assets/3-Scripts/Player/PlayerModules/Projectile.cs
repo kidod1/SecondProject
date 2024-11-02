@@ -5,14 +5,25 @@ public class Projectile : MonoBehaviour
     private Player playerInstance;
     private Vector2 direction;
     private float damageMultiplier = 1.0f;
+
     [SerializeField]
     protected PlayerData stat;
+
     private bool isCloneProjectile = false;
     protected Rigidbody2D rb;
+
     private float lifetime;
+
     private static Transform projectileParent;
-    public int projectileRealDamage;
-    public int projectileCurrentDamage = 0; // 추가: 현재 데미지
+
+    [SerializeField]
+    private int projectileRealDamage;
+    public int projectileCurrentDamage = 0; // 현재 데미지
+
+    [SerializeField]
+    private float customSpeed = 10f; // 커스텀 속도
+    [SerializeField]
+    private float customLifetime = 2f; // 커스텀 생명 시간
 
     private void Awake()
     {
@@ -35,9 +46,12 @@ public class Projectile : MonoBehaviour
     {
         if (stat != null)
         {
-            lifetime = stat.currentProjectileRange;
+            // 생명 시간을 커스텀 값으로 설정
+            lifetime = customLifetime;
             Invoke(nameof(Deactivate), lifetime);
-            rb.velocity = direction * stat.currentProjectileSpeed;
+
+            // 속도를 커스텀 값으로 설정
+            rb.velocity = direction * customSpeed;
         }
     }
 
@@ -58,7 +72,7 @@ public class Projectile : MonoBehaviour
         direction = newDirection.normalized;
         if (rb != null)
         {
-            rb.velocity = direction * stat.currentProjectileSpeed * speedMultiplier;
+            rb.velocity = direction * customSpeed * speedMultiplier;
         }
     }
 
@@ -70,13 +84,19 @@ public class Projectile : MonoBehaviour
     /// <param name="isClone">클론 프로젝트일 여부</param>
     /// <param name="multiplier">데미지 배율</param>
     /// <param name="damage">프로젝트일의 데미지</param>
-    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f, int damage = 10)
+    /// <param name="speed">프로젝트일의 속도</param>
+    /// <param name="lifetime">프로젝트일의 생명 시간</param>
+    public void Initialize(PlayerData playerStat, Player playerInstance, bool isClone = false, float multiplier = 1.0f, int damage = 10, float speed = 10f, float lifetime = 2f)
     {
         stat = playerStat;
         this.playerInstance = playerInstance;
         isCloneProjectile = isClone;
         damageMultiplier = multiplier;
         projectileCurrentDamage = damage; // 데미지 설정
+
+        // 커스텀 속도와 생명 시간 설정
+        customSpeed = speed;
+        customLifetime = lifetime;
 
         if (rb != null)
         {

@@ -78,6 +78,6 @@ public class PlayerStatsUI : MonoBehaviour
             playerDefenseText.text = $"방어력: {player.stat.currentDefense}";
 
         if (playerShootCooldownText != null)
-            playerShootCooldownText.text = $"공격 속도: {player.stat.currentShootCooldown:F2}";
+            playerShootCooldownText.text = $"공격 속도: {player.stat.currentAttackSpeed:F2}";
     }
 }

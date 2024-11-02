@@ -97,9 +97,9 @@ GameObject:
   - component: {fileID: 3672172053943970748}
   - component: {fileID: 8315317712296791194}
   - component: {fileID: 2336044391891397573}
+  - component: {fileID: 3578104529259084725}
   - component: {fileID: 7908845165281568376}
   - component: {fileID: -5367473846436678839}
-  - component: {fileID: 4186418746195398376}
   m_Layer: 12
   m_Name: SlothDog
   m_TagString: Monster
@@ -227,7 +227,7 @@ Rigidbody2D:
   m_LinearDrag: 10
   m_AngularDrag: 0
   m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: e1e29a12706160c45a518168ee9ba766, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -238,6 +238,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!58 &3578104529259084725
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073249613970012703}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.05055952, y: 1.3950033}
+  serializedVersion: 2
+  m_Radius: 2.8154788
 --- !u!114 &7908845165281568376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,8 +286,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: af5aece43d137e64c89499d91461f0af, type: 2}
-  invincibilityDuration: 0.5
   blinkInterval: 0.05
+  blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
   abilityDeathEffectDuration: 1
@@ -290,41 +325,6 @@ MonoBehaviour:
   rigidBody2D: {fileID: 2336044391891397573}
   rigidBody: {fileID: 0}
   animationTrackFlags: -1
---- !u!70 &4186418746195398376
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6073249613970012703}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.050559517, y: 1.3950032}
-  m_Size: {x: 5.630957, y: 2.7906902}
-  m_Direction: 0
 --- !u!1 &7699502011843278974
 GameObject:
   m_ObjectHideFlags: 0

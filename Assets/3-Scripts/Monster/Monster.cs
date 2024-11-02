@@ -1,7 +1,6 @@
 using Spine.Unity;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IMonsterState
@@ -14,46 +13,63 @@ public interface IMonsterState
 public abstract class Monster : MonoBehaviour
 {
     [Header("몬스터 설정")]
+    [Tooltip("몬스터의 기본 스탯 데이터를 저장합니다.")]
     public MonsterData monsterBaseStat;
+
     protected Rigidbody2D rb;
     protected int currentHP;
     protected MeshRenderer meshRenderer;
-    private Color originalColor; // 몬스터의 원래 색상
-    // 무적 관련 필드 제거
-    // protected bool isInvincible = false;
+    private Color originalColor;
     protected bool isDead = false;
     public bool IsDead => isDead;
 
     protected internal Player player;
 
-    // 무적 관련 직렬화 필드 제거
-    // [SerializeField]
-    // private float invincibilityDuration = 0.5f;
-
-    // 빨간색 깜빡임을 위한 기존 blinkInterval 유지
+    [Header("넉백 설정")]
     [SerializeField]
+    [Tooltip("넉백의 최소 힘을 설정합니다.")]
+    private float minKnockbackForce = 5f;
+
+    [SerializeField]
+    [Tooltip("넉백의 최대 힘을 설정합니다.")]
+    private float maxKnockbackForce = 15f;
+
+    [SerializeField]
+    [Tooltip("깜빡임 간격을 설정합니다.")]
     private float blinkInterval = 0.1f;
 
-    // 빨간색 깜빡임 지속 시간을 위한 새로운 필드 추가
     [SerializeField]
+    [Tooltip("깜빡임 지속 시간을 설정합니다.")]
     private float blinkDuration = 0.5f;
 
+    [Tooltip("몬스터 사망 시 생성될 이펙트 프리팹입니다.")]
     public GameObject monsterDeathEffectPrefab;
+
     [SerializeField]
+    [Tooltip("사망 이펙트의 지속 시간을 설정합니다.")]
     private float deathEffectDuration = 0.2f;
+
     [SerializeField]
+    [Tooltip("능력에 의한 사망 이펙트의 지속 시간을 설정합니다.")]
     private float abilityDeathEffectDuration = 1f;
+
     [SerializeField]
+    [Tooltip("즉사 이펙트 프리팹입니다.")]
     private GameObject monsterInstantKillEffectPrefab;
 
+    [Tooltip("몬스터가 엘리트인지 여부를 나타냅니다.")]
     public bool isElite = false;
+
+    [Tooltip("쿨다운 상태인지 여부를 나타냅니다.")]
     public bool isInCooldown = false;
+
+    [Tooltip("감염 상태인지 여부를 나타냅니다.")]
     public bool isInfected = false;
 
     private string damageTextPrefabPath = "DamageTextPrefab";
     protected SkeletonAnimation skeletonAnimations;
 
-    // 베팅 능력에 의해 한 번만 발동하도록 관리하는 새로운 필드
+    [Tooltip("베팅 능력에 의해 한 번만 발동하도록 관리합니다.")]
     public bool HasBeenHitByBetting { get; set; } = false;
 
     public IMonsterState currentState;
@@ -62,20 +78,24 @@ public abstract class Monster : MonoBehaviour
     public IMonsterState attackState;
     public IMonsterState cooldownState;
 
+    [Tooltip("데미지 영역 오브젝트입니다.")]
     public GameObject damageArea;
+
     private Collider2D areaCollider;
     private SpriteRenderer areaSpriteRenderer;
 
     [SerializeField]
+    [Tooltip("영역 데미지를 설정합니다.")]
     private int areaDamage = 10;
+
     [SerializeField]
+    [Tooltip("데미지 간격을 설정합니다.")]
     private float damageInterval = 1f;
 
     private bool isStunned = false;
     public bool IsStunned => isStunned;
     private float stunEndTime;
 
-    // 원래의 isKinematic 상태를 저장하기 위한 필드 추가
     private bool originalIsKinematic;
 
     [Header("스턴 효과")]
@@ -83,17 +103,20 @@ public abstract class Monster : MonoBehaviour
     public GameObject stunEffectPrefab;
     private GameObject currentStunEffect;
 
-    // 즉사 여부를 추적하기 위한 변수 추가
+    [Tooltip("즉사 여부를 추적합니다.")]
     public bool isInstantKilled = false;
 
     private static Transform experienceItemsParent;
+
+    /// <summary>
+    /// 몬스터의 컴포넌트를 초기화하고 초기 상태를 설정합니다.
+    /// </summary>
     protected virtual void Start()
     {
         skeletonAnimations = GetComponent<SkeletonAnimation>();
         currentHP = monsterBaseStat.maxHP;
         meshRenderer = GetComponent<MeshRenderer>();
 
-        // 메테리얼 인스턴스화 및 원래 색상 저장
         if (meshRenderer != null)
         {
             meshRenderer.material = new Material(meshRenderer.material);
@@ -146,6 +169,9 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 매 프레임마다 몬스터를 업데이트하고 플레이어 참조를 확인합니다.
+    /// </summary>
     protected virtual void Update()
     {
         if (player == null)
@@ -161,8 +187,15 @@ public abstract class Monster : MonoBehaviour
         currentState?.UpdateState();
     }
 
+    /// <summary>
+    /// 몬스터의 상태를 초기화합니다. 서브클래스에서 구현해야 합니다.
+    /// </summary>
     protected abstract void InitializeStates();
 
+    /// <summary>
+    /// 지정된 시간 동안 몬스터를 기절시킵니다.
+    /// </summary>
+    /// <param name="duration">기절 지속 시간(초)</param>
     public virtual void Stun(float duration)
     {
         if (!isStunned)
@@ -170,49 +203,49 @@ public abstract class Monster : MonoBehaviour
             isStunned = true;
             stunEndTime = Time.time + duration;
 
-            // 애니메이션 정지
             if (skeletonAnimations != null)
             {
                 skeletonAnimations.timeScale = 0f;
             }
 
-            // Rigidbody 멈춤
             if (rb != null)
             {
                 rb.velocity = Vector2.zero;
-                // 원래의 isKinematic 상태 저장
                 originalIsKinematic = rb.isKinematic;
                 rb.isKinematic = true;
             }
 
-            // 스턴 이펙트 표시
             ShowStunEffect();
 
             StartCoroutine(StunCoroutine(duration));
         }
     }
 
+    /// <summary>
+    /// 기절 지속 시간과 회복을 처리하는 코루틴입니다.
+    /// </summary>
+    /// <param name="duration">기절 지속 시간(초)</param>
     private IEnumerator StunCoroutine(float duration)
     {
         yield return new WaitForSeconds(duration);
         isStunned = false;
 
-        // 애니메이션 재개
         if (skeletonAnimations != null)
         {
             skeletonAnimations.timeScale = 1f;
         }
 
-        // Rigidbody 원래 상태로 복원
         if (rb != null)
         {
             rb.isKinematic = originalIsKinematic;
         }
 
-        // 스턴 이펙트 제거
         RemoveStunEffect();
     }
 
+    /// <summary>
+    /// 몬스터 위에 기절 이펙트를 표시합니다.
+    /// </summary>
     private void ShowStunEffect()
     {
         if (stunEffectPrefab == null)
@@ -221,11 +254,13 @@ public abstract class Monster : MonoBehaviour
             return;
         }
 
-        // 스턴 이펙트를 몬스터의 머리 위에 위치시킵니다.
-        Vector3 stunPosition = transform.position + new Vector3(0, 1.0f, 0); // 머리 위로 1.0f 오프셋
+        Vector3 stunPosition = transform.position + new Vector3(0, 1.0f, 0);
         currentStunEffect = Instantiate(stunEffectPrefab, stunPosition, Quaternion.identity, transform);
     }
 
+    /// <summary>
+    /// 몬스터에서 기절 이펙트를 제거합니다.
+    /// </summary>
     private void RemoveStunEffect()
     {
         if (currentStunEffect != null)
@@ -234,6 +269,10 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 몬스터를 새로운 상태로 전환합니다.
+    /// </summary>
+    /// <param name="newState">전환할 새로운 상태</param>
     public void TransitionToState(IMonsterState newState)
     {
         if (isInCooldown && newState != cooldownState)
@@ -246,6 +285,11 @@ public abstract class Monster : MonoBehaviour
         currentState.EnterState();
     }
 
+    /// <summary>
+    /// 플레이어가 지정된 범위 내에 있는지 확인합니다.
+    /// </summary>
+    /// <param name="range">확인할 범위</param>
+    /// <returns>플레이어가 범위 내에 있으면 true를 반환</returns>
     public bool IsPlayerInRange(float range)
     {
         if (player == null)
@@ -257,12 +301,22 @@ public abstract class Monster : MonoBehaviour
         return Vector2.Distance(transform.position, player.transform.position) <= range;
     }
 
+    /// <summary>
+    /// 몬스터를 지정된 목표 위치로 이동시킵니다.
+    /// </summary>
+    /// <param name="target">이동할 목표 위치</param>
     public void MoveTowards(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;
         transform.position += direction * monsterBaseStat.monsterSpeed * Time.deltaTime;
     }
 
+    /// <summary>
+    /// 몬스터에게 데미지를 적용하고 죽음과 넉백을 처리합니다.
+    /// </summary>
+    /// <param name="damage">적용할 데미지 양</param>
+    /// <param name="damageSourcePosition">데미지가 발생한 위치</param>
+    /// <param name="deathAbilityKill">데미지가 죽음 능력에 의한 것인지 여부</param>
     public virtual void TakeDamage(int damage, Vector3 damageSourcePosition, bool deathAbilityKill = false)
     {
         if (isDead)
@@ -289,32 +343,38 @@ public abstract class Monster : MonoBehaviour
         }
         else
         {
-            // 무적 없이 빨간색 깜빡임 시작
             StartCoroutine(BlinkRedCoroutine());
         }
     }
 
+    /// <summary>
+    /// 몬스터 위에 데미지 텍스트를 표시합니다.
+    /// </summary>
+    /// <param name="damage">표시할 데미지 양</param>
     public void ShowDamageText(int damage)
     {
-        // 데미지 텍스트를 표시하기 위한 코루틴 시작
         StartCoroutine(ShowDamageTextCoroutine(damage));
     }
 
+    /// <summary>
+    /// 데미지 텍스트의 표시 및 제거를 처리하는 코루틴입니다.
+    /// </summary>
+    /// <param name="damage">표시할 데미지 양</param>
+    /// <returns>코루틴용 IEnumerator</returns>
     private IEnumerator ShowDamageTextCoroutine(int damage)
     {
-        // 데미지 양에 따라 글자 크기 및 추가 시간 설정
         int fontSize;
         float additionalTime = 0f;
 
         if (damage >= 100)
         {
             fontSize = 40;
-            additionalTime = 2f; // +2초
+            additionalTime = 2f;
         }
         else if (damage >= 50)
         {
             fontSize = 32;
-            additionalTime = 0.5f; // +0.5초
+            additionalTime = 0.5f;
         }
         else
         {
@@ -322,7 +382,6 @@ public abstract class Monster : MonoBehaviour
             additionalTime = 0f;
         }
 
-        // DamageText 프리팹 로드
         GameObject damageTextPrefab = Resources.Load<GameObject>(damageTextPrefabPath);
         if (damageTextPrefab == null)
         {
@@ -330,7 +389,6 @@ public abstract class Monster : MonoBehaviour
             yield break;
         }
 
-        // DamageCanvas 태그로 캔버스 찾기
         GameObject canvasObject = GameObject.FindGameObjectWithTag("DamageCanvas");
         if (canvasObject == null)
         {
@@ -345,7 +403,6 @@ public abstract class Monster : MonoBehaviour
             yield break;
         }
 
-        // UI 카메라 가져오기
         Camera uiCamera = screenCanvas.worldCamera;
         if (uiCamera == null)
         {
@@ -358,28 +415,23 @@ public abstract class Monster : MonoBehaviour
             yield break;
         }
 
-        // 데미지 텍스트 위치 설정 (몬스터 머리 위)
-        float monsterHeightOffset = 1.0f; // 몬스터 머리 위로 얼마나 띄울지 조정 가능한 값
+        float monsterHeightOffset = 1.0f;
         Vector3 headPosition = transform.position + new Vector3(0, monsterHeightOffset, 0);
         Vector3 screenPosition = uiCamera.WorldToScreenPoint(headPosition);
 
-        // 스크린 좌표를 캔버스 로컬 좌표로 변환
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             screenCanvas.transform as RectTransform,
             screenPosition,
             uiCamera,
             out Vector2 localPoint);
 
-        // 데미지 텍스트 인스턴스 생성
         GameObject damageTextInstance = Instantiate(damageTextPrefab, screenCanvas.transform);
         RectTransform rectTransform = damageTextInstance.GetComponent<RectTransform>();
         rectTransform.localPosition = localPoint;
 
-        // DamageText 컴포넌트 설정
         DamageText damageText = damageTextInstance.GetComponent<DamageText>();
         if (damageText != null)
         {
-            // 폰트 로드
             TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Maplestory Light SDF");
             if (font == null)
             {
@@ -387,8 +439,6 @@ public abstract class Monster : MonoBehaviour
             }
 
             Color color = Color.white;
-
-            // 텍스트 설정
             damageText.SetText(damage.ToString(), font, fontSize, color);
         }
         else
@@ -396,22 +446,22 @@ public abstract class Monster : MonoBehaviour
             Debug.LogError("DamageText 컴포넌트를 찾을 수 없습니다.");
         }
 
-        // 텍스트 제거 시간 계산
         float totalDuration = 1f + additionalTime;
 
-        // 텍스트가 사라지도록 대기 (기존 시간 + 추가 시간)
         yield return new WaitForSeconds(totalDuration);
         Destroy(damageTextInstance);
     }
 
+    /// <summary>
+    /// 데미지 원점에서 멀어지도록 몬스터에게 넉백을 적용합니다.
+    /// </summary>
+    /// <param name="damageSourcePosition">데미지가 발생한 위치</param>
     private void ApplyKnockback(Vector3 damageSourcePosition)
     {
         if (rb != null)
         {
-            // 노크백 방향 계산 (몬스터 위치 - 공격자 위치)
             Vector2 knockbackDirection = (transform.position - damageSourcePosition).normalized;
-
-            float knockbackForce = 10f;
+            float knockbackForce = Random.Range(minKnockbackForce, maxKnockbackForce);
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
         else
@@ -420,12 +470,23 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 몬스터의 공격 동작을 수행합니다. 서브클래스에서 구현해야 합니다.
+    /// </summary>
     public abstract void Attack();
+
+    /// <summary>
+    /// 몬스터의 현재 체력을 가져옵니다.
+    /// </summary>
+    /// <returns>현재 체력 값</returns>
     public int GetCurrentHP()
     {
         return currentHP;
     }
 
+    /// <summary>
+    /// 몬스터의 죽음을 처리하고 이펙트, 경험치 드롭, 오브젝트 파괴를 수행합니다.
+    /// </summary>
     protected virtual void Die()
     {
         if (isDead) return;
@@ -439,13 +500,12 @@ public abstract class Monster : MonoBehaviour
         }
         else
         {
-            gameManager.AddMonsterKill(); // 추후 엘리트 몬스터로 변경
+            gameManager.AddMonsterKill();
         }
         if (player != null)
         {
             player.KillMonster();
 
-            // 능력 매니저에서 모든 능력을 가져옵니다.
             PlayerAbilityManager abilityManager = player.GetComponent<PlayerAbilityManager>();
             if (abilityManager != null)
             {
@@ -458,14 +518,12 @@ public abstract class Monster : MonoBehaviour
             SpawnParasite();
         }
 
-        // 죽음 이펙트 생성
         if (monsterDeathEffectPrefab != null)
         {
             GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);
             Destroy(deathEffect, deathEffectDuration);
         }
 
-        // 즉사 이펙트 생성 (즉사일 경우)
         if (isInstantKilled && monsterInstantKillEffectPrefab != null)
         {
             GameObject instantKillEffect = Instantiate(monsterInstantKillEffectPrefab, transform.position, Quaternion.identity);
@@ -477,6 +535,9 @@ public abstract class Monster : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// 몬스터가 감염되었을 경우 죽을 때 기생충을 생성합니다.
+    /// </summary>
     private void SpawnParasite()
     {
         GameObject parasitePrefab = Resources.Load<GameObject>("ParasitePrefab");
@@ -490,48 +551,10 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-    // 무적 코루틴 제거
-    /*
-    private IEnumerator InvincibilityCoroutine()
-    {
-        isInvincible = true;
-
-        float elapsed = 0f;
-        bool isRed = false; // 색상 전환을 위한 플래그
-
-        while (elapsed < invincibilityDuration)
-        {
-            if (meshRenderer != null && meshRenderer.material != null)
-            {
-                if (isRed)
-                {
-                    // 원래 색상으로 변경
-                    meshRenderer.material.color = originalColor;
-                }
-                else
-                {
-                    // 빨간색으로 변경
-                    meshRenderer.material.color = Color.red;
-                }
-
-                isRed = !isRed; // 플래그 전환
-            }
-
-            yield return new WaitForSeconds(blinkInterval);
-            elapsed += blinkInterval;
-        }
-
-        // 최종적으로 원래 색상으로 복원
-        if (meshRenderer != null && meshRenderer.material != null)
-        {
-            meshRenderer.material.color = originalColor;
-        }
-
-        isInvincible = false;
-    }
-    */
-
-    // 무적 없이 빨간색 깜빡임을 위한 새로운 코루틴 추가
+    /// <summary>
+    /// 몬스터가 데미지를 받을 때 붉게 깜빡이는 효과를 처리하는 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴용 IEnumerator</returns>
     private IEnumerator BlinkRedCoroutine()
     {
         float elapsed = 0f;
@@ -549,13 +572,15 @@ public abstract class Monster : MonoBehaviour
             elapsed += blinkInterval;
         }
 
-        // 최종적으로 원래 색상으로 복원
         if (meshRenderer != null && meshRenderer.material != null)
         {
             meshRenderer.material.color = originalColor;
         }
     }
 
+    /// <summary>
+    /// 경험치 아이템 부모 트랜스폼을 초기화합니다.
+    /// </summary>
     private void InitializeExperienceItemsParent()
     {
         if (experienceItemsParent == null)
@@ -569,6 +594,9 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 몬스터가 죽을 때 경험치 아이템을 드롭합니다.
+    /// </summary>
     protected virtual void DropExperienceItem()
     {
         if (player != null && monsterBaseStat != null)
@@ -601,7 +629,6 @@ public abstract class Monster : MonoBehaviour
                     InitializeExperienceItemsParent();
                 }
 
-                // 경험치 아이템 생성 시 부모 설정
                 GameObject expItem = Instantiate(experienceItemPrefab, transform.position, Quaternion.identity, experienceItemsParent);
                 ExperienceItem expScript = expItem.GetComponent<ExperienceItem>();
                 if (expScript != null)
@@ -616,7 +643,11 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-    virtual protected void OnCollisionEnter2D(Collision2D collision)
+    /// <summary>
+    /// 몬스터가 다른 콜라이더와 충돌할 때 호출됩니다.
+    /// </summary>
+    /// <param name="collision">충돌 정보</param>
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -628,6 +659,10 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 몬스터가 엘리트일 경우 영역 데미지를 처리하는 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴용 IEnumerator</returns>
     private IEnumerator AreaDamageCoroutine()
     {
         while (!isDead)
@@ -644,6 +679,10 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어가 영역 데미지를 받을 때 영역 스프라이트를 깜빡이는 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴용 IEnumerator</returns>
     private IEnumerator BlinkAreaSprite()
     {
         if (areaSpriteRenderer == null) yield break;

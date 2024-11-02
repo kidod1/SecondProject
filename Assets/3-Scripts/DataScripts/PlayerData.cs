@@ -18,6 +18,8 @@ public class PlayerData : ScriptableObject
 {
     // 기본 스탯
     [Header("Default Stats")]
+    public int 기획자_조정용_공격력 = 10;
+    public float 기획자_조정용_공격속도 = 2;
     public float defaultPlayerSpeed = 5f;
     public int defaultPlayerDamage = 10;
     public float defaultProjectileSpeed = 10f;
@@ -25,13 +27,13 @@ public class PlayerData : ScriptableObject
     public int defaultProjectileType = 0;
     public int defaultMaxHP = 100;
     public int defaultShield = 0;
-    public float defaultShootCooldown = 0.5f;
+    public float defaultAttackSpeed = 1.0f;
     public int defaultDefense = 0;
 
     [SerializeField]
     private float defaultExperienceMultiplier = 1.0f;
 
-    // 현재 스탯 (프라이빗 필드)
+    // 현재 스탯
     [Header("Current Stats")]
     [SerializeField]
     private float _currentPlayerSpeed;
@@ -48,8 +50,6 @@ public class PlayerData : ScriptableObject
     [SerializeField]
     private int _currentShield;
     [SerializeField]
-    private float _currentShootCooldown;
-    [SerializeField]
     private int _currentDefense;
     [SerializeField]
     private int _currentExperience;
@@ -59,6 +59,8 @@ public class PlayerData : ScriptableObject
     private int _currentCurrency;
     [SerializeField]
     private int _currentLevel;
+    [SerializeField]
+    private float _currentAttackSpeed;
 
     [Tooltip("경험치 테이블")]
     public int[] experienceThresholds = { 100, 200, 400, 800, 1600 };
@@ -66,12 +68,6 @@ public class PlayerData : ScriptableObject
     [Tooltip("경험치 획득량 배수 (기본값 1.0 = 100%)")]
     [SerializeField]
     private float _experienceMultiplier;
-
-    [Header("Reverse Attack Stats")]
-    [Tooltip("현재 반전 공격 데미지 퍼센트 (0.0f ~ 1.0f)")]
-    [Range(0f, 1.0f)]
-    [SerializeField]
-    private float _reverseAttackDamagePercentage = 1.0f; // 기본값 100%
 
     // 버프 관리용 딕셔너리
     private Dictionary<string, float> attackDamageBuffs = new Dictionary<string, float>();
@@ -86,20 +82,23 @@ public class PlayerData : ScriptableObject
     /// </summary>
     public void InitializeStats()
     {
+        defaultPlayerDamage = 기획자_조정용_공격력;
+        defaultAttackSpeed = 기획자_조정용_공격속도;
+
         currentPlayerSpeed = defaultPlayerSpeed;
-        defaultPlayerDamage = 10;
         currentPlayerDamage = defaultPlayerDamage;
         currentProjectileSpeed = defaultProjectileSpeed;
         currentProjectileRange = defaultProjectileRange;
         currentProjectileType = defaultProjectileType;
-        currentShootCooldown = defaultShootCooldown;
         currentDefense = defaultDefense;
         currentMaxHP = defaultMaxHP;
-        experienceMultiplier = defaultExperienceMultiplier;
         currentHP = currentMaxHP;
         currentExperience = 0;
         currentLevel = 1;
-        reverseAttackDamagePercentage = 1.0f; // 초기화
+        currentCurrency = 0;
+        currentShield = defaultShield;
+
+        currentAttackSpeed = defaultAttackSpeed;
 
         // 버프 딕셔너리 초기화
         attackDamageBuffs.Clear();
@@ -201,14 +200,14 @@ public class PlayerData : ScriptableObject
         }
     }
 
-    public float currentShootCooldown
+    public float currentAttackSpeed
     {
-        get => _currentShootCooldown;
+        get => _currentAttackSpeed;
         set
         {
-            if (Mathf.Abs(_currentShootCooldown - value) > 0.0001f)
+            if (Mathf.Abs(_currentAttackSpeed - value) > 0.0001f)
             {
-                _currentShootCooldown = value;
+                _currentAttackSpeed = value;
                 OnStatsChanged?.Invoke();
             }
         }
@@ -279,19 +278,6 @@ public class PlayerData : ScriptableObject
         }
     }
 
-    public float reverseAttackDamagePercentage
-    {
-        get => _reverseAttackDamagePercentage;
-        set
-        {
-            if (Mathf.Abs(_reverseAttackDamagePercentage - value) > 0.0001f)
-            {
-                _reverseAttackDamagePercentage = value;
-                OnStatsChanged?.Invoke();
-            }
-        }
-    }
-
     public float experienceMultiplier
     {
         get => _experienceMultiplier;
@@ -318,21 +304,6 @@ public class PlayerData : ScriptableObject
             return Mathf.RoundToInt(defaultPlayerDamage + totalBuff);
         }
     }
-
-    public float buffedShootCooldown
-    {
-        get
-        {
-            float totalBuff = 0f;
-            foreach (var buff in attackSpeedBuffs.Values)
-            {
-                totalBuff += buff;
-            }
-            float newCooldown = defaultShootCooldown - totalBuff;
-            return Mathf.Max(newCooldown, 0.1f); // 최소 쿨다운 제한
-        }
-    }
-
     public float buffedPlayerSpeed
     {
         get
@@ -357,7 +328,7 @@ public class PlayerData : ScriptableObject
                 attackDamageBuffs[abilityName] = value;
                 break;
             case BuffType.AttackSpeed:
-                attackSpeedBuffs[abilityName] = value;
+                currentAttackSpeed += value;
                 break;
             case BuffType.MovementSpeed:
                 movementSpeedBuffs[abilityName] = value;
@@ -365,11 +336,7 @@ public class PlayerData : ScriptableObject
         }
         OnStatsChanged?.Invoke();
     }
-
-    /// <summary>
-    /// 버프를 제거합니다.
-    /// </summary>
-    public void RemoveBuff(string abilityName, BuffType buffType)
+    public void RemoveBuff(string abilityName, BuffType buffType, float value = 0f)
     {
         switch (buffType)
         {
@@ -377,7 +344,7 @@ public class PlayerData : ScriptableObject
                 attackDamageBuffs.Remove(abilityName);
                 break;
             case BuffType.AttackSpeed:
-                attackSpeedBuffs.Remove(abilityName);
+                currentAttackSpeed -= value;
                 break;
             case BuffType.MovementSpeed:
                 movementSpeedBuffs.Remove(abilityName);
@@ -385,7 +352,6 @@ public class PlayerData : ScriptableObject
         }
         OnStatsChanged?.Invoke();
     }
-
     /// <summary>
     /// 데미지를 증가시킵니다.
     /// </summary>

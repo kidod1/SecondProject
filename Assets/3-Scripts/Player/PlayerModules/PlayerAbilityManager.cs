@@ -83,8 +83,6 @@ public class PlayerAbilityManager : MonoBehaviour
                 Debug.LogWarning($"Duplicate synergy category detected: {synergyCategories[i]}. Skipping.");
             }
         }
-
-        Debug.Log("Synergy category to sprite mapping initialized.");
     }
 
     private void OnDisable()
@@ -169,7 +167,6 @@ public class PlayerAbilityManager : MonoBehaviour
             if (resultImages[imageIndex] != null)
             {
                 resultImages[imageIndex].SetActive(true);
-                Debug.Log($"Result Image {imageIndex + 1} 활성화됨.");
 
                 // **레벨 텍스트 설정: "Lv " 접두사 추가**
                 if (levelTexts != null && imageIndex < levelTexts.Length)
@@ -177,7 +174,6 @@ public class PlayerAbilityManager : MonoBehaviour
                     if (levelTexts[imageIndex] != null)
                     {
                         levelTexts[imageIndex].text = $"Lv {ability.currentLevel}";
-                        Debug.Log($"Result Image {imageIndex + 1}의 레벨 텍스트가 'Lv {ability.currentLevel}'으로 설정됨.");
                     }
                     else
                     {

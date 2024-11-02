@@ -5,20 +5,19 @@ using UnityEngine;
 public class TooMuchWork : Ability
 {
     [Tooltip("레벨별 최대 공격 속도 배율")]
-    public float[] maxAttackSpeedMultipliers = { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f }; // 레벨별 최대 공격 속도 배율 배열
+    public float[] maxAttackSpeedMultipliers = { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f };
 
     [Tooltip("레벨별 최대 공격 속도에 도달하는 시간 (초)")]
-    public float[] baseTimeToMaxSpeedLevels = { 5.0f, 4.5f, 4.0f, 3.5f, 3.0f }; // 레벨별 최대 속도 도달 시간 배열
+    public float[] baseTimeToMaxSpeedLevels = { 5.0f, 4.5f, 4.0f, 3.5f, 3.0f };
 
     [Tooltip("레벨별 과열 지속 시간 (초)")]
-    public float[] overheatDurationsLevels = { 5.0f, 4.5f, 4.0f, 3.5f, 3.0f }; // 레벨별 과열 지속 시간 배열
-
-    private const float minAttackCooldown = 0.15f; // 최소 공격 속도 (쿨다운)
+    public float[] overheatDurationsLevels = { 5.0f, 4.5f, 4.0f, 3.5f, 3.0f };
 
     private Coroutine overheatCoroutine;
     private Coroutine attackSpeedCoroutine;
     private Player playerInstance;
     private bool isOverheated = false;
+    private bool isListenerRegistered = false;
 
     // 현재 레벨에 따른 변수들
     private float maxAttackSpeedMultiplier;
@@ -27,67 +26,64 @@ public class TooMuchWork : Ability
 
     public override void Apply(Player player)
     {
+        Debug.Log(currentLevel);
         playerInstance = player;
 
         if (playerInstance == null)
         {
             return;
         }
-
-        if (currentLevel == 0)
-        {
             player.OnShoot.AddListener(HandleShooting);
-            player.OnShootCanceled.AddListener(HandleShootCanceled); // 리스너 추가
-        }
-
+            player.OnShootCanceled.AddListener(HandleShootCanceled);
+            isListenerRegistered = true;
         ApplyLevelEffects();
     }
 
+
     private void ApplyLevelEffects()
     {
-        if (currentLevel < maxAttackSpeedMultipliers.Length)
+        int levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length);
+        if (currentLevel == 0)
         {
-            maxAttackSpeedMultiplier = maxAttackSpeedMultipliers[currentLevel];
-            baseTimeToMaxSpeed = baseTimeToMaxSpeedLevels[currentLevel];
-            overheatDuration = overheatDurationsLevels[currentLevel];
+            levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length);
         }
-        else
-        {
-            maxAttackSpeedMultiplier = maxAttackSpeedMultipliers[maxAttackSpeedMultipliers.Length - 1];
-            baseTimeToMaxSpeed = baseTimeToMaxSpeedLevels[baseTimeToMaxSpeedLevels.Length - 1];
-            overheatDuration = overheatDurationsLevels[overheatDurationsLevels.Length - 1];
-        }
+
+        maxAttackSpeedMultiplier = maxAttackSpeedMultipliers[levelIndex];
+        baseTimeToMaxSpeed = baseTimeToMaxSpeedLevels[levelIndex];
+        overheatDuration = overheatDurationsLevels[levelIndex];
     }
 
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel - 1)
+        if (currentLevel < maxLevel)
         {
-            currentLevel++;
             ApplyLevelEffects();
         }
     }
 
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel + 1 < maxAttackSpeedMultipliers.Length)
+        int levelIndex = currentLevel; // 다음 레벨을 미리 보기 위해 currentLevel 사용
+
+        if (levelIndex < maxAttackSpeedMultipliers.Length)
         {
-            return Mathf.RoundToInt(maxAttackSpeedMultipliers[currentLevel + 1] * 100); // 퍼센트로 변환
+            return Mathf.RoundToInt(maxAttackSpeedMultipliers[levelIndex] * 100); // 퍼센트로 변환
         }
         return 0;
     }
 
     private void HandleShooting(Vector2 direction, int prefabIndex, GameObject projectile)
     {
+        Debug.Log("HandleShooting called.");
+
         if (isOverheated || playerInstance == null) return;
 
-        if (attackSpeedCoroutine != null)
+        if (attackSpeedCoroutine == null)
         {
-            playerInstance.StopCoroutine(attackSpeedCoroutine);
+            attackSpeedCoroutine = playerInstance.StartCoroutine(IncreaseAttackSpeed());
         }
-
-        attackSpeedCoroutine = playerInstance.StartCoroutine(IncreaseAttackSpeed());
     }
+
 
     private void HandleShootCanceled()
     {
@@ -99,7 +95,7 @@ public class TooMuchWork : Ability
 
         if (playerInstance != null)
         {
-            playerInstance.stat.currentShootCooldown = playerInstance.stat.defaultShootCooldown;
+            playerInstance.stat.currentAttackSpeed = playerInstance.stat.defaultAttackSpeed;
         }
     }
 
@@ -107,35 +103,55 @@ public class TooMuchWork : Ability
     {
         if (playerInstance == null)
         {
+            Debug.Log("IncreaseAttackSpeed: playerInstance is null, exiting coroutine.");
             yield break;
         }
 
+        Debug.Log("IncreaseAttackSpeed: Coroutine started.");
+
         float elapsedTime = 0f;
-        float originalCooldown = playerInstance.stat.currentShootCooldown;
+        float originalAttackSpeed = playerInstance.stat.defaultAttackSpeed;
+        float targetAttackSpeed = originalAttackSpeed * maxAttackSpeedMultiplier;
 
         while (elapsedTime < baseTimeToMaxSpeed)
         {
             if (!playerInstance.isShooting)
             {
-                playerInstance.stat.currentShootCooldown = originalCooldown;
+                Debug.Log("IncreaseAttackSpeed: isShooting is false, resetting attack speed and exiting coroutine.");
+                playerInstance.stat.currentAttackSpeed = originalAttackSpeed;
+                attackSpeedCoroutine = null;
                 yield break;
             }
 
-            elapsedTime += Time.unscaledDeltaTime;
-            float newCooldown = Mathf.Lerp(originalCooldown, originalCooldown / maxAttackSpeedMultiplier, elapsedTime / baseTimeToMaxSpeed);
-
-            if (newCooldown <= minAttackCooldown)
+            if (playerInstance.IsOverheated)
             {
-                playerInstance.stat.currentShootCooldown = minAttackCooldown;
-                TriggerOverheat();
+                Debug.Log("IncreaseAttackSpeed: isOverheated is true, exiting coroutine.");
+                attackSpeedCoroutine = null;
                 yield break;
             }
 
-            playerInstance.stat.currentShootCooldown = newCooldown;
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / baseTimeToMaxSpeed;
+            float newAttackSpeed = Mathf.Lerp(originalAttackSpeed, targetAttackSpeed, progress);
+
+            playerInstance.stat.currentAttackSpeed = newAttackSpeed;
+
+            Debug.Log($"IncreaseAttackSpeed: Updated attack speed to {newAttackSpeed}");
 
             yield return null;
         }
+
+        // 최대 공격 속도 도달
+        playerInstance.stat.currentAttackSpeed = targetAttackSpeed;
+        Debug.Log("IncreaseAttackSpeed: Reached max attack speed, triggering overheat.");
+
+        // 과열 상태 트리거
+        TriggerOverheat();
+
+        // 코루틴 참조 초기화
+        attackSpeedCoroutine = null;
     }
+
 
     private void TriggerOverheat()
     {
@@ -150,7 +166,6 @@ public class TooMuchWork : Ability
         }
         overheatCoroutine = playerInstance.StartCoroutine(Overheat());
     }
-
     private IEnumerator Overheat()
     {
         if (playerInstance == null)
@@ -158,22 +173,22 @@ public class TooMuchWork : Ability
             yield break;
         }
 
-        isOverheated = true;
-        playerInstance.stat.currentShootCooldown = Mathf.Infinity;
+        playerInstance.IsOverheated = true; // 과열 상태 시작
 
         yield return new WaitForSeconds(overheatDuration);
 
         if (playerInstance != null)
         {
-            isOverheated = false;
-            playerInstance.stat.currentShootCooldown = playerInstance.stat.defaultShootCooldown;
+            playerInstance.IsOverheated = false; // 과열 상태 종료
+            playerInstance.stat.currentAttackSpeed = playerInstance.stat.defaultAttackSpeed;
+
+            // 공격이 재개될 수 있도록 nextShootTime 재설정
+            playerInstance.ResetNextShootTime();
         }
     }
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         if (playerInstance != null)
         {
             if (overheatCoroutine != null)
@@ -187,25 +202,39 @@ public class TooMuchWork : Ability
                 attackSpeedCoroutine = null;
             }
 
-            playerInstance.stat.currentShootCooldown = playerInstance.stat.defaultShootCooldown;
-        }
+            playerInstance.stat.currentAttackSpeed = playerInstance.stat.defaultAttackSpeed;
 
+            // 이벤트 리스너 제거
+            if (isListenerRegistered)
+            {
+                playerInstance.OnShoot.RemoveListener(HandleShooting);
+                playerInstance.OnShootCanceled.RemoveListener(HandleShootCanceled);
+                isListenerRegistered = false;
+            }
+        }
+        currentLevel = 0;
         isOverheated = false;
     }
 
     public override string GetDescription()
     {
-        if (currentLevel < maxAttackSpeedMultipliers.Length && currentLevel >= 0)
+        int levelIndex = Mathf.Clamp(currentLevel - 1, 0, maxAttackSpeedMultipliers.Length - 1);
+
+        if (currentLevel <= maxAttackSpeedMultipliers.Length && currentLevel > 0)
         {
-            float maxAttackSpeedMultiplierPercent = maxAttackSpeedMultipliers[currentLevel] * 100f;
-            float baseTimeToMaxSpeedValue = baseTimeToMaxSpeedLevels[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초로 단축됩니다.";
+            float maxAttackSpeedMultiplierPercent = maxAttackSpeedMultipliers[levelIndex] * 100f;
+            float baseTimeToMaxSpeedValue = baseTimeToMaxSpeedLevels[levelIndex];
+            float overheatDurationValue = overheatDurationsLevels[levelIndex];
+
+            return $"{baseDescription}\nLv {currentLevel}: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초입니다. 최대 속도 도달 시 과열되어 {overheatDurationValue}초 동안 공격할 수 없습니다.";
         }
-        else if (currentLevel >= maxAttackSpeedMultipliers.Length)
+        else if (currentLevel > maxAttackSpeedMultipliers.Length)
         {
             float maxAttackSpeedMultiplierPercent = maxAttackSpeedMultipliers[maxAttackSpeedMultipliers.Length - 1] * 100f;
             float baseTimeToMaxSpeedValue = baseTimeToMaxSpeedLevels[baseTimeToMaxSpeedLevels.Length - 1];
-            return $"{baseDescription}\n최대 레벨 도달: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초로 단축됩니다.";
+            float overheatDurationValue = overheatDurationsLevels[overheatDurationsLevels.Length - 1];
+
+            return $"{baseDescription}\n최대 레벨 도달: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초입니다. 최대 속도 도달 시 과열되어 {overheatDurationValue}초 동안 공격할 수 없습니다.";
         }
         else
         {
