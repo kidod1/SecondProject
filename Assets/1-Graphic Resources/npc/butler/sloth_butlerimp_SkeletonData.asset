@@ -10,23 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
-  m_Name: start_stage_SkeletonData
+  m_Name: sloth_butlerimp_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: e4b4ee0c243c85d4d9e2cb797bd549ca, type: 2}
+  - {fileID: 11400000, guid: 6969d832fc8334448bcc3513cceea585, type: 2}
   scale: 0.01
-  skeletonJSON: {fileID: 4900000, guid: 600dd6f92ff40f84089e36b26449677c, type: 3}
+  skeletonJSON: {fileID: 4900000, guid: ab5d226f2e131dd44b20b2dc9ec656cf, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
-    requiresBlendModeMaterials: 1
+    requiresBlendModeMaterials: 0
     applyAdditiveMaterial: 1
     additiveMaterials: []
-    multiplyMaterials:
-    - pageName: start_stage.png
-      material: {fileID: 2100000, guid: 5ee6d2a0ea1e98643b4933e842b909d2, type: 2}
-    screenMaterials:
-    - pageName: start_stage.png
-      material: {fileID: 2100000, guid: 5c2cd7956f99fc647be680e84992af40, type: 2}
+    multiplyMaterials: []
+    screenMaterials: []
   skeletonDataModifiers: []
   fromAnimation: []
   toAnimation: []
