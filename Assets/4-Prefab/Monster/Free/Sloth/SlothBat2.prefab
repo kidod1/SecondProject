@@ -284,8 +284,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: dd21ae7f211c02b44966bb314186903a, type: 2}
-  invincibilityDuration: 0.5
+  minKnockbackForce: 5
+  maxKnockbackForce: 7
   blinkInterval: 0.05
+  blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
   abilityDeathEffectDuration: 1
@@ -300,6 +302,9 @@ MonoBehaviour:
   isInstantKilled: 0
   stat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
   idleAnimation: idle
+  prepareAnimation: 
+  dashAnimation: 
+  explodeAnimation: 
 --- !u!114 &-3774386995316860581
 MonoBehaviour:
   m_ObjectHideFlags: 0

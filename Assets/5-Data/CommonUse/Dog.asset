@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515e434963eab69418db322beeefb52d, type: 3}
   m_Name: Dog
   m_EditorClassIdentifier: 
-  monsterSpeed: 0.5
+  monsterSpeed: 1
   maxHP: 25
   contectDamage: 2
   attackDamage: 3
@@ -21,5 +21,5 @@ MonoBehaviour:
   attackRange: 0.5
   attackDelay: 2
   rewardCurrency: 0
-  highExperiencePoints: 0
-  highExperienceDropChance: 0
+  highExperiencePoints: 150
+  highExperienceDropChance: 0.25

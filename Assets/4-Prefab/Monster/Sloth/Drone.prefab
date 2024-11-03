@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5565013312634616435}
   - component: {fileID: 9205769033575302985}
-  - component: {fileID: 8078364925569947147}
   m_Layer: 11
   m_Name: Light 2D
   m_TagString: Untagged
@@ -83,22 +82,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!114 &8078364925569947147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3555997241131783870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf403e537fa739845b669c04cd6beb6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  light2D: {fileID: 9205769033575302985}
-  flickerDuration: 1
-  minIntensity: 0
-  maxIntensity: 0.15
 --- !u!1 &6430172859968878443
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +256,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -301,8 +284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: 42afc292bd0acef4698668ee73ca61e3, type: 2}
-  minKnockbackForce: 5
-  maxKnockbackForce: 15
+  minKnockbackForce: 2
+  maxKnockbackForce: 3
   blinkInterval: 0.05
   blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
