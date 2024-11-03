@@ -299,6 +299,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
+  minKnockbackForce: 5
+  maxKnockbackForce: 15
   blinkInterval: 0.05
   blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
@@ -315,3 +317,6 @@ MonoBehaviour:
   isInstantKilled: 0
   stat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
   idleAnimation: idle
+  prepareAnimation: idle
+  dashAnimation: idle
+  explodeAnimation: idle
