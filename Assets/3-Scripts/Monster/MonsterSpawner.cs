@@ -11,13 +11,14 @@ public class MonsterSpawner : MonoBehaviour
         public GameObject monsterPrefab; // 스폰할 몬스터 프리팹
         public int count; // 스폰할 몬스터 수
         public float spawnInterval = 1.0f; // 몬스터 스폰 간격 (초)
+        public Transform[] customSpawnPoints; // 몬스터별 커스텀 스폰 지점 (없을 경우 기본 스폰 지점 사용)
     }
 
     [System.Serializable]
     public class Wave
     {
         public List<SpawnInfo> spawnInfos; // 각 웨이브의 스폰 정보 리스트
-        public Transform[] customSpawnPoints; // 웨이브별 커스텀 스폰 지점 (없을 경우 기본 스폰 지점 사용)
+        // customSpawnPoints는 제거되었습니다.
     }
 
     [Header("Wave Settings")]
@@ -104,7 +105,6 @@ public class MonsterSpawner : MonoBehaviour
         while (currentWaveIndex < waves.Count)
         {
             Wave currentWave = waves[currentWaveIndex];
-            Transform[] spawnPointsToUse = currentWave.customSpawnPoints.Length > 0 ? currentWave.customSpawnPoints : spawnPoints;
 
             // *** 웨이브 시작 메시지 표시 ***
             float messageDisplayDuration = 0.7f; // 메시지 표시 시간 설정 (예: 0.7초)
@@ -135,6 +135,9 @@ public class MonsterSpawner : MonoBehaviour
             // 몬스터 스폰 시작
             foreach (var spawnInfo in currentWave.spawnInfos)
             {
+                // 개별 몬스터의 스폰 지점 설정
+                Transform[] spawnPointsToUse = (spawnInfo.customSpawnPoints != null && spawnInfo.customSpawnPoints.Length > 0) ? spawnInfo.customSpawnPoints : spawnPoints;
+
                 for (int i = 0; i < spawnInfo.count; i++)
                 {
                     SpawnMonster(spawnInfo.monsterPrefab, spawnPointsToUse);
