@@ -109,7 +109,7 @@ public class BackDancer : Monster
         if (particleSystem != null)
         {
             var mainModule = particleSystem.main;
-            mainModule.startRotation = Mathf.Deg2Rad * -angle; // 각도를 라디안 값으로 변환하여 설정
+            mainModule.startRotation = Mathf.Deg2Rad * -angle + 110f; // 각도를 라디안 값으로 변환하여 설정
         }
 
         // 프리팹에 Rigidbody2D를 사용하여 발사
