@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2970908746215783919}
   - component: {fileID: 3851219591574387969}
-  - component: {fileID: 2619779320515094408}
   m_Layer: 11
   m_Name: Light 2D
   m_TagString: Untagged
@@ -49,11 +48,11 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Color: {r: 0.6862745, g: 0.99215686, b: 0.9529412, a: 1}
+  m_Intensity: 1.56
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000d336a7cf63108f8783312791f7a1af34439a1952e17bb6e125415537
+  m_ApplyToSortingLayers: 1d4efc11
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -83,22 +82,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!114 &2619779320515094408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 91579199894849551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf403e537fa739845b669c04cd6beb6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  light2D: {fileID: 3851219591574387969}
-  flickerDuration: 1
-  minIntensity: 0
-  maxIntensity: 0.15
 --- !u!1 &6073249613970012703
 GameObject:
   m_ObjectHideFlags: 0
