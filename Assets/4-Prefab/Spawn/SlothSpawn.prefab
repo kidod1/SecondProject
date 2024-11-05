@@ -67,6 +67,71 @@ Transform:
   - {fileID: 6094360118066488916}
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &492112753576789693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8679311099856968246}
+  m_Layer: 0
+  m_Name: 4WaveDog2 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8679311099856968246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492112753576789693}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.68, y: -1.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1776544465672213807}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &911362747062321962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 926555528989304845}
+  m_Layer: 0
+  m_Name: 4WaveEventBat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &926555528989304845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911362747062321962}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.12, y: 11.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2809457324580467423}
+  - {fileID: 1695435300399601481}
+  - {fileID: 419475742105832091}
+  m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &988763942137155643
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4733429610036466886}
   m_Layer: 0
-  m_Name: GameObject (14)
+  m_Name: 5WaveDog2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +191,13 @@ Transform:
   m_LocalPosition: {x: 6.81, y: 12.77, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6303545886451295029}
+  - {fileID: 1405151166243800196}
+  - {fileID: 1463138554450132714}
+  - {fileID: 3338553449959705954}
+  - {fileID: 3176869268291302137}
+  - {fileID: 5777010469591559404}
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1198266442413882425
@@ -159,6 +230,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1220265146362799179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2809457324580467423}
+  m_Layer: 0
+  m_Name: 4WaveEventBat (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2809457324580467423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220265146362799179}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.59, y: 1.59, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 926555528989304845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1244358883456868339
 GameObject:
@@ -482,10 +584,11 @@ Transform:
   - {fileID: 519844434961199403}
   - {fileID: 181794828749647420}
   - {fileID: 7624176909137708618}
-  - {fileID: 8524050173296169097}
+  - {fileID: 1750231354575667567}
   - {fileID: 4776811124687785008}
   - {fileID: 1776544465672213807}
-  - {fileID: 1750231354575667567}
+  - {fileID: 926555528989304845}
+  - {fileID: 8524050173296169097}
   - {fileID: 4733429610036466886}
   - {fileID: 8773226534224250070}
   - {fileID: 5173495012105047830}
@@ -576,24 +679,173 @@ MonoBehaviour:
       - {fileID: 4494580458302019511}
       - {fileID: 2043104497078698020}
       - {fileID: 5547342852315367285}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
     - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
       count: 2
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 918895790644912200}
       - {fileID: 4536490543622296107}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
     - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
       count: 8
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 6385896870675710925}
       - {fileID: 3244737805858656875}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
     - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
       count: 8
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 918895790644912200}
       - {fileID: 589508793296623336}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6918693476121626766}
+      - {fileID: 5933075507699808449}
+      - {fileID: 7870161986608681399}
+  - spawnInfos:
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 13
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 3269582128666098630}
+      - {fileID: 8679311099856968246}
+      - {fileID: 2804619420453910913}
+      - {fileID: 6913495383473327138}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 2
+      customSpawnPoints:
+      - {fileID: 2809457324580467423}
+      - {fileID: 1695435300399601481}
+      - {fileID: 419475742105832091}
+    - monsterPrefab: {fileID: 4370629814598732172, guid: c6617fbaa29f7d24c863a50d4eb42881, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 8311943864869881610}
+    - monsterPrefab: {fileID: 4370629814598732172, guid: c6617fbaa29f7d24c863a50d4eb42881, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 7481759940043141153}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 2
+      customSpawnPoints:
+      - {fileID: 2809457324580467423}
+      - {fileID: 1695435300399601481}
+      - {fileID: 419475742105832091}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 2
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 2809457324580467423}
+      - {fileID: 1695435300399601481}
+      - {fileID: 419475742105832091}
+    - monsterPrefab: {fileID: 4370629814598732172, guid: c6617fbaa29f7d24c863a50d4eb42881, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 1084193303335315496}
+    - monsterPrefab: {fileID: 4370629814598732172, guid: c6617fbaa29f7d24c863a50d4eb42881, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 4794674133785875241}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 2
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 2809457324580467423}
+      - {fileID: 1695435300399601481}
+      - {fileID: 419475742105832091}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 2809457324580467423}
+      - {fileID: 1695435300399601481}
+      - {fileID: 419475742105832091}
+  - spawnInfos:
+    - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
+      count: 1
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 1606662998880178943}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 5
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6303545886451295029}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 5
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 1405151166243800196}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 5
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 1463138554450132714}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 3
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 3338553449959705954}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 3
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 3176869268291302137}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
+      count: 3
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 5777010469591559404}
   - spawnInfos:
     - monsterPrefab: {fileID: 4370629814598732172, guid: 01260bfb44b72844e8569e84be61600f, type: 3}
       count: 1
@@ -607,6 +859,37 @@ MonoBehaviour:
   waveNumberAnimator: {fileID: 0}
   midBossPrefab: {fileID: 0}
   experienceItemsParent: {fileID: 0}
+--- !u!1 &2023382774667063322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5777010469591559404}
+  m_Layer: 0
+  m_Name: 5WaveDog2 (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5777010469591559404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023382774667063322}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.99, y: -4.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4733429610036466886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2288935677901779265
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,6 +983,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 699807014761788186}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2408919184771963957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1084193303335315496}
+  m_Layer: 0
+  m_Name: 4WaveTurret (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1084193303335315496
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408919184771963957}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.53, y: -6.86, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4776811124687785008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2510383113181921696
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,7 +1024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1776544465672213807}
   m_Layer: 0
-  m_Name: GameObject (12)
+  m_Name: 4WaveDog2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -728,7 +1042,11 @@ Transform:
   m_LocalPosition: {x: 6.79, y: 12.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3269582128666098630}
+  - {fileID: 8679311099856968246}
+  - {fileID: 2804619420453910913}
+  - {fileID: 6913495383473327138}
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2512638709573750775
@@ -829,6 +1147,37 @@ Transform:
   - {fileID: 3922655634359947252}
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2788206343890816441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8311943864869881610}
+  m_Layer: 0
+  m_Name: 4WaveTurret (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8311943864869881610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788206343890816441}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.29, y: 0.66, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4776811124687785008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3126688012537169987
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,6 +1209,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7624176909137708618}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3155421916191420703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3269582128666098630}
+  m_Layer: 0
+  m_Name: 4WaveDog2 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3269582128666098630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3155421916191420703}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.06, y: -1.42, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1776544465672213807}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3177242032869168611
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,6 +1270,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 519844434961199403}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3312245647921264705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3176869268291302137}
+  m_Layer: 0
+  m_Name: 5WaveDog2 (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3176869268291302137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3312245647921264705}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -6.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4733429610036466886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3334329609932826652
 GameObject:
@@ -984,6 +1395,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3360079400035847365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3545157555612355042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1463138554450132714}
+  m_Layer: 0
+  m_Name: 5WaveDog2 (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1463138554450132714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3545157555612355042}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.85, y: -1.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4733429610036466886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3600075281611844023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,6 +1457,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3701389159278255724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6303545886451295029}
+  m_Layer: 0
+  m_Name: 5WaveDog2 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6303545886451295029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3701389159278255724}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4733429610036466886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3701962812293714107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,6 +1518,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 699807014761788186}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4108190115549338680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7481759940043141153}
+  m_Layer: 0
+  m_Name: 4WaveTurret (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7481759940043141153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4108190115549338680}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.61, y: 0.68, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4776811124687785008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4193180011436173804
 GameObject:
@@ -1139,6 +1643,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3360079400035847365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4992528784215787816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3338553449959705954}
+  m_Layer: 0
+  m_Name: 5WaveDog2 (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3338553449959705954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4992528784215787816}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.25, y: -4.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4733429610036466886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5066727751393769601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1705,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5073162320942555141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7870161986608681399}
+  m_Layer: 0
+  m_Name: 3WaveEventBat (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7870161986608681399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073162320942555141}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.85, y: -3.94, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1750231354575667567}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5087757899617311812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,6 +1766,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5276852581547232802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6918693476121626766}
+  m_Layer: 0
+  m_Name: 3WaveEventBat (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6918693476121626766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5276852581547232802}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.59, y: 1.59, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1750231354575667567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5313228993230949594
 GameObject:
@@ -1362,6 +1959,37 @@ Transform:
   - {fileID: 2989791403163922031}
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6269618511815179299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1405151166243800196}
+  m_Layer: 0
+  m_Name: 5WaveDog2 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1405151166243800196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6269618511815179299}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.09, y: -1.47, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4733429610036466886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6422276403718020775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,6 +2051,68 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7624176909137708618}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6466085151936957871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1695435300399601481}
+  m_Layer: 0
+  m_Name: 4WaveEventBat (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1695435300399601481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6466085151936957871}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.32, y: -3.56, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 926555528989304845}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6488081937453535640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5933075507699808449}
+  m_Layer: 0
+  m_Name: 3WaveEventBat (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5933075507699808449
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6488081937453535640}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.32, y: -3.56, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1750231354575667567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6519039464376958423
 GameObject:
@@ -1530,7 +2220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8524050173296169097}
   m_Layer: 0
-  m_Name: WaveElite
+  m_Name: 5WaveElite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1655,7 +2345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4776811124687785008}
   m_Layer: 0
-  m_Name: GameObject (11)
+  m_Name: 4WaveTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1673,7 +2363,11 @@ Transform:
   m_LocalPosition: {x: 8.15, y: 12.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8311943864869881610}
+  - {fileID: 7481759940043141153}
+  - {fileID: 1084193303335315496}
+  - {fileID: 4794674133785875241}
   m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7789460952948087551
@@ -1893,6 +2587,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5708652815780656291}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8759388996526729106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4794674133785875241}
+  m_Layer: 0
+  m_Name: 4WaveTurret (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4794674133785875241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8759388996526729106}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.89, y: -6.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4776811124687785008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8913788070011566546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +2628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1750231354575667567}
   m_Layer: 0
-  m_Name: GameObject (13)
+  m_Name: 3WaveEventBat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1921,8 +2646,73 @@ Transform:
   m_LocalPosition: {x: 5.12, y: 11.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6918693476121626766}
+  - {fileID: 5933075507699808449}
+  - {fileID: 7870161986608681399}
   m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8920518461698009764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 419475742105832091}
+  m_Layer: 0
+  m_Name: 4WaveEventBat (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &419475742105832091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8920518461698009764}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.85, y: -3.94, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 926555528989304845}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9136650635379478930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2804619420453910913}
+  m_Layer: 0
+  m_Name: 4WaveDog2 (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2804619420453910913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136650635379478930}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.9, y: -4.88, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1776544465672213807}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9184992464667313222
 GameObject:
@@ -1934,7 +2724,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519844434961199403}
   m_Layer: 0
-  m_Name: 2WaveBat
+  m_Name: 2WaveEventBat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1957,4 +2747,35 @@ Transform:
   - {fileID: 8574565034440204804}
   - {fileID: 4808824644167217624}
   m_Father: {fileID: 4904552654199749081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9187893221568496343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6913495383473327138}
+  m_Layer: 0
+  m_Name: 4WaveDog2 (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6913495383473327138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9187893221568496343}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.06, y: -4.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1776544465672213807}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
