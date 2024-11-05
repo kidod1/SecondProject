@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2229472860553277539}
   - component: {fileID: 1380422975804898489}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6469353647771551786}
   - component: {fileID: 4819054567963322972}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,12 +179,12 @@ GameObject:
   - component: {fileID: 7626143639987781461}
   - component: {fileID: 4718928284968979512}
   - component: {fileID: 4001218635929388884}
-  - component: {fileID: 5650008579786270311}
   - component: {fileID: 5071350445137868259}
   - component: {fileID: -8475000208175621302}
-  m_Layer: 12
+  - component: {fileID: 2366478030729900477}
+  m_Layer: 13
   m_Name: SlothBat
-  m_TagString: Monster
+  m_TagString: FlyMonster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -320,7 +320,61 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &5650008579786270311
+--- !u!114 &5071350445137868259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257169338272492925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0187e3a6de09f64099c57c2b36c14bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterBaseStat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
+  minKnockbackForce: 5
+  maxKnockbackForce: 7
+  blinkInterval: 0.05
+  blinkDuration: 0.5
+  monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
+  deathEffectDuration: 0.4
+  abilityDeathEffectDuration: 1
+  monsterInstantKillEffectPrefab: {fileID: 0}
+  isElite: 0
+  isInCooldown: 0
+  isInfected: 0
+  damageArea: {fileID: 0}
+  areaDamage: 10
+  damageInterval: 1
+  stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
+  isInstantKilled: 0
+  stat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
+  dashAnimation: idle
+  explodeAnimation: idle
+--- !u!114 &-8475000208175621302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257169338272492925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21c9538588898a45a3da22bf4779ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootMotionBoneName: root
+  transformPositionX: 1
+  transformPositionY: 1
+  rootMotionScaleX: 1
+  rootMotionScaleY: 1
+  rootMotionTranslateXPerY: 0
+  rootMotionTranslateYPerX: 0
+  rigidBody2D: {fileID: 4001218635929388884}
+  rigidBody: {fileID: 0}
+  animationTrackFlags: -1
+--- !u!58 &2366478030729900477
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -352,62 +406,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.013529062, y: 1.268504}
+  m_Offset: {x: 0.0011236666, y: 1.3744696}
   serializedVersion: 2
-  m_Radius: 2.9949644
---- !u!114 &5071350445137868259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257169338272492925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0187e3a6de09f64099c57c2b36c14bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterBaseStat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
-  minKnockbackForce: 5
-  maxKnockbackForce: 7
-  blinkInterval: 0.05
-  blinkDuration: 0.5
-  monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
-  deathEffectDuration: 0.4
-  abilityDeathEffectDuration: 1
-  monsterInstantKillEffectPrefab: {fileID: 0}
-  isElite: 0
-  isInCooldown: 0
-  isInfected: 0
-  damageArea: {fileID: 0}
-  areaDamage: 10
-  damageInterval: 1
-  stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
-  isInstantKilled: 0
-  stat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
-  idleAnimation: idle
-  prepareAnimation: idle
-  dashAnimation: idle
-  explodeAnimation: idle
---- !u!114 &-8475000208175621302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257169338272492925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21c9538588898a45a3da22bf4779ab3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootMotionBoneName: root
-  transformPositionX: 1
-  transformPositionY: 1
-  rootMotionScaleX: 1
-  rootMotionScaleY: 1
-  rootMotionTranslateXPerY: 0
-  rootMotionTranslateYPerX: 0
-  rigidBody2D: {fileID: 4001218635929388884}
-  rigidBody: {fileID: 0}
-  animationTrackFlags: -1
+  m_Radius: 2.9

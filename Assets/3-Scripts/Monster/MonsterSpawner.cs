@@ -18,13 +18,15 @@ public class MonsterSpawner : MonoBehaviour
     public class Wave
     {
         public List<SpawnInfo> spawnInfos; // 각 웨이브의 스폰 정보 리스트
-        // customSpawnPoints는 제거되었습니다.
     }
 
     [Header("Wave Settings")]
     public List<Wave> waves; // 모든 웨이브 리스트
     public Transform[] spawnPoints; // 기본 스폰 지점들
     public bool isSlothArea = false; // 슬로스 지역 여부
+
+    [Header("Spawn Effect")]
+    public GameObject spawnEffectPrefab; // 몬스터 스폰 시 재생할 공용 이펙트 프리팹
 
     [Header("UI Elements")]
     public TextMeshProUGUI waveNumberText; // 웨이브 클리어 및 시작 UI 텍스트
@@ -180,7 +182,7 @@ public class MonsterSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// 지정된 스폰 지점에서 몬스터를 스폰(활성화)합니다.
+    /// 지정된 스폰 지점에서 몬스터를 스폰(활성화)하고, 스폰 이펙트를 재생합니다.
     /// </summary>
     /// <param name="monsterPrefab">스폰할 몬스터 프리팹</param>
     /// <param name="spawnPointsToUse">사용할 스폰 지점 배열</param>
@@ -195,8 +197,21 @@ public class MonsterSpawner : MonoBehaviour
         int spawnPointIndex = Random.Range(0, spawnPointsToUse.Length);
         Transform spawnPoint = spawnPointsToUse[spawnPointIndex];
 
+        // 몬스터 스폰
         GameObject monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation, this.transform);
         spawnedMonsters.Add(monster);
+
+        // 스폰 이펙트 재생
+        if (spawnEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(spawnEffectPrefab, spawnPoint.position, Quaternion.identity);
+            // 이펙트가 자동으로 파괴되도록 설정
+            AutoDestroyEffect autoDestroy = effect.GetComponent<AutoDestroyEffect>();
+            if (autoDestroy == null)
+            {
+                effect.AddComponent<AutoDestroyEffect>();
+            }
+        }
     }
 
     private void Update()

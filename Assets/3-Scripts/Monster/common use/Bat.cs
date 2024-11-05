@@ -8,8 +8,6 @@ public class Bat : Monster
     [SerializeField]
     private BatMonsterData stat;
 
-    [SpineAnimation] public string idleAnimation;
-    [SpineAnimation] public string prepareAnimation;  // 공격 준비 애니메이션
     [SpineAnimation] public string dashAnimation;     // 돌진 애니메이션
     [SpineAnimation] public string explodeAnimation;  // 자폭 애니메이션
 
@@ -17,17 +15,12 @@ public class Bat : Monster
 
     private enum BatState
     {
-        Idle,
-        Chasing,
-        PreparingAttack,
-        Dashing,
-        Cooldown
+        Dashing
     }
 
-    private BatState currentState = BatState.Idle;
-    private bool isAttacking = false;
-    private Vector3 dashTargetPosition;
-    private float cooldownTimer = 0f;
+    private BatState currentState = BatState.Dashing;
+    private Vector3 dashDirection;
+    private float dashSpeed;
 
     protected override void Start()
     {
@@ -39,157 +32,76 @@ public class Bat : Monster
         }
         else
         {
-            PlayAnimation(idleAnimation, true);
+            PlayAnimation(dashAnimation, true);
         }
+
+        // 돌진 방향 계산: 소환될 때 플레이어를 향해 설정
+        if (player != null)
+        {
+            dashDirection = (player.transform.position - transform.position).normalized;
+        }
+        else
+        {
+            Debug.LogError("Player 참조가 없습니다.");
+            dashDirection = Vector3.zero;
+        }
+
+        dashSpeed = stat.skillDashSpeed;
     }
 
     protected override void InitializeStates()
     {
         // 이 클래스에서는 상태 클래스를 사용하지 않으므로 빈 메서드로 둡니다.
-        // 필요한 경우 상태 초기화를 여기서 수행할 수 있습니다.
     }
 
     private void Update()
     {
         switch (currentState)
         {
-            case BatState.Idle:
-                HandleIdleState();
-                break;
-            case BatState.Chasing:
-                HandleChaseState();
-                break;
-            case BatState.PreparingAttack:
-                // 공격 준비 중이므로 별도 처리가 필요 없음
-                break;
             case BatState.Dashing:
                 HandleDashState();
                 break;
-            case BatState.Cooldown:
-                HandleCooldownState();
-                break;
         }
-    }
-
-    private void HandleIdleState()
-    {
-        if (IsPlayerInRange(stat.detectionRange))
-        {
-            currentState = BatState.Chasing;
-            PlayAnimation(dashAnimation, true); // 추적 애니메이션이 없으면 필요에 따라 변경
-        }
-    }
-
-    private void HandleChaseState()
-    {
-        if (IsPlayerInRange(stat.attackRange))
-        {
-            if (!isAttacking)
-            {
-                StartCoroutine(PrepareAndAttack());
-            }
-        }
-        else if (IsPlayerInRange(stat.detectionRange))
-        {
-            MoveTowards(player.transform.position);
-        }
-        else
-        {
-            currentState = BatState.Idle;
-            PlayAnimation(idleAnimation, true);
-        }
-    }
-
-    private IEnumerator PrepareAndAttack()
-    {
-        isAttacking = true;
-        currentState = BatState.PreparingAttack;
-        PlayAnimation(prepareAnimation, false);
-
-        // 1초간 공격 준비
-        yield return new WaitForSeconds(1f);
-
-        // 플레이어의 현재 위치를 기준으로 더 먼 위치 계산
-        if (player == null)
-        {
-            currentState = BatState.Idle;
-            isAttacking = false;
-            yield break;
-        }
-
-        Vector3 playerPosition = player.transform.position;
-        Vector3 direction = (playerPosition - transform.position).normalized;
-        dashTargetPosition = playerPosition + direction * 2f; // 플레이어 위치보다 2유닛 더 먼 위치로 설정
-
-        currentState = BatState.Dashing;
-        PlayAnimation(dashAnimation, true);
     }
 
     private void HandleDashState()
     {
         if (player == null)
         {
-            currentState = BatState.Idle;
-            isAttacking = false;
-            PlayAnimation(idleAnimation, true);
+            // 플레이어가 없으면 사라짐
+            Die();
             return;
         }
 
         // 돌진 이동
-        float step = stat.skillDashSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, dashTargetPosition, step);
+        float step = dashSpeed * Time.deltaTime;
+        transform.position += dashDirection * step;
 
-        // 플레이어와의 거리 확인 (충돌 반경 0.5유닛 이내)
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if (distanceToPlayer <= 0.5f)
-        {
-            // 자폭 공격 실행
-            StartCoroutine(Explode());
-            return;
-        }
-
-        // 목표 위치 도달 확인
-        if (Vector3.Distance(transform.position, dashTargetPosition) < 0.1f)
-        {
-            // 공격 실패, 상태 재설정
-            currentState = BatState.Chasing;
-            isAttacking = false;
-            PlayAnimation(dashAnimation, true); // 추적 애니메이션 재생
-        }
+        // 추가적으로 최대 돌진 거리를 설정하거나, 특정 조건에서 멈추도록 구현할 수 있습니다.
     }
 
-
-    private IEnumerator Explode()
+    protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        currentState = BatState.Cooldown;
-        PlayAnimation(explodeAnimation, true);
+        Debug.Log("닿았음");
+        GameObject collidedObject = collision.gameObject;
 
-        yield return new WaitForSeconds(0.1f);
-
-        // 플레이어에게 데미지 적용
-        if (player != null)
+        // 충돌한 오브젝트에 Player 컴포넌트가 있는지 확인
+        Player playerScript = collidedObject.GetComponent<Player>();
+        if (playerScript != null)
         {
-            player.TakeDamage(stat.attackDamage);
+            // 플레이어와 충돌한 경우
+            playerScript.TakeDamage(stat.attackDamage);
+            Die();
         }
-
-        // 몬스터 사망 처리
-        Die();
-    }
-
-    private void HandleCooldownState()
-    {
-        cooldownTimer -= Time.deltaTime;
-        if (cooldownTimer <= 0f)
+        else
         {
-            currentState = BatState.Idle;
-            isAttacking = false;
-            PlayAnimation(idleAnimation, true);
+            Die();
         }
     }
 
     public override void Attack()
     {
-        // 공격 로직은 PrepareAndAttack()과 Explode()에서 처리되므로 별도 구현 필요 없음
+        // 공격 로직은 OnCollisionEnter에서 처리되므로 별도 구현 필요 없음
     }
 
     public void PlayAnimation(string animationName, bool loop)
@@ -202,7 +114,7 @@ public class Bat : Monster
 
     private void OnDrawGizmosSelected()
     {
-        // 탐지 범위와 공격 범위를 기즈모로 표시
+        // 탐지 범위와 공격 범위를 기즈모로 표시 (필요 시)
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, stat.detectionRange);
         Gizmos.color = Color.blue;
