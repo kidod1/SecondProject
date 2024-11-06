@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public PlayerUIManager uiManager;
     public PlayerAbilityManager abilityManager;
     public AbilityManager abilityUIManager;
+    public SceneChangeSkeleton chanageSkeleton;
 
     // 게임 스탯 변수들
     [Header("Game Stats")]
@@ -295,7 +296,6 @@ public class GameManager : MonoBehaviour
         moneyEarned = 0;
     }
 
-    // --- 추가된 부분 시작 ---
     public void ShowGameResultPanelTest()
     {
         // 총점 계산 및 랭크 결정
@@ -319,5 +319,9 @@ public class GameManager : MonoBehaviour
         Debug.Log($"획득한 돈: {moneyEarnedText.text}");
         Debug.Log($"총 점수: {totalScoreText.text}");
     }
-    // --- 추가된 부분 끝 ---
+
+    public void SceneChanageCloseAnimationAddLoad(string NextSceneName)
+    {
+        chanageSkeleton.PlayCloseAnimation(NextSceneName);
+    }
 }

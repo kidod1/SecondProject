@@ -96,10 +96,6 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private Image synergyAbilityIcon;
 
-    [Tooltip("시너지 능력 오버레이 이미지")]
-    [SerializeField]
-    private Image synergyAbilityOverlay;
-
     private DepthOfField depthOfField;
 
     private int maxHP;
@@ -131,10 +127,6 @@ public class PlayerUIManager : MonoBehaviour
             bossHealthUIPanel.SetActive(false);
         }
 
-        if (synergyAbilityOverlay != null)
-        {
-            synergyAbilityOverlay.gameObject.SetActive(false);
-        }
         else
         {
             Debug.LogError("PlayerUIManager: synergyAbilityOverlay가 할당되지 않았습니다.");
@@ -522,15 +514,6 @@ public class PlayerUIManager : MonoBehaviour
     /// <param name="ability">시너지 능력 인스턴스</param>
     public void StartSynergyAbilityCooldown(SynergyAbility ability)
     {
-        if (synergyAbilityOverlay == null)
-        {
-            Debug.LogError("PlayerUIManager: synergyAbilityOverlay가 할당되지 않았습니다.");
-            return;
-        }
-
-        synergyAbilityOverlay.fillAmount = 1f;
-        synergyAbilityOverlay.gameObject.SetActive(true);
-
         UnityAction onCooldownComplete = () => OnSynergyAbilityCooldownComplete();
 
         ability.OnCooldownComplete.AddListener(onCooldownComplete);
@@ -552,7 +535,6 @@ public class PlayerUIManager : MonoBehaviour
             elapsed = Time.time - ability.lastUsedTime;
             float fill = 1f - (elapsed / ability.cooldownDuration);
             fill = Mathf.Clamp01(fill);
-            synergyAbilityOverlay.fillAmount = fill;
             yield return null;
         }
 
@@ -565,9 +547,5 @@ public class PlayerUIManager : MonoBehaviour
     /// </summary>
     private void OnSynergyAbilityCooldownComplete()
     {
-        if (synergyAbilityOverlay != null)
-        {
-            synergyAbilityOverlay.gameObject.SetActive(false);
-        }
     }
 }

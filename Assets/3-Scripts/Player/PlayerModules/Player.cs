@@ -233,7 +233,10 @@ public class Player : MonoBehaviour
         skeletonAnimation.enabled = true;
 
         EnableControls();
-        OnStartPlayerAnimationComplete.Invoke();
+        if (!PlayManager.I.isPlayerDied)
+        {
+            OnStartPlayerAnimationComplete.Invoke();
+        }
 
         playerInput.Player.Move.performed += OnMovePerformed;
         playerInput.Player.Move.canceled += OnMoveCanceled;

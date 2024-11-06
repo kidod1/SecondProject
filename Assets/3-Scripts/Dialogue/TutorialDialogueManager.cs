@@ -234,7 +234,7 @@ public class TutorialDialogueManager : MonoBehaviour
                 OnConditionStartedUnityEvent?.Invoke(conditionDescription);
                 firstConditionalDialogueProcessed = true;
 
-                if (player != null)
+                if (player != null && !PlayManager.I.isPlayerDied)
                 {
                     player.EnableControls();
                     Debug.Log("플레이어 컨트롤이 활성화되었습니다.");
