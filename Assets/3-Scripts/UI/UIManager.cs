@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
         if (sceneIndex >= 0 && sceneIndex < SceneManager.sceneCountInBuildSettings)
         {
             SceneManager.LoadScene(sceneIndex);
+            Time.timeScale = 1;
         }
         else
         {

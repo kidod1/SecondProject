@@ -107,7 +107,6 @@ public class Player : MonoBehaviour
     private Vector2 lastMoveDirection = Vector2.zero;
 
     private PlayerInput playerInput;
-
     [Tooltip("발사 위치")]
     public Transform shootPoint;
 
@@ -121,6 +120,7 @@ public class Player : MonoBehaviour
     public UnityEvent<Collider2D> OnHitEnemy;
     public UnityEvent OnHeal;
     public UnityEvent<int> OnGainExperience;
+    public UnityEvent OnStartPlayerAnimationComplete;
 
     private string saveFilePath;
 
@@ -171,6 +171,7 @@ public class Player : MonoBehaviour
         OnHitEnemy ??= new UnityEvent<Collider2D>();
         OnHeal ??= new UnityEvent();
         OnGainExperience ??= new UnityEvent<int>();
+        OnStartPlayerAnimationComplete ??= new UnityEvent();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -207,7 +208,7 @@ public class Player : MonoBehaviour
 
         isGameStartAnimationPlaying = true;
 
-        playerInput.Player.Disable();
+        DisableControls();
         skeletonAnimation.enabled = false;
 
         int trackIndex = 1;
@@ -231,7 +232,8 @@ public class Player : MonoBehaviour
 
         skeletonAnimation.enabled = true;
 
-        playerInput.Player.Enable();
+        EnableControls();
+        OnStartPlayerAnimationComplete.Invoke();
 
         playerInput.Player.Move.performed += OnMovePerformed;
         playerInput.Player.Move.canceled += OnMoveCanceled;
@@ -239,6 +241,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.canceled += OnShootCanceledInputAction;
 
         UpdateAnimation();
+
     }
 
     /// <summary>
@@ -1067,7 +1070,21 @@ public class Player : MonoBehaviour
             Debug.LogWarning("저장 파일을 찾을 수 없어 기본 플레이어 데이터 사용.");
         }
     }
+    /// <summary>
+    /// 플레이어 컨트롤을 활성화합니다.
+    /// </summary>
+    public void EnableControls()
+    {
+        playerInput.Player.Enable();
+    }
 
+    /// <summary>
+    /// 플레이어 컨트롤을 비활성화합니다.
+    /// </summary>
+    public void DisableControls()
+    {
+        playerInput.Player.Disable();
+    }
     private void OnApplicationQuit()
     {
         SavePlayerData();

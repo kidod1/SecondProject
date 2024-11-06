@@ -73,6 +73,8 @@ public class TutorialDialogueManager : MonoBehaviour
     private bool allMonstersDefeated = false; // 모든 몬스터를 물리쳤는지
 
     private int lastDefeatAllMonstersDialogueIndex = -1; // 마지막 DefeatAllMonsters 대사 인덱스
+    private Player player;
+
 
     // UnityEvent 선언 (Inspector에 표시됨)
     [Header("이벤트")]
@@ -90,11 +92,27 @@ public class TutorialDialogueManager : MonoBehaviour
     private int totalSpecialDialogues = 0; // 총 특수 대화 수
     private int processedSpecialDialogues = 0; // 처리된 특수 대화 수
 
+    private bool firstConditionalDialogueProcessed = false;  // 첫 번째 조건부 대화가 처리되었는지 여부를 추적하는 플래그
+
     private void Start()
     {
         if (!PlayManager.I.isPlayerDied)
         {
-            // 시작 시 특수 대화(조건부 대화) 수 계산
+            // PlayManager에서 플레이어 인스턴스 가져오기
+            player = PlayManager.I.GetPlayer();
+
+            if (player != null)
+            {
+                // 튜토리얼 시작 시 플레이어 컨트롤 비활성화
+                player.DisableControls();
+                Debug.Log("플레이어의 이동을 제어합니다.");
+            }
+            else
+            {
+                Debug.LogError("PlayManager에서 플레이어 인스턴스를 찾을 수 없습니다.");
+            }
+
+            // 총 특수 대화 수 계산
             for (int i = 0; i < dialogues.Count; i++)
             {
                 if (dialogues[i].isConditional && dialogues[i].conditionType != ConditionType.None)
@@ -114,7 +132,7 @@ public class TutorialDialogueManager : MonoBehaviour
             }
 
             PortalObject.SetActive(false);
-            // 시작 시 대화 시퀀스 시작
+            // 대화 시퀀스 시작
             StartCoroutine(DialogueSequence());
         }
 
@@ -125,11 +143,10 @@ public class TutorialDialogueManager : MonoBehaviour
             OnPlayerDiedUnityEvent?.Invoke();
         }
     }
-
     private void Update()
     {
         // 플레이어의 움직임 체크 (WASD 입력)
-        if (!hasMoved && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) ||
+        if (firstConditionalDialogueProcessed && !hasMoved && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) ||
                           Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)))
         {
             hasMoved = true;
@@ -177,7 +194,7 @@ public class TutorialDialogueManager : MonoBehaviour
             // 애니메이션을 자연스럽게 만들기 위해 대기
             yield return new WaitForSeconds(0.5f);
 
-            // Set up image
+            // 이미지 설정
             if (dialogueImage != null)
             {
                 if (dialogue.associatedSprite != null)
@@ -192,22 +209,22 @@ public class TutorialDialogueManager : MonoBehaviour
                 }
             }
 
-            // Set up text
+            // 텍스트 설정
             if (dialogueText != null)
             {
-                dialogueText.color = new Color(dialogueText.color.r, dialogueText.color.g, dialogueText.color.b, 1f); // 텍스트가 완전히 보이도록 설정
+                dialogueText.color = new Color(dialogueText.color.r, dialogueText.color.g, dialogueText.color.b, 1f);
                 dialogueText.text = "";
                 dialogueText.gameObject.SetActive(true);
             }
 
-            // Animate text
+            // 텍스트 애니메이션
             foreach (char letter in dialogue.sentence.ToCharArray())
             {
                 dialogueText.text += letter;
                 yield return new WaitForSecondsRealtime(textAnimationSpeed);
             }
 
-            // Wait autoAdvanceDuration after text animation
+            // 자동 진행 시간 대기
             yield return new WaitForSecondsRealtime(autoAdvanceDuration);
 
             if (dialogue.isConditional)
@@ -215,6 +232,17 @@ public class TutorialDialogueManager : MonoBehaviour
                 TutoConditionsImage.gameObject.SetActive(true);
                 string conditionDescription = GetConditionDescription(dialogue.conditionType);
                 OnConditionStartedUnityEvent?.Invoke(conditionDescription);
+                firstConditionalDialogueProcessed = true;
+
+                if (player != null)
+                {
+                    player.EnableControls();
+                    Debug.Log("플레이어 컨트롤이 활성화되었습니다.");
+                }
+                else
+                {
+                    Debug.LogError("플레이어 인스턴스가 null입니다. 컨트롤을 활성화할 수 없습니다.");
+                }
 
                 // 조건 설명 UI 업데이트
                 if (conditionDescriptionText != null)
@@ -232,7 +260,7 @@ public class TutorialDialogueManager : MonoBehaviour
                 if (dialogue.conditionType == ConditionType.DefeatAllMonsters)
                 {
                     SpawnMonsters();
-                    allMonstersDefeated = false; // 몬스터가 스폰되었으므로 초기화
+                    allMonstersDefeated = false;
                 }
 
                 // 조건 충족을 기다림
@@ -256,19 +284,15 @@ public class TutorialDialogueManager : MonoBehaviour
                             conditionIconImage.sprite = completedConditionIcon;
                         }
 
-
                         // 특수 대화 처리 완료
                         processedSpecialDialogues++;
-                        Debug.Log($"특수 대화 처리 완료: {processedSpecialDialogues}/{totalSpecialDialogues}");
 
                         // 다음 대사로 진행
                         currentDialogueIndex++;
-
-                        // 루프 종료
                         break;
                     }
 
-                    // 대기
+                    // 다음 프레임까지 대기
                     yield return null;
                 }
             }
@@ -311,7 +335,7 @@ public class TutorialDialogueManager : MonoBehaviour
     {
         if (progressText != null)
         {
-            progressText.text = $"튜토리얼 진행 {processedSpecialDialogues}/{totalSpecialDialogues}";
+            progressText.text = $"튜토리얼 진행 {processedSpecialDialogues + 1}/{totalSpecialDialogues}";
         }
     }
     /// <summary>
@@ -321,7 +345,7 @@ public class TutorialDialogueManager : MonoBehaviour
     {
         if (progressText != null)
         {
-            progressText.text = $"튜토리얼 진행 {processedSpecialDialogues}/{totalSpecialDialogues}";
+            progressText.text = $"튜토리얼 진행 {processedSpecialDialogues + 1}/{totalSpecialDialogues}";
         }
     }
 
