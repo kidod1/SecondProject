@@ -607,6 +607,12 @@ public abstract class Monster : MonoBehaviour
                 experiencePointsToDrop = monsterBaseStat.highExperiencePoints;
             }
 
+            // 경험치 획득량이 0이면 프리팹을 생성하지 않음
+            if (experiencePointsToDrop <= 0)
+            {
+                return;
+            }
+
             string prefabName = "ExperienceItem";
             if (experiencePointsToDrop > 50 && experiencePointsToDrop <= 100)
             {
@@ -642,6 +648,7 @@ public abstract class Monster : MonoBehaviour
             }
         }
     }
+
 
     /// <summary>
     /// 몬스터가 다른 콜라이더와 충돌할 때 호출됩니다.
