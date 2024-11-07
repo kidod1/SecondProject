@@ -500,6 +500,7 @@ Transform:
   - {fileID: 926555528989304845}
   - {fileID: 8524050173296169097}
   - {fileID: 4733429610036466886}
+  - {fileID: 5666585448601449570}
   - {fileID: 8773226534224250070}
   - {fileID: 4066521386790271518}
   - {fileID: 7107331433448967541}
@@ -629,13 +630,6 @@ MonoBehaviour:
       - {fileID: 6918693476121626766}
       - {fileID: 5933075507699808449}
       - {fileID: 7870161986608681399}
-    - monsterPrefab: {fileID: 5257169338272492925, guid: eded2597a589f4b4486cd07bbfc24964, type: 3}
-      count: 1
-      spawnInterval: 1
-      customSpawnPoints:
-      - {fileID: 6918693476121626766}
-      - {fileID: 5933075507699808449}
-      - {fileID: 7870161986608681399}
   - spawnInfos:
     - monsterPrefab: {fileID: 6073249613970012703, guid: b38be4391bf601d4d9e8c6835ca7986b, type: 3}
       count: 13
@@ -736,6 +730,16 @@ MonoBehaviour:
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 5777010469591559404}
+    - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      count: 5
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6035851147992052445}
+    - monsterPrefab: {fileID: 6430172859968878443, guid: 3d5194f5d925a774d80b0a3bb64c98a4, type: 3}
+      count: 5
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 4072869601811158341}
   - spawnInfos:
     - monsterPrefab: {fileID: 4395618813426290027, guid: f5c27db88e8118542b82b5d6d037fec4, type: 3}
       count: 1
@@ -1229,6 +1233,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4776811124687785008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3020204061102921724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6035851147992052445}
+  m_Layer: 0
+  m_Name: 5WaveDrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6035851147992052445
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3020204061102921724}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.55, y: 3.03, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5666585448601449570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3126688012537169987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,6 +1523,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7624176909137708618}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3413954190005631896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4072869601811158341}
+  m_Layer: 0
+  m_Name: 5WaveDrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4072869601811158341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3413954190005631896}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.68, y: 2.87, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5666585448601449570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3442662559398757686
 GameObject:
@@ -2928,6 +2994,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4776811124687785008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8822627612182472967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5666585448601449570}
+  m_Layer: 0
+  m_Name: 5WaveDrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5666585448601449570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822627612182472967}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.96, y: 9.83, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6035851147992052445}
+  - {fileID: 4072869601811158341}
+  m_Father: {fileID: 4904552654199749081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8913788070011566546
 GameObject:
