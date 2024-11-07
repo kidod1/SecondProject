@@ -39,7 +39,6 @@ public class SceneChangeSkeleton : MonoBehaviour
             }
         }
 
-        // Singleton 패턴 적용 (선택 사항)
         if (FindObjectsOfType<SceneChangeSkeleton>().Length > 1)
         {
             Destroy(gameObject);
@@ -103,10 +102,10 @@ public class SceneChangeSkeleton : MonoBehaviour
             return;
         }
 
+        gameObject.SetActive(true); // 오브젝트 활성화
         targetSceneName = sceneName;
         isAnimating = true;
         isOpening = false;
-        gameObject.SetActive(true); // 오브젝트 활성화
         skeletonGraphic.AnimationState.SetAnimation(0, closeAnimationName, false);
         Debug.Log($"Close 애니메이션 '{closeAnimationName}' 재생 시작.");
     }
