@@ -1,6 +1,7 @@
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events; // UnityEvent를 사용하기 위해 추가
 using System.Collections;
 
 public class SceneChangeSkeleton : MonoBehaviour
@@ -21,12 +22,19 @@ public class SceneChangeSkeleton : MonoBehaviour
     [Tooltip("씬 이름")]
     public string targetSceneName;
 
+    [Header("Unity Events")]
+    [Tooltip("Close 애니메이션이 완료된 후 호출됩니다.")]
+    public UnityEvent OnCloseAnimationComplete;
+
+    [Tooltip("Open 애니메이션이 완료된 후 호출됩니다.")]
+    public UnityEvent OnOpenAnimationComplete;
+
     // 내부 상태 추적 변수
     private bool isAnimating = false;
     private bool isOpening = false;
 
     // Close 애니메이션 완료 후 Open 애니메이션 실행을 위한 딜레이
-    private float delayAfterClose = 2f;
+    private float delayAfterClose = 1.5f;
 
     void Awake()
     {
@@ -151,12 +159,18 @@ public class SceneChangeSkeleton : MonoBehaviour
             // Open 애니메이션 완료 시
             StartCoroutine(HandleOpenAnimationComplete());
             Debug.Log("Open 애니메이션 완료. 씬 전환 준비.");
+
+            // Open 애니메이션 완료 후 이벤트 호출
+            OnOpenAnimationComplete?.Invoke();
         }
         else
         {
             // Close 애니메이션 완료 시
             StartCoroutine(HandleCloseAnimationComplete());
             Debug.Log("Close 애니메이션 완료. Open 애니메이션 재생을 시작합니다.");
+
+            // Close 애니메이션 완료 후 이벤트 호출
+            OnCloseAnimationComplete?.Invoke();
         }
     }
 

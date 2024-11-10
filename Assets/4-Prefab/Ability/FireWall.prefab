@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 283745544358685780}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: -0.99, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9960785, g: 0.7686275, b: 0.40784317, a: 1}
+      maxColor: {r: 0.9960785, g: 0.7686275, b: 0.40784317, a: 0.8352941}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4854,7 +4854,7 @@ Transform:
   m_GameObject: {fileID: 4275154376726118765}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4880,7 +4880,7 @@ MonoBehaviour:
   m_Intensity: 1.28
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000d336a7cf63108f8783312791f7a1af34439a1952e17bb6e125415537
+  m_ApplyToSortingLayers: 25415537439a1952
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -5026,7 +5026,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.03
+      scalar: 1.01
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5133,7 +5133,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.31826016, b: 0.15566039, a: 0.43137255}
+      maxColor: {r: 1, g: 0.31826016, b: 0.15566039, a: 0.13333334}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
