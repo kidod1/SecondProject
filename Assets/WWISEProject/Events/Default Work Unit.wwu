@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" SchemaVersion="119">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="SFX" ID="{68E2171C-66C5-42F4-9FD4-0262795ED549}" ShortID="282342875">
+					<ChildrenList>
+						<Folder Name="General" ID="{17E6A770-4B40-4E79-8925-172159A116E4}" ShortID="854155410">
+							<ChildrenList>
+								<Event Name="FootStep" ID="{5B38BDA2-4A9D-4571-B9B7-B641FC6B7C9E}">
+									<ChildrenList>
+										<Action Name="" ID="{4C6FEFF2-561E-4814-9019-2480E06BCB1B}" ShortID="61945292">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Foot" ID="{5C7C4294-858C-4FEC-B8CE-2CD086A4DE79}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+							</ChildrenList>
+						</Folder>
+						<Folder Name="Ablilty" ID="{FB236997-7A33-4FDC-9A7B-2C3D81715F17}" ShortID="315048462">
+							<ChildrenList>
+								<Folder Name="Fury" ID="{747F8972-767F-4FC9-B0A9-C41D2C3C21B2}" ShortID="234653811">
+									<ChildrenList>
+										<Event Name="Ablilty_Fury_FireBreath" ID="{F1A967E9-6006-494B-8E5B-E01DF122112A}">
+											<ChildrenList>
+												<Action Name="" ID="{4FF97401-57A8-4AFB-83F6-398433B1D15C}" ShortID="1022330726">
+													<PropertyList>
+														<Property Name="ActionType" Type="int16" Value="2"/>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Ablilty_Fury_FireBreath" ID="{BA75FE69-8C8A-4F1D-ADB5-703383FE4B43}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Fury_Meteor" ID="{49C5F1ED-A5A3-41ED-BAA0-6A6E9056AE49}">
+											<ChildrenList>
+												<Action Name="" ID="{62D2DE10-8805-4FEA-80F5-D8C8FFABB6E0}" ShortID="205051749">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Ablilty_Fury_Meteor" ID="{2C7E07BB-7020-4734-9065-ABAD25A57706}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+									</ChildrenList>
+								</Folder>
+								<Folder Name="Greed" ID="{B44D1510-E943-43E0-9AB7-9EE568015AF1}" ShortID="253020567">
+									<ChildrenList>
+										<Event Name="Ablilty_Greed_shuffle_R" ID="{98A9280A-02AC-483A-B2FB-B971050C4CAF}">
+											<ChildrenList>
+												<Action Name="" ID="{EBE7594B-FA60-4775-B829-60D6996A98E0}" ShortID="1064923807">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Ablilty_Greed_shuffle_R" ID="{19D8EC16-60B7-40DE-88CD-EA9EAF31B46F}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Greed_CoinBetting" ID="{B54E84DD-B295-43B4-8525-541037A63490}">
+											<ChildrenList>
+												<Action Name="" ID="{DEE62536-2A03-417C-8854-BC10D151646F}" ShortID="383741057">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Greed_CoinBetting01" ID="{6EA96675-6834-4929-A9FC-DD0664A5B296}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+												<Action Name="" ID="{2186030E-34CA-4C26-9AFC-33E863FCD87B}" ShortID="192894542">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Greed_CoinBetting03" ID="{6FCBE43B-9FCC-4D35-B6EA-C59DC9111735}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Greed_Joker" ID="{57D5B337-7E7F-4FBB-833B-41CC1D5A14F5}">
+											<ChildrenList>
+												<Action Name="" ID="{26DD1847-C3C5-4362-A8B2-E841D859570A}" ShortID="107295091">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Ablilty_Greed_Joker(insta-kill)" ID="{A5CDAFC6-AF07-44F9-BA77-A4D37AF7B8AB}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Greed_CoinRain" ID="{80701E19-84F8-4592-8C62-4890F6B6B9EC}">
+											<ChildrenList>
+												<Action Name="" ID="{DD05157C-5F10-48A9-A6F2-29985BC35FCB}" ShortID="80632256">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Greed_CoinBetting03" ID="{1A6FBB78-4C38-40C6-8D17-F56793C92C16}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+									</ChildrenList>
+								</Folder>
+								<Folder Name="Luxuria" ID="{C43E579D-1D10-4815-A365-918B2E492AB5}" ShortID="575098281">
+									<ChildrenList>
+										<Event Name="Ablilty_Luxuria_Doppelganger" ID="{4CBF6CD3-3FC2-4CE2-BBBE-943BBF3EB477}">
+											<ChildrenList>
+												<Action Name="" ID="{2F2922D4-911D-4388-A95C-A8546A73FAC6}" ShortID="628729133">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Luxuria_Doppelganger" ID="{531BAF44-F048-49A9-B4DD-06DC498E2A73}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Luxuria_FascinatingMelody" ID="{484E8376-AFC3-40A2-819A-9D2D7F963E0F}">
+											<ChildrenList>
+												<Action Name="" ID="{00E15880-47D2-40B9-822E-FD652F0C4E45}" ShortID="249571614">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Luxuria_FascinatingMelody" ID="{3E4C3232-2861-4E70-A208-DD43FC628A72}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Luxuria_LilithKiss" ID="{FCC004BA-BEB0-42F8-A519-73262235B66D}">
+											<ChildrenList>
+												<Action Name="" ID="{CB8D62FB-A1BF-4433-BF8B-B7F35ECC964A}" ShortID="348818415">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Luxuria_LilithKiss2" ID="{B1ED9EDB-B3BB-4030-BD6A-259B7FC5A2E2}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Luxuria_Tingling" ID="{0EF8D999-EBB9-4057-BEDD-11FDCE41FDC0}">
+											<ChildrenList>
+												<Action Name="" ID="{BE6FD092-732C-4E8B-A5CD-6843C9EFBDCC}" ShortID="787920905">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="ppazicc2" ID="{E6FA99D1-3E23-4525-A09D-BBC6907521C8}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+									</ChildrenList>
+								</Folder>
+								<Folder Name="Jealousy" ID="{45040A24-EE6C-4561-8492-431CACE0B734}" ShortID="368688891">
+									<ChildrenList>
+										<Event Name="Ablilty_Jealousy_Ouroboros" ID="{12616C2C-6AF0-45CE-A6E6-F5D27610F765}">
+											<ChildrenList>
+												<Action Name="" ID="{303CEDE8-E770-4E60-9206-AA5533837836}" ShortID="955632748">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Jealousy_Ouroboros2" ID="{098973DF-9257-4B3B-9FA6-C922093FFBF7}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Jealousy_SwordDance" ID="{3DBD5905-4235-4F42-8F92-F1E57B520B6B}">
+											<ChildrenList>
+												<Action Name="" ID="{99AFB8EE-BC34-4C4A-9152-3643970B4947}" ShortID="507652561">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Jealousy_SwordDance" ID="{A799C895-6F80-4966-BC10-0C348482AC35}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Jealousy_WanderingWave" ID="{768442E3-99B9-432C-9D70-0D1AA060044A}">
+											<ChildrenList>
+												<Action Name="" ID="{20EE739C-FE17-4674-BA55-F335B464BC5F}" ShortID="444781077">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Ablilty_Jealousy_WanderingWave" ID="{FFAE9865-266C-4FB4-9DE5-8DA5E30C6ECC}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+									</ChildrenList>
+								</Folder>
+								<Folder Name="Sloth" ID="{A663570B-00B1-4E3F-993F-4C237DC3A81A}" ShortID="770744250"/>
+								<Folder Name="Pride" ID="{18231B86-CAF5-4E51-9CAA-62960F36F783}" ShortID="44688975">
+									<ChildrenList>
+										<Event Name="Ablilty_Pride_DivinePunishment" ID="{FBA0AD3D-B19E-4DBF-8444-7D53145BCB38}">
+											<ChildrenList>
+												<Action Name="" ID="{1155517B-A3B7-4B05-8FB9-D13B4486D239}" ShortID="470669967">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Pride_DivinePunishment01" ID="{C41D49A4-F26E-430D-A0E2-8FD5D9D8D72A}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Pride_glare" ID="{7EEDFF3B-EFF9-4451-9D40-7A57D3CF1F2E}">
+											<ChildrenList>
+												<Action Name="" ID="{E5966234-EA61-42C8-8A1E-DADCEC12FD6A}" ShortID="276132968">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Pride_rush02" ID="{D109D8FA-87D5-4F94-AC30-A9D6146B010F}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Pride_rush" ID="{2F79863B-89DE-4781-A969-5CF3C7BA4BC3}">
+											<ChildrenList>
+												<Action Name="" ID="{06865C54-3075-4D4D-B534-2C3E7F8E541E}" ShortID="27786736">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SFX_Player_Ablilty_Pride_rush02" ID="{0B9BB351-C5AF-4F5D-A6BC-B78F784B4407}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Ablilty_Pride_warrant" ID="{2830A862-FFCB-469F-91D3-11500B839438}">
+											<ChildrenList>
+												<Action Name="" ID="{2743360C-5C51-4EF3-A126-7CCC8B6A1F82}" ShortID="1041965380">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Ablilty_Pride_warrant" ID="{20954362-4912-4FC8-A74F-BFDD341B234F}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+									</ChildrenList>
+								</Folder>
+								<Folder Name="Gula" ID="{7C74B87A-5733-45CE-B569-3E65CC9EA104}" ShortID="484425761"/>
+							</ChildrenList>
+						</Folder>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="AMB" ID="{3951B247-5A87-4579-80CF-94731AD26AF8}" ShortID="596268998">
+					<ChildrenList>
+						<Event Name="Sloth_Stage" ID="{3F7D1EB1-1AE6-4C1B-846D-5561B96C0B8A}">
+							<ChildrenList>
+								<Action Name="" ID="{07AEB013-EAA7-4D82-950E-69A34085AE63}" ShortID="877349232">
+									<PropertyList>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Scifi_Amb_Control_Loop4" ID="{C15211BF-20D5-4A6A-B397-D1F7F95F246C}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Sloth_Stage_Stop" ID="{6A877E86-B525-4C36-882B-56020BD29CF3}">
+							<ChildrenList>
+								<Action Name="" ID="{4570A508-AA5D-4848-9D6F-D84FB06908DD}" ShortID="790343638">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Scifi_Amb_Control_Loop4" ID="{C15211BF-20D5-4A6A-B397-D1F7F95F246C}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Luxuria_Stage" ID="{D3F9F2E6-D2CB-47AF-9725-F6288E0C35FA}">
+							<ChildrenList>
+								<Action Name="" ID="{4A13A252-88EA-4D79-9F83-05B9CDE63008}" ShortID="30707390">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Football_Crowd_AmbLoop" ID="{2A14D5BB-604B-4C05-AB51-291F075B4B62}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="UI" ID="{B9B5D772-3640-4672-8492-AAE9C074CD97}" ShortID="1009613585">
+					<ChildrenList>
+						<Folder Name="Log" ID="{40384229-408B-46E3-BBEE-CD1A14C6167D}" ShortID="330691016">
+							<ChildrenList>
+								<Event Name="Text" ID="{BBEE9C1E-838E-4F36-A9A0-7D1F3214D442}">
+									<ChildrenList>
+										<Action Name="" ID="{6B7511D2-6843-4F5E-811B-E5F62D016EC5}" ShortID="132927421">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="text" ID="{49B61B88-B2B5-43DE-B7A0-6A83175D579F}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Text_Stop" ID="{5624CDE3-D354-482C-AAC5-41C746A1AA1D}">
+									<ChildrenList>
+										<Action Name="" ID="{A873E9F5-FE9A-4CC4-A8C7-4E94270818C2}" ShortID="6684582">
+											<PropertyList>
+												<Property Name="ActionType" Type="int16" Value="2"/>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="text" ID="{49B61B88-B2B5-43DE-B7A0-6A83175D579F}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+							</ChildrenList>
+						</Folder>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="BGM" ID="{AED1A812-12A9-486F-825C-AC9E6046F977}" ShortID="133204063">
+					<ChildrenList>
+						<Event Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}">
+							<ChildrenList>
+								<Action Name="" ID="{3A2AED4B-9585-4A78-89E1-2BBBFE4725B2}" ShortID="26779210">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="BGM" ID="{7BBE08B3-251B-45B2-AB4E-9B0B8ABDBAF8}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Sloth_Field" ID="{2CFF7F43-4853-452D-BF40-16D3622639D9}">
+							<ChildrenList>
+								<Action Name="" ID="{2934DA31-3C26-4F00-B23A-3F9E8B40F54D}" ShortID="461454885">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="nat12, Nighthawk (2)" ID="{773A68CF-32BB-4D99-8AE6-1C4C7B7FC12B}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="BGM_gameover" ID="{DAEBFCDD-DCCB-42B5-8713-E1C5B8A93063}">
+							<ChildrenList>
+								<Action Name="" ID="{9A284712-A7ED-4C7B-A5A5-736AE1C32114}" ShortID="1054179843">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="12"/>
+										<Property Name="Volume" Type="Real64" Value="-10"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="BGM" ID="{7BBE08B3-251B-45B2-AB4E-9B0B8ABDBAF8}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Luxuria_Field" ID="{92240A7C-3834-45F4-9A3D-EBA053F481A3}">
+							<ChildrenList>
+								<Action Name="" ID="{8EDB0FDA-0A84-4E4E-A0FA-8EFFA566D024}" ShortID="352591314">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="2nd field" ID="{353EE8EB-D60A-47B3-88B0-EAC716871313}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

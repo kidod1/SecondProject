@@ -121,6 +121,9 @@ public class Player : MonoBehaviour
     public UnityEvent OnHeal;
     public UnityEvent<int> OnGainExperience;
     public UnityEvent OnStartPlayerAnimationComplete;
+    public UnityEvent OnPlayerStartMove;
+    public UnityEvent OnPlayerStopMove;
+
 
     private string saveFilePath;
 
@@ -172,6 +175,8 @@ public class Player : MonoBehaviour
         OnHeal ??= new UnityEvent();
         OnGainExperience ??= new UnityEvent<int>();
         OnStartPlayerAnimationComplete ??= new UnityEvent();
+        OnPlayerStartMove ??= new UnityEvent();
+        OnPlayerStopMove ??= new UnityEvent();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -857,7 +862,14 @@ public class Player : MonoBehaviour
     /// <param name="context">입력 컨텍스트</param>
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
+        Vector2 previousMoveInput = moveInput;
         moveInput = context.ReadValue<Vector2>();
+
+        if (moveInput != Vector2.zero && !isMoving)
+        {
+            isMoving = true;
+            OnPlayerStartMove.Invoke();
+        }
 
         if (moveInput != Vector2.zero)
         {
@@ -874,6 +886,13 @@ public class Player : MonoBehaviour
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector2.zero;
+
+        if (isMoving)
+        {
+            isMoving = false;
+            OnPlayerStopMove.Invoke();
+        }
+
         UpdateAnimation();
     }
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{2662A134-1E80-4F95-BE6B-80B2B5427688}" SchemaVersion="119">
+	<SoundcasterSessions>
+		<WorkUnit Name="Default Work Unit" ID="{2662A134-1E80-4F95-BE6B-80B2B5427688}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundcasterSession Name="test" ID="{78866FA6-4912-42BD-9D21-0714B6CAD2F2}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="Sloth_Stage" ID="{3F7D1EB1-1AE6-4C1B-846D-5561B96C0B8A}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="BGM_gameover" ID="{DAEBFCDD-DCCB-42B5-8713-E1C5B8A93063}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="0" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Sloth_Stage_Stop" ID="{6A877E86-B525-4C36-882B-56020BD29CF3}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Text" ID="{BBEE9C1E-838E-4F36-A9A0-7D1F3214D442}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Text_Stop" ID="{5624CDE3-D354-482C-AAC5-41C746A1AA1D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="3" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="nat12, Nighthawk (2)" ID="{773A68CF-32BB-4D99-8AE6-1C4C7B7FC12B}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+							<Position X="4" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="5" Y="0"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="Music_Volume" ID="{1FCC5A64-DA5B-4232-9E20-D158F6E7A9BA}"/>
+							<Value>51.0869565217391</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="PlayerHealth" ID="{25D6208E-6944-48E2-B887-A879D19E84A0}"/>
+							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Master_Volume" ID="{92A6D6FD-5CB4-4CD9-BAFF-F780E3B63E0C}"/>
+							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SFX_Volume" ID="{C922DBBF-1BEF-4D6B-995F-F6FF2C7262BB}"/>
+							<Value>50</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="UI_Volume" ID="{9DA5557A-7E5F-4FEB-AA3D-A30C4BC59372}"/>
+							<Value>50</Value>
+						</RTPCValue>
+					</RTPCValueList>
+					<CurrentStateList ShowAll="true"/>
+					<CurrentSwitchList ShowAll="true">
+						<CurrentSwitchRef Name="General_FootStep" ID="{710ECF58-7B56-4BC3-9A9D-2E185F12A0C0}"/>
+					</CurrentSwitchList>
+				</SoundcasterSession>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundcasterSessions>
+</WwiseDocument>

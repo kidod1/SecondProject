@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 public class SettingsManager : MonoBehaviour
 {
@@ -14,10 +15,11 @@ public class SettingsManager : MonoBehaviour
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
-    public Slider voiceVolumeSlider;
 
-    [Header("Control Settings")]
-    public Slider mouseSensitivitySlider;
+    // WWISE RTPC 이름 상수 정의
+    private const string MasterVolumeRTPC = "Master_Volume";
+    private const string MusicVolumeRTPC = "Music_Volume";
+    private const string SFXVolumeRTPC = "SFX_Volume";
 
     private void Start()
     {
@@ -28,10 +30,11 @@ public class SettingsManager : MonoBehaviour
         masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
         musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
         sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
-        voiceVolumeSlider.onValueChanged.AddListener(SetVoiceVolume);
 
-        // 컨트롤 설정 초기화
-        mouseSensitivitySlider.onValueChanged.AddListener(SetMouseSensitivity);
+        // 초기 볼륨 값 설정 (필요에 따라 조정)
+        masterVolumeSlider.value = 1.0f;
+        musicVolumeSlider.value = 1.0f;
+        sfxVolumeSlider.value = 1.0f;
     }
 
     // 그래픽 설정 초기화
@@ -79,25 +82,23 @@ public class SettingsManager : MonoBehaviour
     // 마스터 볼륨 설정
     public void SetMasterVolume(float volume)
     {
-        AudioListener.volume = volume;
+        AkSoundEngine.SetRTPCValue(MasterVolumeRTPC, volume * 100);
     }
 
     // 음악 볼륨 설정
     public void SetMusicVolume(float volume)
     {
+        AkSoundEngine.SetRTPCValue(MusicVolumeRTPC, volume * 100);
     }
 
     // 효과음 볼륨 설정
     public void SetSFXVolume(float volume)
     {
-    }
-
-    // 음성 볼륨 설정
-    public void SetVoiceVolume(float volume)
-    {
+        AkSoundEngine.SetRTPCValue(SFXVolumeRTPC, volume * 100);
     }
 
     public void SetMouseSensitivity(float sensitivity)
     {
+        // 마우스 감도 설정 로직을 구현하세요.
     }
 }
