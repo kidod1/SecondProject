@@ -87,7 +87,7 @@ public class DestructibleObjectSpawner : MonoBehaviour
                 DestructibleObject destructible = spawnedObject.GetComponent<DestructibleObject>();
                 if (destructible != null)
                 {
-                    destructible.OnDestroyed += OnObjectDestroyed;
+                    destructible.onDestroyedEvent.AddListener(OnObjectDestroyed);
                 }
             }
             else
@@ -104,7 +104,10 @@ public class DestructibleObjectSpawner : MonoBehaviour
         }
     }
 
-    // 오브젝트가 파괴되었을 때 호출될 메서드
+    /// <summary>
+    /// 오브젝트가 파괴되었을 때 호출될 메서드
+    /// </summary>
+    /// <param name="destroyedObject">파괴된 오브젝트</param>
     private void OnObjectDestroyed(GameObject destroyedObject)
     {
         // 리스트에서 제거
@@ -114,7 +117,9 @@ public class DestructibleObjectSpawner : MonoBehaviour
         currentSpawnedCount--;
     }
 
-    // 소환 중지 메서드 (필요 시)
+    /// <summary>
+    /// 소환 중지 메서드 (필요 시)
+    /// </summary>
     public void StopSpawning()
     {
         isSpawning = false;

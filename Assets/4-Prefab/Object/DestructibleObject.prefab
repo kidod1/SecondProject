@@ -105,6 +105,13 @@ MonoBehaviour:
   - {fileID: 524951139331360349, guid: a2b85769de8b1c042992e5e39a931840, type: 3}
   invincibilityDuration: 0.5
   blinkInterval: 0.1
+  onDestroyedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  destroySoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: c94d2f89bb2e02c40a41f3973c21307b, type: 2}
 --- !u!61 &9072558931419256248
 BoxCollider2D:
   m_ObjectHideFlags: 0

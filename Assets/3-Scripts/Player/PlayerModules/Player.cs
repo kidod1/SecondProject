@@ -124,6 +124,15 @@ public class Player : MonoBehaviour
     public UnityEvent OnPlayerStartMove;
     public UnityEvent OnPlayerStopMove;
 
+    // 추가된 UnityEvent들
+    public UnityEvent OnPlayerInitialized;
+    public UnityEvent OnUIUpdated;
+    public UnityEvent OnInvincibilityStarted;
+    public UnityEvent OnInvincibilityEnded;
+    public UnityEvent OnPlayerStartShoot;
+    public UnityEvent OnPlayerStopShoot;
+    public UnityEvent OnPlayerDataLoaded;
+    public UnityEvent OnPlayerDataSaved;
 
     private string saveFilePath;
 
@@ -177,6 +186,16 @@ public class Player : MonoBehaviour
         OnStartPlayerAnimationComplete ??= new UnityEvent();
         OnPlayerStartMove ??= new UnityEvent();
         OnPlayerStopMove ??= new UnityEvent();
+
+        // 추가된 UnityEvent 초기화
+        OnPlayerInitialized ??= new UnityEvent();
+        OnUIUpdated ??= new UnityEvent();
+        OnInvincibilityStarted ??= new UnityEvent();
+        OnInvincibilityEnded ??= new UnityEvent();
+        OnPlayerStartShoot ??= new UnityEvent();
+        OnPlayerStopShoot ??= new UnityEvent();
+        OnPlayerDataLoaded ??= new UnityEvent();
+        OnPlayerDataSaved ??= new UnityEvent();
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
 
@@ -751,6 +770,8 @@ public class Player : MonoBehaviour
     /// <returns>코루틴</returns>
     private IEnumerator InvincibilityCoroutine()
     {
+        OnInvincibilityStarted.Invoke(); // 무적 상태 시작 이벤트 호출
+
         isInvincible = true;
         float invincibilityDuration = 1f;
         float blinkInterval = 0.1f;
@@ -763,6 +784,8 @@ public class Player : MonoBehaviour
 
         meshRenderer.enabled = true;
         isInvincible = false;
+
+        OnInvincibilityEnded.Invoke(); // 무적 상태 종료 이벤트 호출
     }
 
     /// <summary>
@@ -846,6 +869,8 @@ public class Player : MonoBehaviour
         {
             Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
         }
+
+        OnUIUpdated.Invoke(); // UI 업데이트 이벤트 호출
     }
 
     /// <summary>
@@ -854,6 +879,7 @@ public class Player : MonoBehaviour
     private void InitializePlayer()
     {
         stat.InitializeStats();
+        OnPlayerInitialized.Invoke(); // 플레이어 초기화 이벤트 호출
     }
 
     /// <summary>
@@ -903,6 +929,7 @@ public class Player : MonoBehaviour
     private void OnShootPerformed(InputAction.CallbackContext context)
     {
         isShooting = true;
+        OnPlayerStartShoot.Invoke(); // 공격 시작 이벤트 호출
         UpdateShootDirection();
     }
 
@@ -935,6 +962,7 @@ public class Player : MonoBehaviour
     {
         isShooting = false;
         OnShootCanceled.Invoke();
+        OnPlayerStopShoot.Invoke(); // 공격 멈춤 이벤트 호출
         UpdateAnimation();
     }
     /// <summary>
@@ -1061,6 +1089,8 @@ public class Player : MonoBehaviour
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(saveFilePath, json);
+
+        OnPlayerDataSaved.Invoke(); // 플레이어 데이터 저장 이벤트 호출
     }
 
     /// <summary>
@@ -1086,6 +1116,8 @@ public class Player : MonoBehaviour
             stat.currentExperience = data.currentExperience;
             stat.currentCurrency = data.currentCurrency;
             stat.currentLevel = data.currentLevel;
+
+            OnPlayerDataLoaded.Invoke(); // 플레이어 데이터 로드 이벤트 호출
         }
         else
         {

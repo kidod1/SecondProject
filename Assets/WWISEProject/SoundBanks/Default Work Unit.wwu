@@ -4,7 +4,24 @@
 		<WorkUnit Name="Default Work Unit" ID="{22A327B5-726A-47EF-8E7C-2CA6105DD8E9}" PersistMode="Standalone">
 			<ChildrenList>
 				<SoundBank Name="Main" ID="{C5E23951-0FF5-49AE-9F46-CC35DB17ACC9}">
-					<ObjectInclusionList/>
+					<ObjectInclusionList>
+						<ObjectRef Name="SFX" ID="{68E2171C-66C5-42F4-9FD4-0262795ED549}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Sloth_Field" ID="{2CFF7F43-4853-452D-BF40-16D3622639D9}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="AMB" ID="{3951B247-5A87-4579-80CF-94731AD26AF8}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Luxuria_Field" ID="{92240A7C-3834-45F4-9A3D-EBA053F481A3}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="UI" ID="{B9B5D772-3640-4672-8492-AAE9C074CD97}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Tutorial" ID="{6A463FE9-F531-4B92-935F-66E30DF27E51}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="BGM" ID="{88642487-8B12-4146-BC70-430490790E2D}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Synopsis" ID="{D4348B5C-D1DE-42B7-A016-47AFB1C92078}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Credit" ID="{CCCD0DF5-BC88-4422-ACC8-62EA4C1B4DB5}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Main_title" ID="{92E8B504-B30F-4E50-9C3F-4E11BCF55EAD}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>
 				</SoundBank>

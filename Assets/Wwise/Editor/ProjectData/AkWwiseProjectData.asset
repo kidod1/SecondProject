@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584703980706058377
+    m_lastTime: -8584703107523070449
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584703980705530724
+    m_lastTime: -8584703107522796107
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,8 +303,25 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584703980759902493
+    m_lastTime: -8584703059244927183
     List:
+    - name: AMB_Bus
+      guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
+      id: 3319158528
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: c46b0c1f224b0b44a324af369cedf6d1
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: AMB_Bus
+        ObjectType: 2
+        guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
+      Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\AMB_Bus
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
       id: 3803692087
@@ -319,6 +336,57 @@ MonoBehaviour:
         ObjectType: 2
         guid: d8a41415a61d2a41a17e75ca0c2149f3
       Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus
+    - name: Master_Bus
+      guid: a107d380b008564283f56bcad6fdaaa3
+      id: 3677413232
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: c46b0c1f224b0b44a324af369cedf6d1
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: Master_Bus
+        ObjectType: 2
+        guid: a107d380b008564283f56bcad6fdaaa3
+      Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\Master_Bus
+    - name: SFX_Bus
+      guid: fa45d62481d9bc4ca293d94a356aa14c
+      id: 213475909
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: c46b0c1f224b0b44a324af369cedf6d1
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: SFX_Bus
+        ObjectType: 2
+        guid: fa45d62481d9bc4ca293d94a356aa14c
+      Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\SFX_Bus
+    - name: UI_Bus
+      guid: 8203ffc8268ac04285c6b8d86d2ab1c6
+      id: 3247222208
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: c46b0c1f224b0b44a324af369cedf6d1
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: UI_Bus
+        ObjectType: 2
+        guid: 8203ffc8268ac04285c6b8d86d2ab1c6
+      Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\UI_Bus
   BankWwu:
   - PhysicalPath: SoundBanks\Default Work Unit.wwu
     PathAndIcons:
@@ -331,8 +399,22 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584703980708009150
+    m_lastTime: -8584703052073162433
     List:
+    - name: BGM
+      guid: 87246488128b4641bc70430490790e2d
+      id: 412724365
+      PathAndIcons:
+      - ElementName: SoundBanks
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b527a3226a72ef478e7c2ca6105dd8e9
+      - ElementName: BGM
+        ObjectType: 7
+        guid: 87246488128b4641bc70430490790e2d
+      Path: SoundBanks\Default Work Unit\BGM
     - name: Main
       guid: 5139e2c5f50fae499f46cc35db17acc9
       id: 3161908922
@@ -359,8 +441,54 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584703980694096094
+    m_lastTime: -8584703059264804785
     List:
+    - name: Ability_hover
+      guid: bd8c064408430c4cb8bf15ded59d33db
+      id: 3159735458
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_Ablilty_Pick
+        ObjectType: 4
+        guid: 30eb41ab2ee3804faaf412626b96895a
+      - ElementName: Ability_hover
+        ObjectType: 3
+        guid: bd8c064408430c4cb8bf15ded59d33db
+      Path: Events\Default Work Unit\UI\UI_Ablilty_Pick\Ability_hover
+      maxAttenuation: 0
+      maxDuration: 0.0771875
+      minDuration: 0.0771875
+    - name: Ability_Pick
+      guid: 464d408ac8d2604ba05e3e5decd9712e
+      id: 3637490847
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_Ablilty_Pick
+        ObjectType: 4
+        guid: 30eb41ab2ee3804faaf412626b96895a
+      - ElementName: Ability_Pick
+        ObjectType: 3
+        guid: 464d408ac8d2604ba05e3e5decd9712e
+      Path: Events\Default Work Unit\UI\UI_Ablilty_Pick\Ability_Pick
+      maxAttenuation: 0
+      maxDuration: 2
+      minDuration: 2
     - name: Ablilty
       guid: 976923fb337adc4f9a7b2c3d81715f17
       id: 3587774686
@@ -382,7 +510,7 @@ MonoBehaviour:
       maxDuration: -1
       minDuration: -1
     - name: Ablilty_Fury_FireBreath
-      guid: e967a9f106604b498e5be01df122112a
+      guid: 73910f471d3beb4d8752d0b468d901e0
       id: 1955875006
       PathAndIcons:
       - ElementName: Events
@@ -402,11 +530,95 @@ MonoBehaviour:
         guid: 72897f747f76c94fb0a9c41d2c3c21b2
       - ElementName: Ablilty_Fury_FireBreath
         ObjectType: 3
-        guid: e967a9f106604b498e5be01df122112a
+        guid: 73910f471d3beb4d8752d0b468d901e0
       Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_FireBreath
+      maxAttenuation: 0
+      maxDuration: 1.4337107
+      minDuration: 1.137937
+    - name: Ablilty_Fury_FlameCurtain
+      guid: f6fdf1c13947bd4ca2c44650d83f8553
+      id: 2486739201
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Fury
+        ObjectType: 4
+        guid: 72897f747f76c94fb0a9c41d2c3c21b2
+      - ElementName: Ablilty_Fury_FlameCurtain
+        ObjectType: 4
+        guid: f6fdf1c13947bd4ca2c44650d83f8553
+      Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_FlameCurtain
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Ablilty_Fury_FlameCurtain_start
+      guid: 6a4f4995109cec4099c52a1e101d7141
+      id: 473077560
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Fury
+        ObjectType: 4
+        guid: 72897f747f76c94fb0a9c41d2c3c21b2
+      - ElementName: Ablilty_Fury_FlameCurtain
+        ObjectType: 4
+        guid: f6fdf1c13947bd4ca2c44650d83f8553
+      - ElementName: Ablilty_Fury_FlameCurtain_start
+        ObjectType: 3
+        guid: 6a4f4995109cec4099c52a1e101d7141
+      Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_FlameCurtain\Ablilty_Fury_FlameCurtain_start
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Ablilty_Fury_FlameCurtain_stop
+      guid: 3360259637d2e44887cca9d6ed67a96a
+      id: 2065816388
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Fury
+        ObjectType: 4
+        guid: 72897f747f76c94fb0a9c41d2c3c21b2
+      - ElementName: Ablilty_Fury_FlameCurtain
+        ObjectType: 4
+        guid: f6fdf1c13947bd4ca2c44650d83f8553
+      - ElementName: Ablilty_Fury_FlameCurtain_stop
+        ObjectType: 3
+        guid: 3360259637d2e44887cca9d6ed67a96a
+      Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_FlameCurtain\Ablilty_Fury_FlameCurtain_stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: Ablilty_Fury_Meteor
       guid: edf1c549a3a5ed41baa06a6e9056ae49
       id: 1047829572
@@ -431,10 +643,10 @@ MonoBehaviour:
         guid: edf1c549a3a5ed41baa06a6e9056ae49
       Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_Meteor
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 9.87711
+      minDuration: 7.7363176
     - name: Ablilty_Greed_CoinBetting
-      guid: dd844eb595b2b4438525541037a63490
+      guid: 94561e9a1e2bbb45af67df89e18f8537
       id: 228122833
       PathAndIcons:
       - ElementName: Events
@@ -453,8 +665,8 @@ MonoBehaviour:
         ObjectType: 4
         guid: 10154db443e9e0439ab79ee568015af1
       - ElementName: Ablilty_Greed_CoinBetting
-        ObjectType: 3
-        guid: dd844eb595b2b4438525541037a63490
+        ObjectType: 4
+        guid: 94561e9a1e2bbb45af67df89e18f8537
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinBetting
       maxAttenuation: 0
       maxDuration: -1
@@ -483,8 +695,8 @@ MonoBehaviour:
         guid: 191e7080f88492458c624890f6b6b9ec
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.5560865
+      minDuration: 1.2350667
     - name: Ablilty_Greed_Joker
       guid: 37b3d5577f7ebb4f833b41cc1d5a14f5
       id: 1545538756
@@ -509,8 +721,8 @@ MonoBehaviour:
         guid: 37b3d5577f7ebb4f833b41cc1d5a14f5
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_Joker
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.8717182
+      minDuration: 1.4855837
     - name: Ablilty_Greed_shuffle_R
       guid: 0a28a998ac023a48b2fbb971050c4caf
       id: 1570168993
@@ -535,8 +747,8 @@ MonoBehaviour:
         guid: 0a28a998ac023a48b2fbb971050c4caf
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_shuffle_R
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.27835187
+      minDuration: 0.22092801
     - name: Ablilty_Jealousy_Ouroboros
       guid: 2c6c6112f06ace45a6e6f5d27610f765
       id: 2915978152
@@ -561,8 +773,8 @@ MonoBehaviour:
         guid: 2c6c6112f06ace45a6e6f5d27610f765
       Path: Events\Default Work Unit\SFX\Ablilty\Jealousy\Ablilty_Jealousy_Ouroboros
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.1188152
+      minDuration: 0.8880042
     - name: Ablilty_Jealousy_SwordDance
       guid: 0559bd3d3542424f8f92f1e57b520b6b
       id: 359925860
@@ -587,10 +799,10 @@ MonoBehaviour:
         guid: 0559bd3d3542424f8f92f1e57b520b6b
       Path: Events\Default Work Unit\SFX\Ablilty\Jealousy\Ablilty_Jealousy_SwordDance
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 2.2513592
+      minDuration: 1.7869049
     - name: Ablilty_Jealousy_WanderingWave
-      guid: e3428476b9992c439d700d1aa060044a
+      guid: 4d990ee1b9e87243ae7e0f57e4986d7d
       id: 2071326854
       PathAndIcons:
       - ElementName: Events
@@ -609,8 +821,8 @@ MonoBehaviour:
         ObjectType: 4
         guid: 240a04456cee61458492431cace0b734
       - ElementName: Ablilty_Jealousy_WanderingWave
-        ObjectType: 3
-        guid: e3428476b9992c439d700d1aa060044a
+        ObjectType: 4
+        guid: 4d990ee1b9e87243ae7e0f57e4986d7d
       Path: Events\Default Work Unit\SFX\Ablilty\Jealousy\Ablilty_Jealousy_WanderingWave
       maxAttenuation: 0
       maxDuration: -1
@@ -639,8 +851,8 @@ MonoBehaviour:
         guid: d36cbf4cc23fe24cbbbe943bbf3eb477
       Path: Events\Default Work Unit\SFX\Ablilty\Luxuria\Ablilty_Luxuria_Doppelganger
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.6224133
+      minDuration: 1.2877103
     - name: Ablilty_Luxuria_FascinatingMelody
       guid: 76834e48c3afa240819a9d2d7f963e0f
       id: 307190599
@@ -665,8 +877,8 @@ MonoBehaviour:
         guid: 76834e48c3afa240819a9d2d7f963e0f
       Path: Events\Default Work Unit\SFX\Ablilty\Luxuria\Ablilty_Luxuria_FascinatingMelody
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.7416242
+      minDuration: 0.5886275
     - name: Ablilty_Luxuria_LilithKiss
       guid: ba04c0fcb0bef842a51973262235b66d
       id: 1813255844
@@ -691,8 +903,8 @@ MonoBehaviour:
         guid: ba04c0fcb0bef842a51973262235b66d
       Path: Events\Default Work Unit\SFX\Ablilty\Luxuria\Ablilty_Luxuria_LilithKiss
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.6290562
+      minDuration: 0.49928224
     - name: Ablilty_Luxuria_Tingling
       guid: 99d9f80eb9eb5740bedd11fdce41fdc0
       id: 3838459994
@@ -717,8 +929,31 @@ MonoBehaviour:
         guid: 99d9f80eb9eb5740bedd11fdce41fdc0
       Path: Events\Default Work Unit\SFX\Ablilty\Luxuria\Ablilty_Luxuria_Tingling
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 2.7148743
+      minDuration: 2.154797
+    - name: Ablilty_LVUP
+      guid: 2706e864afcb62498db72f7444662c70
+      id: 3253800600
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_Ablilty_Pick
+        ObjectType: 4
+        guid: 30eb41ab2ee3804faaf412626b96895a
+      - ElementName: Ablilty_LVUP
+        ObjectType: 3
+        guid: 2706e864afcb62498db72f7444662c70
+      Path: Events\Default Work Unit\UI\UI_Ablilty_Pick\Ablilty_LVUP
+      maxAttenuation: 0
+      maxDuration: 0.7089792
+      minDuration: 0.7089792
     - name: Ablilty_Pride_DivinePunishment
       guid: 3dada0fb9eb1bf4d84447d53145bcb38
       id: 2106314190
@@ -743,8 +978,8 @@ MonoBehaviour:
         guid: 3dada0fb9eb1bf4d84447d53145bcb38
       Path: Events\Default Work Unit\SFX\Ablilty\Pride\Ablilty_Pride_DivinePunishment
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.236665
+      minDuration: 0.9815416
     - name: Ablilty_Pride_glare
       guid: 3bffed7ef9ef51449d407a57d3cf1f2e
       id: 2850796585
@@ -769,8 +1004,8 @@ MonoBehaviour:
         guid: 3bffed7ef9ef51449d407a57d3cf1f2e
       Path: Events\Default Work Unit\SFX\Ablilty\Pride\Ablilty_Pride_glare
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.76877147
+      minDuration: 0.6101743
     - name: Ablilty_Pride_rush
       guid: 3b86792fde898147a9695cf3c7ba4bc3
       id: 394947470
@@ -795,8 +1030,8 @@ MonoBehaviour:
         guid: 3b86792fde898147a9695cf3c7ba4bc3
       Path: Events\Default Work Unit\SFX\Ablilty\Pride\Ablilty_Pride_rush
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.76877147
+      minDuration: 0.6101743
     - name: Ablilty_Pride_warrant
       guid: 62a83028cbff9f4691d311500b839438
       id: 772338355
@@ -821,6 +1056,110 @@ MonoBehaviour:
         guid: 62a83028cbff9f4691d311500b839438
       Path: Events\Default Work Unit\SFX\Ablilty\Pride\Ablilty_Pride_warrant
       maxAttenuation: 0
+      maxDuration: 2.6486578
+      minDuration: 2.102241
+    - name: Ablilty_Sloth_Barrier
+      guid: ad4fe3f24fae5c45b9e89dab64711b4c
+      id: 2362567179
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_Barrier
+        ObjectType: 4
+        guid: ad4fe3f24fae5c45b9e89dab64711b4c
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_Barrier
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Ablilty_Sloth_L-Bullet
+      guid: 4b1ecc9ee1d498498940b866db5599cc
+      id: 2721440395
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_L-Bullet
+        ObjectType: 4
+        guid: 4b1ecc9ee1d498498940b866db5599cc
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_L-Bullet
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Ablilty_Sloth_Overclocking
+      guid: 07c12fb23533bc45b88d82dfcf3b9e55
+      id: 862378262
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_Overclocking
+        ObjectType: 4
+        guid: 07c12fb23533bc45b88d82dfcf3b9e55
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_Overclocking
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Ablilty_Sloth_turret
+      guid: 6355c1cb45b5b0479f3690c9d8781c18
+      id: 4046006764
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_turret
+        ObjectType: 4
+        guid: 6355c1cb45b5b0479f3690c9d8781c18
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_turret
+      maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
     - name: AMB
@@ -840,6 +1179,78 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: AMB_stop
+      guid: c368ca8e8d629748aa16ff754c00364b
+      id: 729984210
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: AMB
+        ObjectType: 4
+        guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: AMB_stop
+        ObjectType: 3
+        guid: c368ca8e8d629748aa16ff754c00364b
+      Path: Events\Default Work Unit\AMB\AMB_stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - name: Bee_sfx
+      guid: a1f1dc5deefee6429b49449ed0fd4721
+      id: 230523991
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Gula
+        ObjectType: 4
+        guid: 7ab8747c3357ce45b5693e65cc9ea104
+      - ElementName: Bee_sfx
+        ObjectType: 3
+        guid: a1f1dc5deefee6429b49449ed0fd4721
+      Path: Events\Default Work Unit\SFX\Ablilty\Gula\Bee_sfx
+      maxAttenuation: 0
+      maxDuration: 15.397156
+      minDuration: 12.22073
+    - name: Bee_Stop
+      guid: 61a48beccf1aaf4c85fde9a32d2085b4
+      id: 3778321934
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Gula
+        ObjectType: 4
+        guid: 7ab8747c3357ce45b5693e65cc9ea104
+      - ElementName: Bee_Stop
+        ObjectType: 3
+        guid: 61a48beccf1aaf4c85fde9a32d2085b4
+      Path: Events\Default Work Unit\SFX\Ablilty\Gula\Bee_Stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: BGM
       guid: 12a8d1aea9126f48825cac9e6046f977
       id: 412724365
@@ -854,26 +1265,6 @@ MonoBehaviour:
         ObjectType: 4
         guid: 12a8d1aea9126f48825cac9e6046f977
       Path: Events\Default Work Unit\BGM
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
-    - name: BGM_gameover
-      guid: ddfcebdacbdcb5428713e1c5b8a93063
-      id: 3584414616
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: BGM
-        ObjectType: 4
-        guid: 12a8d1aea9126f48825cac9e6046f977
-      - ElementName: BGM_gameover
-        ObjectType: 3
-        guid: ddfcebdacbdcb5428713e1c5b8a93063
-      Path: Events\Default Work Unit\BGM\BGM_gameover
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -895,6 +1286,115 @@ MonoBehaviour:
         guid: 1402444a83d56e44a85d2558305c450d
       Path: Events\Default Work Unit\BGM\BGM_Stop
       maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - name: Credit
+      guid: f50dcdcc88bc2244acc862ea4c1b4db5
+      id: 4072209002
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Credit
+        ObjectType: 3
+        guid: f50dcdcc88bc2244acc862ea4c1b4db5
+      Path: Events\Default Work Unit\BGM\Credit
+      maxAttenuation: 0
+      maxDuration: 89.99998
+      minDuration: 89.99998
+    - name: Enemy
+      guid: 020651b4141cda40b05b13c30e679370
+      id: 2299321487
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      Path: Events\Default Work Unit\SFX\Enemy
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Enemy_Hit
+      guid: 1b81d29810ba314d9f89161202ca36a7
+      id: 1010055213
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Enemy_Hit
+        ObjectType: 3
+        guid: 1b81d29810ba314d9f89161202ca36a7
+      Path: Events\Default Work Unit\SFX\Enemy\Enemy_Hit
+      maxAttenuation: 0
+      maxDuration: 0.2427636
+      minDuration: 0.11894585
+    - name: Explode
+      guid: 0eb9846c9f00b4439eb0ea214a5eb573
+      id: 948631664
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: General
+        ObjectType: 4
+        guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Explode
+        ObjectType: 3
+        guid: 0eb9846c9f00b4439eb0ea214a5eb573
+      Path: Events\Default Work Unit\SFX\General\Explode
+      maxAttenuation: 0
+      maxDuration: 1.2183826
+      minDuration: 0.9670309
+    - name: Foots
+      guid: 4bbaafb48e65b746a08c4e9c76d4b3f2
+      id: 264776788
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: General
+        ObjectType: 4
+        guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Foots
+        ObjectType: 4
+        guid: 4bbaafb48e65b746a08c4e9c76d4b3f2
+      Path: Events\Default Work Unit\SFX\General\Foots
+      maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
     - name: FootStep
@@ -913,13 +1413,42 @@ MonoBehaviour:
       - ElementName: General
         ObjectType: 4
         guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Foots
+        ObjectType: 4
+        guid: 4bbaafb48e65b746a08c4e9c76d4b3f2
       - ElementName: FootStep
         ObjectType: 3
         guid: a2bd385b9d4a7145b9b7b641fc6b7c9e
-      Path: Events\Default Work Unit\SFX\General\FootStep
+      Path: Events\Default Work Unit\SFX\General\Foots\FootStep
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.4060795
+      minDuration: 0.23855908
+    - name: FootStep_stop
+      guid: 05c72b86346b40469b1159e417f99bc8
+      id: 4175340882
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: General
+        ObjectType: 4
+        guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Foots
+        ObjectType: 4
+        guid: 4bbaafb48e65b746a08c4e9c76d4b3f2
+      - ElementName: FootStep_stop
+        ObjectType: 3
+        guid: 05c72b86346b40469b1159e417f99bc8
+      Path: Events\Default Work Unit\SFX\General\Foots\FootStep_stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: Fury
       guid: 72897f747f76c94fb0a9c41d2c3c21b2
       id: 2812513169
@@ -1009,6 +1538,29 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Heal
+      guid: e3a4e80fff0078488a36afc2c91f5b5e
+      id: 3448274447
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: General
+        ObjectType: 4
+        guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Heal
+        ObjectType: 3
+        guid: e3a4e80fff0078488a36afc2c91f5b5e
+      Path: Events\Default Work Unit\SFX\General\Heal
+      maxAttenuation: 0
+      maxDuration: 0.81982577
+      minDuration: 0.65069616
     - name: Jealousy
       guid: 240a04456cee61458492431cace0b734
       id: 3913897017
@@ -1032,6 +1584,35 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: L_Bullet_hit
+      guid: 99aad96af625044695b0f4830ba156ba
+      id: 782578156
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_L-Bullet
+        ObjectType: 4
+        guid: 4b1ecc9ee1d498498940b866db5599cc
+      - ElementName: L_Bullet_hit
+        ObjectType: 3
+        guid: 99aad96af625044695b0f4830ba156ba
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_L-Bullet\L_Bullet_hit
+      maxAttenuation: 0
+      maxDuration: 0.36339584
+      minDuration: 0.23087864
     - name: Log
       guid: 294238408b40e346bbeecd1a14c6167d
       id: 545371381
@@ -1049,6 +1630,29 @@ MonoBehaviour:
         ObjectType: 4
         guid: 294238408b40e346bbeecd1a14c6167d
       Path: Events\Default Work Unit\UI\Log
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Low_HP
+      guid: abaa684ec7f9984887425c0784a76519
+      id: 3226347240
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Player
+        ObjectType: 4
+        guid: 18d72caaa998724983ff778eecf5c857
+      - ElementName: Low_HP
+        ObjectType: 3
+        guid: abaa684ec7f9984887425c0784a76519
+      Path: Events\Default Work Unit\SFX\Player\Low_HP
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1115,6 +1719,155 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Main_title
+      guid: 04b5e8920fb3504e9c3f4e11bcf55ead
+      id: 654742305
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Main_title
+        ObjectType: 3
+        guid: 04b5e8920fb3504e9c3f4e11bcf55ead
+      Path: Events\Default Work Unit\BGM\Main_title
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Object_Broken
+      guid: b489c392547a764ca6695ba0ed9f289e
+      id: 2434695444
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: General
+        ObjectType: 4
+        guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Object_Broken
+        ObjectType: 3
+        guid: b489c392547a764ca6695ba0ed9f289e
+      Path: Events\Default Work Unit\SFX\General\Object_Broken
+      maxAttenuation: 0
+      maxDuration: 0.44074628
+      minDuration: 0.34982055
+    - name: Pause
+      guid: 98d0c548ca42db499d12c430eb994aba
+      id: 3092587493
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Pause
+        ObjectType: 3
+        guid: 98d0c548ca42db499d12c430eb994aba
+      Path: Events\Default Work Unit\UI\Pause
+      maxAttenuation: 0
+      maxDuration: 0.6082313
+      minDuration: 0.6082313
+    - name: Player
+      guid: 18d72caaa998724983ff778eecf5c857
+      id: 1069431850
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Player
+        ObjectType: 4
+        guid: 18d72caaa998724983ff778eecf5c857
+      Path: Events\Default Work Unit\SFX\Player
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Player_Death
+      guid: 824ceaa5b88fda4c9ed0693975d75543
+      id: 3083087645
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Player_Death
+        ObjectType: 3
+        guid: 824ceaa5b88fda4c9ed0693975d75543
+      Path: Events\Default Work Unit\UI\Player_Death
+      maxAttenuation: 0
+      maxDuration: 2.875
+      minDuration: 2.875
+    - name: Player_Hit
+      guid: 9d484f7495c7bd4f8760493f79a1fe6b
+      id: 871813740
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Player
+        ObjectType: 4
+        guid: 18d72caaa998724983ff778eecf5c857
+      - ElementName: Player_Hit
+        ObjectType: 3
+        guid: 9d484f7495c7bd4f8760493f79a1fe6b
+      Path: Events\Default Work Unit\SFX\Player\Player_Hit
+      maxAttenuation: 0
+      maxDuration: 0.19598867
+      minDuration: 0.07497517
+    - name: Player_take_Gun
+      guid: 754bb26778cb3f45ba90a247ce8e4108
+      id: 3379829983
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Player
+        ObjectType: 4
+        guid: 18d72caaa998724983ff778eecf5c857
+      - ElementName: Player_take_Gun
+        ObjectType: 3
+        guid: 754bb26778cb3f45ba90a247ce8e4108
+      Path: Events\Default Work Unit\SFX\Player\Player_take_Gun
+      maxAttenuation: 0
+      maxDuration: 1.4233563
+      minDuration: 1.1297185
     - name: Pride
       guid: 861b2318f5ca514e9caa62960f36f783
       id: 1370967373
@@ -1155,6 +1908,342 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: SFX_Player_Ablilty_Greed_CoinBetting
+      guid: c4dfc17bc6cdeb40be6d7248578c4d69
+      id: 1037997653
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Greed
+        ObjectType: 4
+        guid: 10154db443e9e0439ab79ee568015af1
+      - ElementName: Ablilty_Greed_CoinBetting
+        ObjectType: 4
+        guid: 94561e9a1e2bbb45af67df89e18f8537
+      - ElementName: SFX_Player_Ablilty_Greed_CoinBetting
+        ObjectType: 3
+        guid: c4dfc17bc6cdeb40be6d7248578c4d69
+      Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinBetting\SFX_Player_Ablilty_Greed_CoinBetting
+      maxAttenuation: 0
+      maxDuration: 0.78414685
+      minDuration: 0.62237775
+    - name: SFX_Player_Ablilty_Greed_CoinBetting_boom
+      guid: 798b8392f377c0439ec7dfb6cd0cf267
+      id: 392565905
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Greed
+        ObjectType: 4
+        guid: 10154db443e9e0439ab79ee568015af1
+      - ElementName: Ablilty_Greed_CoinBetting
+        ObjectType: 4
+        guid: 94561e9a1e2bbb45af67df89e18f8537
+      - ElementName: SFX_Player_Ablilty_Greed_CoinBetting_boom
+        ObjectType: 3
+        guid: 798b8392f377c0439ec7dfb6cd0cf267
+      Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinBetting\SFX_Player_Ablilty_Greed_CoinBetting_boom
+      maxAttenuation: 0
+      maxDuration: 1.5560865
+      minDuration: 1.2350667
+    - name: SFX_Player_Ablilty_Jealousy_WanderingWave
+      guid: b8af7ea0e76f0541ba8621fd28e82912
+      id: 743609202
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Jealousy
+        ObjectType: 4
+        guid: 240a04456cee61458492431cace0b734
+      - ElementName: Ablilty_Jealousy_WanderingWave
+        ObjectType: 4
+        guid: 4d990ee1b9e87243ae7e0f57e4986d7d
+      - ElementName: SFX_Player_Ablilty_Jealousy_WanderingWave
+        ObjectType: 3
+        guid: b8af7ea0e76f0541ba8621fd28e82912
+      Path: Events\Default Work Unit\SFX\Ablilty\Jealousy\Ablilty_Jealousy_WanderingWave\SFX_Player_Ablilty_Jealousy_WanderingWave
+      maxAttenuation: 0
+      maxDuration: 2.2008243
+      minDuration: 1.7467954
+    - name: SFX_Player_Ablilty_Jealousy_WanderingWave_HIT
+      guid: 09fa18f16744734087af44d2f3301fe7
+      id: 936558308
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Jealousy
+        ObjectType: 4
+        guid: 240a04456cee61458492431cace0b734
+      - ElementName: Ablilty_Jealousy_WanderingWave
+        ObjectType: 4
+        guid: 4d990ee1b9e87243ae7e0f57e4986d7d
+      - ElementName: SFX_Player_Ablilty_Jealousy_WanderingWave_HIT
+        ObjectType: 3
+        guid: 09fa18f16744734087af44d2f3301fe7
+      Path: Events\Default Work Unit\SFX\Ablilty\Jealousy\Ablilty_Jealousy_WanderingWave\SFX_Player_Ablilty_Jealousy_WanderingWave_HIT
+      maxAttenuation: 0
+      maxDuration: 0.9368965
+      minDuration: 0.7436152
+    - name: SFX_Player_Ablilty_Sloth_Barrier_Out
+      guid: fd4e664b3bb70a42886459da76726b1d
+      id: 2385642374
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_Barrier
+        ObjectType: 4
+        guid: ad4fe3f24fae5c45b9e89dab64711b4c
+      - ElementName: SFX_Player_Ablilty_Sloth_Barrier_Out
+        ObjectType: 3
+        guid: fd4e664b3bb70a42886459da76726b1d
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_Barrier\SFX_Player_Ablilty_Sloth_Barrier_Out
+      maxAttenuation: 0
+      maxDuration: 0.72043496
+      minDuration: 0.5718096
+    - name: SFX_Player_Ablilty_Sloth_Barrier_start
+      guid: 71bd4fc96c222a49bb9433c5c833c2c0
+      id: 1603885962
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_Barrier
+        ObjectType: 4
+        guid: ad4fe3f24fae5c45b9e89dab64711b4c
+      - ElementName: SFX_Player_Ablilty_Sloth_Barrier_start
+        ObjectType: 3
+        guid: 71bd4fc96c222a49bb9433c5c833c2c0
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_Barrier\SFX_Player_Ablilty_Sloth_Barrier_start
+      maxAttenuation: 0
+      maxDuration: 0.3534907
+      minDuration: 0.28056577
+    - name: SFX_Player_Ablilty_Sloth_L_Bullet2
+      guid: 3aa74dfea341824d871671a6e9c1c2c9
+      id: 1178676313
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_L-Bullet
+        ObjectType: 4
+        guid: 4b1ecc9ee1d498498940b866db5599cc
+      - ElementName: SFX_Player_Ablilty_Sloth_L_Bullet2
+        ObjectType: 3
+        guid: 3aa74dfea341824d871671a6e9c1c2c9
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_L-Bullet\SFX_Player_Ablilty_Sloth_L_Bullet2
+      maxAttenuation: 0
+      maxDuration: 1.4913446
+      minDuration: 1.1836809
+    - name: SFX_Player_Ablilty_Sloth_Overclocking
+      guid: 02739b0c27ce544dbbc138d43d4fd9bc
+      id: 377751402
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_Overclocking
+        ObjectType: 4
+        guid: 07c12fb23533bc45b88d82dfcf3b9e55
+      - ElementName: SFX_Player_Ablilty_Sloth_Overclocking
+        ObjectType: 3
+        guid: 02739b0c27ce544dbbc138d43d4fd9bc
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_Overclocking\SFX_Player_Ablilty_Sloth_Overclocking
+      maxAttenuation: 0
+      maxDuration: 0.97187126
+      minDuration: 0.7713747
+    - name: SFX_Player_Ablilty_Sloth_turret
+      guid: 5fef13851d3b5043aceb16a35559af59
+      id: 802699080
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_turret
+        ObjectType: 4
+        guid: 6355c1cb45b5b0479f3690c9d8781c18
+      - ElementName: SFX_Player_Ablilty_Sloth_turret
+        ObjectType: 3
+        guid: 5fef13851d3b5043aceb16a35559af59
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_turret\SFX_Player_Ablilty_Sloth_turret
+      maxAttenuation: 0
+      maxDuration: 1.1256796
+      minDuration: 0.89345247
+    - name: SFX_Player_Ablilty_Sloth_turretSHOT
+      guid: 769935d112371d44a080d0d4045e7c17
+      id: 2653719656
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 0b5763a6b1003f4e993f4c237dc3a81a
+      - ElementName: Ablilty_Sloth_turret
+        ObjectType: 4
+        guid: 6355c1cb45b5b0479f3690c9d8781c18
+      - ElementName: SFX_Player_Ablilty_Sloth_turretSHOT
+        ObjectType: 3
+        guid: 769935d112371d44a080d0d4045e7c17
+      Path: Events\Default Work Unit\SFX\Ablilty\Sloth\Ablilty_Sloth_turret\SFX_Player_Ablilty_Sloth_turretSHOT
+      maxAttenuation: 0
+      maxDuration: 1.0052319
+      minDuration: 0.79785305
+    - name: Shotgun_IN
+      guid: 3fec8a2d89ca7a4e905bc068f6c24a36
+      id: 3111968065
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Weapon
+        ObjectType: 4
+        guid: 0a0d25fc23e0be4c9d5d8f5622492cd3
+      - ElementName: Shotgun_IN
+        ObjectType: 3
+        guid: 3fec8a2d89ca7a4e905bc068f6c24a36
+      Path: Events\Default Work Unit\SFX\Weapon\Shotgun_IN
+      maxAttenuation: 0
+      maxDuration: 0.8108138
+      minDuration: 0.63678634
+    - name: Shotgun_OUT
+      guid: 987cc3e1e81ef34c8ea6f10d5479f174
+      id: 1435234624
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Weapon
+        ObjectType: 4
+        guid: 0a0d25fc23e0be4c9d5d8f5622492cd3
+      - ElementName: Shotgun_OUT
+        ObjectType: 3
+        guid: 987cc3e1e81ef34c8ea6f10d5479f174
+      Path: Events\Default Work Unit\SFX\Weapon\Shotgun_OUT
+      maxAttenuation: 0
+      maxDuration: 0.8108138
+      minDuration: 0.63678634
     - name: Sloth
       guid: 0b5763a6b1003f4e993f4c237dc3a81a
       id: 3888770555
@@ -1175,6 +2264,130 @@ MonoBehaviour:
         ObjectType: 4
         guid: 0b5763a6b1003f4e993f4c237dc3a81a
       Path: Events\Default Work Unit\SFX\Ablilty\Sloth
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Sloth_b_Laser
+      guid: b79eb4c848308c4fb8b3ec2ae718c040
+      id: 3879107156
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Boss
+        ObjectType: 4
+        guid: 61359a9a97ef754980416f1e1ee5b81c
+      - ElementName: Sloth_b_Laser
+        ObjectType: 3
+        guid: b79eb4c848308c4fb8b3ec2ae718c040
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_b_Laser
+      maxAttenuation: 0
+      maxDuration: 1.2569647
+      minDuration: 0.941804
+    - name: Sloth_Boss
+      guid: 61359a9a97ef754980416f1e1ee5b81c
+      id: 3242833905
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Boss
+        ObjectType: 4
+        guid: 61359a9a97ef754980416f1e1ee5b81c
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Sloth_E_Fire
+      guid: 61e4ceafcdbc384b98197d0402615989
+      id: 4241994286
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Enemy
+        ObjectType: 4
+        guid: f89f74945f2ab743b6ad821a86aa40e6
+      - ElementName: Sloth_E_Fire
+        ObjectType: 3
+        guid: 61e4ceafcdbc384b98197d0402615989
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Enemy\Sloth_E_Fire
+      maxAttenuation: 0
+      maxDuration: 0.4592552
+      minDuration: 0.36451107
+    - name: Sloth_E_Thunder
+      guid: 74c9959bad1e514ca795d8766db4ed7e
+      id: 628129172
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Enemy
+        ObjectType: 4
+        guid: f89f74945f2ab743b6ad821a86aa40e6
+      - ElementName: Sloth_E_Thunder
+        ObjectType: 3
+        guid: 74c9959bad1e514ca795d8766db4ed7e
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Enemy\Sloth_E_Thunder
+      maxAttenuation: 0
+      maxDuration: 1.0348865
+      minDuration: 0.8213899
+    - name: Sloth_Enemy
+      guid: f89f74945f2ab743b6ad821a86aa40e6
+      id: 2489622530
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Enemy
+        ObjectType: 4
+        guid: f89f74945f2ab743b6ad821a86aa40e6
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Enemy
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1218,9 +2431,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Sloth_Stage_Stop
-      guid: 867e876a25b5364c882b56020bd29cf3
-      id: 2701357099
+    - name: Souleater
+      guid: 797c81cfaa0bd54d923a5f888b156e81
+      id: 1518697007
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -1228,16 +2441,105 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: AMB
+      - ElementName: SFX
         ObjectType: 4
-        guid: 47b25139875a794580cf94731ad26af8
-      - ElementName: Sloth_Stage_Stop
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: General
+        ObjectType: 4
+        guid: 70a7e617404b794e8925172159a116e4
+      - ElementName: Souleater
         ObjectType: 3
-        guid: 867e876a25b5364c882b56020bd29cf3
-      Path: Events\Default Work Unit\AMB\Sloth_Stage_Stop
+        guid: 797c81cfaa0bd54d923a5f888b156e81
+      Path: Events\Default Work Unit\SFX\General\Souleater
+      maxAttenuation: 0
+      maxDuration: 2.145449
+      minDuration: 1.7028438
+    - name: Synopsis
+      guid: 5c8b34d4ded1b742a01647afb1c92078
+      id: 128845783
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Synopsis
+        ObjectType: 3
+        guid: 5c8b34d4ded1b742a01647afb1c92078
+      Path: Events\Default Work Unit\BGM\Synopsis
+      maxAttenuation: 0
+      maxDuration: 156.38579
+      minDuration: 156.38579
+    - name: Synopsis
+      guid: 871ea6ab80edae48a436ee7cd5d71900
+      id: 128845783
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis
+        ObjectType: 4
+        guid: 871ea6ab80edae48a436ee7cd5d71900
+      Path: Events\Default Work Unit\UI\Synopsis
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Synopsis_Start
+      guid: 40b81bc313261e479af8c2fe252f3b48
+      id: 2735358682
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis
+        ObjectType: 4
+        guid: 871ea6ab80edae48a436ee7cd5d71900
+      - ElementName: Synopsis_Start
+        ObjectType: 3
+        guid: 40b81bc313261e479af8c2fe252f3b48
+      Path: Events\Default Work Unit\UI\Synopsis\Synopsis_Start
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Synopsis_stop
+      guid: 742839f1546f3846b2b409aceb189971
+      id: 385127538
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis
+        ObjectType: 4
+        guid: 871ea6ab80edae48a436ee7cd5d71900
+      - ElementName: Synopsis_stop
+        ObjectType: 3
+        guid: 742839f1546f3846b2b409aceb189971
+      Path: Events\Default Work Unit\UI\Synopsis\Synopsis_stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: Text
       guid: 1e9ceebb8e83364fa9a07d1f3214d442
       id: 2972449336
@@ -1261,6 +2563,29 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Text_click
+      guid: 1e63a2403f52d145a6dbb00b2620626a
+      id: 4020169861
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Log
+        ObjectType: 4
+        guid: 294238408b40e346bbeecd1a14c6167d
+      - ElementName: Text_click
+        ObjectType: 3
+        guid: 1e63a2403f52d145a6dbb00b2620626a
+      Path: Events\Default Work Unit\UI\Log\Text_click
+      maxAttenuation: 0
+      maxDuration: 0.0873125
+      minDuration: 0.0873125
     - name: Text_Stop
       guid: e3cd245654d32c48aac541c746a1aa1d
       id: 1162641783
@@ -1282,6 +2607,26 @@ MonoBehaviour:
         guid: e3cd245654d32c48aac541c746a1aa1d
       Path: Events\Default Work Unit\UI\Log\Text_Stop
       maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - name: Tutorial
+      guid: e93f466a31f5924b935f66e30df27e51
+      id: 3762955427
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Tutorial
+        ObjectType: 3
+        guid: e93f466a31f5924b935f66e30df27e51
+      Path: Events\Default Work Unit\BGM\Tutorial
+      maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
     - name: UI
@@ -1301,6 +2646,106 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: UI_Ablilty_Pick
+      guid: 30eb41ab2ee3804faaf412626b96895a
+      id: 1050685837
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_Ablilty_Pick
+        ObjectType: 4
+        guid: 30eb41ab2ee3804faaf412626b96895a
+      Path: Events\Default Work Unit\UI\UI_Ablilty_Pick
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: UI_mouseClick
+      guid: 25550ad53804c643876e14344651f381
+      id: 2131322261
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_mouseClick
+        ObjectType: 3
+        guid: 25550ad53804c643876e14344651f381
+      Path: Events\Default Work Unit\UI\UI_mouseClick
+      maxAttenuation: 0
+      maxDuration: 0.11369065
+      minDuration: 0.113428265
+    - name: UI_mouseHover
+      guid: 19d992f396923e4ab8957e58554d99c9
+      id: 234822047
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_mouseHover
+        ObjectType: 3
+        guid: 19d992f396923e4ab8957e58554d99c9
+      Path: Events\Default Work Unit\UI\UI_mouseHover
+      maxAttenuation: 0
+      maxDuration: 0.097139426
+      minDuration: 0.09691524
+    - name: UI_StartClick
+      guid: 0c2aafe8238a85438ba7996a7eb697e4
+      id: 2235071114
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: UI_StartClick
+        ObjectType: 3
+        guid: 0c2aafe8238a85438ba7996a7eb697e4
+      Path: Events\Default Work Unit\UI\UI_StartClick
+      maxAttenuation: 0
+      maxDuration: 1.25
+      minDuration: 1.25
+    - name: Weapon
+      guid: 0a0d25fc23e0be4c9d5d8f5622492cd3
+      id: 3893417221
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Weapon
+        ObjectType: 4
+        guid: 0a0d25fc23e0be4c9d5d8f5622492cd3
+      Path: Events\Default Work Unit\SFX\Weapon
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
   RtpcWwu:
   - PhysicalPath: Game Parameters\Default Work Unit.wwu
     PathAndIcons:
@@ -1313,8 +2758,36 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584703980693724780
+    m_lastTime: -8584703059264784836
     List:
+    - name: AMB_Volume
+      guid: 18ad938ae260b14da0dd3932b6694d9b
+      id: 509499584
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
+      - ElementName: AMB_Volume
+        ObjectType: 13
+        guid: 18ad938ae260b14da0dd3932b6694d9b
+      Path: Game Parameters\Default Work Unit\AMB_Volume
+    - name: LVUP
+      guid: 9915111111ba744abe93605096d6ecf9
+      id: 527216696
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
+      - ElementName: LVUP
+        ObjectType: 13
+        guid: 9915111111ba744abe93605096d6ecf9
+      Path: Game Parameters\Default Work Unit\LVUP
     - name: Master_Volume
       guid: fdd6a692b45cd94cbafff780e3b63e0c
       id: 4179668880
@@ -1343,6 +2816,20 @@ MonoBehaviour:
         ObjectType: 13
         guid: 645acc1f5bda32429e20d158f6e7a9ba
       Path: Game Parameters\Default Work Unit\Music_Volume
+    - name: pause
+      guid: fdd902964f8c544984969857455682e3
+      id: 3092587493
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
+      - ElementName: pause
+        ObjectType: 13
+        guid: fdd902964f8c544984969857455682e3
+      Path: Game Parameters\Default Work Unit\pause
     - name: PlayerHealth
       guid: 8e20d6254469e248b887a879d19e84a0
       id: 151362964
@@ -1396,7 +2883,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584703980693382777
+    m_lastTime: -8584703107602373958
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -1550,7 +3037,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584703980707217655
+    m_lastTime: -8584703107523959255
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -1564,7 +3051,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584703980706830317
+    m_lastTime: -8584703107523645008
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -1663,11 +3150,11 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584703980706449232
+    m_lastTime: -8584703107523359681
     List: []
-  ExpandedFileSystemItemIds: 02000000030000001d0000001e000000200000002f000000300000003500000036000000390000003d0000003e000000
-  ExpandedWaapiItemIds: 1d0000001e000000
+  ExpandedFileSystemItemIds: 
+  ExpandedWaapiItemIds: 
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
-  currentDataSource: 1
+  currentDataSource: 0
   CurrentPluginConfig: 

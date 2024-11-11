@@ -1,20 +1,20 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerSoundController : MonoBehaviour
 {
     [SerializeField]
-    private string moveStartEventName; // 이동 시작 시 재생할 WWISE 이벤트 이름
-
-    [SerializeField]
-    private string moveStopEventName; // 이동 종료 시 재생할 WWISE 이벤트 이름
-
-    public void PlayMoveSound()
+    private AK.Wwise.Event customEvent;
+    // 커스텀 WWISE 사운드 재생 함수
+    public void PlayCustomSound()
     {
-        AkSoundEngine.PostEvent(moveStartEventName, gameObject);
-    }
-
-    public void StopMoveSound()
-    {
-        AkSoundEngine.PostEvent(moveStopEventName, gameObject);
+        if (customEvent != null)
+        {
+            customEvent.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("customEvent가 설정되지 않았습니다.");
+        }
     }
 }

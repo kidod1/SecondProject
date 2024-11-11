@@ -10,24 +10,80 @@
 							<Position X="0" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="BGM_gameover" ID="{DAEBFCDD-DCCB-42B5-8713-E1C5B8A93063}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="Main_title" ID="{92E8B504-B30F-4E50-9C3F-4E11BCF55EAD}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="0" Y="1"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Sloth_Stage_Stop" ID="{6A877E86-B525-4C36-882B-56020BD29CF3}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="UI_mouseHover" ID="{F392D919-9296-4A3E-B895-7E58554D99C9}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="0" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Ability_hover" ID="{44068CBD-4308-4C0C-B8BF-15DED59D33DB}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="0" Y="3"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Sloth_Field" ID="{2CFF7F43-4853-452D-BF40-16D3622639D9}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Luxuria_Stage" ID="{D3F9F2E6-D2CB-47AF-9725-F6288E0C35FA}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="UI_mouseClick" ID="{D50A5525-0438-43C6-876E-14344651F381}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="1" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Ability_Pick" ID="{8A404D46-D2C8-4B60-A05E-3E5DECD9712E}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="1" Y="3"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="Text" ID="{BBEE9C1E-838E-4F36-A9A0-7D1F3214D442}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="2" Y="0"/>
 						</Module>
 						<Module>
+							<ObjectRef Name="AMB_stop" ID="{8ECA68C3-628D-4897-AA16-FF754C00364B}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="2" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Shotgun_IN" ID="{2D8AEC3F-CA89-4E7A-905B-C068F6C24A36}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="2" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Ablilty_LVUP" ID="{64E80627-CBAF-4962-8DB7-2F7444662C70}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="2" Y="3"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="Text_Stop" ID="{5624CDE3-D354-482C-AAC5-41C746A1AA1D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="3" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="nat12, Nighthawk (2)" ID="{773A68CF-32BB-4D99-8AE6-1C4C7B7FC12B}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+							<ObjectRef Name="FootStep" ID="{5B38BDA2-4A9D-4571-B9B7-B641FC6B7C9E}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="3" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Low_HP" ID="{4E68AAAB-F9C7-4898-8742-5C0784A76519}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="3" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Tutorial" ID="{6A463FE9-F531-4B92-935F-66E30DF27E51}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="3" Y="3"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Luxuria_Field" ID="{92240A7C-3834-45F4-9A3D-EBA053F481A3}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="4" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="FootStep_stop" ID="{862BC705-6B34-4640-9B11-59E417F99BC8}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="4" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="UI_StartClick" ID="{E8AF2A0C-8A23-4385-8BA7-996A7EB697E4}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="4" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Player_take_Gun" ID="{67B24B75-CB78-453F-BA90-A247CE8E4108}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="4" Y="3"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
@@ -37,11 +93,19 @@
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="Music_Volume" ID="{1FCC5A64-DA5B-4232-9E20-D158F6E7A9BA}"/>
-							<Value>51.0869565217391</Value>
+							<Value>100</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="PlayerHealth" ID="{25D6208E-6944-48E2-B887-A879D19E84A0}"/>
 							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="pause" ID="{9602D9FD-8C4F-4954-8496-9857455682E3}"/>
+							<Value>2</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="LVUP" ID="{11111599-BA11-4A74-BE93-605096D6ECF9}"/>
+							<Value>2</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="Master_Volume" ID="{92A6D6FD-5CB4-4CD9-BAFF-F780E3B63E0C}"/>
@@ -49,7 +113,11 @@
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="SFX_Volume" ID="{C922DBBF-1BEF-4D6B-995F-F6FF2C7262BB}"/>
-							<Value>50</Value>
+							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="AMB_Volume" ID="{8A93AD18-60E2-4DB1-A0DD-3932B6694D9B}"/>
+							<Value>100</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="UI_Volume" ID="{9DA5557A-7E5F-4FEB-AA3D-A30C4BC59372}"/>

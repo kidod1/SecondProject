@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="16" SoundBankVersion="150">
+	<RootPaths>
+		<ProjectRoot>../../../WWISEProject</ProjectRoot>
+		<SourceFilesRoot>../../../WWISEProject/.cache/Windows</SourceFilesRoot>
+		<SoundBanksRoot>.</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>../../../WWISEProject/GeneratedSoundBanks/Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<SoundBanks>
+		<SoundBank Id="412724365" Type="User" Language="SFX" Hash="{B8379973-8B4C-C7CB-B2E6-90F213AD1E1F}">
+			<ShortName>BGM</ShortName>
+			<Path>BGM.bnk</Path>
+			<Media>
+				<File Id="178219412" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Credit.wav</ShortName>
+					<CachePath>SFX/Credit_818F3B66.wem</CachePath>
+				</File>
+				<File Id="256709039" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>stage21233.wav</ShortName>
+					<CachePath>SFX/stage21233_DEBD2174.wem</CachePath>
+				</File>
+				<File Id="602024453" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>synopsss (Cover).wav</ShortName>
+					<CachePath>SFX/synopsss (Cover)_65BFA8A3.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="2090192256" Name="BGM_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="4072209002" Name="Credit" DurationType="OneShot" DurationMin="89.99998" DurationMax="89.99998">
+					<MediaRefs>
+						<MediaRef Id="178219412"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="654742305" Name="Main_title" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="256709039"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="128845783" Name="Synopsis" DurationType="OneShot" DurationMin="156.38579" DurationMax="156.38579">
+					<MediaRefs>
+						<MediaRef Id="602024453"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+			<GameParameters>
+				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="527216696" Name="LVUP"/>
+				<GameParameter Id="1006694123" Name="Music_Volume"/>
+				<GameParameter Id="3092587493" Name="pause"/>
+				<GameParameter Id="4179668880" Name="Master_Volume"/>
+			</GameParameters>
+		</SoundBank>
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{4ADF19CB-2B4C-DC16-DB09-C99545816D89}">
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+			<Plugins>
+				<AudioDevices>
+					<Plugin Id="2317455096" Name="No_Output" LibName="No Output" LibId="11862023"/>
+					<Plugin Id="3859886410" Name="System" LibName="System" LibId="11403271"/>
+				</AudioDevices>
+			</Plugins>
+			<Busses>
+				<Bus Id="213475909" Name="SFX_Bus"/>
+				<Bus Id="3247222208" Name="UI_Bus"/>
+				<Bus Id="3319158528" Name="AMB_Bus"/>
+				<Bus Id="3677413232" Name="Master_Bus"/>
+				<Bus Id="3803692087" Name="Master Audio Bus"/>
+			</Busses>
+			<GameParameters>
+				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="509499584" Name="AMB_Volume"/>
+				<GameParameter Id="527216696" Name="LVUP"/>
+				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
+				<GameParameter Id="1006694123" Name="Music_Volume"/>
+				<GameParameter Id="1029930033" Name="SS_Air_Fury"/>
+				<GameParameter Id="1351367891" Name="SS_Air_Fear"/>
+				<GameParameter Id="1564184899" Name="SFX_Volume"/>
+				<GameParameter Id="1719345792" Name="UI_Volume"/>
+				<GameParameter Id="2648548617" Name="SS_Air_Month"/>
+				<GameParameter Id="3002758120" Name="SS_Air_Freefall"/>
+				<GameParameter Id="3074696722" Name="SS_Air_Size"/>
+				<GameParameter Id="3092587493" Name="pause"/>
+				<GameParameter Id="3203397129" Name="SS_Air_TimeOfDay"/>
+				<GameParameter Id="3715662592" Name="SS_Air_Storm"/>
+				<GameParameter Id="3847924954" Name="SS_Air_Presence"/>
+				<GameParameter Id="4160247818" Name="SS_Air_Turbulence"/>
+				<GameParameter Id="4179668880" Name="Master_Volume"/>
+			</GameParameters>
+			<SwitchGroups>
+				<SwitchGroup Id="3865314626" Name="Material">
+					<Switches>
+						<Switch Id="602500964" Name="General_FootStep"/>
+					</Switches>
+				</SwitchGroup>
+			</SwitchGroups>
+			<AcousticTextures>
+				<AcousticTexture Id="504532776" Name="Brick">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="12"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="18"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="23"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="35"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="513139656" Name="Mountain">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="0"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="0"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="0"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="0"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="841620460" Name="Concrete">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="6"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="6"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="6"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="14"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="1755085759" Name="Wood_Deep">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="1"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="8"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="20"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="35"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="1873957695" Name="Anechoic">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="100"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="100"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="100"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="100"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="1970351858" Name="Fabric">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="3"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="13"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="48"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="72"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="2058049674" Name="Wood">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="32"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="25"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="20"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="35"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="2412606308" Name="Carpet">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="46"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="45"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="76"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="100"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="2637588553" Name="Tile">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="67"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="41"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="12"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="0"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="2928161104" Name="Curtains">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="7"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="60"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="0"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="84"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="3195498748" Name="Cork_Tiles">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="14"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="30"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="73"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="100"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="3670307564" Name="Drywall">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="2"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="2"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="2"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="2"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="4168643977" Name="Acoustic_Banner">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="37"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="100"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="100"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="100"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+				<AcousticTexture Id="4262522749" Name="Wood_Bright">
+					<Properties>
+						<Property Name="AbsorptionLow" Type="Real32" Value="32"/>
+						<Property Name="AbsorptionMidLow" Type="Real32" Value="25"/>
+						<Property Name="AbsorptionMidHigh" Type="Real32" Value="10"/>
+						<Property Name="AbsorptionHigh" Type="Real32" Value="9"/>
+						<Property Name="Scattering" Type="Real32" Value="0"/>
+					</Properties>
+				</AcousticTexture>
+			</AcousticTextures>
+		</SoundBank>
+		<SoundBank Id="3161908922" Type="User" Language="SFX" Hash="{7CF8F9D8-7492-018B-1000-8340471AEA3F}">
+			<ShortName>Main</ShortName>
+			<Path>Main.bnk</Path>
+			<Media>
+				<File Id="619626" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Luxuria_FascinatingMelody.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Luxuria_FascinatingMelody_818F3B66.wem</CachePath>
+				</File>
+				<File Id="10425342" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Pride_DivinePunishment01.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Pride_DivinePunishment01_818F3B66.wem</CachePath>
+				</File>
+				<File Id="63220623" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>clcik3.wav</ShortName>
+					<CachePath>SFX/clcik3_818F3B66.wem</CachePath>
+				</File>
+				<File Id="70255767" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_General_Object_destroy02.wav</ShortName>
+					<CachePath>SFX/SFX_General_Object_destroy02_818F3B66.wem</CachePath>
+				</File>
+				<File Id="71992266" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>ui_button_simple_click_07.wav</ShortName>
+					<CachePath>SFX/ui_button_simple_click_07_818F3B66.wem</CachePath>
+				</File>
+				<File Id="85626295" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Foot_Tile_BootWalk08.wav</ShortName>
+					<CachePath>SFX/Foot_Tile_BootWalk08_818F3B66.wem</CachePath>
+				</File>
+				<File Id="138226317" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Jealousy_WanderingWave (1).wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Jealousy_WanderingWave (1)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="155649356" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Foot_Tile_BootWalk07.wav</ShortName>
+					<CachePath>SFX/Foot_Tile_BootWalk07_818F3B66.wem</CachePath>
+				</File>
+				<File Id="170126801" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_Overclocking.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_Overclocking_0F56A827.wem</CachePath>
+				</File>
+				<File Id="170451563" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Hit_LightningShieldDeflect4.wav</ShortName>
+					<CachePath>SFX/Hit_LightningShieldDeflect4_818F3B66.wem</CachePath>
+				</File>
+				<File Id="174567308" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_L-Bullet_hit (3).wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_L-Bullet_hit (3)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="193630534" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>asf.wav</ShortName>
+					<CachePath>SFX/asf_818F3B66.wem</CachePath>
+				</File>
+				<File Id="224189159" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>ppazicc2.wav</ShortName>
+					<CachePath>SFX/ppazicc2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="256695799" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Foot_Tile_BootWalk10.wav</ShortName>
+					<CachePath>SFX/Foot_Tile_BootWalk10_818F3B66.wem</CachePath>
+				</File>
+				<File Id="257276880" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>click4.wav</ShortName>
+					<CachePath>SFX/click4_818F3B66.wem</CachePath>
+				</File>
+				<File Id="320087089" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Luxuria.wav</ShortName>
+					<CachePath>SFX/Luxuria_4C613F9A.wem</CachePath>
+				</File>
+				<File Id="333803756" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Tail 2.wav</ShortName>
+					<CachePath>SFX/Tail 2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="340894199" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>text.wav</ShortName>
+					<CachePath>SFX/text_FBC78EF0.wem</CachePath>
+				</File>
+				<File Id="349371832" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Foot_Tile_BootWalk15.wav</ShortName>
+					<CachePath>SFX/Foot_Tile_BootWalk15_818F3B66.wem</CachePath>
+				</File>
+				<File Id="357382880" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_Barrier-start (2).wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_Barrier-start (2)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="378354398" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Foot_Tile_BootWalk03.wav</ShortName>
+					<CachePath>SFX/Foot_Tile_BootWalk03_818F3B66.wem</CachePath>
+				</File>
+				<File Id="379294076" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Greed_shuffle02.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Greed_shuffle02_818F3B66.wem</CachePath>
+				</File>
+				<File Id="401221416" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Football_Crowd_AmbLoop.wav</ShortName>
+					<CachePath>SFX/Football_Crowd_AmbLoop_FBC78EF0.wem</CachePath>
+				</File>
+				<File Id="419836732" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>BEE.wav</ShortName>
+					<CachePath>SFX/BEE_818F3B66.wem</CachePath>
+				</File>
+				<File Id="429336170" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Gun_DrawSelect_Weapon11.wav</ShortName>
+					<CachePath>SFX/Gun_DrawSelect_Weapon11_818F3B66.wem</CachePath>
+				</File>
+				<File Id="435140414" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_L-Bullet_hit (1).wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_L-Bullet_hit (1)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="439489616" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Heartbeat_Loop1.wav</ShortName>
+					<CachePath>SFX/Heartbeat_Loop1_FBC78EF0.wem</CachePath>
+				</File>
+				<File Id="441935713" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Head 2.wav</ShortName>
+					<CachePath>SFX/Head 2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="470228320" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>retro_damage_hurt_ouch_20.wav</ShortName>
+					<CachePath>SFX/retro_damage_hurt_ouch_20_818F3B66.wem</CachePath>
+				</File>
+				<File Id="473718757" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Ablilty_Greed_Joker(insta-kill).wav</ShortName>
+					<CachePath>SFX/Ablilty_Greed_Joker(insta-kill)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="486741315" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>death_1.wav</ShortName>
+					<CachePath>SFX/death_1_CE05146F.wem</CachePath>
+				</File>
+				<File Id="491235446" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Luxuria_Doppelganger.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Luxuria_Doppelganger_818F3B66.wem</CachePath>
+				</File>
+				<File Id="495665146" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Greed_CoinBetting01.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Greed_CoinBetting01_818F3B66.wem</CachePath>
+				</File>
+				<File Id="496274680" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>ui_button_simple_click_03.wav</ShortName>
+					<CachePath>SFX/ui_button_simple_click_03_818F3B66.wem</CachePath>
+				</File>
+				<File Id="553420489" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_turretSHOT.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_turretSHOT_818F3B66.wem</CachePath>
+				</File>
+				<File Id="557308535" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Greed_CoinBetting03.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Greed_CoinBetting03_818F3B66.wem</CachePath>
+				</File>
+				<File Id="608414734" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>explode02.wav</ShortName>
+					<CachePath>SFX/explode02_818F3B66.wem</CachePath>
+				</File>
+				<File Id="622552658" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_L-Bullet_hit (2).wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_L-Bullet_hit (2)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="635991665" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>retro_damage_hurt_ouch_23.wav</ShortName>
+					<CachePath>SFX/retro_damage_hurt_ouch_23_818F3B66.wem</CachePath>
+				</File>
+				<File Id="660182532" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>stage212335.wav</ShortName>
+					<CachePath>SFX/stage212335_AB48A11E.wem</CachePath>
+				</File>
+				<File Id="672083686" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Scifi_Amb_Control_Loop4.wav</ShortName>
+					<CachePath>SFX/Scifi_Amb_Control_Loop4_FBC78EF0.wem</CachePath>
+				</File>
+				<File Id="672466587" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>cliekekek23.wav</ShortName>
+					<CachePath>SFX/cliekekek23_818F3B66.wem</CachePath>
+				</File>
+				<File Id="704672617" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_turret.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_turret_818F3B66.wem</CachePath>
+				</File>
+				<File Id="716232108" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>sci-fi_weapon_blaster_laser_boom_zap_05.wav</ShortName>
+					<CachePath>SFX/sci-fi_weapon_blaster_laser_boom_zap_05_818F3B66.wem</CachePath>
+				</File>
+				<File Id="717954242" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>tutorial.wav</ShortName>
+					<CachePath>SFX/tutorial_6B9691C5.wem</CachePath>
+				</File>
+				<File Id="741798733" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>meteor 03.wav</ShortName>
+					<CachePath>SFX/meteor 03_818F3B66.wem</CachePath>
+				</File>
+				<File Id="753434404" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Jealousy_SwordDance.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Jealousy_SwordDance_818F3B66.wem</CachePath>
+				</File>
+				<File Id="770665422" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>sci-fi_weapon_blaster_laser_boom_zap_07.wav</ShortName>
+					<CachePath>SFX/sci-fi_weapon_blaster_laser_boom_zap_07_818F3B66.wem</CachePath>
+				</File>
+				<File Id="783668030" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Gun_DrawSelect_Weapon07.wav</ShortName>
+					<CachePath>SFX/Gun_DrawSelect_Weapon07_818F3B66.wem</CachePath>
+				</File>
+				<File Id="790862015" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Head 3.wav</ShortName>
+					<CachePath>SFX/Head 3_818F3B66.wem</CachePath>
+				</File>
+				<File Id="798646191" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>meteor 02.wav</ShortName>
+					<CachePath>SFX/meteor 02_CD18C603.wem</CachePath>
+				</File>
+				<File Id="798681472" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>sci-fi_weapon_blaster_laser_boom_zap_06.wav</ShortName>
+					<CachePath>SFX/sci-fi_weapon_blaster_laser_boom_zap_06_818F3B66.wem</CachePath>
+				</File>
+				<File Id="801585478" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>switch_button_push_small_05.wav</ShortName>
+					<CachePath>SFX/switch_button_push_small_05_818F3B66.wem</CachePath>
+				</File>
+				<File Id="805674430" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Ablilty_Pride_warrant.wav</ShortName>
+					<CachePath>SFX/Ablilty_Pride_warrant_818F3B66.wem</CachePath>
+				</File>
+				<File Id="814081132" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>sci-fi_weapon_laser_small_01.wav</ShortName>
+					<CachePath>SFX/sci-fi_weapon_laser_small_01_818F3B66.wem</CachePath>
+				</File>
+				<File Id="831653086" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>souleater.wav</ShortName>
+					<CachePath>SFX/souleater_818F3B66.wem</CachePath>
+				</File>
+				<File Id="845954351" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>synopsss2.wav</ShortName>
+					<CachePath>SFX/synopsss2_A71FA592.wem</CachePath>
+				</File>
+				<File Id="873602043" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Jealousy_Ouroboros2.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Jealousy_Ouroboros2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="878757334" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Hockey_Puck_Hit_Pad1.wav</ShortName>
+					<CachePath>SFX/Hockey_Puck_Hit_Pad1_818F3B66.wem</CachePath>
+				</File>
+				<File Id="891486426" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>meteor 01.wav</ShortName>
+					<CachePath>SFX/meteor 01_B50DCED2.wem</CachePath>
+				</File>
+				<File Id="892600719" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>retro_damage_hurt_ouch_27.wav</ShortName>
+					<CachePath>SFX/retro_damage_hurt_ouch_27_818F3B66.wem</CachePath>
+				</File>
+				<File Id="896292773" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Fury_FireBreath.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Fury_FireBreath_818F3B66.wem</CachePath>
+				</File>
+				<File Id="941935925" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Pride_rush02.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Pride_rush02_818F3B66.wem</CachePath>
+				</File>
+				<File Id="942949351" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>FlameThrower_ShotLoop4.wav</ShortName>
+					<CachePath>SFX/FlameThrower_ShotLoop4_FBC78EF0.wem</CachePath>
+				</File>
+				<File Id="949197025" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Hockey_Puck_Hit_Pad2.wav</ShortName>
+					<CachePath>SFX/Hockey_Puck_Hit_Pad2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="962180818" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Heal.wav</ShortName>
+					<CachePath>SFX/Heal_818F3B66.wem</CachePath>
+				</File>
+				<File Id="968935746" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Hockey_Puck_Hit_Pad3.wav</ShortName>
+					<CachePath>SFX/Hockey_Puck_Hit_Pad3_818F3B66.wem</CachePath>
+				</File>
+				<File Id="1003029652" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Jealousy_WanderingWave (2).wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Jealousy_WanderingWave (2)_818F3B66.wem</CachePath>
+				</File>
+				<File Id="1032445781" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_L-Bullet2.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_L-Bullet2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="1033427025" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Greed_shuffle01.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Greed_shuffle01_818F3B66.wem</CachePath>
+				</File>
+				<File Id="1052683144" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Sloth_Barrier.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Sloth_Barrier_818F3B66.wem</CachePath>
+				</File>
+				<File Id="1054154404" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_Player_Ablilty_Luxuria_LilithKiss2.wav</ShortName>
+					<CachePath>SFX/SFX_Player_Ablilty_Luxuria_LilithKiss2_B2A4350B.wem</CachePath>
+				</File>
+				<File Id="1054926503" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>cliekekek2.wav</ShortName>
+					<CachePath>SFX/cliekekek2_818F3B66.wem</CachePath>
+				</File>
+			</Media>
+			<Plugins>
+				<ShareSets>
+					<Plugin Id="2995775460" Name="Room_Small" LibName="Wwise RoomVerb" LibId="7733251"/>
+				</ShareSets>
+			</Plugins>
+			<Events>
+				<Event Id="3159735458" Name="Ability_hover" DurationType="OneShot" DurationMin="0.0771875" DurationMax="0.0771875">
+					<MediaRefs>
+						<MediaRef Id="496274680"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3637490847" Name="Ability_Pick" DurationType="OneShot" DurationMin="2" DurationMax="2">
+					<MediaRefs>
+						<MediaRef Id="257276880"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1955875006" Name="Ablilty_Fury_FireBreath" DurationType="OneShot" DurationMin="1.137937" DurationMax="1.4337107">
+					<MediaRefs>
+						<MediaRef Id="896292773"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="473077560" Name="Ablilty_Fury_FlameCurtain_start" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="942949351"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2065816388" Name="Ablilty_Fury_FlameCurtain_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="1047829572" Name="Ablilty_Fury_Meteor" DurationType="OneShot" DurationMin="7.7363176" DurationMax="9.87711">
+					<MediaRefs>
+						<MediaRef Id="741798733"/>
+						<MediaRef Id="798646191"/>
+						<MediaRef Id="891486426"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3563496934" Name="Ablilty_Greed_CoinRain" DurationType="OneShot" DurationMin="1.2350667" DurationMax="1.5560865">
+					<MediaRefs>
+						<MediaRef Id="557308535"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1545538756" Name="Ablilty_Greed_Joker" DurationType="OneShot" DurationMin="1.4855837" DurationMax="1.8717182">
+					<MediaRefs>
+						<MediaRef Id="473718757"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1570168993" Name="Ablilty_Greed_shuffle_R" DurationType="OneShot" DurationMin="0.22092801" DurationMax="0.27835187">
+					<MediaRefs>
+						<MediaRef Id="379294076"/>
+						<MediaRef Id="1033427025"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2915978152" Name="Ablilty_Jealousy_Ouroboros" DurationType="OneShot" DurationMin="0.8880042" DurationMax="1.1188152">
+					<MediaRefs>
+						<MediaRef Id="873602043"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="359925860" Name="Ablilty_Jealousy_SwordDance" DurationType="OneShot" DurationMin="1.7869049" DurationMax="2.2513592">
+					<MediaRefs>
+						<MediaRef Id="753434404"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="871723078" Name="Ablilty_Luxuria_Doppelganger" DurationType="OneShot" DurationMin="1.2877103" DurationMax="1.6224133">
+					<MediaRefs>
+						<MediaRef Id="491235446"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="307190599" Name="Ablilty_Luxuria_FascinatingMelody" DurationType="OneShot" DurationMin="0.5886275" DurationMax="0.7416242">
+					<MediaRefs>
+						<MediaRef Id="619626"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1813255844" Name="Ablilty_Luxuria_LilithKiss" DurationType="OneShot" DurationMin="0.49928224" DurationMax="0.6290562">
+					<MediaRefs>
+						<MediaRef Id="1054154404"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3838459994" Name="Ablilty_Luxuria_Tingling" DurationType="OneShot" DurationMin="2.154797" DurationMax="2.7148743">
+					<MediaRefs>
+						<MediaRef Id="224189159"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3253800600" Name="Ablilty_LVUP" DurationType="OneShot" DurationMin="0.7089792" DurationMax="0.7089792">
+					<MediaRefs>
+						<MediaRef Id="672466587"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2106314190" Name="Ablilty_Pride_DivinePunishment" DurationType="OneShot" DurationMin="0.9815416" DurationMax="1.236665">
+					<MediaRefs>
+						<MediaRef Id="10425342"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2850796585" Name="Ablilty_Pride_glare" DurationType="OneShot" DurationMin="0.6101743" DurationMax="0.76877147">
+					<MediaRefs>
+						<MediaRef Id="941935925"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="394947470" Name="Ablilty_Pride_rush" DurationType="OneShot" DurationMin="0.6101743" DurationMax="0.76877147">
+					<MediaRefs>
+						<MediaRef Id="941935925"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="772338355" Name="Ablilty_Pride_warrant" DurationType="OneShot" DurationMin="2.102241" DurationMax="2.6486578">
+					<MediaRefs>
+						<MediaRef Id="805674430"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="729984210" Name="AMB_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="230523991" Name="Bee_sfx" DurationType="OneShot" DurationMin="12.22073" DurationMax="15.397156">
+					<MediaRefs>
+						<MediaRef Id="419836732"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3778321934" Name="Bee_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="1010055213" Name="Enemy_Hit" DurationType="OneShot" DurationMin="0.11894585" DurationMax="0.2427636">
+					<MediaRefs>
+						<MediaRef Id="878757334"/>
+						<MediaRef Id="949197025"/>
+						<MediaRef Id="968935746"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="948631664" Name="Explode" DurationType="OneShot" DurationMin="0.9670309" DurationMax="1.2183826">
+					<MediaRefs>
+						<MediaRef Id="608414734"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1866025847" Name="FootStep" DurationType="OneShot" DurationMin="0.23855908" DurationMax="0.4060795">
+					<MediaRefs>
+						<MediaRef Id="85626295"/>
+						<MediaRef Id="155649356"/>
+						<MediaRef Id="256695799"/>
+						<MediaRef Id="349371832"/>
+						<MediaRef Id="378354398"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4175340882" Name="FootStep_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="3448274447" Name="Heal" DurationType="OneShot" DurationMin="0.65069616" DurationMax="0.81982577">
+					<MediaRefs>
+						<MediaRef Id="962180818"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="782578156" Name="L_Bullet_hit" DurationType="OneShot" DurationMin="0.23087864" DurationMax="0.36339584">
+					<MediaRefs>
+						<MediaRef Id="174567308"/>
+						<MediaRef Id="435140414"/>
+						<MediaRef Id="622552658"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3226347240" Name="Low_HP" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="439489616"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3819148614" Name="Luxuria_Field" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="320087089"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1246132400" Name="Luxuria_Stage" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="401221416"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2434695444" Name="Object_Broken" DurationType="OneShot" DurationMin="0.34982055" DurationMax="0.44074628">
+					<MediaRefs>
+						<MediaRef Id="70255767"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3092587493" Name="Pause" DurationType="OneShot" DurationMin="0.6082313" DurationMax="0.6082313">
+					<MediaRefs>
+						<MediaRef Id="193630534"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3083087645" Name="Player_Death" DurationType="OneShot" DurationMin="2.875" DurationMax="2.875">
+					<MediaRefs>
+						<MediaRef Id="486741315"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="871813740" Name="Player_Hit" DurationType="OneShot" DurationMin="0.07497517" DurationMax="0.19598867">
+					<MediaRefs>
+						<MediaRef Id="470228320"/>
+						<MediaRef Id="635991665"/>
+						<MediaRef Id="892600719"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3379829983" Name="Player_take_Gun" DurationType="OneShot" DurationMin="1.1297185" DurationMax="1.4233563">
+					<MediaRefs>
+						<MediaRef Id="429336170"/>
+						<MediaRef Id="783668030"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1037997653" Name="SFX_Player_Ablilty_Greed_CoinBetting" DurationType="OneShot" DurationMin="0.62237775" DurationMax="0.78414685">
+					<MediaRefs>
+						<MediaRef Id="495665146"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="392565905" Name="SFX_Player_Ablilty_Greed_CoinBetting_boom" DurationType="OneShot" DurationMin="1.2350667" DurationMax="1.5560865">
+					<MediaRefs>
+						<MediaRef Id="557308535"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="743609202" Name="SFX_Player_Ablilty_Jealousy_WanderingWave" DurationType="OneShot" DurationMin="1.7467954" DurationMax="2.2008243">
+					<MediaRefs>
+						<MediaRef Id="138226317"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="936558308" Name="SFX_Player_Ablilty_Jealousy_WanderingWave_HIT" DurationType="OneShot" DurationMin="0.7436152" DurationMax="0.9368965">
+					<MediaRefs>
+						<MediaRef Id="1003029652"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2385642374" Name="SFX_Player_Ablilty_Sloth_Barrier_Out" DurationType="OneShot" DurationMin="0.5718096" DurationMax="0.72043496">
+					<MediaRefs>
+						<MediaRef Id="1052683144"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1603885962" Name="SFX_Player_Ablilty_Sloth_Barrier_start" DurationType="OneShot" DurationMin="0.28056577" DurationMax="0.3534907">
+					<MediaRefs>
+						<MediaRef Id="357382880"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1178676313" Name="SFX_Player_Ablilty_Sloth_L_Bullet2" DurationType="OneShot" DurationMin="1.1836809" DurationMax="1.4913446">
+					<MediaRefs>
+						<MediaRef Id="1032445781"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="377751402" Name="SFX_Player_Ablilty_Sloth_Overclocking" DurationType="OneShot" DurationMin="0.7713747" DurationMax="0.97187126">
+					<MediaRefs>
+						<MediaRef Id="170126801"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="802699080" Name="SFX_Player_Ablilty_Sloth_turret" DurationType="OneShot" DurationMin="0.89345247" DurationMax="1.1256796">
+					<MediaRefs>
+						<MediaRef Id="704672617"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2653719656" Name="SFX_Player_Ablilty_Sloth_turretSHOT" DurationType="OneShot" DurationMin="0.79785305" DurationMax="1.0052319">
+					<MediaRefs>
+						<MediaRef Id="553420489"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3111968065" Name="Shotgun_IN" DurationType="OneShot" DurationMin="0.63678634" DurationMax="0.8108138">
+					<MediaRefs>
+						<MediaRef Id="333803756"/>
+						<MediaRef Id="441935713"/>
+						<MediaRef Id="790862015"/>
+					</MediaRefs>
+					<PluginRefs>
+						<ShareSets>
+							<PluginRef Id="2995775460"/>
+						</ShareSets>
+					</PluginRefs>
+				</Event>
+				<Event Id="1435234624" Name="Shotgun_OUT" DurationType="OneShot" DurationMin="0.63678634" DurationMax="0.8108138">
+					<MediaRefs>
+						<MediaRef Id="333803756"/>
+						<MediaRef Id="441935713"/>
+						<MediaRef Id="790862015"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3879107156" Name="Sloth_b_Laser" DurationType="OneShot" DurationMin="0.941804" DurationMax="1.2569647">
+					<MediaRefs>
+						<MediaRef Id="716232108"/>
+						<MediaRef Id="770665422"/>
+						<MediaRef Id="798681472"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4241994286" Name="Sloth_E_Fire" DurationType="OneShot" DurationMin="0.36451107" DurationMax="0.4592552">
+					<MediaRefs>
+						<MediaRef Id="814081132"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="628129172" Name="Sloth_E_Thunder" DurationType="OneShot" DurationMin="0.8213899" DurationMax="1.0348865">
+					<MediaRefs>
+						<MediaRef Id="170451563"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3956129242" Name="Sloth_Field" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="660182532"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1799481692" Name="Sloth_Stage" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="672083686"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1518697007" Name="Souleater" DurationType="OneShot" DurationMin="1.7028438" DurationMax="2.145449">
+					<MediaRefs>
+						<MediaRef Id="831653086"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2735358682" Name="Synopsis_Start" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="845954351"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="385127538" Name="Synopsis_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="2972449336" Name="Text" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="340894199"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4020169861" Name="Text_click" DurationType="OneShot" DurationMin="0.0873125" DurationMax="0.0873125">
+					<MediaRefs>
+						<MediaRef Id="801585478"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1162641783" Name="Text_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
+				<Event Id="3762955427" Name="Tutorial" DurationType="Infinite">
+					<MediaRefs>
+						<MediaRef Id="717954242"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2131322261" Name="UI_mouseClick" DurationType="OneShot" DurationMin="0.113428265" DurationMax="0.11369065">
+					<MediaRefs>
+						<MediaRef Id="63220623"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="234822047" Name="UI_mouseHover" DurationType="OneShot" DurationMin="0.09691524" DurationMax="0.097139426">
+					<MediaRefs>
+						<MediaRef Id="71992266"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2235071114" Name="UI_StartClick" DurationType="OneShot" DurationMin="1.25" DurationMax="1.25">
+					<MediaRefs>
+						<MediaRef Id="1054926503"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+			<GameParameters>
+				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="509499584" Name="AMB_Volume"/>
+				<GameParameter Id="527216696" Name="LVUP"/>
+				<GameParameter Id="1006694123" Name="Music_Volume"/>
+				<GameParameter Id="1564184899" Name="SFX_Volume"/>
+				<GameParameter Id="1719345792" Name="UI_Volume"/>
+				<GameParameter Id="3092587493" Name="pause"/>
+				<GameParameter Id="4179668880" Name="Master_Volume"/>
+			</GameParameters>
+			<SwitchGroups>
+				<SwitchGroup Id="3865314626" Name="Material">
+					<Switches>
+						<Switch Id="602500964" Name="General_FootStep"/>
+					</Switches>
+				</SwitchGroup>
+			</SwitchGroups>
+		</SoundBank>
+	</SoundBanks>
+	<FileHash>{4C41DF66-B186-54D6-534D-CABE59B2060F}</FileHash>
+</SoundBanksInfo>

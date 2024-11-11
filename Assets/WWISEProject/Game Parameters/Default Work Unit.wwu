@@ -12,6 +12,21 @@
 				<GameParameter Name="SFX_Volume" ID="{C922DBBF-1BEF-4D6B-995F-F6FF2C7262BB}"/>
 				<GameParameter Name="Music_Volume" ID="{1FCC5A64-DA5B-4232-9E20-D158F6E7A9BA}"/>
 				<GameParameter Name="UI_Volume" ID="{9DA5557A-7E5F-4FEB-AA3D-A30C4BC59372}"/>
+				<GameParameter Name="pause" ID="{9602D9FD-8C4F-4954-8496-9857455682E3}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="2"/>
+						<Property Name="Max" Type="Real64" Value="2"/>
+						<Property Name="Min" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="AMB_Volume" ID="{8A93AD18-60E2-4DB1-A0DD-3932B6694D9B}"/>
+				<GameParameter Name="LVUP" ID="{11111599-BA11-4A74-BE93-605096D6ECF9}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="2"/>
+						<Property Name="Max" Type="Real64" Value="2"/>
+						<Property Name="Min" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
 			</ChildrenList>
 		</WorkUnit>
 	</GameParameters>
