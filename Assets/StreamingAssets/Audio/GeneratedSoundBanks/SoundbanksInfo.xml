@@ -224,7 +224,7 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="3161908922" Type="User" Language="SFX" Hash="{7CF8F9D8-7492-018B-1000-8340471AEA3F}">
+		<SoundBank Id="3161908922" Type="User" Language="SFX" Hash="{C86ECD11-3CC2-7B20-22CB-01D16F2E959A}">
 			<ShortName>Main</ShortName>
 			<Path>Main.bnk</Path>
 			<Media>
@@ -375,6 +375,10 @@
 				<File Id="608414734" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>explode02.wav</ShortName>
 					<CachePath>SFX/explode02_818F3B66.wem</CachePath>
+				</File>
+				<File Id="616638323" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>(Untitled)asfsafafasgg.wav</ShortName>
+					<CachePath>SFX/(Untitled)asfsafafasgg_818F3B66.wem</CachePath>
 				</File>
 				<File Id="622552658" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX_Player_Ablilty_Sloth_L-Bullet_hit (2).wav</ShortName>
@@ -667,6 +671,11 @@
 						<MediaRef Id="622552658"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="428303652" Name="Logo_sound" DurationType="OneShot" DurationMin="0.90986395" DurationMax="0.90986395">
+					<MediaRefs>
+						<MediaRef Id="616638323"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="3226347240" Name="Low_HP" DurationType="Infinite">
 					<MediaRefs>
 						<MediaRef Id="439489616"/>
@@ -868,5 +877,5 @@
 			</SwitchGroups>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{4C41DF66-B186-54D6-534D-CABE59B2060F}</FileHash>
+	<FileHash>{DA3C4C5C-7607-167C-2C9B-CA1053891532}</FileHash>
 </SoundBanksInfo>

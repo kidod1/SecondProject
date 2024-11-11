@@ -3936,6 +3936,40 @@
 								</Sound>
 							</ChildrenList>
 						</ActorMixer>
+						<ActorMixer Name="logo_sound" ID="{97E1447E-FBC2-464C-A210-428DDBB51C83}" ShortID="338899812">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D5F75A28-8CEE-4FE2-992D-BF754E60A495}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{1F0C6BC4-4B22-440B-A324-AF369CEDF6D1}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="(Untitled)asfsafafasgg" ID="{9152A856-4728-42F7-AFB2-563679DCAF46}" ShortID="834109021">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D5F75A28-8CEE-4FE2-992D-BF754E60A495}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{1F0C6BC4-4B22-440B-A324-AF369CEDF6D1}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="(Untitled)asfsafafasgg" ID="{10E503CD-8797-46FC-86F6-314511FCA9C2}">
+											<Language>SFX</Language>
+											<AudioFile>(Untitled)asfsafafasgg.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="616638323"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="(Untitled)asfsafafasgg" ID="{10E503CD-8797-46FC-86F6-314511FCA9C2}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</ActorMixer>
 					</ChildrenList>
 					<ObjectLists>
 						<ObjectList Name="RTPC">

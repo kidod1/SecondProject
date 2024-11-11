@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using AK.Wwise; // Wwise 네임스페이스 추가
+using Spine.Unity; // Spine.Unity 네임스페이스 추가
+using Spine; // Spine 네임스페이스 추가 (AnimationState 사용을 위해)
 
 public enum ConditionType
 {
@@ -47,7 +50,6 @@ public class TutorialDialogueManager : MonoBehaviour
     [SerializeField]
     private TMP_Text progressText; // 튜토리얼 진행도 표시용 텍스트
 
-
     [Header("애니메이션 및 이미지 설정")]
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
     public float conditionTimeout = 10f; // 조건 충족 대기 시간
@@ -65,6 +67,15 @@ public class TutorialDialogueManager : MonoBehaviour
     [SerializeField]
     private Sprite diedImpSprite;
 
+    // 추가된 부분: Wwise 이벤트
+    [Header("사운드 이벤트")]
+    public AK.Wwise.Event typingSoundEvent; // 텍스트 타이핑 사운드 이벤트
+
+    // 추가된 부분: Spine 애니메이션
+    [Header("Spine 애니메이션")]
+    [SerializeField]
+    private SkeletonAnimation doorSkeletonAnimation; // Door 스파인 애니메이션
+
     private int currentDialogueIndex = 0; // 현재 대사 인덱스
 
     // 플레이어 입력 및 상태 체크를 위한 변수들
@@ -74,7 +85,6 @@ public class TutorialDialogueManager : MonoBehaviour
 
     private int lastDefeatAllMonstersDialogueIndex = -1; // 마지막 DefeatAllMonsters 대사 인덱스
     private Player player;
-
 
     // UnityEvent 선언 (Inspector에 표시됨)
     [Header("이벤트")]
@@ -93,6 +103,9 @@ public class TutorialDialogueManager : MonoBehaviour
     private int processedSpecialDialogues = 0; // 처리된 특수 대화 수
 
     private bool firstConditionalDialogueProcessed = false;  // 첫 번째 조건부 대화가 처리되었는지 여부를 추적하는 플래그
+
+    // 추가된 부분: 타이핑 사운드 재생 ID를 저장하기 위한 변수
+    private uint typingSoundPlayingID = 0;
 
     private void Start()
     {
@@ -143,6 +156,7 @@ public class TutorialDialogueManager : MonoBehaviour
             OnPlayerDiedUnityEvent?.Invoke();
         }
     }
+
     private void Update()
     {
         // 플레이어의 움직임 체크 (WASD 입력)
@@ -217,11 +231,23 @@ public class TutorialDialogueManager : MonoBehaviour
                 dialogueText.gameObject.SetActive(true);
             }
 
-            // 텍스트 애니메이션
+            // 텍스트 애니메이션 및 타이핑 사운드 재생
+            if (typingSoundEvent != null)
+            {
+                typingSoundPlayingID = typingSoundEvent.Post(gameObject);
+            }
+
             foreach (char letter in dialogue.sentence.ToCharArray())
             {
                 dialogueText.text += letter;
                 yield return new WaitForSecondsRealtime(textAnimationSpeed);
+            }
+
+            // 타이핑 사운드 정지
+            if (typingSoundPlayingID != 0)
+            {
+                AkSoundEngine.StopPlayingID(typingSoundPlayingID);
+                typingSoundPlayingID = 0;
             }
 
             // 자동 진행 시간 대기
@@ -328,6 +354,7 @@ public class TutorialDialogueManager : MonoBehaviour
                 return "";
         }
     }
+
     /// <summary>
     /// 튜토리얼 진행도를 업데이트하는 메서드
     /// </summary>
@@ -338,6 +365,7 @@ public class TutorialDialogueManager : MonoBehaviour
             progressText.text = $"튜토리얼 진행 {processedSpecialDialogues + 1}/{totalSpecialDialogues}";
         }
     }
+
     /// <summary>
     /// 튜토리얼 시작 시 진행도를 초기화하는 메서드
     /// </summary>
@@ -374,8 +402,38 @@ public class TutorialDialogueManager : MonoBehaviour
     /// </summary>
     private void EndDialogue()
     {
-        PortalObject.SetActive(true);
         Debug.Log("튜토리얼 종료");
+
+        // Door_Open 애니메이션 실행
+        if (doorSkeletonAnimation != null)
+        {
+            // 애니메이션 완료 시 호출될 이벤트 핸들러 등록
+            doorSkeletonAnimation.AnimationState.Complete += OnDoorOpenAnimationComplete;
+
+            // Door_Open 애니메이션 실행
+            doorSkeletonAnimation.AnimationState.SetAnimation(0, "open_door", false);
+        }
+        else
+        {
+            Debug.LogWarning("Door SkeletonAnimation이 할당되지 않았습니다.");
+
+            // Door 애니메이션이 없을 경우 즉시 포탈 활성화
+            PortalObject.SetActive(true);
+            OnPortalOpenedUnityEvent?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// Door_Open 애니메이션이 완료되었을 때 호출되는 메서드
+    /// </summary>
+    private void OnDoorOpenAnimationComplete(TrackEntry trackEntry)
+    {
+        // 이벤트 핸들러 제거하여 중복 호출 방지
+        doorSkeletonAnimation.AnimationState.Complete -= OnDoorOpenAnimationComplete;
+
+        // 포탈 활성화
+        PortalObject.SetActive(true);
+        Debug.Log("Door_Open 애니메이션 완료, 포탈 활성화");
 
         // 포탈 열림 이벤트 호출
         OnPortalOpenedUnityEvent?.Invoke();

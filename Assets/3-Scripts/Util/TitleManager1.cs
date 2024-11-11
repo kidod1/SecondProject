@@ -1,17 +1,16 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
+/// <summary>
+/// 타이틀 매니저는 게임의 타이틀 시퀀스를 관리합니다.
+/// </summary>
 public class TitleManager1 : MonoBehaviour
 {
     [SerializeField]
     private GameObject whitePanel;     // 흰색 배경 패널
     [SerializeField]
     private Image teamLogoImage;       // 팀 로고 이미지
-    [SerializeField]
-    private AudioSource audioSource;   // 사운드를 재생할 AudioSource
-    [SerializeField]
-    private AudioClip teamLogoClip;    // 팀 로고 등장 시 재생할 오디오 클립
     [SerializeField]
     private float fadeDuration = 1f;   // 페이드 인/아웃 시간
     [SerializeField]
@@ -32,8 +31,8 @@ public class TitleManager1 : MonoBehaviour
         // 페이드인 시작
         yield return StartCoroutine(FadeIn(teamLogoImage));
 
-        // 팀 로고가 완전히 선명해졌을 때 사운드 재생
-        PlaySound(teamLogoClip);
+        // 팀 로고가 완전히 선명해졌을 때 로고 사운드 재생
+        SoundManager.Instance.PlayLogoSound();
 
         // 사운드가 재생된 후 일정 시간 대기
         yield return new WaitForSeconds(logoDisplayTime);
@@ -43,6 +42,9 @@ public class TitleManager1 : MonoBehaviour
 
         // 페이드아웃 후 패널 비활성화
         whitePanel.SetActive(false);
+
+        // 타이틀 사운드 재생
+        SoundManager.Instance.PlayTitleSound();
     }
 
     private IEnumerator FadeOut(Image image)
@@ -75,14 +77,5 @@ public class TitleManager1 : MonoBehaviour
 
         color.a = 1f;
         image.color = color;
-    }
-
-    private void PlaySound(AudioClip clip)
-    {
-        if (audioSource != null && clip != null)
-        {
-            audioSource.clip = clip;
-            audioSource.Play();
-        }
     }
 }

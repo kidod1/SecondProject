@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events; // UnityEvent를 사용하기 위해 추가
+using AK.Wwise; // Wwise 네임스페이스 추가
 
 /// <summary>
 /// Fade 애니메이션을 제어하기 위한 트리거 타입
@@ -30,7 +31,7 @@ public class CutsceneManager : MonoBehaviour
         public int[] characterImageTogglePoints; // 특정 대사에서 캐릭터 이미지를 활성화할 인덱스
         public FadeTrigger[] fadeTriggers; // 각 대사에 대한 Fade 트리거 배열
 
-        // New fields for 임프
+        // 임프 관련 설정
         [Header("Imp Configuration")]
         public int impAppearAfterSentenceIndex = -1; // 대화 인덱스 이후에 임프가 등장
         public int impFadeOutAfterDialogueCount = 2; // 등장 후 몇 번째 대화에서 FadeOut 할지
@@ -66,14 +67,20 @@ public class CutsceneManager : MonoBehaviour
     [Header("Speech Bubble Image")]
     public Image speechBubbleImage; // 말풍선의 Image 컴포넌트
 
-    // New fields for 임프
+    // 임프 관련 설정
     [Header("Imp Specific Configuration")]
     public GameObject impCharacterImage; // 임프의 캐릭터 이미지 오브젝트
     public string impCharacterName = "Imp"; // 임프의 이름
 
     // 추가된 부분: 컷신 종료 UnityEvent
     [Header("Cutscene Events")]
-    public UnityEvent OnCutsceneEnded; // UnityEvent로 변경
+    public UnityEvent OnCutsceneEnded; // 컷신이 종료될 때 호출되는 이벤트
+
+    // 추가된 부분: 사운드 이벤트
+    [Header("Sound Events")]
+    public AK.Wwise.Event typingSoundEvent;   // 텍스트 출력 중 재생될 타이핑 사운드 이벤트
+    public UnityEvent OnTextFinished;      // 텍스트 출력이 완료되었을 때 호출되는 이벤트
+    public UnityEvent OnClickSound;        // 클릭 시 호출되는 이벤트
 
     private Queue<string> sentences;
     private int currentSentenceIndex = 0;
@@ -90,6 +97,9 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField]
     private bool lastCut = false;
 
+    // 추가된 부분: 타이핑 사운드가 재생 중인지 확인하는 변수
+    private uint typingSoundPlayingID = 0;
+
     private void Start()
     {
         sentences = new Queue<string>();
@@ -103,7 +113,7 @@ public class CutsceneManager : MonoBehaviour
             }
         }
 
-        // Initialize 임프's image
+        // 임프 이미지 초기화
         if (impCharacterImage != null)
         {
             impCharacterImage.SetActive(false);
@@ -173,7 +183,7 @@ public class CutsceneManager : MonoBehaviour
         // 말풍선 이미지 설정
         SetSpeechBubbleImage(currentSentenceIndex - 1); // 배열은 0부터 시작
 
-        // Handle 임프's appearance and fade triggers
+        // 임프의 등장과 Fade 트리거 처리
         HandleImpAppearanceAndFade();
 
         // 현재 대사에 대한 Fade 트리거 확인 및 실행
@@ -192,36 +202,36 @@ public class CutsceneManager : MonoBehaviour
 
     private void HandleImpAppearanceAndFade()
     {
-        // Check if 임프 should appear after the previous sentence
+        // 임프가 등장해야 하는지 확인
         if (cutsceneDialogue.impAppearAfterSentenceIndex != -1 &&
             currentSentenceIndex - 1 == cutsceneDialogue.impAppearAfterSentenceIndex)
         {
-            // Activate 임프's image
+            // 임프 이미지 활성화
             if (impCharacterImage != null)
             {
                 impCharacterImage.SetActive(true);
             }
 
-            // Set 임프's name
+            // 임프 이름 설정
             if (nameText != null)
             {
                 nameText.text = impCharacterName;
             }
 
-            // Trigger FadeIn for 임프
+            // 임프의 FadeIn 트리거 실행
             if (speechBubbleAnimator != null)
             {
                 speechBubbleAnimator.SetTrigger("FadeIn");
             }
 
-            // Calculate when to fade out 임프
+            // 임프가 사라질 대사 인덱스 계산
             impFadeOutSentenceIndex = currentSentenceIndex + cutsceneDialogue.impFadeOutAfterDialogueCount;
         }
 
-        // Check if it's time to fade out 임프
+        // 임프가 사라질 시간인지 확인
         if (impFadeOutSentenceIndex != -1 && currentSentenceIndex == impFadeOutSentenceIndex)
         {
-            // Trigger FadeOut for 임프
+            // 임프의 FadeOut 트리거 실행
             if (speechBubbleAnimator != null)
             {
                 speechBubbleAnimator.SetTrigger("FadeOut");
@@ -240,7 +250,7 @@ public class CutsceneManager : MonoBehaviour
             impCharacterImage.SetActive(false);
         }
 
-        impFadeOutSentenceIndex = -1; // Reset
+        impFadeOutSentenceIndex = -1; // 초기화
     }
 
     private void ExecuteFadeTrigger(int sentenceIndex)
@@ -295,13 +305,32 @@ public class CutsceneManager : MonoBehaviour
         isAnimating = true; // 애니메이션 시작
         dialogueText.text = "";
 
+        // 타이핑 사운드 재생
+        if (typingSoundEvent != null)
+        {
+            typingSoundPlayingID = typingSoundEvent.Post(gameObject);
+        }
+
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
+
+            // 이전에 OnTextTyping 이벤트를 호출하였으나, AK.Wwise.Event로 대체하였으므로 제거
+
             yield return new WaitForSecondsRealtime(textAnimationSpeed);
         }
 
         isAnimating = false; // 애니메이션 종료
+
+        // 타이핑 사운드 정지
+        if (typingSoundPlayingID != 0)
+        {
+            AkSoundEngine.StopPlayingID(typingSoundPlayingID);
+            typingSoundPlayingID = 0;
+        }
+
+        // 텍스트 출력 완료 사운드 이벤트 호출
+        OnTextFinished?.Invoke();
 
         // 애니메이션이 끝나면 이미지를 활성화하고, 진행 가능하도록 설정
         animationImage.gameObject.SetActive(true);
@@ -328,9 +357,7 @@ public class CutsceneManager : MonoBehaviour
                     }
 
                     // 해당 캐릭터에 맞는 말풍선 이미지 설정
-                    // 여기서는 현재 대사 인덱스를 기준으로 설정합니다.
-                    // 필요에 따라 더 정교한 매핑이 필요할 수 있습니다.
-                    SetSpeechBubbleImage(currentSentenceIndex - 1); // 현재 대사 인덱스로 설정
+                    SetSpeechBubbleImage(currentSentenceIndex - 1);
                 }
             }
         }
@@ -368,11 +395,8 @@ public class CutsceneManager : MonoBehaviour
     {
         cutsceneEnded = true;
 
-        // UnityEvent 호출 추가
-        if (OnCutsceneEnded != null)
-        {
-            OnCutsceneEnded.Invoke();
-        }
+        // 컷신 종료 이벤트 호출
+        OnCutsceneEnded?.Invoke();
 
         if (speechBubbleAnimator != null)
         {
@@ -397,6 +421,9 @@ public class CutsceneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            // 클릭 사운드 이벤트 호출
+            OnClickSound?.Invoke();
+
             if (isAnimating)
             {
                 // 애니메이션 중이면 즉시 전체 대사를 표시
@@ -408,6 +435,16 @@ public class CutsceneManager : MonoBehaviour
                 isAnimating = false;
                 animationImage.gameObject.SetActive(true); // 애니메이션 이미지를 활성화
                 canProceed = true; // 다음 대사로 넘어갈 수 있도록 설정
+
+                // 타이핑 사운드 정지
+                if (typingSoundPlayingID != 0)
+                {
+                    AkSoundEngine.StopPlayingID(typingSoundPlayingID);
+                    typingSoundPlayingID = 0;
+                }
+
+                // 텍스트 출력 완료 사운드 이벤트 호출
+                OnTextFinished?.Invoke();
             }
             else if (canProceed)
             {

@@ -7,6 +7,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+[System.Serializable]
+public class HighlightEvent : UnityEvent<int> { } // 현재 선택된 인덱스를 전달
+
+[System.Serializable]
+public class AbilityEvent : UnityEvent<Ability> { }
 public class AbilityManager : MonoBehaviour
 {
     [SerializeField]
@@ -77,7 +82,10 @@ public class AbilityManager : MonoBehaviour
 
     // 능력 변경 시 호출할 이벤트
     public UnityEvent OnAbilitiesChanged;
-
+    [Header("Ability Events")]
+    public AbilityEvent OnAbilitySelected;
+    public AbilityEvent OnAbilityHovered;
+    public HighlightEvent OnHighlightPositionUpdated;
     // 추가: 코루틴 참조 변수
     private Coroutine delayedUpdateHighlightCoroutine;
     private Coroutine playSelectionAnimationCoroutine;
@@ -290,6 +298,15 @@ public class AbilityManager : MonoBehaviour
                 synergyAbility.OnCooldownComplete.AddListener(() => OnAbilityCooldownComplete(synergyAbility, i));
                 UpdateAbilityCooldownUI(synergyAbility, i);
             }
+            // AbilityButtonHandler 설정
+            AbilityButtonHandler buttonHandler = abilityButtons[i].GetComponent<AbilityButtonHandler>();
+            if (buttonHandler == null)
+            {
+                buttonHandler = abilityButtons[i].gameObject.AddComponent<AbilityButtonHandler>();
+            }
+            buttonHandler.index = i;
+            buttonHandler.ability = ability;
+            buttonHandler.abilityManager = this;
         }
 
         for (int i = abilitiesToShow; i < abilityButtons.Length; i++)
@@ -604,6 +621,7 @@ public class AbilityManager : MonoBehaviour
                 }
                 highlightScaleCoroutine = StartCoroutine(AnimateScale(highlightImage.transform, originalHighlightScale, highlightScale, 0.2f));
             }
+            OnHighlightPositionUpdated?.Invoke(currentIndex);
         }
     }
 
@@ -1002,12 +1020,14 @@ public class AbilityManager : MonoBehaviour
         if (index >= 0 && index < availableAbilities.Count)
         {
             SelectAbility(availableAbilities[index]);
+            OnAbilitySelected?.Invoke(availableAbilities[index]); // 이벤트 호출
         }
         else
         {
             Debug.LogError($"AbilityManager: OnAbilityButtonClicked - 인덱스 {index}가 유효하지 않습니다.");
         }
     }
+
 
     /// <summary>
     /// 시너지 어빌리티와 해당 카테고리의 버튼 스프라이트를 받아 UI 버튼을 생성하는 메서드
