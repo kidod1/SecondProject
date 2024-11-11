@@ -5,21 +5,21 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Abilities/DivinePunishment")]
 public class DivinePunishment : Ability
 {
-    [Header("Ability Parameters")]
-    [Tooltip("능력 발동 쿨타임 (초)")]
-    public float cooldown = 5f;
+    [Header("DivinePunishment Settings")]
+    [Tooltip("각 레벨에서 능력 발동 쿨다운 (초)")]
+    public float[] cooldownPerLevel = { 5f, 4.5f, 4f, 3.5f, 3f }; // 레벨 1~5
 
-    [Tooltip("번개의 피해량")]
-    public int damage = 30;
+    [Tooltip("각 레벨에서 번개의 피해량")]
+    public int[] damagePerLevel = { 30, 40, 50, 60, 70 }; // 레벨 1~5
 
-    [Tooltip("번개를 떨어뜨릴 최대 적의 수")]
-    public int maxTargets = 3;
+    [Tooltip("각 레벨에서 번개를 떨어뜨릴 최대 적의 수")]
+    public int[] maxTargetsPerLevel = { 3, 4, 5, 6, 7 }; // 레벨 1~5
+
+    [Tooltip("각 레벨에서 번개 범위 반경")]
+    public float[] rangePerLevel = { 10f, 12f, 14f, 16f, 18f }; // 레벨 1~5
 
     [Tooltip("번개 이펙트 프리팹")]
     public GameObject lightningPrefab;
-
-    [Tooltip("번개 범위 반경")]
-    public float range = 10f;
 
     private Player playerInstance;
     private Coroutine abilityCoroutine;
@@ -45,9 +45,7 @@ public class DivinePunishment : Ability
         if (currentLevel < maxLevel - 1)
         {
             currentLevel++;
-            damage += 10;      // 피해량 증가
-            range += 2f;       // 범위 증가
-            maxTargets += 1;   // 타겟 수 증가
+            Debug.Log($"DivinePunishment 업그레이드: 현재 레벨 {currentLevel + 1}");
         }
         else
         {
@@ -66,16 +64,14 @@ public class DivinePunishment : Ability
         }
 
         currentLevel = 0;
-        damage = 30;
-        range = 10f;
-        maxTargets = 3;
     }
 
     private IEnumerator AbilityCoroutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(cooldown);
+            float currentCooldown = GetCurrentCooldown();
+            yield return new WaitForSeconds(currentCooldown);
             StrikeLightning();
         }
     }
@@ -90,6 +86,7 @@ public class DivinePunishment : Ability
 
         List<Monster> nearbyMonsters = FindNearbyMonsters();
 
+        int maxTargets = GetCurrentMaxTargets();
         int targets = Mathf.Min(maxTargets, nearbyMonsters.Count);
 
         for (int i = 0; i < targets; i++)
@@ -104,7 +101,8 @@ public class DivinePunishment : Ability
             Destroy(lightningInstance, 2f);
 
             // 몬스터에게 피해 적용
-            monster.TakeDamage(damage, playerInstance.transform.position);
+            int currentDamage = GetCurrentDamage();
+            monster.TakeDamage(currentDamage, playerInstance.transform.position);
         }
     }
 
@@ -112,7 +110,8 @@ public class DivinePunishment : Ability
     {
         List<Monster> nearbyMonsters = new List<Monster>();
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(playerInstance.transform.position, range);
+        float currentRange = GetCurrentRange();
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(playerInstance.transform.position, currentRange);
 
         foreach (Collider2D collider in colliders)
         {
@@ -137,24 +136,96 @@ public class DivinePunishment : Ability
     public override string GetDescription()
     {
         string description = $"{baseDescription}\n";
-        description += $"현재 레벨: {currentLevel + 1}\n";
-        description += $"쿨타임: {cooldown}초\n";
-        description += $"피해량: {damage}\n";
-        description += $"범위: {range}m\n";
-        description += $"최대 타겟 수: {maxTargets}";
+        description += $"레벨 {currentLevel + 1}:\n";
+        description += $"- 쿨타임: {GetCurrentCooldown()}초\n";
+        description += $"- 피해량: {GetCurrentDamage()}\n";
+        description += $"- 범위: {GetCurrentRange()}m\n";
+        description += $"- 최대 타겟 수: {GetCurrentMaxTargets()}";
 
         return description;
+    }
+
+    // 현재 레벨에 맞는 쿨타임을 반환합니다.
+    private float GetCurrentCooldown()
+    {
+        if (currentLevel < cooldownPerLevel.Length)
+        {
+            return cooldownPerLevel[currentLevel];
+        }
+        Debug.LogWarning($"DivinePunishment: currentLevel ({currentLevel})이 cooldownPerLevel 배열의 범위를 벗어났습니다. 마지막 값을 반환합니다.");
+        return cooldownPerLevel[cooldownPerLevel.Length - 1];
+    }
+
+    // 현재 레벨에 맞는 피해량을 반환합니다.
+    private int GetCurrentDamage()
+    {
+        if (currentLevel < damagePerLevel.Length)
+        {
+            return damagePerLevel[currentLevel];
+        }
+        Debug.LogWarning($"DivinePunishment: currentLevel ({currentLevel})이 damagePerLevel 배열의 범위를 벗어났습니다. 마지막 값을 반환합니다.");
+        return damagePerLevel[damagePerLevel.Length - 1];
+    }
+
+    // 현재 레벨에 맞는 범위를 반환합니다.
+    private float GetCurrentRange()
+    {
+        if (currentLevel < rangePerLevel.Length)
+        {
+            return rangePerLevel[currentLevel];
+        }
+        Debug.LogWarning($"DivinePunishment: currentLevel ({currentLevel})이 rangePerLevel 배열의 범위를 벗어났습니다. 마지막 값을 반환합니다.");
+        return rangePerLevel[rangePerLevel.Length - 1];
+    }
+
+    // 현재 레벨에 맞는 최대 타겟 수를 반환합니다.
+    private int GetCurrentMaxTargets()
+    {
+        if (currentLevel < maxTargetsPerLevel.Length)
+        {
+            return maxTargetsPerLevel[currentLevel];
+        }
+        Debug.LogWarning($"DivinePunishment: currentLevel ({currentLevel})이 maxTargetsPerLevel 배열의 범위를 벗어났습니다. 마지막 값을 반환합니다.");
+        return maxTargetsPerLevel[maxTargetsPerLevel.Length - 1];
     }
 
     // GetNextLevelIncrease 메서드 구현
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel + 1 < maxLevel)
+        if (currentLevel + 1 < maxLevel && damagePerLevel.Length > currentLevel + 1)
         {
-            int nextDamageIncrease = 10;  // 다음 레벨에서 추가될 피해량
+            int nextDamageIncrease = damagePerLevel[currentLevel + 1] - damagePerLevel[currentLevel];
             return nextDamageIncrease;
         }
 
         return 0;
+    }
+
+    private void OnValidate()
+    {
+        // 배열의 길이가 maxLevel과 일치하도록 조정
+        if (cooldownPerLevel.Length != maxLevel)
+        {
+            Debug.LogWarning($"DivinePunishment: cooldownPerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref cooldownPerLevel, maxLevel);
+        }
+
+        if (damagePerLevel.Length != maxLevel)
+        {
+            Debug.LogWarning($"DivinePunishment: damagePerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref damagePerLevel, maxLevel);
+        }
+
+        if (rangePerLevel.Length != maxLevel)
+        {
+            Debug.LogWarning($"DivinePunishment: rangePerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref rangePerLevel, maxLevel);
+        }
+
+        if (maxTargetsPerLevel.Length != maxLevel)
+        {
+            Debug.LogWarning($"DivinePunishment: maxTargetsPerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref maxTargetsPerLevel, maxLevel);
+        }
     }
 }
