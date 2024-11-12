@@ -15,6 +15,8 @@ public class TitleManager1 : MonoBehaviour
     private float fadeDuration = 1f;   // 페이드 인/아웃 시간
     [SerializeField]
     private float logoDisplayTime = 1f;// 로고가 선명한 상태로 표시되는 시간
+    [SerializeField]
+    private TitleSoundManager titleSoundManager;
 
     void Start()
     {
@@ -30,9 +32,8 @@ public class TitleManager1 : MonoBehaviour
 
         // 페이드인 시작
         yield return StartCoroutine(FadeIn(teamLogoImage));
-
         // 팀 로고가 완전히 선명해졌을 때 로고 사운드 재생
-        SoundManager.Instance.PlayLogoSound();
+        titleSoundManager.PlayLogoSound();
 
         // 사운드가 재생된 후 일정 시간 대기
         yield return new WaitForSeconds(logoDisplayTime);
@@ -44,7 +45,7 @@ public class TitleManager1 : MonoBehaviour
         whitePanel.SetActive(false);
 
         // 타이틀 사운드 재생
-        SoundManager.Instance.PlayTitleSound();
+        titleSoundManager.PlayTitleSound();
     }
 
     private IEnumerator FadeOut(Image image)

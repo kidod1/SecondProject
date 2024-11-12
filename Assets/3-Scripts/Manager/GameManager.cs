@@ -210,9 +210,6 @@ public class GameManager : MonoBehaviour
         {
             gameResultPanel.SetActive(true);
         }
-
-        // 게임 오버 시 시간 정지
-        Time.timeScale = 0;
     }
 
     private void CalculateTotalScore()
