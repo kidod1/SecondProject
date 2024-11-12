@@ -5,10 +5,13 @@ public class Bullet : MonoBehaviour
     public int bulletAttackDamage;
     private Monster sourceMonster;
     private Rigidbody2D rb;
+
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+
     [SerializeField]
     private CircleCollider2D bulletCollider;
+
     [SerializeField]
     private float maxLifetime = 5f;
     private float currentLifetime = 0f;
@@ -21,8 +24,27 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        initialSpriteScale = spriteRenderer.transform.localScale;
-        AdjustSpriteDirection();
+
+        // SpriteRenderer가 할당되지 않았다면 컴포넌트에서 자동으로 가져옵니다.
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                Debug.LogWarning("SpriteRenderer가 할당되지 않았으며, 해당 GameObject에 SpriteRenderer 컴포넌트가 없습니다.");
+            }
+        }
+
+        if (spriteRenderer != null)
+        {
+            initialSpriteScale = spriteRenderer.transform.localScale;
+            AdjustSpriteDirection();
+        }
+        else
+        {
+            // SpriteRenderer가 없을 때 초기 스케일을 설정할 기본 값
+            initialSpriteScale = Vector3.one;
+        }
     }
 
     private void Update()
@@ -39,7 +61,16 @@ public class Bullet : MonoBehaviour
         {
             float t = Mathf.Clamp01((currentLifetime - 0.5f) / (maxLifetime - 0.5f)); // 0.5초 후부터 maxLifetime까지 보간
             float newScaleX = Mathf.Lerp(initialSpriteScale.x, initialSpriteScale.x * scaleMultiplier, t); // X 스케일을 초기값에서 증가된 값으로 변경
-            spriteRenderer.transform.localScale = new Vector3(newScaleX, initialSpriteScale.y, initialSpriteScale.z);
+
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.transform.localScale = new Vector3(newScaleX, initialSpriteScale.y, initialSpriteScale.z);
+            }
+            else
+            {
+                // SpriteRenderer가 없을 때 다른 로직을 수행하거나 스케일을 적용하지 않을 수 있습니다.
+                transform.localScale = new Vector3(newScaleX, initialSpriteScale.y, initialSpriteScale.z);
+            }
         }
 
         // 라이프타임 종료 시 탄환 파괴
@@ -72,13 +103,26 @@ public class Bullet : MonoBehaviour
     /// </summary>
     private void AdjustSpriteDirection()
     {
+        if (rb == null)
+        {
+            Debug.LogWarning("Rigidbody2D가 할당되지 않았습니다.");
+            return;
+        }
+
         Vector2 direction = rb.velocity.normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        if (direction.x < 0)
+        if (spriteRenderer != null)
         {
-            spriteRenderer.flipY = true;
+            if (direction.x < 0)
+            {
+                spriteRenderer.flipY = true;
+            }
+            else
+            {
+                spriteRenderer.flipY = false;
+            }
         }
     }
 
@@ -110,6 +154,7 @@ public class Bullet : MonoBehaviour
         if (sourceMonster != null)
         {
             // 추가적인 히트 기록 로직을 여기에 구현할 수 있습니다.
+            // 예: sourceMonster.RegisterHit(hitType);
         }
     }
 }

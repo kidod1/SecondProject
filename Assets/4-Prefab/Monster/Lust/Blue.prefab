@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 5317047615289873810}
   - component: {fileID: 2018602272353501112}
   - component: {fileID: 6644932286304639204}
-  m_Layer: 0
+  - component: {fileID: 1601118896810972848}
+  - component: {fileID: 2467290477362083561}
+  m_Layer: 12
   m_Name: Blue
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,7 +84,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -508134431
+  m_SortingLayerID: 301747741
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
@@ -136,8 +138,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: 606636f7807dd18448076f10ac2a60d7, type: 2}
-  invincibilityDuration: 0.5
+  minKnockbackForce: 5
+  maxKnockbackForce: 15
   blinkInterval: 0.1
+  blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 2554013357090995075, guid: ebc5b85bc266c1c4787716e6fa7537d4, type: 3}
   deathEffectDuration: 0.2
   abilityDeathEffectDuration: 1
@@ -150,12 +154,74 @@ MonoBehaviour:
   damageInterval: 1
   stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
   isInstantKilled: 0
-  danceBulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
+  danceBulletPrefab: {fileID: 1927569836658033460, guid: 59d985c11c0df5946bce82c3a332abbf, type: 3}
   stat: {fileID: 11400000, guid: 606636f7807dd18448076f10ac2a60d7, type: 2}
   summonDanceAnimation: idle
   idleDanceAnimation: idle
   danceAttackAnimation: attack
   danceFirePoint: {fileID: 1311759638201779626}
+--- !u!50 &1601118896810972848
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20583392034474793}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!70 &2467290477362083561
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20583392034474793}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.35540923, y: 4.568426}
+  m_Size: {x: 5.0161705, y: 10.422472}
+  m_Direction: 0
 --- !u!1 &4689768751278985393
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1311759638201779626}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

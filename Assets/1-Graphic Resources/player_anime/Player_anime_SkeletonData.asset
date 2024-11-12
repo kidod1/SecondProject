@@ -24,8 +24,14 @@ MonoBehaviour:
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []
-  fromAnimation: []
-  toAnimation: []
-  duration: []
-  defaultMix: 0.2
+  fromAnimation:
+  - upper_body/upper_idle
+  - upper_body/upper_idle
+  toAnimation:
+  - upper_body/move/u_back_move
+  - upper_body/move/u_straight_move
+  duration:
+  - 0.3
+  - 0.3
+  defaultMix: 0.44
   controller: {fileID: 0}

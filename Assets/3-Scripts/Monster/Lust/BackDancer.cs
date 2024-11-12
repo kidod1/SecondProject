@@ -91,6 +91,7 @@ public class BackDancer : Monster
         TransitionToState(cooldownState);
     }
 
+
     private void FireDanceBulletWithParticle()
     {
         if (danceBulletPrefab == null)
@@ -199,12 +200,7 @@ public class BackDancerAttackState : MonsterState
 
     public override void UpdateState()
     {
-        (monster as BackDancer)?.FlipTowardsPlayer();
-
-        if (!monster.IsPlayerInRange(monster.monsterBaseStat.attackRange))
-        {
-            monster.TransitionToState(monster.chaseState);
-        }
+        // 공격 중에는 추가적인 상태 전환을 하지 않습니다.
     }
 
     public override void ExitState() { }
