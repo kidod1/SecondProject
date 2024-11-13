@@ -323,12 +323,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: PlaySpecificSound
-        m_Mode: 2
+        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
+        m_MethodName: PlayCustomSound
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 94451c9ffd9e9614597d624310b531c9, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -336,7 +336,19 @@ MonoBehaviour:
         m_CallState: 2
   OnLevelUp:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
+        m_MethodName: PlayCustomSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnMonsterEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -357,8 +369,53 @@ MonoBehaviour:
       m_Calls: []
   OnHeal:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
+        m_MethodName: PlayCustomSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnGainExperience:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartPlayerAnimationComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerStartMove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerStopMove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUIUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInvincibilityStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInvincibilityEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerStartShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerStopShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerDataLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerDataSaved:
     m_PersistentCalls:
       m_Calls: []
   impulseSource: {fileID: 2447106848902413759}
@@ -399,7 +456,6 @@ MonoBehaviour:
   bossHealthBarMaskRect: {fileID: 0}
   bossHealthBarFullRect: {fileID: 0}
   synergyAbilityIcon: {fileID: 0}
-  synergyAbilityOverlay: {fileID: 0}
   abilityManager: {fileID: 0}
 --- !u!114 &5018752986689712375
 MonoBehaviour:
@@ -416,7 +472,7 @@ MonoBehaviour:
   objectPrefabs:
   - {fileID: 603568951414228764, guid: e9efe6c6a9c66cc41bbe05bfc1c18979, type: 3}
   - {fileID: 603568951414228764, guid: 94c48a47f30fbd340922582d6f5407d8, type: 3}
-  poolSize: 30
+  poolSize: 100
   poolParent: {fileID: 0}
 --- !u!114 &287484265595492415
 MonoBehaviour:

@@ -415,7 +415,7 @@ public class PlayerUIManager : MonoBehaviour
             Image iconImage = iconObj.GetComponent<Image>();
             if (iconImage != null && playerAbilityManager.abilities[i] != null)
             {
-                iconImage.sprite = playerAbilityManager.abilities[i].abilityIcon;
+                iconImage.sprite = playerAbilityManager.abilities[i].ability.abilityIcon;
             }
             else
             {

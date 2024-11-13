@@ -77,23 +77,9 @@ public class GameManager : MonoBehaviour
         // 게임 시작 시간 설정
         gameStartTime = Time.time;
 
-        // 스탯 초기화
-        ResetStats();
-
-        // 능력 초기화
-        abilityManager.ResetAllAbilities(); // Start 시 초기화
-
-        // 플레이어 데이터 초기화 및 UI 업데이트
-        player.LoadPlayerData(); // 플레이어 데이터 로드
+        // 능력 매니저 초기화
         abilityManager.Initialize(player);
         abilityUIManager.Initialize(abilityManager); // AbilityManager 초기화
-
-        // UI 초기화
-        uiManager.Initialize(player);
-
-        // 이벤트 바인딩
-        player.OnTakeDamage.AddListener(() => uiManager.UpdateHealthUI());
-        player.OnLevelUp.AddListener(() => uiManager.UpdateExperienceUI());
 
         // 플레이어 사망 시 GameOver 호출
         player.OnPlayerDeath.AddListener(GameOver);
@@ -149,8 +135,6 @@ public class GameManager : MonoBehaviour
 
     private void RestartScene()
     {
-        // 씬이 재시작될 때 플레이어 데이터를 저장하고, 씬을 재시작합니다.
-        player.SavePlayerData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -195,9 +179,6 @@ public class GameManager : MonoBehaviour
     // 게임 종료 처리
     public void GameOver()
     {
-        // 플레이어 데이터 저장
-        player.SavePlayerData();
-
         // 총점 계산 및 랭크 결정
         CalculateTotalScore();
         DetermineRank();

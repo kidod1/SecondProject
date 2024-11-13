@@ -216,7 +216,6 @@ public class Player : MonoBehaviour
         healthBarShakers.AddRange(FindObjectsOfType<UIShaker>());
         InitializePlayer();
         UpdateUI();
-        SavePlayerData();
 
         PlayRandomGameStartAnimation();
     }
@@ -357,7 +356,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        Vector2 movement = moveInput.normalized * stat.currentPlayerSpeed * Time.fixedDeltaTime;
+        Vector2 movement = moveInput.normalized * stat.buffedPlayerSpeed * Time.fixedDeltaTime;
         Vector2 newPosition = rb.position + movement;
         rb.MovePosition(newPosition);
     }
@@ -793,7 +792,6 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Die()
     {
-        SaveCurrencyOnly();
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
     }
@@ -1007,7 +1005,7 @@ public class Player : MonoBehaviour
                     damageMultiplier = fieryAbility.GetDamageMultiplier();
                 }
 
-                projScript.Initialize(stat, this, false, 1.0f, stat.buffedPlayerDamage, randomSpeed, randomLifetime);
+                projScript.Initialize(stat, this, false, damageMultiplier, stat.buffedPlayerDamage, randomSpeed, randomLifetime);
                 projScript.SetDirection(shootDir.normalized);
             }
             else
@@ -1052,79 +1050,6 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// 통화 정보만 저장합니다.
-    /// </summary>
-    private void SaveCurrencyOnly()
-    {
-        PlayerCurrencyToJson data = new PlayerCurrencyToJson
-        {
-            currentCurrency = stat.currentCurrency
-        };
-
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(saveFilePath, json);
-    }
-
-    /// <summary>
-    /// 플레이어 데이터를 저장합니다.
-    /// </summary>
-    public void SavePlayerData()
-    {
-        PlayerDataToJson data = new PlayerDataToJson
-        {
-            currentPlayerSpeed = stat.currentPlayerSpeed,
-            currentPlayerDamage = stat.currentPlayerDamage,
-            currentProjectileSpeed = stat.currentProjectileSpeed,
-            currentProjectileRange = stat.currentProjectileRange,
-            currentProjectileType = stat.currentProjectileType,
-            currentMaxHP = stat.currentMaxHP,
-            currentHP = stat.currentHP,
-            currentShield = stat.currentShield,
-            currentShootCooldown = stat.currentAttackSpeed,
-            currentDefense = stat.currentDefense,
-            currentExperience = stat.currentExperience,
-            currentCurrency = stat.currentCurrency,
-            currentLevel = stat.currentLevel
-        };
-
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(saveFilePath, json);
-
-        OnPlayerDataSaved.Invoke(); // 플레이어 데이터 저장 이벤트 호출
-    }
-
-    /// <summary>
-    /// 플레이어 데이터를 로드합니다.
-    /// </summary>
-    public void LoadPlayerData()
-    {
-        if (File.Exists(saveFilePath))
-        {
-            string json = File.ReadAllText(saveFilePath);
-            PlayerDataToJson data = JsonUtility.FromJson<PlayerDataToJson>(json);
-
-            stat.currentPlayerSpeed = data.currentPlayerSpeed;
-            stat.currentPlayerDamage = data.currentPlayerDamage;
-            stat.currentProjectileSpeed = data.currentProjectileSpeed;
-            stat.currentProjectileRange = data.currentProjectileRange;
-            stat.currentProjectileType = data.currentProjectileType;
-            stat.currentMaxHP = data.currentMaxHP;
-            stat.currentHP = data.currentHP;
-            stat.currentShield = data.currentShield;
-            stat.currentAttackSpeed = data.currentShootCooldown;
-            stat.currentDefense = data.currentDefense;
-            stat.currentExperience = data.currentExperience;
-            stat.currentCurrency = data.currentCurrency;
-            stat.currentLevel = data.currentLevel;
-
-            OnPlayerDataLoaded.Invoke(); // 플레이어 데이터 로드 이벤트 호출
-        }
-        else
-        {
-            Debug.LogWarning("저장 파일을 찾을 수 없어 기본 플레이어 데이터 사용.");
-        }
-    }
-    /// <summary>
     /// 플레이어 컨트롤을 활성화합니다.
     /// </summary>
     public void EnableControls()
@@ -1138,33 +1063,5 @@ public class Player : MonoBehaviour
     public void DisableControls()
     {
         playerInput.Player.Disable();
-    }
-    private void OnApplicationQuit()
-    {
-        SavePlayerData();
-    }
-
-    [System.Serializable]
-    public class PlayerCurrencyToJson
-    {
-        public int currentCurrency;
-    }
-
-    [System.Serializable]
-    public class PlayerDataToJson
-    {
-        public float currentPlayerSpeed;
-        public int currentPlayerDamage;
-        public float currentProjectileSpeed;
-        public float currentProjectileRange;
-        public int currentProjectileType;
-        public int currentMaxHP;
-        public int currentHP;
-        public int currentShield;
-        public float currentShootCooldown;
-        public int currentDefense;
-        public int currentExperience;
-        public int currentCurrency;
-        public int currentLevel;
     }
 }

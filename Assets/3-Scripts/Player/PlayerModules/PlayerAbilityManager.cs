@@ -1,38 +1,35 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro; // TextMeshPro를 사용하기 위해 추가
-
-public interface IMonsterDeathAbility
-{
-    void OnMonsterDeath(Monster monster);
-}
 
 public class PlayerAbilityManager : MonoBehaviour
 {
     private Player player;
 
-    public List<Ability> abilities = new List<Ability>();
+    // **PlayerAbility** 리스트로 변경하여 각 능력의 상태를 관리
+    public List<PlayerAbility> abilities = new List<PlayerAbility>();
     private List<Ability> availableAbilities = new List<Ability>();
 
+    // Ability 이름으로 PlayerAbility를 빠르게 찾기 위한 딕셔너리
+    private Dictionary<string, PlayerAbility> abilityNameToPlayerAbility = new Dictionary<string, PlayerAbility>();
+
+    // 시너지 관련 변수들
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
-    private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
+    public Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
+    // UI 관련 변수들
     private Coroutine selectionAnimationCoroutine;
+    public event Action OnAbilitiesChanged;
 
-    // 능력 변경 시 호출할 C# 이벤트로 변경
-    public event System.Action OnAbilitiesChanged;
-
-    // 능력 획득 횟수를 추적하기 위한 변수
     private int abilitiesAcquiredCount = 0;
 
     [SerializeField]
     private GameObject[] resultImages; // 인스펙터에서 할당된 이미지 배열
 
-    // **추가된 부분: 각 이미지에 대응하는 레벨 텍스트 배열**
     [SerializeField]
     private TextMeshProUGUI[] levelTexts; // 인스펙터에서 할당된 레벨 텍스트 배열
 
-    // **추가된 부분: 시너지 카테고리별 버튼 스프라이트 매핑**
     [Header("Synergy Button Resources")]
     [Tooltip("각 시너지 카테고리에 대응하는 버튼 스프라이트 배열.")]
     [SerializeField]
@@ -42,11 +39,10 @@ public class PlayerAbilityManager : MonoBehaviour
     [SerializeField]
     private Sprite[] synergyButtonSprites; // 카테고리에 맞는 스프라이트 배열
 
-    // Dictionary를 통해 능력과 UI를 매핑
-    private Dictionary<Ability, int> abilityToImageIndex = new Dictionary<Ability, int>();
-
-    // **추가된 부분: 카테고리별 버튼 스프라이트 딕셔너리**
     private Dictionary<string, Sprite> synergyCategoryToSprite = new Dictionary<string, Sprite>();
+
+    // Ability 이름과 이미지 인덱스를 매핑하기 위한 딕셔너리
+    private Dictionary<string, int> abilityToImageIndex = new Dictionary<string, int>();
 
     public void Initialize(Player player)
     {
@@ -56,12 +52,22 @@ public class PlayerAbilityManager : MonoBehaviour
         InitializeSynergyDictionaries();
         ResetAllAbilities();
 
-        // 리스너 중복 등록 방지를 위해 먼저 제거한 후 추가
+        // 플레이어 이벤트 리스너 설정
         player.OnHitEnemy.RemoveListener(ActivateAbilitiesOnHit);
         player.OnHitEnemy.AddListener(ActivateAbilitiesOnHit);
 
-        // **추가된 부분: 시너지 카테고리와 스프라이트 매핑 초기화**
         InitializeSynergyCategoryToSprite();
+
+        // 저장된 능력 데이터 로드 및 적용
+        PlayerDataManager dataManager = PlayerDataManager.Instance;
+        if (dataManager != null)
+        {
+            List<AbilityData> savedAbilitiesData = dataManager.GetAbilitiesData();
+            if (savedAbilitiesData != null && savedAbilitiesData.Count > 0)
+            {
+                ApplySavedAbilities(savedAbilitiesData);
+            }
+        }
     }
 
     private void InitializeSynergyCategoryToSprite()
@@ -80,79 +86,114 @@ public class PlayerAbilityManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Duplicate synergy category detected: {synergyCategories[i]}. Skipping.");
+                Debug.LogWarning($"중복된 시너지 카테고리가 감지되었습니다: {synergyCategories[i]}");
             }
         }
     }
 
-    private void OnDisable()
+    private void LoadAvailableAbilities()
     {
-        if (player != null)
-        {
-            player.OnHitEnemy.RemoveListener(ActivateAbilitiesOnHit);
-        }
+        // Resources 폴더에서 모든 Ability ScriptableObject를 로드
+        Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
+        availableAbilities.AddRange(loadedAbilities);
+    }
+    public List<Ability> GetAvailableAbilities()
+    {
+        return availableAbilities;
     }
 
-    public void SelectAbility(Ability ability)
+    /// <summary>
+    /// 저장된 AbilityData 리스트를 기반으로 능력을 적용합니다.
+    /// </summary>
+    public void ApplySavedAbilities(List<AbilityData> savedAbilitiesData)
     {
-        bool isNewAbility = false; // 새로운 능력 여부를 추적하는 플래그
-
-        ability.Apply(player);
-
-        if (ability.currentLevel == 0)
+        foreach (var abilityData in savedAbilitiesData)
         {
-            ability.currentLevel = 1;
-            abilities.Add(ability);
-            isNewAbility = true; // 새로운 능력을 획득했음을 표시
+            Ability abilityTemplate = availableAbilities.Find(a => a.abilityName == abilityData.abilityName);
+            if (abilityTemplate != null)
+            {
+                // Ability의 인스턴스를 생성하여 PlayerAbility로 관리
+                PlayerAbility playerAbility = new PlayerAbility(abilityTemplate, abilityData.currentLevel);
+                abilities.Add(playerAbility);
+                abilityNameToPlayerAbility.Add(playerAbility.ability.abilityName, playerAbility);
+
+                // 능력 적용
+                playerAbility.Apply(player);
+
+                // UI 업데이트를 위해 이미지 인덱스 매핑 및 이미지 활성화
+                if (abilitiesAcquiredCount < resultImages.Length)
+                {
+                    abilityToImageIndex[playerAbility.ability.abilityName] = abilitiesAcquiredCount;
+                    abilitiesAcquiredCount++;
+
+                    // UI 업데이트 메서드 호출
+                    ActivateNextResultImage(playerAbility);
+                }
+                else
+                {
+                    Debug.LogWarning("모든 결과 이미지가 이미 활성화되었습니다. 추가 능력에 대한 UI가 없습니다.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Ability '{abilityData.abilityName}'을(를) 찾을 수 없습니다.");
+            }
+        }
+
+        OnAbilitiesChanged?.Invoke();
+    }
+
+
+    /// <summary>
+    /// 새로운 능력을 선택하거나 기존 능력을 업그레이드합니다.
+    /// </summary>
+    public void SelectAbility(string abilityName)
+    {
+        Ability abilityTemplate = availableAbilities.Find(a => a.abilityName == abilityName);
+        if (abilityTemplate == null)
+        {
+            Debug.LogError($"Ability '{abilityName}'이(가) 존재하지 않습니다.");
+            return;
+        }
+
+        if (abilityNameToPlayerAbility.TryGetValue(abilityName, out PlayerAbility existingAbility))
+        {
+            existingAbility.Upgrade(player);
+
+            // 기존 능력이 업그레이드된 경우, 해당 능력의 레벨 텍스트 업데이트
+            UpdateAbilityLevelText(existingAbility);
+        }
+        else
+        {
+            PlayerAbility newAbility = new PlayerAbility(abilityTemplate, 1);
+            abilities.Add(newAbility);
+            abilityNameToPlayerAbility.Add(newAbility.ability.abilityName, newAbility);
+            newAbility.Apply(player);
 
             // 능력과 이미지 인덱스를 매핑
             if (abilitiesAcquiredCount < resultImages.Length)
             {
-                abilityToImageIndex[ability] = abilitiesAcquiredCount;
+                abilityToImageIndex[newAbility.ability.abilityName] = abilitiesAcquiredCount;
                 abilitiesAcquiredCount++;
             }
             else
             {
                 Debug.LogWarning("모든 결과 이미지가 이미 활성화되었습니다. 추가 능력에 대한 UI가 없습니다.");
             }
-        }
-        else
-        {
-            ability.Upgrade();
-        }
 
-        if (ability.currentLevel >= 5)
-        {
-            availableAbilities.Remove(ability);
+            // 새로운 능력 획득 시 이미지 활성화
+            ActivateNextResultImage(newAbility);
         }
 
-        CheckForSynergy(ability.category);
+        CheckForSynergy(abilityTemplate.category);
 
-        // 능력이 변경되었음을 알림 (C# 이벤트 호출)
         OnAbilitiesChanged?.Invoke();
-
-        // **추가된 부분: 새로운 능력 획득 시 이미지 활성화**
-        if (isNewAbility)
-        {
-            ActivateNextResultImage(ability);
-        }
-        else
-        {
-            // 기존 능력이 업그레이드된 경우, 해당 능력의 레벨 텍스트 업데이트
-            UpdateAbilityLevelText(ability);
-        }
-
-        // 리스너 수 로그 출력 (디버깅 용도)
-#if UNITY_EDITOR
-        int listenerCount = OnAbilitiesChanged?.GetInvocationList().Length ?? 0;
-        Debug.Log($"OnAbilitiesChanged Listener Count: {listenerCount}");
-#endif
     }
 
     /// <summary>
-    /// 다음 결과 이미지를 활성화하고 레벨 텍스트를 설정하는 메서드
+    /// 다음 결과 이미지를 활성화하고 레벨 텍스트를 설정합니다.
     /// </summary>
-    private void ActivateNextResultImage(Ability ability)
+    private void ActivateNextResultImage(PlayerAbility playerAbility)
     {
         if (resultImages == null || resultImages.Length == 0)
         {
@@ -160,52 +201,58 @@ public class PlayerAbilityManager : MonoBehaviour
             return;
         }
 
-        int imageIndex = abilityToImageIndex.ContainsKey(ability) ? abilityToImageIndex[ability] : -1;
+        string abilityName = playerAbility.ability.abilityName;
 
-        if (imageIndex >= 0 && imageIndex < resultImages.Length)
+        if (abilityToImageIndex.TryGetValue(abilityName, out int imageIndex))
         {
-            if (resultImages[imageIndex] != null)
+            if (imageIndex >= 0 && imageIndex < resultImages.Length)
             {
-                resultImages[imageIndex].SetActive(true);
-
-                // **레벨 텍스트 설정: "Lv " 접두사 추가**
-                if (levelTexts != null && imageIndex < levelTexts.Length)
+                if (resultImages[imageIndex] != null)
                 {
-                    if (levelTexts[imageIndex] != null)
+                    resultImages[imageIndex].SetActive(true);
+
+                    // 레벨 텍스트 설정
+                    if (levelTexts != null && imageIndex < levelTexts.Length)
                     {
-                        levelTexts[imageIndex].text = $"Lv {ability.currentLevel}";
+                        if (levelTexts[imageIndex] != null)
+                        {
+                            levelTexts[imageIndex].text = $"Lv {playerAbility.currentLevel}";
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"levelTexts[{imageIndex}]가 할당되지 않았습니다.");
+                        }
                     }
                     else
                     {
-                        Debug.LogWarning($"levelTexts[{imageIndex}]가 할당되지 않았습니다.");
+                        Debug.LogWarning("levelTexts 배열이 비어있거나 인덱스가 초과되었습니다.");
+                    }
+
+                    // 시너지 어빌리티인 경우 버튼 리소스 설정
+                    if (playerAbility.ability is SynergyAbility synergyAbility)
+                    {
+                        SetSynergyButtonResource(synergyAbility);
                     }
                 }
                 else
                 {
-                    Debug.LogWarning("levelTexts 배열이 비어있거나 인덱스가 초과되었습니다.");
-                }
-
-                // **추가된 부분: 시너지 어빌리티인 경우 버튼 리소스 설정**
-                if (ability is SynergyAbility synergyAbility)
-                {
-                    SetSynergyButtonResource(synergyAbility);
+                    Debug.LogWarning($"resultImages[{imageIndex}]가 할당되지 않았습니다.");
                 }
             }
             else
             {
-                Debug.LogWarning($"resultImages[{imageIndex}]가 할당되지 않았습니다.");
+                Debug.LogWarning("해당 능력에 대한 이미지 인덱스가 유효하지 않습니다.");
             }
         }
         else
         {
-            Debug.LogWarning("해당 능력에 대한 이미지 인덱스가 유효하지 않습니다.");
+            Debug.LogWarning("해당 능력에 대한 이미지 인덱스가 매핑되지 않았습니다.");
         }
     }
 
     /// <summary>
-    /// 시너지 어빌리티의 버튼 리소스를 설정하는 메서드
+    /// 시너지 어빌리티의 버튼 리소스를 설정합니다.
     /// </summary>
-    /// <param name="synergyAbility">시너지 어빌리티 객체</param>
     private void SetSynergyButtonResource(SynergyAbility synergyAbility)
     {
         string category = synergyAbility.category;
@@ -214,12 +261,14 @@ public class PlayerAbilityManager : MonoBehaviour
         {
             Sprite buttonSprite = synergyCategoryToSprite[category];
 
-            // AbilityManager에 버튼 스프라이트를 전달하여 UI를 업데이트하도록 합니다.
+            // AbilityManager에 버튼 스프라이트를 전달하여 UI를 업데이트
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)
             {
                 abilityManager.TriggerShowSynergyAbility(synergyAbility, buttonSprite);
                 Debug.Log($"AbilityManager에게 시너지 어빌리티 '{synergyAbility.abilityName}'과 스프라이트 '{buttonSprite.name}' 전달됨.");
+
+                StartCoroutine(abilityManager.DelayedShowSynergyAbility(synergyAbility));
             }
             else
             {
@@ -233,20 +282,20 @@ public class PlayerAbilityManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 기존 능력이 업그레이드될 때 해당 능력의 레벨 텍스트를 업데이트하는 메서드
+    /// 기존 능력이 업그레이드될 때 해당 능력의 레벨 텍스트를 업데이트합니다.
     /// </summary>
-    private void UpdateAbilityLevelText(Ability ability)
+    private void UpdateAbilityLevelText(PlayerAbility playerAbility)
     {
-        if (abilityToImageIndex.ContainsKey(ability))
-        {
-            int imageIndex = abilityToImageIndex[ability];
+        string abilityName = playerAbility.ability.abilityName;
 
+        if (abilityToImageIndex.TryGetValue(abilityName, out int imageIndex))
+        {
             if (levelTexts != null && imageIndex < levelTexts.Length)
             {
                 if (levelTexts[imageIndex] != null)
                 {
-                    levelTexts[imageIndex].text = $"Lv {ability.currentLevel}";
-                    Debug.Log($"Result Image {imageIndex + 1}의 레벨 텍스트가 'Lv {ability.currentLevel}'으로 업데이트됨.");
+                    levelTexts[imageIndex].text = $"Lv {playerAbility.currentLevel}";
+                    Debug.Log($"Result Image {imageIndex + 1}의 레벨 텍스트가 'Lv {playerAbility.currentLevel}'으로 업데이트됨.");
                 }
                 else
                 {
@@ -265,25 +314,21 @@ public class PlayerAbilityManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 모든 능력을 초기화하고 결과 이미지를 리셋하는 메서드
+    /// 모든 능력을 초기화하고 결과 이미지를 리셋합니다.
     /// </summary>
     public void ResetAllAbilities()
     {
-        foreach (var ability in availableAbilities)
-        {
-            ability.ResetLevel();
-        }
         abilities.Clear();
+        abilityNameToPlayerAbility.Clear();
+        abilitiesAcquiredCount = 0;
 
-        // 이미지 리셋
         ResetResultImages();
 
-        // 능력이 변경되었음을 알림
         OnAbilitiesChanged?.Invoke();
     }
 
     /// <summary>
-    /// 모든 결과 이미지를 비활성화하고 인덱스를 초기화하는 메서드
+    /// 모든 결과 이미지를 비활성화하고 인덱스를 초기화합니다.
     /// </summary>
     private void ResetResultImages()
     {
@@ -301,7 +346,6 @@ public class PlayerAbilityManager : MonoBehaviour
             }
         }
 
-        // **레벨 텍스트도 초기화: "Lv " 접두사 없이 빈 문자열로 설정**
         if (levelTexts != null)
         {
             for (int i = 0; i < levelTexts.Length; i++)
@@ -313,56 +357,75 @@ public class PlayerAbilityManager : MonoBehaviour
             }
         }
 
-        abilitiesAcquiredCount = 0;
         abilityToImageIndex.Clear();
         Debug.Log("모든 결과 이미지가 비활성화되고 레벨 텍스트가 초기화되었습니다.");
     }
 
+    /// <summary>
+    /// 플레이어의 능력 데이터를 AbilityData 리스트로 반환합니다.
+    /// </summary>
+    public List<AbilityData> GetAbilitiesData()
+    {
+        List<AbilityData> dataList = new List<AbilityData>();
+        foreach (var playerAbility in abilities)
+        {
+            AbilityData data = new AbilityData
+            {
+                abilityName = playerAbility.ability.abilityName,
+                currentLevel = playerAbility.currentLevel,
+                category = playerAbility.ability.category
+            };
+            dataList.Add(data);
+        }
+        return dataList;
+    }
+
     public void ActivateAbilitiesOnHit(Collider2D enemy)
     {
-        foreach (var ability in abilities)
+        foreach (var playerAbility in abilities)
         {
-            if (ability is FlashBlade flashBladeAbility)
+            // 각 능력에 대한 OnProjectileHit 또는 OnHitMonster 메서드 호출
+            if (playerAbility.ability is FlashBlade flashBladeAbility)
             {
                 flashBladeAbility.OnProjectileHit(enemy);
             }
-            if (ability is JokerDraw jokerDrawAbility)
+            else if (playerAbility.ability is JokerDraw jokerDrawAbility)
             {
                 jokerDrawAbility.OnHitMonster(enemy);
             }
-            else if (ability is CardStrike cardStrikeAbility)
+            else if (playerAbility.ability is CardStrike cardStrikeAbility)
             {
                 cardStrikeAbility.OnProjectileHit(enemy);
             }
-            else if (ability is RicochetStrike ricochetAbility)
+            else if (playerAbility.ability is RicochetStrike ricochetAbility)
             {
                 ricochetAbility.OnProjectileHit(enemy);
             }
-            else if (ability is SharkStrike sharkStrikeAbility)
+            else if (playerAbility.ability is SharkStrike sharkStrikeAbility)
             {
                 sharkStrikeAbility.OnProjectileHit(enemy);
             }
-            else if (ability is ParasiticNest parasiticNestAbility)
+            else if (playerAbility.ability is ParasiticNest parasiticNestAbility)
             {
-                parasiticNestAbility.OnProjectileHit(enemy); // ParasiticNest의 OnProjectileHit 호출
+                parasiticNestAbility.OnProjectileHit(enemy);
             }
         }
     }
 
     /// <summary>
-    /// 몬스터가 사망했을 때 능력을 활성화하는 메서드
+    /// 몬스터가 사망했을 때 능력을 활성화합니다.
     /// </summary>
     public void ActivateAbilitiesOnMonsterDeath(Monster monster)
     {
-        foreach (var ability in abilities)
+        foreach (var playerAbility in abilities)
         {
-            if (ability is HoneyDrop honeyDrop)
+            if (playerAbility.ability is HoneyDrop honeyDrop)
             {
-                Debug.Log($"Activating OnMonsterDeath for ability: {ability.abilityName}");
+                Debug.Log($"Activating OnMonsterDeath for ability: {playerAbility.ability.abilityName}");
                 honeyDrop.OnMonsterDeath(monster);
             }
 
-            if (ability is KillSpeedBoostAbility killSpeedBoostAbility)
+            if (playerAbility.ability is KillSpeedBoostAbility killSpeedBoostAbility)
             {
                 killSpeedBoostAbility.OnMonsterKilled();
             }
@@ -396,22 +459,6 @@ public class PlayerAbilityManager : MonoBehaviour
         };
     }
 
-    private void LoadAvailableAbilities()
-    {
-        Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
-        availableAbilities.AddRange(loadedAbilities);
-
-        foreach (var ability in loadedAbilities)
-        {
-            // 추가 초기화가 필요한 경우 여기에 작성
-        }
-    }
-
-    public List<Ability> GetAvailableAbilities()
-    {
-        return availableAbilities;
-    }
-
     public void CheckForSynergy(string category)
     {
         if (!synergyAbilityAcquired.ContainsKey(category) || !synergyLevels.ContainsKey(category))
@@ -421,11 +468,11 @@ public class PlayerAbilityManager : MonoBehaviour
         }
 
         int totalLevel = 0;
-        foreach (var ability in abilities)
+        foreach (var playerAbility in abilities)
         {
-            if (ability.category == category)
+            if (playerAbility.ability.category == category)
             {
-                totalLevel += ability.currentLevel;
+                totalLevel += playerAbility.currentLevel;
             }
         }
 
@@ -459,7 +506,6 @@ public class PlayerAbilityManager : MonoBehaviour
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)
             {
-                // 시너지 어빌리티의 카테고리에 맞는 스프라이트 가져오기
                 if (synergyCategoryToSprite.TryGetValue(category, out Sprite buttonSprite))
                 {
                     abilityManager.TriggerShowSynergyAbility(synergyAbility, buttonSprite);
@@ -483,7 +529,6 @@ public class PlayerAbilityManager : MonoBehaviour
         }
     }
 
-
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
         if (synergyAbility != null)
@@ -498,11 +543,11 @@ public class PlayerAbilityManager : MonoBehaviour
 
     public T GetAbilityOfType<T>() where T : Ability
     {
-        foreach (var ability in abilities)
+        foreach (var playerAbility in abilities)
         {
-            if (ability is T)
+            if (playerAbility.ability is T)
             {
-                return ability as T;
+                return playerAbility.ability as T;
             }
         }
         return null;

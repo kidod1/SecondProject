@@ -858,12 +858,12 @@ public class AbilityManager : MonoBehaviour
         // 패널을 애니메이션 이후에 비활성화
         HideAbilitySelectionPanel();
     }
-
     private void ApplySelectedAbility(Ability ability)
     {
         if (playerAbilityManager != null)
         {
-            playerAbilityManager.SelectAbility(ability);
+            // ability.abilityName을 전달하여 string 타입 인수에 맞게 수정
+            playerAbilityManager.SelectAbility(ability.abilityName);
 
             if (ability is SynergyAbility synergyAbility)
             {

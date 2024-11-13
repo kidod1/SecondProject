@@ -6,12 +6,14 @@ using UnityEngine;
 public class TestPortal : MonoBehaviour
 {
     [SerializeField]
+    private string nextMap;
+    [SerializeField]
     private SceneChangeSkeleton skeleton;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            skeleton.PlayCloseAnimation("8_SlothCutScene 1");
+            skeleton.PlayCloseAnimation(nextMap);
         }
     }
 }
