@@ -60,12 +60,12 @@ public class IncreaseSpeed : Ability
         if (currentLevel < maxLevel && currentLevel < speedIncreases.Length)
         {
             float speedIncrease = speedIncreases[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease} 단위\n지금까지 총 {totalSpeedIncrease} 단위 상승";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease}\n지금까지 총 {totalSpeedIncrease} 상승";
         }
         else if (currentLevel == maxLevel && currentLevel < speedIncreases.Length)
         {
             float speedIncrease = speedIncreases[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease} 단위\n지금까지 총 {totalSpeedIncrease} 단위 상승\n최대 레벨 도달";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 이동 속도 +{speedIncrease}\n지금까지 총 {totalSpeedIncrease} 상승\n최대 레벨 도달";
         }
         else
         {

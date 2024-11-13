@@ -75,7 +75,7 @@ public class Breath : Ability
         {
             int damageIncrease = GetNextLevelIncrease();
             return $"{baseDescription}\n" +
-                   $"현재 레벨: {currentLevel + 1}\n" +
+                   $"Lv {currentLevel + 1}:\n" +
                    $"브레스 공격 데미지 증가: +{damageIncrease}\n" +
                    $"브레스 지속 시간: {breathDuration}초\n" +
                    $"브레스 쿨타임: {cooldownTime}초";

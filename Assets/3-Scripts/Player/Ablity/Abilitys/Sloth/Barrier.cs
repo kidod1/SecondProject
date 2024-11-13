@@ -216,7 +216,7 @@ public class Barrier : Ability
         if (currentLevel < maxLevel)
         {
             int currentCooldown = GetNextLevelIncrease();
-            return $"{baseDescription}\nLevel {currentLevel + 1}: {currentCooldown}ÃÊ ÄðÅ¸ÀÓ";
+            return $"{baseDescription}\nLv {currentLevel + 1}: {currentCooldown}ÃÊ ÄðÅ¸ÀÓ";
         }
         else
         {

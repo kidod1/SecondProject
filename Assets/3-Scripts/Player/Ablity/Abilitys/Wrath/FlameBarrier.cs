@@ -163,7 +163,7 @@ public class FlameBarrier : Ability
     {
         string description = $"{baseDescription}\n";
 
-        description += $"현재 레벨: {currentLevel + 1}\n";
+        description += $"Lv  {currentLevel + 1}:\n";
         description += $"데미지: {GetCurrentDamagePerTick()} per {damageInterval}초\n";
         description += $"장막 반경: {GetCurrentBarrierRadius()}m\n";
 

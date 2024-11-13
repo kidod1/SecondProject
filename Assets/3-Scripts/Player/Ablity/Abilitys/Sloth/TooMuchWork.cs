@@ -218,15 +218,15 @@ public class TooMuchWork : Ability
 
     public override string GetDescription()
     {
-        int levelIndex = Mathf.Clamp(currentLevel - 1, 0, maxAttackSpeedMultipliers.Length - 1);
+        int levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length);
 
-        if (currentLevel <= maxAttackSpeedMultipliers.Length && currentLevel > 0)
+        if (currentLevel < maxAttackSpeedMultipliers.Length && currentLevel >= 0)
         {
             float maxAttackSpeedMultiplierPercent = maxAttackSpeedMultipliers[levelIndex] * 100f;
             float baseTimeToMaxSpeedValue = baseTimeToMaxSpeedLevels[levelIndex];
             float overheatDurationValue = overheatDurationsLevels[levelIndex];
 
-            return $"{baseDescription}\nLv {currentLevel}: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초입니다. 최대 속도 도달 시 과열되어 {overheatDurationValue}초 동안 공격할 수 없습니다.";
+            return $"{baseDescription}\nLv {currentLevel+1}: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초입니다. 최대 속도 도달 시 과열되어 {overheatDurationValue}초 동안 공격할 수 없습니다.";
         }
         else if (currentLevel > maxAttackSpeedMultipliers.Length)
         {

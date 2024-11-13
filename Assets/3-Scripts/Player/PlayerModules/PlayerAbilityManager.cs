@@ -7,7 +7,6 @@ public class PlayerAbilityManager : MonoBehaviour
 {
     private Player player;
 
-    // **PlayerAbility** 리스트로 변경하여 각 능력의 상태를 관리
     public List<PlayerAbility> abilities = new List<PlayerAbility>();
     private List<Ability> availableAbilities = new List<Ability>();
 
@@ -43,6 +42,10 @@ public class PlayerAbilityManager : MonoBehaviour
 
     // Ability 이름과 이미지 인덱스를 매핑하기 위한 딕셔너리
     private Dictionary<string, int> abilityToImageIndex = new Dictionary<string, int>();
+    public List<PlayerAbility> GetPlayerAbilities()
+    {
+        return abilities;
+    }
 
     public void Initialize(Player player)
     {
@@ -528,7 +531,17 @@ public class PlayerAbilityManager : MonoBehaviour
             Debug.LogError($"Failed to load Synergy Ability: {synergyAbilityName}");
         }
     }
-
+    public int GetCurrentLevel(string abilityName)
+    {
+        if (abilityNameToPlayerAbility.TryGetValue(abilityName, out PlayerAbility playerAbility))
+        {
+            return playerAbility.currentLevel;
+        }
+        else
+        {
+            return 0; // 플레이어가 해당 능력을 가지고 있지 않음
+        }
+    }
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
         if (synergyAbility != null)

@@ -216,7 +216,7 @@ public class EnchantingMelody : Ability
         string description = $"{baseDescription}\n";
 
         description += $"버프는 {buffChangeInterval}초마다 순환합니다.\n";
-        description += $"현재 레벨: {currentLevel + 1}\n";
+        description += $"Lv {currentLevel + 1}:\n";
         description += $"공격력 버프: +{GetAttackDamageBuff()}\n";
         description += $"공격 속도 버프: +{GetAttackSpeedBuff()} 초당 공격 횟수 증가\n";
         description += $"이동 속도 버프: +{GetMovementSpeedBuff()}\n";

@@ -136,7 +136,7 @@ public class DivinePunishment : Ability
     public override string GetDescription()
     {
         string description = $"{baseDescription}\n";
-        description += $"레벨 {currentLevel + 1}:\n";
+        description += $"Lv {currentLevel + 1}:\n";
         description += $"- 쿨타임: {GetCurrentCooldown()}초\n";
         description += $"- 피해량: {GetCurrentDamage()}\n";
         description += $"- 범위: {GetCurrentRange()}m\n";

@@ -56,7 +56,7 @@ public class IncreaseExperience : Ability
         if (currentLevel < maxLevel && currentLevel < experienceMultipliers.Length)
         {
             int percentIncrease = Mathf.RoundToInt(experienceMultipliers[currentLevel] * 100);
-            return $"{baseDescription}\n·¹º§ {currentLevel + 1}: °æÇèÄ¡ È¹µæ +{percentIncrease}%\nÇöÀç±îÁö ÃÑ {totalPercentIncrease}% »ó½Â";
+            return $"{baseDescription}\nLv {currentLevel + 1}: °æÇèÄ¡ È¹µæ +{percentIncrease}%\nÇöÀç±îÁö ÃÑ {totalPercentIncrease}% »ó½Â";
         }
         else
         {

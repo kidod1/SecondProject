@@ -111,7 +111,7 @@ public class BladeRush : Ability
     public override string GetDescription()
     {
         string description = $"{baseDescription}\n";
-        description += $"레벨 {currentLevel + 1}:\n";
+        description += $"Lv {currentLevel + 1}:\n";
         description += $"- 쿨타임: {GetCurrentCooldown()}초\n";
         description += $"- 피해량: {GetCurrentDamage()}\n";
         description += $"- 사거리: {GetCurrentRange()}m";

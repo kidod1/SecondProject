@@ -49,7 +49,7 @@ public class FieryBloodToastAbility : Ability
     {
         string description = $"{baseDescription}\n";
 
-        description += $"현재 레벨: {currentLevel + 1}\n";
+        description += $"Lv {currentLevel + 1}:\n";
         description += $"체력이 낮을수록 공격력 증가 (배율: x{damageMultipliers[currentLevel]:F2})\n";
 
         return description;

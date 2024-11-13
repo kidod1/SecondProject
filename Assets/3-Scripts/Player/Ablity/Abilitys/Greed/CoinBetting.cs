@@ -194,7 +194,7 @@ public class CoinBetting : Ability
         string description = $"{baseDescription}\n";
         if (currentLevel < damagePerLevel.Length && currentLevel < cooldownPerLevel.Length && currentLevel < bombDurationPerLevel.Length)
         {
-            description += $"·¹º§ {currentLevel + 1}:\n" +
+            description += $"Lv {currentLevel + 1}:\n" +
                            $"- ÆøÅº ÇÇÇØ·®: {damagePerLevel[currentLevel]}\n" +
                            $"- Äð´Ù¿î: {cooldownPerLevel[currentLevel]}ÃÊ\n" +
                            $"- ÆøÅº Áö¼Ó ½Ã°£: {bombDurationPerLevel[currentLevel]}ÃÊ";

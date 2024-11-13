@@ -4,12 +4,12 @@ using UnityEngine;
 [Serializable]
 public class PlayerAbility
 {
-    public Ability ability; // Ability 템플릿
+    public Ability ability;
     public int currentLevel;
 
     public PlayerAbility(Ability ability, int level = 0)
     {
-        this.ability = UnityEngine.Object.Instantiate(ability); // Ability의 복사본 생성
+        this.ability = UnityEngine.Object.Instantiate(ability);
         this.currentLevel = level;
     }
 
