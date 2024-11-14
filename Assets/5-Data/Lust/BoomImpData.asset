@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b32f7121e61f44c8f7785c9a3aad9d, type: 3}
   m_Name: BoomImpData
   m_EditorClassIdentifier: 
-  monsterSpeed: 2
-  maxHP: 55
+  monsterSpeed: 5
+  maxHP: 100
   contectDamage: 0
   attackDamage: 5
   experiencePoints: 5
@@ -21,7 +21,7 @@ MonoBehaviour:
   attackRange: 2
   attackDelay: 0
   rewardCurrency: 10
-  highExperiencePoints: 100
-  highExperienceDropChance: 0
-  explosionDamage: 20
+  highExperiencePoints: 50
+  highExperienceDropChance: 0.2
+  explosionDamage: 15
   explosionRadius: 3
