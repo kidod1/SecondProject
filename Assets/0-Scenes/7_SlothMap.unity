@@ -895,7 +895,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1699618985307465637, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
   m_PrefabInstance: {fileID: 3333183704863097395}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1197328536}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b4cf356de0122543b1f0d679a7f60f5, type: 3}
@@ -906,7 +906,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5032873592357059642, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
   m_PrefabInstance: {fileID: 3333183704863097395}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1197328536}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b4cf356de0122543b1f0d679a7f60f5, type: 3}
@@ -997,7 +997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3376917777185757146, guid: ed924d02a1f3ff84d8e2d0b5f5adb010, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4375010174430853992, guid: ed924d02a1f3ff84d8e2d0b5f5adb010, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2665,6 +2665,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed962b3b0c3321428e384330dcb1dad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1197328536 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+  m_PrefabInstance: {fileID: 3333183704863097395}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1197328540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197328536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b4cf356de0122543b1f0d679a7f60f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 7f825d7e05a9fab478522a5c0598fa02, type: 2}
+  useCallbacks: 0
+  Callbacks: []
+  playingId: 0
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
+  MultiPositionType: 1
+  multiPositionTypeLabel: 0
+  attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
+  LargeModePositions: []
+  multiPositionArray: []
 --- !u!1 &1209843629
 GameObject:
   m_ObjectHideFlags: 0
@@ -5466,6 +5505,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1197328540}
     - targetCorrespondingSourceObject: {fileID: 5736728840196205075, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1225389978}
@@ -6650,6 +6692,10 @@ PrefabInstance:
       propertyPath: hitEffectController
       value: 
       objectReference: {fileID: 2328123864751208081}
+    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+      propertyPath: playerHealthRTPC.WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: 2e09e21ada5ca094596576d3ccbb0833, type: 2}
     - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: OnHeal.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

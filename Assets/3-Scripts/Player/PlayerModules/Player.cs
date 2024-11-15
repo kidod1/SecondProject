@@ -7,9 +7,13 @@ using UnityEngine.InputSystem;
 using Spine.Unity;
 using Cinemachine;
 using System.Collections.Generic;
+using AK.Wwise;
 
 public class Player : MonoBehaviour
 {
+    // WWISE에서 생성한 게임 파라미터를 참조하기 위한 변수
+    public RTPC playerHealthRTPC;
+    public RTPC playerHealthLow;
     [Tooltip("플레이어의 스탯 데이터")]
     public PlayerData stat;
 
@@ -135,6 +139,7 @@ public class Player : MonoBehaviour
     public UnityEvent OnPlayerDataSaved;
 
     private string saveFilePath;
+    private bool isHealthLow = false;
 
     public Vector2 PlayerPosition => transform.position;
 
@@ -716,6 +721,29 @@ public class Player : MonoBehaviour
         isInvincible = value;
     }
 
+    private void UpdatePlayerHealthRTPC()
+    {
+        // 체력 백분율 계산
+        float healthPercentage = (float)stat.currentHP / stat.currentMaxHP * 100f;
+
+        // WWISE의 게임 파라미터 업데이트
+        playerHealthRTPC.SetGlobalValue(healthPercentage);
+
+        // 체력이 30% 이하인지 확인
+        if (healthPercentage <= 30f && !isHealthLow)
+        {
+            playerHealthLow.SetGlobalValue(1f); // 저체력 상태 활성화
+            isHealthLow = true;
+            Debug.Log("Player Health is Low!");
+        }
+        else if (healthPercentage > 30f && isHealthLow)
+        {
+            playerHealthLow.SetGlobalValue(0f); // 저체력 상태 비활성화
+            isHealthLow = false;
+            Debug.Log("Player Health is Normal.");
+        }
+    }
+
     /// <summary>
     /// 데미지를 받고 체력을 감소시킵니다.
     /// </summary>
@@ -731,6 +759,7 @@ public class Player : MonoBehaviour
         if (!isInvincible)
         {
             stat.TakeDamage(damage);
+            UpdatePlayerHealthRTPC();
             OnTakeDamage.Invoke();
 
             float healthPercentage = (float)stat.currentHP / stat.currentMaxHP;
@@ -812,6 +841,7 @@ public class Player : MonoBehaviour
     {
         stat.Heal(amount);
         OnHeal.Invoke();
+        UpdatePlayerHealthRTPC();
         UpdateUI();
 
         if (healEffectPrefab != null)
@@ -877,6 +907,7 @@ public class Player : MonoBehaviour
     private void InitializePlayer()
     {
         stat.InitializeStats();
+        UpdatePlayerHealthRTPC();
         OnPlayerInitialized.Invoke(); // 플레이어 초기화 이벤트 호출
     }
 

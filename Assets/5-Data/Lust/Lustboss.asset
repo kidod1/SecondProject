@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87bdd8e732cebc5439b966f318655eef, type: 3}
+  m_Name: Lustboss
+  m_EditorClassIdentifier: 
+  circlePatternRepeatCount: 4
+  circleBulletPrefab: {fileID: 1927569836658033460, guid: 33556e61e4658974ca8d3daddab1a525, type: 3}
+  circleBulletCount: 20
+  circleBulletSpeed: 5
+  heartPatternRepeatCount: 3
+  heartBulletPrefab: {fileID: 1927569836658033460, guid: 33556e61e4658974ca8d3daddab1a525, type: 3}
+  heartBulletSpeed: 3
+  anglePatternRepeatCount: 3
+  angleBulletPrefab: {fileID: 1927569836658033460, guid: 33556e61e4658974ca8d3daddab1a525, type: 3}
+  angleBulletCount: 5
+  angleBulletSpeed: 6
+  spawnExplosionPatternRepeatCount: 3
+  spawnExplosionPrefab: {fileID: 0}
+  spawnExplosionBulletCount: 10
+  spawnExplosionBulletSpeed: 7
