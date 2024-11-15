@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/FlashBlade")]
 public class FlashBlade : Ability
@@ -20,6 +22,10 @@ public class FlashBlade : Ability
 
     [Tooltip("칼날의 이동 속도")]
     public float bladeSpeed = 15f;
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("FlashBlade 칼날 발사 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event fireSound;
 
     private Player playerInstance;
     private int hitCount = 0;
@@ -99,6 +105,12 @@ public class FlashBlade : Ability
 
         // Debugging: 방향 확인을 위한 로그 추가
         Debug.Log($"Firing blade at angle: {angle}, Direction: {backwardDirection}, Spawn Position: {spawnPosition}");
+
+        // FlashBlade 칼날 발사 시 WWISE 사운드 재생
+        if (fireSound != null)
+        {
+            fireSound.Post(playerInstance.gameObject);
+        }
     }
 
     /// <summary>
@@ -109,6 +121,11 @@ public class FlashBlade : Ability
         if (currentLevel < maxLevel - 1)
         {
             currentLevel++;
+            Debug.Log($"FlashBlade 업그레이드: 현재 레벨 {currentLevel + 1}");
+        }
+        else
+        {
+            Debug.LogWarning("FlashBlade: 이미 최대 레벨에 도달했습니다.");
         }
     }
 

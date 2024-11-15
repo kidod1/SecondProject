@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/DivinePunishment")]
 public class DivinePunishment : Ability
@@ -20,6 +21,13 @@ public class DivinePunishment : Ability
 
     [Tooltip("번개 이펙트 프리팹")]
     public GameObject lightningPrefab;
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("DivinePunishment 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
+
+    // 필요한 경우 추가적인 WWISE 이벤트를 선언할 수 있습니다.
+    // 예: public AK.Wwise.Event upgradeSound;
 
     private Player playerInstance;
     private Coroutine abilityCoroutine;
@@ -46,6 +54,9 @@ public class DivinePunishment : Ability
         {
             currentLevel++;
             Debug.Log($"DivinePunishment 업그레이드: 현재 레벨 {currentLevel + 1}");
+
+            // 업그레이드 시 WWISE 사운드 재생 (선택 사항)
+            // activateSound.Post(playerInstance.gameObject);
         }
         else
         {
@@ -103,6 +114,12 @@ public class DivinePunishment : Ability
             // 몬스터에게 피해 적용
             int currentDamage = GetCurrentDamage();
             monster.TakeDamage(currentDamage, playerInstance.transform.position);
+        }
+
+        // DivinePunishment 능력 발동 시 WWISE 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
         }
     }
 

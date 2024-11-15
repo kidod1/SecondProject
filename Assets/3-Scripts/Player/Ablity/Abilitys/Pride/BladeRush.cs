@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/BladeRush")]
 public class BladeRush : Ability
@@ -19,6 +20,14 @@ public class BladeRush : Ability
 
     [Tooltip("칼날의 프리팹")]
     public GameObject bladePrefab;
+
+    // WWISE 이벤트 변수 추가
+    [Header("WWISE Sound Events")]
+    [Tooltip("BladeRush 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
+
+    // 필요한 경우 추가적인 WWISE 이벤트를 선언할 수 있습니다.
+    // 예: public AK.Wwise.Event upgradeSound;
 
     private Player playerInstance;
     private Coroutine abilityCoroutine;
@@ -45,6 +54,9 @@ public class BladeRush : Ability
         {
             currentLevel++;
             Debug.Log($"BladeRush 업그레이드: 현재 레벨 {currentLevel + 1}");
+
+            // 업그레이드 시 WWISE 사운드 재생 (선택 사항)
+            // activateSound.Post(playerInstance.gameObject);
         }
         else
         {
@@ -105,6 +117,12 @@ public class BladeRush : Ability
         else
         {
             Debug.LogError("BladeRush: bladePrefab에 BladeProjectile 컴포넌트가 없습니다.");
+        }
+
+        // BladeRush 능력 발동 시 WWISE 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
         }
     }
 

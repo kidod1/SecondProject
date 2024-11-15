@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/FlameBarrier")]
 public class FlameBarrier : Ability
@@ -17,6 +19,16 @@ public class FlameBarrier : Ability
     [Tooltip("화염 장막 프리팹")]
     public GameObject flameBarrierPrefab;
 
+    [Header("WWISE Sound Events")]
+    [Tooltip("FlameBarrier 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
+
+    [Tooltip("FlameBarrier 업그레이드 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event upgradeSound;
+
+    [Tooltip("FlameBarrier 제거 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event deactivateSound;
+
     private Player playerInstance;
     private GameObject activeFlameBarrier;
 
@@ -31,6 +43,12 @@ public class FlameBarrier : Ability
 
         playerInstance = player;
         CreateFlameBarrier();
+
+        // FlameBarrier 능력 발동 시 WWISE 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
+        }
     }
 
     /// <summary>
@@ -42,6 +60,18 @@ public class FlameBarrier : Ability
         {
             currentLevel++;
             UpdateFlameBarrierParameters();
+
+            Debug.Log($"FlameBarrier 업그레이드: 현재 레벨 {currentLevel + 1}");
+
+            // 업그레이드 시 WWISE 사운드 재생
+            if (upgradeSound != null)
+            {
+                upgradeSound.Post(playerInstance.gameObject);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("FlameBarrier: 이미 최대 레벨에 도달했습니다.");
         }
     }
 
@@ -54,7 +84,14 @@ public class FlameBarrier : Ability
 
         if (activeFlameBarrier != null)
         {
-            Object.Destroy(activeFlameBarrier);
+            UnityEngine.Object.Destroy(activeFlameBarrier);
+
+            // FlameBarrier 제거 시 WWISE 사운드 재생
+            if (deactivateSound != null && playerInstance != null)
+            {
+                deactivateSound.Post(playerInstance.gameObject);
+            }
+
             activeFlameBarrier = null;
         }
         currentLevel = 0;
@@ -70,11 +107,11 @@ public class FlameBarrier : Ability
 
         if (activeFlameBarrier != null)
         {
-            Object.Destroy(activeFlameBarrier);
+            UnityEngine.Object.Destroy(activeFlameBarrier);
         }
 
         // 플레이어의 자식으로 설정
-        activeFlameBarrier = Object.Instantiate(flameBarrierPrefab, playerInstance.transform);
+        activeFlameBarrier = UnityEngine.Object.Instantiate(flameBarrierPrefab, playerInstance.transform);
 
         // 자식 오브젝트 위치를 로컬 좌표계에서 (0,0)으로 고정
         activeFlameBarrier.transform.localPosition = Vector3.zero;
@@ -87,6 +124,12 @@ public class FlameBarrier : Ability
             float currentDamage = GetCurrentDamagePerTick();
             float currentRadius = GetCurrentBarrierRadius();
             effect.Initialize(currentDamage, currentRadius, damageInterval, playerInstance);
+        }
+
+        // FlameBarrier 능력 발동 시 WWISE 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
         }
     }
 
@@ -139,6 +182,12 @@ public class FlameBarrier : Ability
         {
             // 화염 장막이 아직 생성되지 않았다면, 생성합니다.
             CreateFlameBarrier();
+        }
+
+        // FlameBarrier 파라미터 업데이트 시 WWISE 사운드 재생
+        if (upgradeSound != null)
+        {
+            upgradeSound.Post(playerInstance.gameObject);
         }
     }
 

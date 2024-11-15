@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/FieryBloodToastAbility")]
 public class FieryBloodToastAbility : Ability
@@ -7,6 +8,10 @@ public class FieryBloodToastAbility : Ability
     [Header("Damage Multiplier Parameters")]
     [Tooltip("레벨별 최대 공격력 배율")]
     public float[] damageMultipliers = { 1.5f, 1.75f, 2.0f }; // 예: 레벨 1~3
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("FieryBloodToastAbility 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
 
     private PlayerData playerData;
     private string buffIdentifier;
@@ -29,6 +34,12 @@ public class FieryBloodToastAbility : Ability
 
             // 능력 적용 시 즉시 공격력 업데이트
             UpdateDamage();
+
+            // FieryBloodToastAbility 능력 발동 시 WWISE 사운드 재생
+            if (activateSound != null)
+            {
+                activateSound.Post(player.gameObject);
+            }
         }
     }
 
@@ -37,7 +48,14 @@ public class FieryBloodToastAbility : Ability
         if (currentLevel < maxLevel)
         {
             currentLevel++;
+            Debug.Log($"FieryBloodToastAbility 업그레이드: 현재 레벨 {currentLevel + 1}");
             UpdateDamage();
+
+            // 업그레이드 시 WWISE 사운드 재생
+            if (activateSound != null)
+            {
+                activateSound.Post(PlayManager.I.GetPlayer().gameObject);
+            }
         }
         else
         {

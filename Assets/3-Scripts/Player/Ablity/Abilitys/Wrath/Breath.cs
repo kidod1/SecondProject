@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/Breath")]
 public class Breath : Ability
@@ -17,8 +18,13 @@ public class Breath : Ability
 
     public GameObject breathPrefab;         // 브레스 프리팹
 
+    [Header("WWISE Sound Events")]
+    [Tooltip("Breath 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
+
     private Player playerInstance;
     private Coroutine breathCoroutine;
+    private int hitCount = 0;
 
     /// <summary>
     /// 현재 레벨에 맞는 데미지 증가량을 반환합니다.
@@ -194,8 +200,13 @@ public class Breath : Ability
 
         // 브레스 오브젝트의 회전을 설정하여 ParticleSystem이 올바르게 회전하도록 합니다.
         breath.transform.rotation = Quaternion.Euler(0, 0, mappedAngle);
-    }
 
+        // Breath 능력 발동 시 WWISE 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
+        }
+    }
 
     /// <summary>
     /// 주어진 각도를 가장 가까운 90도로 반올림합니다.
@@ -210,7 +221,6 @@ public class Breath : Ability
         // 각도를 45도로 나눈 후, 반올림하여 가장 가까운 90도 배수로 매핑
         float correctionAngle = Mathf.Round(angle / 90f) * 90f;
         return correctionAngle;
-
     }
 
     /// <summary>
@@ -227,6 +237,7 @@ public class Breath : Ability
             breathCoroutine = null;
         }
 
+        hitCount = 0;
         currentLevel = 0;
     }
 
@@ -236,6 +247,25 @@ public class Breath : Ability
         {
             Debug.LogWarning($"Breath: damageIncrements 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
             Array.Resize(ref damageIncrements, maxLevel);
+        }
+    }
+
+    /// <summary>
+    /// Gizmos를 사용하여 브레스 발사 방향 시각화
+    /// </summary>
+    private void OnDrawGizmosSelected()
+    {
+        if (playerInstance != null)
+        {
+            Vector2 facingDirection = playerInstance.GetFacingDirection();
+            Vector2 backwardDirection = -facingDirection;
+
+            Vector3 origin = playerInstance.transform.position;
+            Vector3 direction = backwardDirection * 5f; // 예시: 5 단위 길이
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(origin, origin + (Vector3)direction);
+            Gizmos.DrawSphere(origin + (Vector3)direction, 0.2f);
         }
     }
 }
