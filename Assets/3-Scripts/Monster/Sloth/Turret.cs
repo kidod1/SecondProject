@@ -1,7 +1,9 @@
-using Spine.Unity;
-using UnityEngine;
 using System.Collections;
-using System.ComponentModel;
+using UnityEngine;
+using Spine.Unity;
+using Spine;
+using AK.Wwise; // Wwise 네임스페이스 추가
+
 public class Turret : Monster
 {
     public GameObject bulletPrefab;
@@ -27,6 +29,12 @@ public class Turret : Monster
     private int currentFirePoint = 0;
     private int attackCount = 0;
     public bool isAttacking = false;
+
+    // 추가된 Wwise 이벤트 필드
+    [SerializeField]
+    private AK.Wwise.Event attackSoundEvent; // 공격 사운드 이벤트 참조
+
+    private uint attackSoundPlayingID = 0; // 현재 재생 중인 공격 사운드의 ID
 
     protected override void Start()
     {
@@ -77,9 +85,11 @@ public class Turret : Monster
         isAttacking = true;
         UpdateSkinAndAnimation();
 
+
         for (int i = 0; i < bulietQuantity; i++)
         {
             FireBullet();
+            PlayAttackSound();
             yield return new WaitForSeconds(0.29175f);
             attackCount++;
         }
@@ -99,6 +109,55 @@ public class Turret : Monster
         {
             isAttacking = false;
             TransitionToState(idleState);
+        }
+    }
+
+    /// <summary>
+    /// 공격 사운드를 재생하는 메서드
+    /// </summary>
+    private void PlayAttackSound()
+    {
+        if (attackSoundEvent != null)
+        {
+            // 사운드 이벤트를 재생하고 재생 ID를 저장
+            attackSoundPlayingID = attackSoundEvent.Post(gameObject, (uint)AkCallbackType.AK_EndOfEvent, OnAttackSoundEnd);
+        }
+        else
+        {
+            Debug.LogWarning("Attack sound event is not assigned.");
+        }
+    }
+
+    /// <summary>
+    /// 공격 사운드가 끝났을 때 호출되는 콜백 메서드
+    /// </summary>
+    /// <param name="in_cookie">사용자 데이터</param>
+    /// <param name="in_type">콜백 타입</param>
+    /// <param name="in_info">추가 정보</param>
+    private void OnAttackSoundEnd(object in_cookie, AkCallbackType in_type, object in_info)
+    {
+        if (in_type == AkCallbackType.AK_EndOfEvent)
+        {
+            Debug.Log("Attack sound has ended.");
+            attackSoundPlayingID = 0; // 재생 ID 초기화
+            // 추가적인 동작을 원한다면 여기서 수행
+        }
+    }
+
+    /// <summary>
+    /// 공격 사운드를 정지시키는 메서드
+    /// </summary>
+    public void StopAttackSound()
+    {
+        if (attackSoundEvent != null && attackSoundPlayingID != 0)
+        {
+            attackSoundEvent.Stop(gameObject);
+            attackSoundPlayingID = 0; // 재생 ID 초기화
+            Debug.Log("Attack sound has been stopped.");
+        }
+        else
+        {
+            Debug.LogWarning("Attack sound event is not assigned or not playing.");
         }
     }
 
@@ -212,6 +271,12 @@ public class Turret : Monster
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        // 공격 범위를 기즈모로 표시
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stat.attackRange);
+    }
 }
 
 public class TurretIdleState : MonsterState

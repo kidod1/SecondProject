@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Spine.Unity;
 using Spine;
+using AK.Wwise; // Wwise 네임스페이스 추가
 
 public class ButtonMonster : Monster
 {
@@ -16,6 +17,12 @@ public class ButtonMonster : Monster
     [SpineAnimation] public string attackAnimation;
 
     private SkeletonAnimation skeletonAnimation;
+
+    // 추가된 Wwise 이벤트 필드
+    [SerializeField]
+    private AK.Wwise.Event attackSoundEvent; // 공격 사운드 이벤트 참조
+
+    private uint attackSoundPlayingID = 0; // 현재 재생 중인 공격 사운드의 ID
 
     protected override void Start()
     {
@@ -56,11 +63,12 @@ public class ButtonMonster : Monster
     {
         PlayAnimation(attackAnimation, false);
 
-
         if (attackEffect != null)
         {
             yield return new WaitForSeconds(0.72f);
 
+            // 공격 사운드 재생
+            PlayAttackSound();
             // 파티클 시스템 인스턴스화 및 재생
             ParticleSystem effectInstance = Instantiate(attackEffect, transform.position, Quaternion.identity, transform);
             effectInstance.Play();
@@ -83,6 +91,55 @@ public class ButtonMonster : Monster
         TransitionToState(cooldownState);
     }
 
+    /// <summary>
+    /// 공격 사운드를 재생하는 메서드
+    /// </summary>
+    private void PlayAttackSound()
+    {
+        if (attackSoundEvent != null)
+        {
+            // 사운드 이벤트를 재생하고 재생 ID를 저장
+            attackSoundPlayingID = attackSoundEvent.Post(gameObject, (uint)AkCallbackType.AK_EndOfEvent, OnAttackSoundEnd);
+        }
+        else
+        {
+            Debug.LogWarning("Attack sound event is not assigned.");
+        }
+    }
+
+    /// <summary>
+    /// 공격 사운드가 끝났을 때 호출되는 콜백 메서드
+    /// </summary>
+    /// <param name="in_cookie">사용자 데이터</param>
+    /// <param name="in_type">콜백 타입</param>
+    /// <param name="in_info">추가 정보</param>
+    private void OnAttackSoundEnd(object in_cookie, AkCallbackType in_type, object in_info)
+    {
+        if (in_type == AkCallbackType.AK_EndOfEvent)
+        {
+            Debug.Log("Attack sound has ended.");
+            attackSoundPlayingID = 0; // 재생 ID 초기화
+            // 추가적인 동작을 원한다면 여기서 수행
+        }
+    }
+
+    /// <summary>
+    /// 공격 사운드를 정지시키는 메서드
+    /// </summary>
+    public void StopAttackSound()
+    {
+        if (attackSoundEvent != null && attackSoundPlayingID != 0)
+        {
+            attackSoundEvent.Stop(gameObject);
+            attackSoundPlayingID = 0; // 재생 ID 초기화
+            Debug.Log("Attack sound has been stopped.");
+        }
+        else
+        {
+            Debug.LogWarning("Attack sound event is not assigned or not playing.");
+        }
+    }
+
     private void ExecuteAttack()
     {
         // 범위 내의 적에게 데미지를 입히는 로직
@@ -99,15 +156,6 @@ public class ButtonMonster : Monster
             }
         }
     }
-
-    /*
-    // DeactivateAfterAnimation 코루틴은 더 이상 필요하지 않으므로 제거했습니다.
-    private IEnumerator DeactivateAfterAnimation(GameObject effect)
-    {
-        yield return new WaitForSeconds(0.5f);
-        effect.SetActive(false);
-    }
-    */
 
     public void PlayAnimation(string animationName, bool loop)
     {

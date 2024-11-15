@@ -5,6 +5,7 @@ using System.Collections;
 using Spine.Unity;
 using Spine;
 using Cinemachine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -53,6 +54,10 @@ public class LoadingScreen : MonoBehaviour
     [Header("Animator Controllers")]
     [SerializeField]
     private Animator fadeInAnimator; // FadeIn 및 Loop 애니메이터
+
+    [Header("WWISE Events")]
+    [SerializeField]
+    private AK.Wwise.Event loadSceneEvent; // WWISE 이벤트 변수 추가
 
     private bool isLoadingComplete = false;
     private bool hasFadeOutStarted = false;
@@ -199,18 +204,29 @@ public class LoadingScreen : MonoBehaviour
             yield return null;
         }
 
+        // WWISE 이벤트 실행
+        if (loadSceneEvent != null)
+        {
+            loadSceneEvent.Post(gameObject);
+            Debug.Log("WWISE 이벤트가 실행되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("loadSceneEvent가 할당되지 않았습니다.");
+        }
+
         if (fadeImage != null)
         {
             if (fadeInAnimator != null)
             {
                 fadeInAnimator.SetTrigger("FadeOut");
-                Debug.Log("FadeOut실행");
+                Debug.Log("FadeOut 실행");
             }
             yield return StartCoroutine(FadeOut());
             yield return new WaitForSeconds(1f); // 페이드 아웃 완료 후 1초 대기
         }
 
-        // 클로즈 애니메이션 실행 대신 다음 씬으로 전환
+        // 다음 씬으로 전환
         SceneManager.LoadScene(nextSceneIndex);
     }
 

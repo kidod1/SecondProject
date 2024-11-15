@@ -2,6 +2,7 @@ using UnityEngine;
 using Spine.Unity;
 using System.Collections;
 using Spine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class SlothCutSceneAnimationController : MonoBehaviour
@@ -17,6 +18,10 @@ public class SlothCutSceneAnimationController : MonoBehaviour
     private CutsceneManager cutsceneManager;
 
     private bool hasFadedOut = false;
+
+    // UnityEvent 추가: 애니메이션 완료 시 호출됨
+    [SerializeField]
+    private UnityEvent onCutsceneEnd;
 
     void Start()
     {
@@ -106,18 +111,32 @@ public class SlothCutSceneAnimationController : MonoBehaviour
 
     private void OnAnimationComplete(TrackEntry trackEntry)
     {
-        // Animation2가 종료되었을 때 씬 전환
+        // Animation2가 종료되었을 때
         if (trackEntry.Animation.Name == animation2)
         {
             // 이벤트 핸들러 제거
             spineAnimationState.Complete -= OnAnimationComplete;
 
-            // 씬 전환
-            if (cutsceneManager != null)
-            {
-                Debug.Log("디버깅");
-                //SceneManager.LoadScene(targetSceneName);
-            }
+            // UnityEvent 호출
+            onCutsceneEnd?.Invoke();
+        }
+    }
+
+    // 객체가 파괴될 때 이벤트 핸들러 해제
+    private void OnDestroy()
+    {
+        if (spineAnimationState != null)
+        {
+            spineAnimationState.Complete -= OnAnimationComplete;
+        }
+    }
+
+    // 객체가 비활성화될 때 이벤트 핸들러 해제 (선택 사항)
+    private void OnDisable()
+    {
+        if (spineAnimationState != null)
+        {
+            spineAnimationState.Complete -= OnAnimationComplete;
         }
     }
 }

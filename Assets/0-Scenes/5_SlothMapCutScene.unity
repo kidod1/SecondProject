@@ -374,6 +374,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487368343}
   m_CullTransparentMesh: 1
+--- !u!1 &552263788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 552263791}
+  - component: {fileID: 552263790}
+  - component: {fileID: 552263789}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &552263789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552263788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b7b197524d86e47bf3213f21f7809e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 14e812aecaf00234b8a8990d05022378, type: 2}
+  decodeBank: 0
+  overrideLoadSetting: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
+--- !u!114 &552263790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552263788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b7b197524d86e47bf3213f21f7809e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 236c36a45411ea14b8ba6302add05f2a, type: 2}
+  decodeBank: 0
+  overrideLoadSetting: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
+--- !u!4 &552263791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552263788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 785.2028, y: 317.69638, z: -4.0880513}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558000609
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,6 +785,12 @@ MonoBehaviour:
   openAnimationName: open
   sceneChangeDelay: 1
   targetSceneName: 6_SlothCutScene
+  OnCloseAnimationComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnOpenAnimationComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1133639090
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,7 +973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingBarFill: {fileID: 1488411748}
   loadingDuration: 5
-  nextSceneIndex: 5
+  nextSceneIndex: 4
   pressSpaceText: {fileID: 2027561813}
   loadingImage: {fileID: 487368343}
   skeletonGraphic: {fileID: 1658834325}
@@ -899,6 +988,10 @@ MonoBehaviour:
   fadeDuration: 1
   sceneChanageSkeleton: {fileID: 863109323}
   fadeInAnimator: {fileID: 2027561817}
+  loadSceneEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 90157a5a02780f241a8d917e2352de23, type: 2}
 --- !u!1 &1283043971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,3 +1939,4 @@ SceneRoots:
   - {fileID: 1600003866}
   - {fileID: 619790550}
   - {fileID: 188593678}
+  - {fileID: 552263791}

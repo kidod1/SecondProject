@@ -4,9 +4,13 @@ using Spine.Unity;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using AK.Wwise;
+using System.Runtime.CompilerServices;
 
 public class GameManager : MonoBehaviour
 {
+    public RTPC pauseRTPC;
+
     private bool isPaused = false;
     private SkeletonAnimation[] skeletonAnimations;
 
@@ -124,13 +128,19 @@ public class GameManager : MonoBehaviour
             abilityUIManager.ShowAbilitySelection(); // T 키를 누르면 능력 선택 창을 띄운다
         }
 
-        // --- 추가된 부분 시작 ---
         if (Input.GetKeyDown(KeyCode.L))
         {
             // 테스트용으로 L키를 누르면 점수 패널을 활성화 (게임 오버 로직 호출하지 않음)
             ShowGameResultPanelTest();
         }
-        // --- 추가된 부분 끝 ---
+        if (Time.timeScale == 0)
+        {
+            pauseRTPC.SetGlobalValue(1);
+        }
+        else if (Time.timeScale == 1)
+        {
+            pauseRTPC.SetGlobalValue(2);
+        }
     }
 
     private void RestartScene()

@@ -137,6 +137,7 @@ public class Player : MonoBehaviour
     public UnityEvent OnPlayerStopShoot;
     public UnityEvent OnPlayerDataLoaded;
     public UnityEvent OnPlayerDataSaved;
+    public UnityEvent OnPlayerDeathComplete;
 
     private string saveFilePath;
     private bool isHealthLow = false;
@@ -823,8 +824,19 @@ public class Player : MonoBehaviour
     {
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
+        StartCoroutine(InvokeDeathCompleteEventAfterDelay(1.5f));
     }
 
+    /// <summary>
+    /// 지정된 시간 후에 OnPlayerDeathComplete 이벤트를 호출하는 코루틴입니다.
+    /// </summary>
+    /// <param name="delaySeconds">지연 시간(초)</param>
+    /// <returns></returns>
+    private IEnumerator InvokeDeathCompleteEventAfterDelay(float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        OnPlayerDeathComplete?.Invoke();
+    }
     /// <summary>
     /// 몬스터를 처치했을 때 호출됩니다.
     /// </summary>
