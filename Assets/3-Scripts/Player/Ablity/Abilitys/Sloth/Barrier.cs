@@ -52,8 +52,7 @@ public class Barrier : Ability
         }
 
         playerInstance = player;
-
-        if (currentLevel == 0)
+        if (currentLevel == 1)
         {
             ActivateBarrierVisual();
         }

@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584699609146271055
+    m_lastTime: -8584703599151280500
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584699609146000616
+    m_lastTime: -8584703599151270731
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584699609270450837
+    m_lastTime: -8584702360874616154
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584699609147763698
+    m_lastTime: -8584699493072689044
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -443,6 +443,20 @@ MonoBehaviour:
         ObjectType: 7
         guid: a576fd8e036bbb4caa9512aa7cbbb96e
       Path: SoundBanks\Default Work Unit\BGM_Sloth
+    - name: BGM_Title
+      guid: eb5154034c6e674aa6250bd78c2aa460
+      id: 737535402
+      PathAndIcons:
+      - ElementName: SoundBanks
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b527a3226a72ef478e7c2ca6105dd8e9
+      - ElementName: BGM_Title
+        ObjectType: 7
+        guid: eb5154034c6e674aa6250bd78c2aa460
+      Path: SoundBanks\Default Work Unit\BGM_Title
     - name: Main
       guid: 5139e2c5f50fae499f46cc35db17acc9
       id: 3161908922
@@ -483,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584699556404194045
+    m_lastTime: -8584699493118249129
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -3345,7 +3359,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584699609271422714
+    m_lastTime: -8584702360874655245
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -3470,7 +3484,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584699609271178289
+    m_lastTime: -8584703599156772425
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -3624,7 +3638,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584699609147159470
+    m_lastTime: -8584703599151309816
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -3638,7 +3652,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584699609146852309
+    m_lastTime: -8584703599151300046
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -3737,10 +3751,10 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584699609146573055
+    m_lastTime: -8584703599151290274
     List: []
-  ExpandedFileSystemItemIds: 0200000003000000080000001100000031000000340000003c000000660000006700000068000000690000006b0000006d0000006e00000083000000840000008c0000008d0000008e00000096000000a3000000a4000000a5000000a6000000
-  ExpandedWaapiItemIds: 
+  ExpandedFileSystemItemIds: 8300000084000000
+  ExpandedWaapiItemIds: 05000000060000000a0000000d0000000e0000001e0000001f00000095000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
   currentDataSource: 1

@@ -115,6 +115,8 @@ public class SceneChangeSkeleton : MonoBehaviour
         isAnimating = true;
         isOpening = false;
         skeletonGraphic.AnimationState.SetAnimation(0, closeAnimationName, false);
+        // Close 애니메이션 완료 후 이벤트 호출
+        OnCloseAnimationComplete?.Invoke();
         Debug.Log($"Close 애니메이션 '{closeAnimationName}' 재생 시작.");
     }
 
@@ -145,6 +147,8 @@ public class SceneChangeSkeleton : MonoBehaviour
         isOpening = true;
         gameObject.SetActive(true); // 오브젝트 활성화
         skeletonGraphic.AnimationState.SetAnimation(0, openAnimationName, false);
+        // Open 애니메이션 완료 후 이벤트 호출
+        OnOpenAnimationComplete?.Invoke();
         Debug.Log($"Open 애니메이션 '{openAnimationName}' 재생 시작.");
     }
 
@@ -159,18 +163,12 @@ public class SceneChangeSkeleton : MonoBehaviour
             // Open 애니메이션 완료 시
             StartCoroutine(HandleOpenAnimationComplete());
             Debug.Log("Open 애니메이션 완료. 씬 전환 준비.");
-
-            // Open 애니메이션 완료 후 이벤트 호출
-            OnOpenAnimationComplete?.Invoke();
         }
         else
         {
             // Close 애니메이션 완료 시
             StartCoroutine(HandleCloseAnimationComplete());
             Debug.Log("Close 애니메이션 완료. Open 애니메이션 재생을 시작합니다.");
-
-            // Close 애니메이션 완료 후 이벤트 호출
-            OnCloseAnimationComplete?.Invoke();
         }
     }
 
