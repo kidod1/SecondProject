@@ -1,47 +1,39 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/Barrier")]
 public class Barrier : Ability
 {
-    [Header("Barrier Visuals")]
+    [Header("Barrier Prefab")]
     [Tooltip("방패의 프리팹")]
-    public GameObject shieldPrefab;
+    public GameObject barrierPrefab;
 
-    [Tooltip("실드 브레이크 이펙트 프리팹")] // 추가된 변수
-    public GameObject shieldBreakEffectPrefab;
+    [Header("Shield Settings")]
+    [Tooltip("방패가 활성화될 위치의 오프셋")]
+    public Vector3 spawnOffset = Vector3.zero;
 
     [Header("Cooldown Settings")]
     [Tooltip("각 레벨에서 방패의 쿨타임 시간 (초)")]
     public int[] cooldownTimes = { 30, 25, 20, 15, 10 }; // 레벨 1~5
 
-    private GameObject activeShield;
-    private Player playerInstance;
-    private Coroutine cooldownCoroutine;
-    private bool isShieldActive;
+    [Header("WWISE Sound Events")]
+    [Tooltip("Barrier 방패 활성화 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
 
+    [Tooltip("Barrier 방패 업그레이드 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event upgradeSound;
 
-    private void start()
-    {
-        playerInstance = PlayManager.I.GetPlayer();
-    }
-    /// <summary>
-    /// Ability 클래스의 GetNextLevelIncrease() 메서드를 오버라이드하여 현재 레벨에 해당하는 쿨타임 시간을 반환합니다.
-    /// </summary>
-    protected override int GetNextLevelIncrease()
-    {
-        if (currentLevel < cooldownTimes.Length)
-        {
-            return cooldownTimes[currentLevel];
-        }
-        Debug.LogWarning($"Barrier: currentLevel ({currentLevel})이 cooldownTimes 배열의 범위를 벗어났습니다. 기본값 0을 반환합니다.");
-        return 0;
-    }
+    [Tooltip("Barrier 방패 비활성화 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event deactivateSound;
+
+    // Barrier 활성화 인스턴스 관리
+    private GameObject activeBarrierInstance;
 
     /// <summary>
-    /// 방패 능력을 플레이어에게 적용합니다. 초기 레벨에서는 방패를 활성화합니다.
+    /// Barrier 능력을 플레이어에게 적용합니다. 방패를 활성화합니다.
     /// </summary>
     public override void Apply(Player player)
     {
@@ -51,33 +43,53 @@ public class Barrier : Ability
             return;
         }
 
-        playerInstance = player;
-        if (currentLevel == 1)
+        if (activeBarrierInstance != null)
         {
-            ActivateBarrierVisual();
+            Debug.LogWarning("Barrier Apply: 이미 활성화된 방패가 존재합니다.");
+            return;
         }
+
+        // 방패 프리팹을 인스턴스화
+        activeBarrierInstance = Instantiate(barrierPrefab, player.transform.position + spawnOffset, Quaternion.identity, player.transform);
+
+        // 방패 오브젝트에 "Barrier" 태그 할당
+        activeBarrierInstance.tag = "Barrier";
+
+        // 방패 오브젝트에 Shield 컴포넌트가 있는지 확인
+        Shield shieldComponent = activeBarrierInstance.GetComponent<Shield>();
+        if (shieldComponent == null)
+        {
+            Debug.LogError("Barrier Apply: barrierPrefab에 Shield 컴포넌트가 없습니다.");
+            return;
+        }
+
+        // WWISE 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(activeBarrierInstance);
+        }
+
+        Debug.Log("Barrier가 활성화되었습니다.");
     }
 
     /// <summary>
-    /// 방패 능력을 업그레이드합니다. 레벨이 증가할 때마다 쿨타임이 감소합니다.
+    /// Barrier 능력을 업그레이드합니다. 레벨이 증가할 때마다 쿨타임이 감소합니다.
     /// </summary>
     public override void Upgrade()
     {
         if (currentLevel < maxLevel)
         {
+            // 레벨 증가
             currentLevel++;
             Debug.Log($"Barrier 업그레이드: 현재 레벨 {currentLevel}");
 
-            // 업그레이드 후 쿨타임 감소 값 적용
-            if (isShieldActive)
+            // WWISE 업그레이드 사운드 재생
+            if (upgradeSound != null && activeBarrierInstance != null)
             {
-                if (cooldownCoroutine != null)
-                {
-                    playerInstance.StopCoroutine(cooldownCoroutine);
-                    cooldownCoroutine = null;
-                }
-                StartCooldown();
+                upgradeSound.Post(activeBarrierInstance);
             }
+
+            // 추가적인 업그레이드 로직 (예: 쿨타임 감소) 필요 시 구현
         }
         else
         {
@@ -86,167 +98,64 @@ public class Barrier : Ability
     }
 
     /// <summary>
-    /// 방패의 시각적 효과를 활성화하고 쿨타임을 시작합니다.
+    /// Barrier 능력의 레벨을 초기화하고 방패를 비활성화합니다.
     /// </summary>
-    public void ActivateBarrierVisual()
+    public override void ResetLevel()
     {
-        if (playerInstance == null)
-        {
-            Debug.LogWarning("Barrier Activate: playerInstance가 설정되지 않았습니다. Apply 메서드를 먼저 호출하세요.");
-            return;
-        }
+        base.ResetLevel();
 
-        isShieldActive = true;
-
-        if (shieldPrefab != null)
+        if (activeBarrierInstance != null)
         {
-            if (activeShield != null)
+            // Barrier 비활성화
+            Shield shield = activeBarrierInstance.GetComponent<Shield>();
+            if (shield != null)
             {
-                Destroy(activeShield);
-            }
-
-            activeShield = Instantiate(shieldPrefab, playerInstance.transform);
-            activeShield.transform.SetParent(playerInstance.transform);
-        }
-        else
-        {
-            Debug.LogError("Barrier: shieldPrefab이 할당되지 않았습니다.");
-            return;
-        }
-
-        // 방패 활성화 후 쿨타임 시작
-        StartCooldown();
-    }
-
-    /// <summary>
-    /// 방패의 시각적 효과를 비활성화하고 쿨타임을 시작합니다.
-    /// </summary>
-    public void DeactivateBarrierVisual()
-    {
-        if (playerInstance == null)
-        {
-            Debug.LogWarning("Barrier Deactivate: playerInstance가 설정되지 않았습니다.");
-            return;
-        }
-
-        isShieldActive = false;
-
-        if (activeShield != null)
-        {
-            // 실드 브레이크 이펙트 생성
-            if (shieldBreakEffectPrefab != null)
-            {
-                Instantiate(shieldBreakEffectPrefab, activeShield.transform.position, Quaternion.identity);
+                shield.BreakShield();
             }
             else
             {
-                Debug.LogWarning("Barrier: shieldBreakEffectPrefab이 할당되지 않았습니다.");
+                Debug.LogWarning("Barrier 오브젝트에 Shield 컴포넌트가 없습니다.");
+                Destroy(activeBarrierInstance);
             }
 
-            // 실드 오브젝트 파괴
-            Destroy(activeShield);
-            activeShield = null;
+            activeBarrierInstance = null;
         }
 
-        // 쿨다운 시작
-        StartCooldown();
+        currentLevel = 0;
     }
 
     /// <summary>
-    /// 방패가 현재 활성화되어 있는지 확인합니다.
+    /// 능력의 설명을 반환합니다.
     /// </summary>
-    public bool IsShieldActive()
+    public override string GetDescription()
     {
-        return isShieldActive;
-    }
-    /// <summary>
-    /// 쿨타임을 시작합니다. 이미 쿨타임이 진행 중인 경우 중복으로 시작하지 않습니다.
-    /// </summary>
-    public void StartCooldown()
-    {
-        if (playerInstance == null)
+        if (currentLevel < maxLevel)
         {
-            Debug.LogWarning("Barrier StartCooldown: playerInstance가 설정되지 않았습니다. Apply 메서드를 먼저 호출하세요.");
-            return;
+            int nextLevelIndex = currentLevel;
+            int nextLevelCooldown = (nextLevelIndex < cooldownTimes.Length) ? cooldownTimes[nextLevelIndex] : cooldownTimes[cooldownTimes.Length - 1];
+
+            return $"{baseDescription}\n" +
+                   $"Lv {currentLevel + 1}:\n" +
+                   $"- 쿨타임: {nextLevelCooldown}초\n";
         }
-
-        if (cooldownCoroutine == null)
+        else
         {
-            float cooldownTime = GetCurrentCooldownTime();
-            Debug.Log($"Barrier: 쿨타임 시작 ({cooldownTime}초)");
+            int maxLevelIndex = currentLevel - 1;
+            int finalCooldown = (maxLevelIndex < cooldownTimes.Length) ? cooldownTimes[maxLevelIndex] : cooldownTimes[cooldownTimes.Length - 1];
 
-            cooldownCoroutine = playerInstance.StartCoroutine(BarrierCooldown(cooldownTime));
+            return $"{baseDescription}\n" +
+                   $"Max Level: {currentLevel}\n" +
+                   $"- 쿨타임: {finalCooldown}초\n";
         }
     }
 
-    /// <summary>
-    /// 쿨타임이 완료되면 방패를 다시 활성화합니다.
-    /// </summary>
-    private IEnumerator BarrierCooldown(float cooldownTime)
-    {
-        yield return new WaitForSeconds(cooldownTime);
-
-        if (playerInstance != null)
-        {
-            ActivateBarrierVisual();
-        }
-
-        cooldownCoroutine = null;
-    }
-
-    /// <summary>
-    /// 현재 레벨에 맞는 쿨타임 시간을 반환합니다.
-    /// </summary>
-    private float GetCurrentCooldownTime()
+    protected override int GetNextLevelIncrease()
     {
         if (currentLevel < cooldownTimes.Length)
         {
             return cooldownTimes[currentLevel];
         }
         Debug.LogWarning($"Barrier: currentLevel ({currentLevel})이 cooldownTimes 배열의 범위를 벗어났습니다. 기본값 0을 반환합니다.");
-        return 0f;
-    }
-
-    /// <summary>
-    /// Ability 클래스의 GetDescription() 메서드를 오버라이드하여 방패의 현재 쿨타임 시간을 설명에 포함시킵니다.
-    /// </summary>
-    public override string GetDescription()
-    {
-        if (currentLevel < maxLevel)
-        {
-            int currentCooldown = GetNextLevelIncrease();
-            return $"{baseDescription}\nLv {currentLevel + 1}: {currentCooldown}초 쿨타임";
-        }
-        else
-        {
-            int finalCooldown = GetNextLevelIncrease();
-            return $"{baseDescription}\n(Max Level: {finalCooldown}초 쿨타임)";
-        }
-    }
-
-    /// <summary>
-    /// 능력의 레벨을 초기화하고 쿨타임을 중지한 후 방패를 비활성화합니다.
-    /// </summary>
-    public override void ResetLevel()
-    {
-        base.ResetLevel();
-
-        if (cooldownCoroutine != null)
-        {
-            playerInstance.StopCoroutine(cooldownCoroutine);
-            cooldownCoroutine = null;
-        }
-
-        DeactivateBarrierVisual();
-        currentLevel = 0;
-    }
-
-    private void OnValidate()
-    {
-        if (cooldownTimes.Length != maxLevel)
-        {
-            Debug.LogWarning($"Barrier: cooldownTimes 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            Array.Resize(ref cooldownTimes, maxLevel);
-        }
+        return 0;
     }
 }

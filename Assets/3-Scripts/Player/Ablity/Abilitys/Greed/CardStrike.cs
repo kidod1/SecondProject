@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using AK.Wwise; // Step 1: WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/CardStrike")]
 public class CardStrike : Ability
@@ -23,6 +24,13 @@ public class CardStrike : Ability
 
     [Tooltip("유도 시 속도 증가 배율")]
     public float speedIncreaseMultiplier = 2.0f;
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("CardStrike 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // Step 2: WWISE 이벤트 필드 추가
+
+    [Tooltip("카드 발사 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event fireCardSound; // 추가: 카드 발사 사운드 필드
 
     private Player playerInstance;
     private int hitCount = 0;
@@ -50,6 +58,12 @@ public class CardStrike : Ability
             return;
 
         playerInstance = player;
+
+        // 능력이 적용될 때 활성화 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
+        }
     }
 
     /// <summary>
@@ -92,6 +106,12 @@ public class CardStrike : Ability
             currentCardInstance = card;
 
             playerInstance.StartCoroutine(DelayedTargetSearch(card, cardScript));
+        }
+
+        // 카드 발사 시 사운드 재생
+        if (fireCardSound != null && playerInstance != null)
+        {
+            fireCardSound.Post(playerInstance.gameObject);
         }
     }
 
@@ -168,7 +188,6 @@ public class CardStrike : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
         }
     }
 
@@ -182,7 +201,7 @@ public class CardStrike : Ability
         {
             return damageLevels[currentLevel];
         }
-        return damageLevels[0];
+        return damageLevels[damageLevels.Length - 1];
     }
 
     /// <summary>
@@ -194,12 +213,12 @@ public class CardStrike : Ability
         if (currentLevel < damageLevels.Length && currentLevel >= 0)
         {
             int damageIncrease = damageLevels[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 적을 {hitThreshold}회 맞출 때마다 적을 따라다니는 카드 소환. 데미지 +{damageIncrease}";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 적을 {hitThreshold}회 맞출 때마다 카드를 발사합니다. 데미지 +{damageIncrease}";
         }
         else if (currentLevel >= damageLevels.Length)
         {
             int maxDamageIncrease = damageLevels[damageLevels.Length - 1];
-            return $"{baseDescription}\n최대 레벨 도달: 적을 {hitThreshold}회 맞출 때마다 적을 따라다니는 카드 소환. 데미지 +{maxDamageIncrease}";
+            return $"{baseDescription}\n최대 레벨 도달: 적을 {hitThreshold}회 맞출 때마다 카드를 발사합니다. 데미지 +{maxDamageIncrease}";
         }
         else
         {

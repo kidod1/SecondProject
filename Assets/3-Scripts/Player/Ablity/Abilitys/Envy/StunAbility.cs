@@ -1,4 +1,5 @@
 using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/StunAbility")]
 public class StunAbility : Ability
@@ -8,6 +9,10 @@ public class StunAbility : Ability
     public float[] stunChances;   // 레벨별 스턴 확률 배열
 
     public float stunDuration = 2f;   // 기절 지속 시간
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("StunAbility 사용 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // 추가된 사운드 이벤트 필드
 
     private Player playerInstance;
 
@@ -31,6 +36,12 @@ public class StunAbility : Ability
         if (randomValue < currentStunChance) // 스턴 확률 체크
         {
             monster.Stun(stunDuration); // 몬스터 기절시키기
+
+            // StunAbility 사용 시 사운드 재생
+            if (activateSound != null)
+            {
+                activateSound.Post(playerInstance.gameObject);
+            }
         }
         else
         {
@@ -46,7 +57,7 @@ public class StunAbility : Ability
     {
         if (currentLevel < stunChances.Length)
         {
-            return stunChances[currentLevel];
+            return stunChances[currentLevel - 1];
         }
         else
         {
@@ -62,7 +73,6 @@ public class StunAbility : Ability
     {
         if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
         {
-            currentLevel++;
             Debug.Log($"StunAbility upgraded to Level {currentLevel + 1}. 스턴 확률: {stunChances[currentLevel] * 100}%");
         }
         else
@@ -99,7 +109,6 @@ public class StunAbility : Ability
     /// <returns>능력 설명 문자열</returns>
     public override string GetDescription()
     {
-
         if (currentLevel < stunChances.Length && currentLevel >= 0)
         {
             float stunChancePercent = stunChances[currentLevel] * 100f;

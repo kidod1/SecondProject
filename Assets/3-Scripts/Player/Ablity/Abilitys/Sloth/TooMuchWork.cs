@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/TooMuchWork")]
 public class TooMuchWork : Ability
@@ -12,6 +13,10 @@ public class TooMuchWork : Ability
 
     [Tooltip("레벨별 과열 지속 시간 (초)")]
     public float[] overheatDurationsLevels = { 5.0f, 4.5f, 4.0f, 3.5f, 3.0f };
+
+    // WWISE 이벤트 변수들
+    [Tooltip("공격 속도 증가 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event attackSpeedIncreaseSound;
 
     private Coroutine overheatCoroutine;
     private Coroutine attackSpeedCoroutine;
@@ -33,20 +38,16 @@ public class TooMuchWork : Ability
         {
             return;
         }
-            player.OnShoot.AddListener(HandleShooting);
-            player.OnShootCanceled.AddListener(HandleShootCanceled);
-            isListenerRegistered = true;
+
+        player.OnShoot.AddListener(HandleShooting);
+        player.OnShootCanceled.AddListener(HandleShootCanceled);
+        isListenerRegistered = true;
         ApplyLevelEffects();
     }
 
-
     private void ApplyLevelEffects()
     {
-        int levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length);
-        if (currentLevel == 0)
-        {
-            levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length);
-        }
+        int levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length - 1);
 
         maxAttackSpeedMultiplier = maxAttackSpeedMultipliers[levelIndex];
         baseTimeToMaxSpeed = baseTimeToMaxSpeedLevels[levelIndex];
@@ -58,6 +59,12 @@ public class TooMuchWork : Ability
         if (currentLevel < maxLevel)
         {
             ApplyLevelEffects();
+
+            // 업그레이드 시 공격 속도 증가 사운드 재생
+            if (attackSpeedIncreaseSound != null)
+            {
+                attackSpeedIncreaseSound.Post(playerInstance.gameObject);
+            }
         }
     }
 
@@ -83,7 +90,6 @@ public class TooMuchWork : Ability
             attackSpeedCoroutine = playerInstance.StartCoroutine(IncreaseAttackSpeed());
         }
     }
-
 
     private void HandleShootCanceled()
     {
@@ -145,13 +151,12 @@ public class TooMuchWork : Ability
         playerInstance.stat.currentAttackSpeed = targetAttackSpeed;
         Debug.Log("IncreaseAttackSpeed: Reached max attack speed, triggering overheat.");
 
-        // 과열 상태 트리거
+        // 과열 상태 트리거 및 사운드 재생
         TriggerOverheat();
 
         // 코루틴 참조 초기화
         attackSpeedCoroutine = null;
     }
-
 
     private void TriggerOverheat()
     {
@@ -166,6 +171,7 @@ public class TooMuchWork : Ability
         }
         overheatCoroutine = playerInstance.StartCoroutine(Overheat());
     }
+
     private IEnumerator Overheat()
     {
         if (playerInstance == null)
@@ -218,7 +224,7 @@ public class TooMuchWork : Ability
 
     public override string GetDescription()
     {
-        int levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length);
+        int levelIndex = Mathf.Clamp(currentLevel, 0, maxAttackSpeedMultipliers.Length - 1);
 
         if (currentLevel < maxAttackSpeedMultipliers.Length && currentLevel >= 0)
         {
@@ -226,7 +232,7 @@ public class TooMuchWork : Ability
             float baseTimeToMaxSpeedValue = baseTimeToMaxSpeedLevels[levelIndex];
             float overheatDurationValue = overheatDurationsLevels[levelIndex];
 
-            return $"{baseDescription}\nLv {currentLevel+1}: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초입니다. 최대 속도 도달 시 과열되어 {overheatDurationValue}초 동안 공격할 수 없습니다.";
+            return $"{baseDescription}\nLv {currentLevel + 1}: 공격 시 최대 공격 속도 배율을 {maxAttackSpeedMultiplierPercent}%까지 증가시키며, 최대 속도에 도달하는 시간이 {baseTimeToMaxSpeedValue}초입니다. 최대 속도 도달 시 과열되어 {overheatDurationValue}초 동안 공격할 수 없습니다.";
         }
         else if (currentLevel > maxAttackSpeedMultipliers.Length)
         {

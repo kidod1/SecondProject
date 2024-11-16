@@ -31,9 +31,19 @@ public class Breath : Ability
     /// </summary>
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel < damageIncrements.Length)
+        if (currentLevel == 0)
         {
-            return damageIncrements[currentLevel];
+            if (currentLevel < damageIncrements.Length)
+            {
+                return damageIncrements[currentLevel];
+            }
+        }
+        else
+        {
+            if (currentLevel < damageIncrements.Length)
+            {
+                return damageIncrements[currentLevel - 1];
+            }
         }
         Debug.LogWarning($"Breath: currentLevel ({currentLevel})이 damageIncrements 배열의 범위를 벗어났습니다. 기본값 0을 반환합니다.");
         return 0;
@@ -58,13 +68,12 @@ public class Breath : Ability
     /// </summary>
     public override void Upgrade()
     {
+        Debug.Log("업그레이드 메서드");
         if (currentLevel < maxLevel)
         {
-            currentLevel++;
-            Debug.Log($"Breath 업그레이드: 현재 레벨 {currentLevel}");
-
-            // 업그레이드 후 데미지 증가 적용
             breathDamage += GetNextLevelIncrease();
+            currentLevel++; // 현재 레벨을 증가시킵니다.
+            Debug.Log($"Breath 업그레이드: 현재 레벨 {currentLevel}");
         }
         else
         {
@@ -73,24 +82,27 @@ public class Breath : Ability
     }
 
     /// <summary>
-    /// 능력 설명을 오버라이드하여 레벨 업 시 데미지 증가량을 포함시킵니다.
+    /// 능력 설명을 오버라이드하여 레벨 업 시 다음 레벨의 설명을 포함시킵니다.
     /// </summary>
     public override string GetDescription()
     {
         if (currentLevel < maxLevel)
         {
-            int damageIncrease = GetNextLevelIncrease();
+            // 다음 레벨의 데미지 증가량을 가져옵니다.
+            int nextLevelDamageIncrease = (currentLevel < damageIncrements.Length) ? damageIncrements[currentLevel] : damageIncrements[damageIncrements.Length - 1];
+
             return $"{baseDescription}\n" +
-                   $"Lv {currentLevel + 1}:\n" +
-                   $"브레스 공격 데미지 증가: +{damageIncrease}\n" +
+                   $"Lv {currentLevel}:\n" +
+                   $"브레스 공격 데미지 증가: +{nextLevelDamageIncrease}\n" +
                    $"브레스 지속 시간: {breathDuration}초\n" +
                    $"브레스 쿨타임: {cooldownTime}초";
         }
         else
         {
-            int finalDamageIncrease = GetNextLevelIncrease();
+            // 최대 레벨 설명
+            int finalDamageIncrease = (currentLevel < damageIncrements.Length) ? damageIncrements[currentLevel - 1] : damageIncrements[damageIncrements.Length - 1];
             return $"{baseDescription}\n" +
-                   $"Max Level: {currentLevel + 1}\n" +
+                   $"Max Level: {currentLevel}\n" +
                    $"브레스 공격 데미지 증가: +{finalDamageIncrease}\n" +
                    $"브레스 공격 범위: {breathRange}m\n" +
                    $"브레스 공격 각도: {breathAngle}도\n" +

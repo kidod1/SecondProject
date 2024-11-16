@@ -77,8 +77,6 @@ public class HoneyDrop : Ability
     {
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
-            currentLevel++;
-            // 레벨 업 시 필요한 추가 로직이 있다면 여기에 추가
         }
         else
         {
@@ -91,7 +89,7 @@ public class HoneyDrop : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
+        currentLevel = 0;
     }
 
     /// <summary>

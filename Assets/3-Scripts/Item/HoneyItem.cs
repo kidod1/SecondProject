@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class HoneyItem : MonoBehaviour
+public class HoneyItem : CollectibleItem
 {
     [SerializeField]
     private HealthItemData itemData;
     public HealthItemData ItemData => itemData;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void Collect()
     {
-        Player player = collision.GetComponent<Player>();
         if (player != null)
         {
             player.Heal(itemData.healAmount);
             Destroy(gameObject);
+        }
+        else
+        {
+            Debug.LogError("HoneyItem: 플레이어가 할당되지 않았습니다.");
         }
     }
 }

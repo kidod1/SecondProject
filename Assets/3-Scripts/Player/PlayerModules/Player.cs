@@ -8,6 +8,7 @@ using Spine.Unity;
 using Cinemachine;
 using System.Collections.Generic;
 using AK.Wwise;
+using UnityEditor.Rendering;
 
 public class Player : MonoBehaviour
 {
@@ -751,12 +752,31 @@ public class Player : MonoBehaviour
     /// <param name="damage">받을 데미지 양</param>
     public void TakeDamage(int damage)
     {
-        if (barrierAbility != null && barrierAbility.IsShieldActive())
+        // "Barrier" 태그를 가진 모든 오브젝트를 찾습니다.
+        GameObject[] barriers = GameObject.FindGameObjectsWithTag("Barrier");
+
+        if (barriers.Length > 0)
         {
-            barrierAbility.DeactivateBarrierVisual();
+            foreach (GameObject barrier in barriers)
+            {
+                // Shield 컴포넌트를 가져옵니다.
+                Shield shieldComponent = barrier.GetComponent<Shield>();
+                if (shieldComponent != null)
+                {
+                    // Shield의 BreakShield 메서드 호출
+                    shieldComponent.BreakShield();
+                }
+                else
+                {
+                    Debug.LogWarning($"Barrier 태그를 가진 오브젝트 '{barrier.name}'에 Shield 컴포넌트가 없습니다.");
+                }
+            }
+
+            // Barrier가 존재했으므로 데미지를 무시하고 메서드를 종료합니다.
             return;
         }
 
+        // Barrier가 활성화되어 있지 않으면 기존의 데미지 로직을 실행합니다.
         if (!isInvincible)
         {
             stat.TakeDamage(damage);

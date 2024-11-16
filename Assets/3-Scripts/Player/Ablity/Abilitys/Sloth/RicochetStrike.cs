@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using AK.Wwise;
 
 [CreateAssetMenu(menuName = "Abilities/RicochetStrike")]
 public class RicochetStrike : Ability
@@ -12,6 +13,9 @@ public class RicochetStrike : Ability
     public GameObject projectilePrefab;   // 사용할 투사체 프리팹
     public int projectileCount = 3;       // 발생할 투사체의 수
     public float baseSpeedMultiplier = 1.0f;
+
+    [Tooltip("투사체 소환 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event spawnProjectileSound;
 
     private Player playerInstance;
     private int hitCount = 0;
@@ -76,6 +80,12 @@ public class RicochetStrike : Ability
             {
                 Debug.LogError("RicochetStrike: Projectile 스크립트가 없습니다.");
             }
+        }
+
+        // 투사체 소환 시 사운드 재생
+        if (spawnProjectileSound != null && playerInstance != null)
+        {
+            spawnProjectileSound.Post(playerInstance.gameObject);
         }
     }
 
@@ -206,14 +216,6 @@ public class RicochetStrike : Ability
     /// </summary>
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
-        {
-            currentLevel++;
-        }
-        else
-        {
-            Debug.LogWarning("RicochetStrike: Already at max level.");
-        }
     }
 
     /// <summary>

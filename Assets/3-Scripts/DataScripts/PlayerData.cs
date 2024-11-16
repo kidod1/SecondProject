@@ -18,8 +18,8 @@ public class PlayerData : ScriptableObject
 {
     // 기본 스탯
     [Header("Default Stats")]
-    public int 기획자_조정용_공격력 = 10;
-    public float 기획자_조정용_공격속도 = 2;
+    public int DataPlayerDamage = 10;
+    public float DataPlayerAttackSpeed = 2;
     public float defaultPlayerSpeed = 5f;
     public int defaultPlayerDamage = 10;
     public float defaultProjectileSpeed = 10f;
@@ -82,8 +82,8 @@ public class PlayerData : ScriptableObject
     /// </summary>
     public void InitializeStats()
     {
-        defaultPlayerDamage = 기획자_조정용_공격력;
-        defaultAttackSpeed = 기획자_조정용_공격속도;
+        defaultPlayerDamage = DataPlayerDamage;
+        defaultAttackSpeed = DataPlayerAttackSpeed;
 
         currentPlayerSpeed = defaultPlayerSpeed;
         currentPlayerDamage = defaultPlayerDamage;

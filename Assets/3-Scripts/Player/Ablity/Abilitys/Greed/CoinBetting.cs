@@ -1,5 +1,7 @@
-using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/CoinBetting")]
 public class CoinBetting : Ability
@@ -20,13 +22,16 @@ public class CoinBetting : Ability
     [Tooltip("폭발 시 생성할 이펙트 프리팹")]
     public GameObject explosionEffectPrefab; // 추가된 변수
 
+    [Header("WWISE Sound Events")]
+    [Tooltip("CoinBetting 능력 설치 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // 능력 설치 사운드
+
+    [Tooltip("코인 폭탄 생성 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event dropBombSound; // 폭탄 생성 사운드
+
     private Player playerInstance;
     private Coroutine bombCoroutine;
 
-    /// <summary>
-    /// 능력을 플레이어에게 적용합니다.
-    /// </summary>
-    /// <param name="player">능력을 적용할 플레이어</param>
     public override void Apply(Player player)
     {
         if (player == null)
@@ -44,14 +49,10 @@ public class CoinBetting : Ability
         }
     }
 
-    /// <summary>
-    /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 쿨타임과 피해량, 폭탄 지속 시간이 증가합니다.
-    /// </summary>
     public override void Upgrade()
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
             Debug.Log($"CoinBetting 업그레이드: 현재 레벨 {currentLevel + 1}");
 
             // 업그레이드 후 데미지, 쿨타임, 폭탄 지속 시간 업데이트
@@ -66,9 +67,6 @@ public class CoinBetting : Ability
         }
     }
 
-    /// <summary>
-    /// 능력을 초기화합니다.
-    /// </summary>
     public override void ResetLevel()
     {
         // 코루틴 정지
@@ -83,10 +81,6 @@ public class CoinBetting : Ability
         currentLevel = 0;
     }
 
-    /// <summary>
-    /// 다음 레벨의 데미지 증가값을 반환합니다.
-    /// </summary>
-    /// <returns>다음 레벨에서의 피해량 증가량</returns>
     protected override int GetNextLevelIncrease()
     {
         if (currentLevel + 1 < damagePerLevel.Length)
@@ -96,9 +90,6 @@ public class CoinBetting : Ability
         return 0;
     }
 
-    /// <summary>
-    /// 일정 시간마다 코인 폭탄을 떨어뜨리는 코루틴
-    /// </summary>
     private IEnumerator DropCoinBombs()
     {
         while (true)
@@ -109,9 +100,6 @@ public class CoinBetting : Ability
         }
     }
 
-    /// <summary>
-    /// 현재 플레이어 위치에 코인 폭탄을 생성합니다.
-    /// </summary>
     private void DropCoinBomb()
     {
         if (coinBombPrefab == null)
@@ -136,11 +124,14 @@ public class CoinBetting : Ability
         {
             Debug.LogError("CoinBetting: CoinBomb 스크립트를 찾을 수 없습니다.");
         }
+
+        // 코인 폭탄 생성 시 사운드 재생
+        if (dropBombSound != null && playerInstance != null)
+        {
+            dropBombSound.Post(playerInstance.gameObject);
+        }
     }
 
-    /// <summary>
-    /// 현재 레벨에 맞는 피해량을 반환합니다.
-    /// </summary>
     private int GetCurrentDamage()
     {
         if (currentLevel < damagePerLevel.Length)
@@ -151,9 +142,6 @@ public class CoinBetting : Ability
         return damagePerLevel[damagePerLevel.Length - 1];
     }
 
-    /// <summary>
-    /// 현재 레벨에 맞는 폭탄 지속 시간을 반환합니다.
-    /// </summary>
     private float GetCurrentBombDuration()
     {
         if (currentLevel < bombDurationPerLevel.Length)
@@ -164,9 +152,6 @@ public class CoinBetting : Ability
         return bombDurationPerLevel[bombDurationPerLevel.Length - 1];
     }
 
-    /// <summary>
-    /// 현재 레벨에 맞는 쿨타임 시간을 반환합니다.
-    /// </summary>
     private float GetCurrentCooldownTime()
     {
         if (currentLevel < cooldownPerLevel.Length)
@@ -177,18 +162,11 @@ public class CoinBetting : Ability
         return cooldownPerLevel[cooldownPerLevel.Length - 1];
     }
 
-    /// <summary>
-    /// 현재 버프를 제거합니다.
-    /// </summary>
     private void RemoveCurrentBuff()
     {
         // 현재 구현된 버프가 없으므로 필요 시 추가 구현
     }
 
-    /// <summary>
-    /// 능력의 설명을 반환합니다.
-    /// </summary>
-    /// <returns>능력 설명 문자열</returns>
     public override string GetDescription()
     {
         string description = $"{baseDescription}\n";
@@ -206,26 +184,25 @@ public class CoinBetting : Ability
         return description;
     }
 
-
     private void OnValidate()
     {
         // 배열의 길이가 maxLevel과 일치하도록 조정
         if (damagePerLevel.Length != maxLevel)
         {
             Debug.LogWarning($"CoinBetting: damagePerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            System.Array.Resize(ref damagePerLevel, maxLevel);
+            Array.Resize(ref damagePerLevel, maxLevel);
         }
 
         if (cooldownPerLevel.Length != maxLevel)
         {
             Debug.LogWarning($"CoinBetting: cooldownPerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            System.Array.Resize(ref cooldownPerLevel, maxLevel);
+            Array.Resize(ref cooldownPerLevel, maxLevel);
         }
 
         if (bombDurationPerLevel.Length != maxLevel)
         {
             Debug.LogWarning($"CoinBetting: bombDurationPerLevel 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            System.Array.Resize(ref bombDurationPerLevel, maxLevel);
+            Array.Resize(ref bombDurationPerLevel, maxLevel);
         }
     }
 }

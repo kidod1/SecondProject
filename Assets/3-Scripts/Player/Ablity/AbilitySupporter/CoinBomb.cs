@@ -1,10 +1,15 @@
 using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 public class CoinBomb : MonoBehaviour
 {
     private int damage;
     private float bombDuration;
     private GameObject explosionEffectPrefab;
+
+    [Header("WWISE Events")]
+    [Tooltip("폭발 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event explosionSound;
 
     /// <summary>
     /// 코인 폭탄을 초기화합니다.
@@ -46,8 +51,18 @@ public class CoinBomb : MonoBehaviour
             Debug.LogWarning("CoinBomb: explosionEffectPrefab이 할당되지 않았습니다.");
         }
 
+        // WWISE 사운드 재생
+        if (explosionSound != null)
+        {
+            explosionSound.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("CoinBomb: explosionSound가 할당되지 않았습니다.");
+        }
+
         // 주변 몬스터들에게 피해를 입히는 로직 (예시)
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 2); // 폭발 반경 5f
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 2f); // 폭발 반경 2f
 
         foreach (var hitCollider in hitColliders)
         {
@@ -70,6 +85,6 @@ public class CoinBomb : MonoBehaviour
     {
         // 폭발 반경 시각화
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 2f); // 폭발 반경 5f
+        Gizmos.DrawWireSphere(transform.position, 2f); // 폭발 반경 2f
     }
 }

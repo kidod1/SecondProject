@@ -1,4 +1,5 @@
 using UnityEngine;
+using AK.Wwise;
 
 [CreateAssetMenu(menuName = "Abilities/JokerDraw")]
 public class JokerDraw : Ability
@@ -6,6 +7,13 @@ public class JokerDraw : Ability
     [Tooltip("레벨별 일반 몬스터 즉사 확률 (0.0f ~ 1.0f)")]
     [Range(0f, 1f)]
     public float[] instantKillChances; // 레벨별 즉사 확률 배열
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("JokerDraw 능력 설치 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound;
+
+    [Tooltip("몬스터 즉사 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event instantKillSound;
 
     private Player playerInstance;
 
@@ -17,6 +25,11 @@ public class JokerDraw : Ability
         }
 
         playerInstance = player;
+
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
+        }
     }
 
     public void OnHitMonster(Collider2D enemy)
@@ -28,7 +41,6 @@ public class JokerDraw : Ability
 
         Monster monster = enemy.GetComponent<Monster>();
 
-        // 일반 몬스터에 대해서만 즉사 확률 적용
         if (monster != null && !monster.isElite)
         {
             float currentChance = GetCurrentInstantKillChance();
@@ -36,11 +48,13 @@ public class JokerDraw : Ability
             if (Random.value < currentChance)
             {
                 Debug.Log("JokerDraw: 즉사 확률 성공! 몬스터를 즉시 죽입니다.");
-                monster.TakeDamage(monster.GetCurrentHP(), PlayManager.I.GetPlayerPosition()); // 즉사 플래그 전달
+                monster.TakeDamage(monster.GetCurrentHP(), PlayManager.I.GetPlayerPosition());
                 monster.isInstantKilled = true;
-            }
-            else
-            {
+
+                if (instantKillSound != null)
+                {
+                    instantKillSound.Post(monster.gameObject);
+                }
             }
         }
     }
@@ -49,7 +63,6 @@ public class JokerDraw : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
         }
     }
 
@@ -57,7 +70,7 @@ public class JokerDraw : Ability
     {
         if (currentLevel < maxLevel && currentLevel < instantKillChances.Length)
         {
-            return Mathf.RoundToInt(instantKillChances[currentLevel] * 100); // 퍼센트로 변환
+            return Mathf.RoundToInt(instantKillChances[currentLevel] * 100);
         }
         return 0;
     }
@@ -90,7 +103,7 @@ public class JokerDraw : Ability
     {
         if (currentLevel < instantKillChances.Length)
         {
-            return instantKillChances[currentLevel];
+            return instantKillChances[currentLevel - 1];
         }
         else
         {

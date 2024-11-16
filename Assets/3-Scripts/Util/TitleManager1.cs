@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events; // UnityEvent를 사용하기 위해 추가
 
 /// <summary>
 /// 타이틀 매니저는 게임의 타이틀 시퀀스를 관리합니다.
@@ -17,6 +18,10 @@ public class TitleManager1 : MonoBehaviour
     private float logoDisplayTime = 1f;// 로고가 선명한 상태로 표시되는 시간
     [SerializeField]
     private TitleSoundManager titleSoundManager;
+
+    [Header("Title Sequence Events")]
+    [Tooltip("타이틀 시퀀스가 완료되었을 때 호출되는 이벤트")]
+    public UnityEvent onTitleSequenceComplete; // 타이틀 시퀀스 완료 시 호출되는 UnityEvent
 
     void Start()
     {
@@ -46,6 +51,12 @@ public class TitleManager1 : MonoBehaviour
 
         // 타이틀 사운드 재생
         titleSoundManager.PlayTitleSound();
+
+        // 타이틀 시퀀스 완료 이벤트 호출
+        if (onTitleSequenceComplete != null)
+        {
+            onTitleSequenceComplete.Invoke();
+        }
     }
 
     private IEnumerator FadeOut(Image image)

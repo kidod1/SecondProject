@@ -120,7 +120,6 @@ public class MonsterSpawner : MonoBehaviour
                 if (waveNumberAnimator != null)
                 {
                     waveNumberAnimator.SetTrigger("StartWave"); // "StartWave" 트리거 설정
-                    Debug.Log("Start웨이브 트리거 발동");
                 }
 
                 StartCoroutine(FadeOutWaveNumber(messageDisplayDuration)); // 메시지 표시 시간 후에 페이드 아웃 시작

@@ -4798,7 +4798,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 928334117
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -4842,6 +4842,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987bc58a7b9f50d4b989d583347a2ce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldBreakEffectPrefab: {fileID: 5394360155645181108, guid: eea7b6aa73dec654c8d9feb67e64d606, type: 3}
+  shieldBreakSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: e0a9467cce9113b44ab3945d75071831, type: 2}
 --- !u!1 &8330157682171997846
 GameObject:
   m_ObjectHideFlags: 0
@@ -9696,7 +9701,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 928334117
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0

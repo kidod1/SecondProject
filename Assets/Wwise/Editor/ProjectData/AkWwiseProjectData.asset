@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584703599151280500
+    m_lastTime: -8584698541490467732
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584703599151270731
+    m_lastTime: -8584698541490081566
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584702360874616154
+    m_lastTime: -8584698541473455752
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584699493072689044
+    m_lastTime: -8584698541492351444
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -444,7 +444,7 @@ MonoBehaviour:
         guid: a576fd8e036bbb4caa9512aa7cbbb96e
       Path: SoundBanks\Default Work Unit\BGM_Sloth
     - name: BGM_Title
-      guid: eb5154034c6e674aa6250bd78c2aa460
+      guid: d9e71de545874742bc697dd257872a82
       id: 737535402
       PathAndIcons:
       - ElementName: SoundBanks
@@ -455,7 +455,7 @@ MonoBehaviour:
         guid: b527a3226a72ef478e7c2ca6105dd8e9
       - ElementName: BGM_Title
         ObjectType: 7
-        guid: eb5154034c6e674aa6250bd78c2aa460
+        guid: d9e71de545874742bc697dd257872a82
       Path: SoundBanks\Default Work Unit\BGM_Title
     - name: Main
       guid: 5139e2c5f50fae499f46cc35db17acc9
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584699493118249129
+    m_lastTime: -8584698541474985855
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -1235,6 +1235,46 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: AMB_CityScape
+      guid: 7e3c1f659b8d4e4bbac45d102909d82a
+      id: 3891415587
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: AMB
+        ObjectType: 4
+        guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: AMB_CityScape
+        ObjectType: 3
+        guid: 7e3c1f659b8d4e4bbac45d102909d82a
+      Path: Events\Default Work Unit\AMB\AMB_CityScape
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: AMB_Clock
+      guid: fe30e924ccafb34a945c72e702e01f62
+      id: 3582440336
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: AMB
+        ObjectType: 4
+        guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: AMB_Clock
+        ObjectType: 3
+        guid: fe30e924ccafb34a945c72e702e01f62
+      Path: Events\Default Work Unit\AMB\AMB_Clock
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: AMB_stop
       guid: c368ca8e8d629748aa16ff754c00364b
       id: 729984210
@@ -1255,6 +1295,58 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0
       minDuration: 0
+    - name: Asmo_Guitar
+      guid: 5852075753979b4b8bc140633da49bb5
+      id: 116530894
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: Asmo_Guitar
+        ObjectType: 3
+        guid: 5852075753979b4b8bc140633da49bb5
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Asmo_Guitar
+      maxAttenuation: 0
+      maxDuration: 1.5626241
+      minDuration: 1.2402555
+    - name: Asmo_Guitar2
+      guid: 44aaa23f973e5741bfd9970f89883689
+      id: 3173416568
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: Asmo_Guitar2
+        ObjectType: 3
+        guid: 44aaa23f973e5741bfd9970f89883689
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Asmo_Guitar2
+      maxAttenuation: 0
+      maxDuration: 1.8168472
+      minDuration: 1.4420326
     - name: Bee_sfx
       guid: a1f1dc5deefee6429b49449ed0fd4721
       id: 230523991
@@ -1575,7 +1667,7 @@ MonoBehaviour:
       maxDuration: -1
       minDuration: -1
     - name: GameOver
-      guid: 7df8ab25cbb2394986775c370c703d6f
+      guid: 9a466d11ffbfe445baaf9abbde73d657
       id: 4158285989
       PathAndIcons:
       - ElementName: Events
@@ -1589,7 +1681,7 @@ MonoBehaviour:
         guid: 12a8d1aea9126f48825cac9e6046f977
       - ElementName: GameOver
         ObjectType: 3
-        guid: 7df8ab25cbb2394986775c370c703d6f
+        guid: 9a466d11ffbfe445baaf9abbde73d657
       Path: Events\Default Work Unit\BGM\GameOver
       maxAttenuation: 0
       maxDuration: -1
@@ -1799,26 +1891,6 @@ MonoBehaviour:
       maxDuration: -1
       minDuration: -1
     - name: Luxuria
-      guid: f61cd8b9c797a245b7d988ef1a74fedc
-      id: 1581814111
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: BGM
-        ObjectType: 4
-        guid: 12a8d1aea9126f48825cac9e6046f977
-      - ElementName: Luxuria
-        ObjectType: 4
-        guid: f61cd8b9c797a245b7d988ef1a74fedc
-      Path: Events\Default Work Unit\BGM\Luxuria
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
-    - name: Luxuria
       guid: 9d573ec4101d1548a365918b2e492ab5
       id: 1581814111
       PathAndIcons:
@@ -1841,58 +1913,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Luxuria_B_Atk
-      guid: 796d2bafbc978844ad6b8f183b0bbf3b
-      id: 518875551
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: SFX
-        ObjectType: 4
-        guid: 1c17e268c566f4429fd40262795ed549
-      - ElementName: Enemy
-        ObjectType: 4
-        guid: 020651b4141cda40b05b13c30e679370
-      - ElementName: Luxuria_Boss
-        ObjectType: 4
-        guid: 61d36f77ab5d9d44bbbc677c60073889
-      - ElementName: Luxuria_B_Atk
-        ObjectType: 3
-        guid: 796d2bafbc978844ad6b8f183b0bbf3b
-      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Luxuria_B_Atk
-      maxAttenuation: 0
-      maxDuration: 6.8914323
-      minDuration: 5.469733
-    - name: Luxuria_Bo
-      guid: 407f19816f1a324b9e8faa12f83b9a16
-      id: 2532152947
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: SFX
-        ObjectType: 4
-        guid: 1c17e268c566f4429fd40262795ed549
-      - ElementName: Enemy
-        ObjectType: 4
-        guid: 020651b4141cda40b05b13c30e679370
-      - ElementName: Luxuria_Bo
-        ObjectType: 3
-        guid: 407f19816f1a324b9e8faa12f83b9a16
-      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Bo
-      maxAttenuation: 0
-      maxDuration: 0
-      minDuration: 0
-    - name: Luxuria_Boss
-      guid: cdd72e20020fb84b9b0971a055068f2c
-      id: 3507238269
+    - name: Luxuria
+      guid: f61cd8b9c797a245b7d988ef1a74fedc
+      id: 1581814111
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -1906,10 +1929,7 @@ MonoBehaviour:
       - ElementName: Luxuria
         ObjectType: 4
         guid: f61cd8b9c797a245b7d988ef1a74fedc
-      - ElementName: Luxuria_Boss
-        ObjectType: 3
-        guid: cdd72e20020fb84b9b0971a055068f2c
-      Path: Events\Default Work Unit\BGM\Luxuria\Luxuria_Boss
+      Path: Events\Default Work Unit\BGM\Luxuria
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1936,6 +1956,81 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Luxuria_Boss
+      guid: cdd72e20020fb84b9b0971a055068f2c
+      id: 3507238269
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Luxuria
+        ObjectType: 4
+        guid: f61cd8b9c797a245b7d988ef1a74fedc
+      - ElementName: Luxuria_Boss
+        ObjectType: 3
+        guid: cdd72e20020fb84b9b0971a055068f2c
+      Path: Events\Default Work Unit\BGM\Luxuria\Luxuria_Boss
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Luxuria_Boss_Pattern01
+      guid: 5fab14cad53634489ab3e90185ea703b
+      id: 2455294023
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: Luxuria_Boss_Pattern01
+        ObjectType: 3
+        guid: 5fab14cad53634489ab3e90185ea703b
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Luxuria_Boss_Pattern01
+      maxAttenuation: 0
+      maxDuration: 2.6013792
+      minDuration: 1.5977032
+    - name: Luxuria_Boss_Pattern02
+      guid: 363aac8d758a6543a71855636576aedc
+      id: 2455294020
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: Luxuria_Boss_Pattern02
+        ObjectType: 3
+        guid: 363aac8d758a6543a71855636576aedc
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Luxuria_Boss_Pattern02
+      maxAttenuation: 0
+      maxDuration: 4.5803237
+      minDuration: 3.6354053
     - name: Luxuria_Enemy
       guid: 8c8d2b633b010748a22bda827dd046a8
       id: 3028610990
@@ -2236,8 +2331,8 @@ MonoBehaviour:
         guid: 824ceaa5b88fda4c9ed0693975d75543
       Path: Events\Default Work Unit\UI\Player_Death
       maxAttenuation: 0
-      maxDuration: 2.1737804
-      minDuration: 2.1737804
+      maxDuration: 2.17378
+      minDuration: 2.17378
     - name: Player_Hit
       guid: 9d484f7495c7bd4f8760493f79a1fe6b
       id: 871813740
@@ -2259,8 +2354,8 @@ MonoBehaviour:
         guid: 9d484f7495c7bd4f8760493f79a1fe6b
       Path: Events\Default Work Unit\SFX\Player\Player_Hit
       maxAttenuation: 0
-      maxDuration: 0.19598867
-      minDuration: 0.07497517
+      maxDuration: 0.45189345
+      minDuration: 0.17626409
     - name: Player_take_Gun
       guid: 754bb26778cb3f45ba90a247ce8e4108
       id: 3379829983
@@ -2776,9 +2871,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0.8108138
       minDuration: 0.63678634
-    - name: Sloth
-      guid: 5ec1939d15a7cf44b2b2886b7a794baf
-      id: 3888770555
+    - name: Siren
+      guid: 83ce62898f313e428d9b7bb57f762cd0
+      id: 734002816
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -2786,16 +2881,62 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: BGM
+      - ElementName: UI
         ObjectType: 4
-        guid: 12a8d1aea9126f48825cac9e6046f977
-      - ElementName: Sloth
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Siren
         ObjectType: 4
-        guid: 5ec1939d15a7cf44b2b2886b7a794baf
-      Path: Events\Default Work Unit\BGM\Sloth
+        guid: bbc5c6a6430f9649bd3550737739815b
+      - ElementName: Siren
+        ObjectType: 3
+        guid: 83ce62898f313e428d9b7bb57f762cd0
+      Path: Events\Default Work Unit\UI\Siren\Siren
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Siren
+      guid: bbc5c6a6430f9649bd3550737739815b
+      id: 734002816
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Siren
+        ObjectType: 4
+        guid: bbc5c6a6430f9649bd3550737739815b
+      Path: Events\Default Work Unit\UI\Siren
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Siren_stop
+      guid: c27c189dab8e884a989b874a7ab93e55
+      id: 791100847
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Siren
+        ObjectType: 4
+        guid: bbc5c6a6430f9649bd3550737739815b
+      - ElementName: Siren_stop
+        ObjectType: 3
+        guid: c27c189dab8e884a989b874a7ab93e55
+      Path: Events\Default Work Unit\UI\Siren\Siren_stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: Sloth
       guid: 0b5763a6b1003f4e993f4c237dc3a81a
       id: 3888770555
@@ -2816,6 +2957,26 @@ MonoBehaviour:
         ObjectType: 4
         guid: 0b5763a6b1003f4e993f4c237dc3a81a
       Path: Events\Default Work Unit\SFX\Ablilty\Sloth
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Sloth
+      guid: 5ec1939d15a7cf44b2b2886b7a794baf
+      id: 3888770555
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 5ec1939d15a7cf44b2b2886b7a794baf
+      Path: Events\Default Work Unit\BGM\Sloth
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -2843,8 +3004,8 @@ MonoBehaviour:
         guid: 793c44c99a8cc5409bdcaf348a22b941
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_B_Attack1
       maxAttenuation: 0
-      maxDuration: 1.0545622
-      minDuration: 0.83700657
+      maxDuration: 0.91183496
+      minDuration: 0.7237239
     - name: Sloth_boss
       guid: 9ba90e487403834da7f8f6b641146d58
       id: 3242833905
@@ -2891,6 +3052,58 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Sloth_Boss_Pattern01
+      guid: 368b3e29bfa5e54eaa7986dd01c9784d
+      id: 437125043
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Boss
+        ObjectType: 4
+        guid: 61359a9a97ef754980416f1e1ee5b81c
+      - ElementName: Sloth_Boss_Pattern01
+        ObjectType: 3
+        guid: 368b3e29bfa5e54eaa7986dd01c9784d
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Pattern01
+      maxAttenuation: 0
+      maxDuration: 1.0524962
+      minDuration: 0.6428758
+    - name: Sloth_Boss_Pattern02
+      guid: dcae7489ab36f74ca312d9cf087af3d8
+      id: 437125040
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Sloth_Boss
+        ObjectType: 4
+        guid: 61359a9a97ef754980416f1e1ee5b81c
+      - ElementName: Sloth_Boss_Pattern02
+        ObjectType: 3
+        guid: dcae7489ab36f74ca312d9cf087af3d8
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Pattern02
+      maxAttenuation: 0
+      maxDuration: 1.0545622
+      minDuration: 0.6389288
     - name: Sloth_E_Fire
       guid: 61e4ceafcdbc384b98197d0402615989
       id: 4241994286
@@ -3141,6 +3354,26 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0
       minDuration: 0
+    - name: TeamLogoSFX
+      guid: 6b8031e41f48e34fb9b42f687758625d
+      id: 816617448
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: TeamLogoSFX
+        ObjectType: 3
+        guid: 6b8031e41f48e34fb9b42f687758625d
+      Path: Events\Default Work Unit\UI\TeamLogoSFX
+      maxAttenuation: 0
+      maxDuration: 0.90986395
+      minDuration: 0.90986395
     - name: Text
       guid: 1e9ceebb8e83364fa9a07d1f3214d442
       id: 2972449336
@@ -3359,7 +3592,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584702360874655245
+    m_lastTime: -8584698541474608135
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -3375,6 +3608,34 @@ MonoBehaviour:
         ObjectType: 13
         guid: 18ad938ae260b14da0dd3932b6694d9b
       Path: Game Parameters\Default Work Unit\AMB_Volume
+    - name: BossEncounter
+      guid: 18985a920031b54c8f9a89e95dae182b
+      id: 608722465
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
+      - ElementName: BossEncounter
+        ObjectType: 13
+        guid: 18985a920031b54c8f9a89e95dae182b
+      Path: Game Parameters\Default Work Unit\BossEncounter
+    - name: Hyper_NotUsed
+      guid: ee1e567918079c46a27126f1d1107d20
+      id: 558917848
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
+      - ElementName: Hyper_NotUsed
+        ObjectType: 13
+        guid: ee1e567918079c46a27126f1d1107d20
+      Path: Game Parameters\Default Work Unit\Hyper_NotUsed
     - name: LVUP
       guid: 9915111111ba744abe93605096d6ecf9
       id: 527216696
@@ -3484,7 +3745,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584703599156772425
+    m_lastTime: -8584698541474184204
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -3638,7 +3899,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584703599151309816
+    m_lastTime: -8584698541491596460
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -3652,7 +3913,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584703599151300046
+    m_lastTime: -8584698541491208064
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -3751,9 +4012,9 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584703599151290274
+    m_lastTime: -8584698541490844004
     List: []
-  ExpandedFileSystemItemIds: 8300000084000000
+  ExpandedFileSystemItemIds: 0200000003000000080000000c00000011000000180000001900000024000000270000006600000083000000840000008d0000008e000000
   ExpandedWaapiItemIds: 05000000060000000a0000000d0000000e0000001e0000001f00000095000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1

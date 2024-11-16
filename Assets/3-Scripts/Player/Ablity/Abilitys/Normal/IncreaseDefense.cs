@@ -29,8 +29,6 @@ public class IncreaseDefense : Ability
     {
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
-            currentLevel++;
-
             // 레벨 업 시 방어력 증가 적용
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < defenseIncreases.Length)

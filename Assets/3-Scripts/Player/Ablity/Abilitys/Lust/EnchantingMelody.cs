@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using AK.Wwise;
 
 [CreateAssetMenu(menuName = "Abilities/EnchantingMelody")]
 public class EnchantingMelody : Ability
@@ -26,6 +27,9 @@ public class EnchantingMelody : Ability
     [SerializeField]
     private GameObject movementSpeedEffectPrefab; // 이동 속도 버프 이펙트 프리팹
 
+    [Tooltip("버프 적용 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event buffAppliedSound;
+
     private float currentAttackSpeedBuffValue = 0f;
     private int currentAttackDamageBuffValue = 0;
     private float currentMovementSpeedBuffValue = 0f;
@@ -33,7 +37,6 @@ public class EnchantingMelody : Ability
     private PlayerData playerData;
     private Player playerInstance;
 
-    // 전역 BuffType 열거형 사용
     private BuffType currentBuffType = BuffType.AttackDamage;
     private Coroutine buffCoroutine;
 
@@ -58,7 +61,6 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
             RemoveCurrentBuff();
             ApplyCurrentBuff();
         }
@@ -70,7 +72,6 @@ public class EnchantingMelody : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         if (buffCoroutine != null)
         {
             if (playerInstance != null)
@@ -79,7 +80,7 @@ public class EnchantingMelody : Ability
             }
             buffCoroutine = null;
         }
-
+        currentLevel = 0;
         RemoveCurrentBuff();
         currentBuffType = BuffType.AttackDamage;
     }
@@ -133,6 +134,12 @@ public class EnchantingMelody : Ability
 
         // 이펙트 생성 및 3초 후 파괴
         InstantiateBuffEffect(effectPrefab);
+
+        // 버프 적용 시 사운드 재생
+        if (buffAppliedSound != null)
+        {
+            buffAppliedSound.Post(playerInstance.gameObject);
+        }
     }
 
     private void RemoveCurrentBuff()

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using AK.Wwise; // Step 1: Import the WWISE namespace
 
 [CreateAssetMenu(menuName = "Abilities/ParasiticNest")]
 public class ParasiticNest : Ability
@@ -7,6 +8,10 @@ public class ParasiticNest : Ability
     [Tooltip("레벨별 감염 확률 (0.0f ~ 1.0f)")]
     [Range(0f, 1f)]
     public float[] infectionChances; // 레벨별 감염 확률 배열
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("ParasiticNest 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // Step 2: Add WWISE event field
 
     private Player playerInstance;
 
@@ -18,6 +23,12 @@ public class ParasiticNest : Ability
         }
 
         playerInstance = player;
+
+        // Play the activate sound when the ability is applied
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
+        }
     }
 
     public void OnProjectileHit(Collider2D enemy)
@@ -30,6 +41,12 @@ public class ParasiticNest : Ability
             {
                 monster.isInfected = true;
                 monster.StartCoroutine(ApplyInfectionEffect(monster));
+
+                // Play the infection sound when an enemy is infected
+                if (activateSound != null)
+                {
+                    activateSound.Post(monster.gameObject);
+                }
             }
         }
     }
@@ -49,7 +66,7 @@ public class ParasiticNest : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
+        currentLevel = 0;
         playerInstance = null;
     }
 
@@ -64,9 +81,8 @@ public class ParasiticNest : Ability
 
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel - 1)
+        if (currentLevel < maxLevel && currentLevel < infectionChances.Length - 1)
         {
-            currentLevel++;
         }
     }
 

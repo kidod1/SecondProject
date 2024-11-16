@@ -27,30 +27,50 @@ public class FlashBlade : Ability
     [Tooltip("FlashBlade 칼날 발사 시 재생될 WWISE 이벤트")]
     public AK.Wwise.Event fireSound;
 
+    [Tooltip("FlashBlade 업그레이드 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event upgradeSound;
+
+    [Tooltip("FlashBlade 제거 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event deactivateSound;
+
     private Player playerInstance;
     private int hitCount = 0;
 
     /// <summary>
-    /// 현재 레벨에 해당하는 피해량을 반환합니다.
+    /// 능력을 플레이어에게 적용합니다.
     /// </summary>
-    protected override int GetNextLevelIncrease()
-    {
-        if (currentLevel < damageLevels.Length)
-        {
-            return Mathf.RoundToInt(damageLevels[currentLevel]);
-        }
-        return 0;
-    }
-
-    /// <summary>
-    /// FlashBlade 능력을 플레이어에게 적용합니다.
-    /// </summary>
+    /// <param name="player">능력을 적용할 플레이어</param>
     public override void Apply(Player player)
     {
         if (player == null)
             return;
 
         playerInstance = player;
+    }
+
+    /// <summary>
+    /// FlashBlade 능력을 업그레이드합니다. 레벨이 증가할 때마다 피해량이 증가합니다.
+    /// </summary>
+    public override void Upgrade()
+    {
+        if (currentLevel < maxLevel)
+        {
+        }
+        else
+        {
+            Debug.LogWarning("FlashBlade: 이미 최대 레벨에 도달했습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 능력 레벨을 초기화하고 히트 카운트를 리셋합니다.
+    /// </summary>
+    public override void ResetLevel()
+    {
+        base.ResetLevel();
+
+        hitCount = 0;
+        currentLevel = 0;
     }
 
     /// <summary>
@@ -85,6 +105,12 @@ public class FlashBlade : Ability
         Vector2 facingDirection = playerInstance.GetFacingDirection();
         Vector2 backwardDirection = -facingDirection;
 
+        if (backwardDirection == Vector2.zero)
+        {
+            Debug.LogWarning("FlashBlade: 플레이어의 방향이 설정되지 않았습니다.");
+            return;
+        }
+
         // 칼날의 회전을 후방 방향에 맞게 설정합니다.
         float angle = Mathf.Atan2(backwardDirection.y, backwardDirection.x) * Mathf.Rad2Deg;
 
@@ -102,6 +128,10 @@ public class FlashBlade : Ability
             int currentDamage = GetCurrentDamage();
             bladeScript.Initialize(currentDamage, range, bladeSpeed, playerInstance, backwardDirection);
         }
+        else
+        {
+            Debug.LogError("FlashBlade: bladePrefab에 BladeProjectile 컴포넌트가 없습니다.");
+        }
 
         // Debugging: 방향 확인을 위한 로그 추가
         Debug.Log($"Firing blade at angle: {angle}, Direction: {backwardDirection}, Spawn Position: {spawnPosition}");
@@ -114,18 +144,34 @@ public class FlashBlade : Ability
     }
 
     /// <summary>
-    /// FlashBlade 능력을 업그레이드합니다. 레벨이 증가할 때마다 피해량이 증가합니다.
+    /// 능력의 설명을 반환합니다. 설명은 현재 레벨보다 1레벨 더 높은 레벨의 정보를 포함합니다.
     /// </summary>
-    public override void Upgrade()
+    /// <returns>능력 설명 문자열</returns>
+    public override string GetDescription()
     {
-        if (currentLevel < maxLevel - 1)
+        if (currentLevel < maxLevel)
         {
-            currentLevel++;
-            Debug.Log($"FlashBlade 업그레이드: 현재 레벨 {currentLevel + 1}");
+            // 다음 레벨의 인덱스은 currentLevel (currentLevel은 0부터 시작)
+            int nextLevelIndex = currentLevel;
+            int nextLevelDamage = (nextLevelIndex < damageLevels.Length) ? damageLevels[nextLevelIndex] : damageLevels[damageLevels.Length - 1];
+
+            return $"{baseDescription}\n" +
+                   $"Lv {currentLevel + 1}:\n" +
+                   $"- 히트 임계값: {hitThreshold}회\n" +
+                   $"- 피해량: {nextLevelDamage}\n" +
+                   $"- 사거리: {range}m\n";
         }
         else
         {
-            Debug.LogWarning("FlashBlade: 이미 최대 레벨에 도달했습니다.");
+            // 최대 레벨 설명
+            int maxLevelIndex = currentLevel - 1;
+            int finalDamage = (maxLevelIndex < damageLevels.Length) ? damageLevels[maxLevelIndex] : damageLevels[damageLevels.Length - 1];
+
+            return $"{baseDescription}\n" +
+                   $"Max Level: {currentLevel}\n" +
+                   $"- 히트 임계값: {hitThreshold}회\n" +
+                   $"- 피해량: {finalDamage}\n" +
+                   $"- 사거리: {range}m\n";
         }
     }
 
@@ -135,58 +181,42 @@ public class FlashBlade : Ability
     /// <returns>현재 레벨의 피해량</returns>
     private int GetCurrentDamage()
     {
-        if (currentLevel < damageLevels.Length)
+        if (currentLevel == 0)
         {
-            return damageLevels[currentLevel];
+            return damageLevels[0];
         }
+        else if (currentLevel - 1 < damageLevels.Length)
+        {
+            return damageLevels[currentLevel - 1];
+        }
+        Debug.LogWarning($"FlashBlade: currentLevel ({currentLevel})이 damageLevels 배열의 범위를 벗어났습니다. 마지막 값을 반환합니다.");
         return damageLevels[damageLevels.Length - 1];
     }
 
     /// <summary>
-    /// 능력 설명을 오버라이드하여 레벨 업 시 피해량 증가를 포함시킵니다.
+    /// 다음 레벨 증가에 필요한 값을 반환합니다.
+    /// (이 메서드는 더 이상 사용되지 않으므로 제거할 수 있습니다.)
     /// </summary>
-    /// <returns>능력의 설명 문자열</returns>
-    public override string GetDescription()
+    protected override int GetNextLevelIncrease()
     {
-        if (currentLevel < damageLevels.Length && currentLevel >= 0)
-        {
-            int damageValue = damageLevels[currentLevel];
-            return $"{baseDescription}\nLv {currentLevel + 1}: 적을 {hitThreshold}회 맞출 때마다 후방으로 칼날 발사. 피해량: {damageValue}";
-        }
-        else if (currentLevel >= damageLevels.Length)
-        {
-            int maxDamageValue = damageLevels[damageLevels.Length - 1];
-            return $"{baseDescription}\n최대 레벨 도달: 적을 {hitThreshold}회 맞출 때마다 후방으로 칼날 발사. 피해량: {maxDamageValue}";
-        }
-        else
-        {
-            return $"{baseDescription}\n최대 레벨 도달.";
-        }
+        // 더 이상 사용되지 않으므로 0을 반환하거나 메서드를 제거할 수 있습니다.
+        return 0;
     }
 
     /// <summary>
-    /// 능력의 레벨을 초기화하고 히트 카운트를 리셋합니다.
-    /// </summary>
-    public override void ResetLevel()
-    {
-        base.ResetLevel();
-        hitCount = 0;
-        currentLevel = 0;
-    }
-
-    /// <summary>
-    /// Editor 상에서 유효성 검사
+    /// OnValidate 메서드를 통해 배열의 길이를 maxLevel과 일치시킵니다.
     /// </summary>
     private void OnValidate()
     {
         if (damageLevels.Length != maxLevel)
         {
+            Debug.LogWarning($"FlashBlade: damageLevels 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
             Array.Resize(ref damageLevels, maxLevel);
         }
     }
 
     /// <summary>
-    /// Gizmos를 사용하여 칼날 발사 방향 시각화
+    /// Gizmos를 사용하여 FlashBlade 발사 방향 시각화
     /// </summary>
     private void OnDrawGizmosSelected()
     {

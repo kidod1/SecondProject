@@ -74,7 +74,6 @@ public class SummonClone : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
             Apply(PlayManager.I.GetPlayer());
         }
     }

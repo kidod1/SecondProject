@@ -20,9 +20,6 @@ public class IncreaseSpeed : Ability
     {
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
-            currentLevel++;
-
-            // 레벨 업 시 이동 속도 증가 적용
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < speedIncreases.Length)
             {
@@ -76,6 +73,6 @@ public class IncreaseSpeed : Ability
     // 어빌리티 레벨 초기화
     public override void ResetLevel()
     {
-        base.ResetLevel();
+        currentLevel = 0;
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/IlchwiCheonil")]
 public class IlchwiCheonil : Ability
@@ -20,6 +21,10 @@ public class IlchwiCheonil : Ability
     [Tooltip("독 구름 프리팹")]
     public GameObject poisonCloudPrefab;
 
+    [Header("WWISE Sound Events")]
+    [Tooltip("IlchwiCheonil 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // 추가된 사운드 이벤트 필드
+
     private Player playerInstance;
     private Coroutine poisonCloudCoroutine;
 
@@ -32,6 +37,12 @@ public class IlchwiCheonil : Ability
         if (poisonCloudCoroutine == null)
         {
             poisonCloudCoroutine = player.StartCoroutine(SpawnPoisonCloudRoutine());
+        }
+
+        // IlchwiCheonil 능력 발동 시 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
         }
     }
 
@@ -66,6 +77,12 @@ public class IlchwiCheonil : Ability
         {
             poisonCloudScript.Initialize(GetCurrentPoisonDamage(), GetCurrentPoisonRange(), GetCurrentPoisonDuration());
         }
+
+        // IlchwiCheonil 능력 발동 시 사운드 재생
+        if (activateSound != null)
+        {
+            activateSound.Post(playerInstance.gameObject);
+        }
     }
 
     public override void ResetLevel()
@@ -86,10 +103,6 @@ public class IlchwiCheonil : Ability
 
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel - 1)
-        {
-            currentLevel++;
-        }
     }
 
     public override string GetDescription()
@@ -118,7 +131,7 @@ public class IlchwiCheonil : Ability
     {
         if (currentLevel < poisonDamageLevels.Length)
         {
-            return Mathf.RoundToInt(poisonDamageLevels[currentLevel]);
+            return Mathf.RoundToInt(poisonDamageLevels[currentLevel - 1]);
         }
         return 1;
     }

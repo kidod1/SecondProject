@@ -47,7 +47,6 @@ public class FieryBloodToastAbility : Ability
     {
         if (currentLevel < maxLevel)
         {
-            currentLevel++;
             Debug.Log($"FieryBloodToastAbility 업그레이드: 현재 레벨 {currentLevel + 1}");
             UpdateDamage();
 
@@ -119,6 +118,10 @@ public class FieryBloodToastAbility : Ability
         {
             playerData.RemoveBuff(buffIdentifier, BuffType.AttackDamage);
         }
+        currentLevel = 0;
+    }
+    public override void ResetLevel()
+    {
         currentLevel = 0;
     }
 }

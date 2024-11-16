@@ -20,7 +20,6 @@ public class IncreaseExperience : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
 
             Player player = FindObjectOfType<Player>();
             if (player != null && currentLevel < experienceMultipliers.Length)

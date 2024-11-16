@@ -564,7 +564,7 @@
 										<Action Name="" ID="{454DD51D-F140-4EEC-AE92-98D144263986}" ShortID="678233619">
 											<ReferenceList>
 												<Reference Name="Target">
-													<ObjectRef Name="hit_R" ID="{6F06847D-5451-4B95-9A89-717BF886212D}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+													<ObjectRef Name="Player_hit_2st" ID="{12E46548-41E7-444A-85B5-D1863D786DA2}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
@@ -661,9 +661,30 @@
 												</Action>
 											</ChildrenList>
 										</Event>
+										<Event Name="Sloth_Boss_Pattern01" ID="{293E8B36-A5BF-4EE5-AA79-86DD01C9784D}">
+											<ChildrenList>
+												<Action Name="" ID="{3E355AB9-5C84-4EDB-9269-1036A3D08C54}" ShortID="29962891">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Sloth_Pattern01" ID="{54E788D7-6B4B-4D3F-870C-9A92FB4FD053}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Sloth_Boss_Pattern02" ID="{8974AEDC-36AB-4CF7-A312-D9CF087AF3D8}">
+											<ChildrenList>
+												<Action Name="" ID="{86992BAA-9231-4F1B-9DBB-F7CF41F43D3C}" ShortID="911299409">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Sloth_Pattern02" ID="{0589B183-7E77-45B2-B829-62741E06079D}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
 								</Folder>
-								<Event Name="Luxuria_Bo" ID="{81197F40-1A6F-4B32-9E8F-AA12F83B9A16}"/>
 								<Folder Name="Luxuria_Enemy" ID="{632B8D8C-013B-4807-A22B-DA827DD046A8}" ShortID="987899714">
 									<ChildrenList>
 										<Event Name="Nomal_atk1" ID="{829C6746-D4DF-42DB-8ACE-BC891D52436F}">
@@ -681,12 +702,45 @@
 								</Folder>
 								<Folder Name="Luxuria_Boss" ID="{776FD361-5DAB-449D-BBBC-677C60073889}" ShortID="826018984">
 									<ChildrenList>
-										<Event Name="Luxuria_B_Atk" ID="{AF2B6D79-97BC-4488-AD6B-8F183B0BBF3B}">
+										<Event Name="Luxuria_Boss_Pattern01" ID="{CA14AB5F-36D5-4834-9AB3-E90185EA703B}">
 											<ChildrenList>
-												<Action Name="" ID="{F82D4F36-7331-4DF3-822D-E5C1EDC60D47}" ShortID="501532316">
+												<Action Name="" ID="{5E3997A1-6CBF-4D91-B516-C88223B42F57}" ShortID="504781728">
 													<ReferenceList>
 														<Reference Name="Target">
-															<ObjectRef Name="Luxuria_Boss_atk" ID="{6B020C4A-C450-4843-8B8D-8EB61D3F9C26}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+															<ObjectRef Name="Luxuria_Pattern01" ID="{D8330EFC-6E9E-4B81-BE51-0495445D7EDA}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Luxuria_Boss_Pattern02" ID="{8DAC3A36-8A75-4365-A718-55636576AEDC}">
+											<ChildrenList>
+												<Action Name="" ID="{3F217551-85E5-4436-A5FA-1E785C280A22}" ShortID="1006252580">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="dark_magic_conjure_blast_1" ID="{CDA65F6F-8C5B-436E-AC11-40DCC939A524}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Asmo_Guitar" ID="{57075258-9753-4B9B-8BC1-40633DA49BB5}">
+											<ChildrenList>
+												<Action Name="" ID="{BE2DB5FD-3663-421C-8702-B9372713F121}" ShortID="532132547">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Pickup_GuitarRiff01" ID="{1EAC025C-02B2-455A-B11B-AF616F948671}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="Asmo_Guitar2" ID="{3FA2AA44-3E97-4157-BFD9-970F89883689}">
+											<ChildrenList>
+												<Action Name="" ID="{EE23DCF0-A710-417A-A8EA-8548E2D9ABEE}" ShortID="462793635">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Pickup_GuitarRiff17" ID="{B0714C5B-679D-4907-953C-AD57261A0E0C}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -735,6 +789,28 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="AMB" ID="{B27C601B-0E0F-474A-95A9-84ED2D5D8997}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_CityScape" ID="{651F3C7E-8D9B-4B4E-BAC4-5D102909D82A}">
+							<ChildrenList>
+								<Action Name="" ID="{CE5228F2-ADF3-4845-B49A-605190928528}" ShortID="455271851">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Amb_NightCityTrafficLoop" ID="{422DDA5E-7763-4008-9CAB-C5D03A86F6C1}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_Clock" ID="{24E930FE-AFCC-4AB3-945C-72E702E01F62}">
+							<ChildrenList>
+								<Action Name="" ID="{EBD0E630-1522-4F4B-B62A-4BE3D1F335BC}" ShortID="931783949">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="fiv" ID="{D687B978-5695-4E99-BBA9-255FBDAA0451}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -873,7 +949,7 @@
 							<ChildrenList>
 								<Event Name="Ability_Pick" ID="{8A404D46-D2C8-4B60-A05E-3E5DECD9712E}">
 									<ChildrenList>
-										<Action Name="" ID="{8880DEE1-2C2C-4D2C-8D72-930E153F479B}" ShortID="794117763">
+										<Action Name="" ID="{3A15E556-F85C-4FF9-85F1-5912BB0359DB}" ShortID="441446618">
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="Abil_Pick" ID="{BD4D8A17-7249-4615-B12A-EE366D659421}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
@@ -932,6 +1008,47 @@
 								</Event>
 							</ChildrenList>
 						</Folder>
+						<Folder Name="Siren" ID="{A6C6C5BB-0F43-4996-BD35-50737739815B}" ShortID="276099610">
+							<ChildrenList>
+								<Event Name="Siren" ID="{8962CE83-318F-423E-8D9B-7BB57F762CD0}">
+									<ChildrenList>
+										<Action Name="" ID="{2606EE07-754C-47C1-9772-577B2C159645}" ShortID="755728867">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="siren" ID="{CF80F5F2-A735-43E9-B9C0-C10FBCA1A5F0}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Siren_stop" ID="{9D187CC2-8EAB-4A88-989B-874A7AB93E55}">
+									<ChildrenList>
+										<Action Name="" ID="{DEBFB7E9-BDDB-4B50-AFD7-BAA9BA085C98}" ShortID="269186767">
+											<PropertyList>
+												<Property Name="ActionType" Type="int16" Value="2"/>
+												<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="siren" ID="{CF80F5F2-A735-43E9-B9C0-C10FBCA1A5F0}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+							</ChildrenList>
+						</Folder>
+						<Event Name="TeamLogoSFX" ID="{E431806B-481F-4FE3-B9B4-2F687758625D}">
+							<ChildrenList>
+								<Action Name="" ID="{2358092E-FFDD-4313-874B-DF844A0679D9}" ShortID="612421644">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Team_Logo" ID="{747FBA7E-122D-46EF-985D-39EA8885701B}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="BGM" ID="{AED1A812-12A9-486F-825C-AC9E6046F977}" ShortID="133204063">
@@ -1069,9 +1186,9 @@
 								</Event>
 							</ChildrenList>
 						</Folder>
-						<Event Name="GameOver" ID="{25ABF87D-B2CB-4939-8677-5C370C703D6F}">
+						<Event Name="GameOver" ID="{116D469A-BFFF-45E4-BAAF-9ABBDE73D657}">
 							<ChildrenList>
-								<Action Name="" ID="{8696B7BC-6AC9-4557-BF24-DBCED6AA9617}" ShortID="481394312">
+								<Action Name="" ID="{3B85BCDE-A405-4933-ACFC-88CA07565A8B}" ShortID="1000280638">
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="gameover2" ID="{C259E335-98CE-4E59-9143-B6FCC5D2821A}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>

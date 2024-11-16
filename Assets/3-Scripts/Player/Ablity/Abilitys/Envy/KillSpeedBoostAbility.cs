@@ -95,7 +95,6 @@ public class KillSpeedBoostAbility : Ability
     {
         if (currentLevel < maxLevel - 1) // maxLevel이 5라면 currentLevel은 0~4
         {
-            currentLevel++;
         }
         else
         {

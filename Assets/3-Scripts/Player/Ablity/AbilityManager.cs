@@ -867,8 +867,6 @@ public void ShowAbilitySelection()
             // 애니메이션 완료 후 메서드 호출
             OnSelectionAnimationComplete();
 
-            // 코루틴 참조 변수 초기화
-            Debug.Log("셀렉트 애니메이션 종료");
             playSelectionAnimationCoroutine = null;
         }
 
@@ -1224,7 +1222,6 @@ public void ShowAbilitySelection()
             if (abilityDescriptionTexts[i] != null)
             {
                 abilityDescriptionTexts[i].text = abilityInstance.GetDescription();
-                Debug.Log($"AbilityManager: Updated description for ability '{abilityInstance.abilityName}' to '{abilityDescriptionTexts[i].text}'");
             }
             else
             {

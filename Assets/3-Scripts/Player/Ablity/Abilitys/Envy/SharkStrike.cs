@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "Abilities/SharkStrike")]
 public class SharkStrike : Ability
@@ -11,6 +13,10 @@ public class SharkStrike : Ability
     public float sharkSpeed = 5f;  // 상어 속도
     public float chaseDelay = 0.5f;  // 상어 추격 시작 전 대기 시간
     public float maxSearchTime = 3f; // 상어가 몬스터를 찾는 최대 시간
+
+    [Header("WWISE Sound Events")]
+    [Tooltip("SharkStrike 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // 추가된 사운드 이벤트 필드
 
     private Player playerInstance;
     private int hitCount = 0;
@@ -42,6 +48,12 @@ public class SharkStrike : Ability
             {
                 int damageIncrease = GetSharkDamageIncrease();
                 sharkInstance.Initialize(sharkSpeed, chaseDelay, maxSearchTime, damageIncrease);
+
+                // SharkStrike 능력 발동 시 사운드 재생
+                if (activateSound != null)
+                {
+                    activateSound.Post(playerInstance.gameObject);
+                }
             }
             else
             {
@@ -58,7 +70,7 @@ public class SharkStrike : Ability
     {
         if (currentLevel < damageIncreases.Length)
         {
-            return damageIncreases[currentLevel];
+            return damageIncreases[currentLevel - 1];
         }
         else
         {
@@ -70,7 +82,7 @@ public class SharkStrike : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
-            currentLevel++;
+            // 업그레이드 로직 추가 필요 시 구현
         }
     }
 

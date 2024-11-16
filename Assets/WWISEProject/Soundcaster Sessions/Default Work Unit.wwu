@@ -18,7 +18,7 @@
 							<Position X="0" Y="2"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Ability_hover" ID="{44068CBD-4308-4C0C-B8BF-15DED59D33DB}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="Player_take_Gun" ID="{67B24B75-CB78-453F-BA90-A247CE8E4108}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="0" Y="3"/>
 						</Module>
 						<Module>
@@ -34,7 +34,7 @@
 							<Position X="1" Y="2"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Ability_Pick" ID="{8A404D46-D2C8-4B60-A05E-3E5DECD9712E}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="AMB_CityScape" ID="{651F3C7E-8D9B-4B4E-BAC4-5D102909D82A}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="1" Y="3"/>
 						</Module>
 						<Module>
@@ -50,11 +50,11 @@
 							<Position X="2" Y="2"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Ablilty_LVUP" ID="{64E80627-CBAF-4962-8DB7-2F7444662C70}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="AMB_Clock" ID="{24E930FE-AFCC-4AB3-945C-72E702E01F62}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="2" Y="3"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Text_Stop" ID="{5624CDE3-D354-482C-AAC5-41C746A1AA1D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="Luxuria_Field" ID="{92240A7C-3834-45F4-9A3D-EBA053F481A3}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="3" Y="0"/>
 						</Module>
 						<Module>
@@ -66,38 +66,46 @@
 							<Position X="3" Y="2"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Tutorial" ID="{6A463FE9-F531-4B92-935F-66E30DF27E51}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="3" Y="3"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Luxuria_Field" ID="{92240A7C-3834-45F4-9A3D-EBA053F481A3}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="Sloth_E_Fire" ID="{AFCEE461-BCCD-4B38-9819-7D0402615989}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="4" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="FootStep_stop" ID="{862BC705-6B34-4640-9B11-59E417F99BC8}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
-							<Position X="4" Y="1"/>
-						</Module>
-						<Module>
-							<ObjectRef Name="Lux boss" ID="{843BD1B5-95F5-42CE-853D-1401EAC1DF65}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+							<ObjectRef Name="siren" ID="{CF80F5F2-A735-43E9-B9C0-C10FBCA1A5F0}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 							<Position X="4" Y="2"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Player_take_Gun" ID="{67B24B75-CB78-453F-BA90-A247CE8E4108}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="Lux boss" ID="{843BD1B5-95F5-42CE-853D-1401EAC1DF65}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 							<Position X="4" Y="3"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<ObjectRef Name="Sloth_Field" ID="{2CFF7F43-4853-452D-BF40-16D3622639D9}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="5" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="siren" ID="{CF80F5F2-A735-43E9-B9C0-C10FBCA1A5F0}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+							<ObjectRef Name="Sloth_boss" ID="{480EA99B-0374-4D83-A7F8-F6B641146D58}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="5" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Siren_stop" ID="{9D187CC2-8EAB-4A88-989B-874A7AB93E55}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
 							<Position X="5" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Luxuria_Boss" ID="{202ED7CD-0F02-4BB8-9B09-71A055068F2C}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}"/>
+							<Position X="5" Y="3"/>
 						</Module>
 					</ModuleList>
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="Music_Volume" ID="{1FCC5A64-DA5B-4232-9E20-D158F6E7A9BA}"/>
 							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Hyper_NotUsed" ID="{79561EEE-0718-469C-A271-26F1D1107D20}"/>
+							<Value>0</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="PlayerHealth" ID="{25D6208E-6944-48E2-B887-A879D19E84A0}"/>
@@ -110,6 +118,10 @@
 						<RTPCValue>
 							<GameParameterRef Name="LVUP" ID="{11111599-BA11-4A74-BE93-605096D6ECF9}"/>
 							<Value>2</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="BossEncounter" ID="{925A9818-3100-4CB5-8F9A-89E95DAE182B}"/>
+							<Value>1</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="Master_Volume" ID="{92A6D6FD-5CB4-4CD9-BAFF-F780E3B63E0C}"/>
@@ -125,7 +137,7 @@
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="UI_Volume" ID="{9DA5557A-7E5F-4FEB-AA3D-A30C4BC59372}"/>
-							<Value>50</Value>
+							<Value>100</Value>
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true"/>

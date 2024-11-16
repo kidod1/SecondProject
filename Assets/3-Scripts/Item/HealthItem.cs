@@ -1,20 +1,20 @@
 using UnityEngine;
 
-public class HealthItem : MonoBehaviour
+public class HealthItem : CollectibleItem
 {
     [SerializeField]
     private HealthItemData itemData;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected override void Collect()
     {
-        if (other.CompareTag("Player"))
+        if (player != null)
         {
-            Player player = other.GetComponent<Player>();
-            if (player != null)
-            {
-                player.Heal(itemData.healAmount);
-                Destroy(gameObject);
-            }
+            player.Heal(itemData.healAmount);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.LogError("HealthItem: 플레이어가 할당되지 않았습니다.");
         }
     }
 }

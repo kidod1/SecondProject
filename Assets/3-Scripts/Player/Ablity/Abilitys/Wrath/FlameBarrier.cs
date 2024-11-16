@@ -8,10 +8,10 @@ public class FlameBarrier : Ability
 {
     [Header("Ability Parameters")]
     [Tooltip("레벨별 데미지 (레벨 1부터 시작)")]
-    public float[] damagePerTickLevels = { 10f, 15f, 20f }; // 예: 레벨 1~
+    public float[] damagePerTickLevels = { 10f, 15f, 20f }; // 레벨 1~3
 
     [Tooltip("레벨별 장막 반경 (레벨 1부터 시작)")]
-    public float[] barrierRadiusLevels = { 5f, 5.5f, 6f }; // 예: 레벨 1~3
+    public float[] barrierRadiusLevels = { 5f, 5.5f, 6f }; // 레벨 1~3
 
     [Tooltip("데미지 간격 (초)")]
     public float damageInterval = 1f;
@@ -56,12 +56,12 @@ public class FlameBarrier : Ability
     /// </summary>
     public override void Upgrade()
     {
-        if (currentLevel < maxLevel - 1)
+        if (currentLevel < maxLevel)
         {
-            currentLevel++;
-            UpdateFlameBarrierParameters();
+            Debug.Log($"FlameBarrier 업그레이드: 현재 레벨 {currentLevel}");
 
-            Debug.Log($"FlameBarrier 업그레이드: 현재 레벨 {currentLevel + 1}");
+            // 현재 레벨에 맞는 데미지와 반경을 적용합니다.
+            UpdateFlameBarrierParameters();
 
             // 업그레이드 시 WWISE 사운드 재생
             if (upgradeSound != null)
@@ -125,6 +125,10 @@ public class FlameBarrier : Ability
             float currentRadius = GetCurrentBarrierRadius();
             effect.Initialize(currentDamage, currentRadius, damageInterval, playerInstance);
         }
+        else
+        {
+            Debug.LogError("FlameBarrierEffect 스크립트를 찾을 수 없습니다.");
+        }
 
         // FlameBarrier 능력 발동 시 WWISE 사운드 재생
         if (activateSound != null)
@@ -139,11 +143,16 @@ public class FlameBarrier : Ability
     /// <returns>현재 레벨의 데미지</returns>
     public float GetCurrentDamagePerTick()
     {
-        if (currentLevel < damagePerTickLevels.Length)
+        Debug.Log(currentLevel);
+        // currentLevel은 0부터 시작하므로, 배열 인덱스는 currentLevel - 1
+        if (currentLevel == 0)
         {
-            return damagePerTickLevels[currentLevel];
+            return damagePerTickLevels[0];
         }
-        return damagePerTickLevels[damagePerTickLevels.Length - 1];
+        else
+        {
+            return damagePerTickLevels[currentLevel - 1];
+        }
     }
 
     /// <summary>
@@ -152,11 +161,19 @@ public class FlameBarrier : Ability
     /// <returns>현재 레벨의 장막 반경</returns>
     public float GetCurrentBarrierRadius()
     {
-        if (currentLevel < barrierRadiusLevels.Length)
+        if (currentLevel == 0)
         {
-            return barrierRadiusLevels[currentLevel];
+            return barrierRadiusLevels[0];
         }
-        return barrierRadiusLevels[barrierRadiusLevels.Length - 1];
+        else if (currentLevel - 1 < barrierRadiusLevels.Length)
+        {
+            return barrierRadiusLevels[currentLevel - 1];
+        }
+        else
+        {
+            // 배열 범위를 초과할 경우 마지막 값을 반환
+            return barrierRadiusLevels[barrierRadiusLevels.Length - 1];
+        }
     }
 
     /// <summary>
@@ -175,6 +192,7 @@ public class FlameBarrier : Ability
             }
             else
             {
+                // FlameBarrierEffect 스크립트가 없다면 다시 생성
                 CreateFlameBarrier();
             }
         }
@@ -183,39 +201,66 @@ public class FlameBarrier : Ability
             // 화염 장막이 아직 생성되지 않았다면, 생성합니다.
             CreateFlameBarrier();
         }
+    }
 
-        // FlameBarrier 파라미터 업데이트 시 WWISE 사운드 재생
-        if (upgradeSound != null)
+    /// <summary>
+    /// 능력의 설명을 반환합니다. 설명은 현재 레벨보다 1레벨 더 높은 레벨의 정보를 포함합니다.
+    /// </summary>
+    /// <returns>능력 설명 문자열</returns>
+    public override string GetDescription()
+    {
+        if (currentLevel < maxLevel)
         {
-            upgradeSound.Post(playerInstance.gameObject);
+            // 다음 레벨의 인덱스는 currentLevel
+            int nextLevelIndex = currentLevel;
+            float nextLevelDamage = (nextLevelIndex < damagePerTickLevels.Length) ? damagePerTickLevels[nextLevelIndex] : damagePerTickLevels[damagePerTickLevels.Length - 1];
+            float nextLevelRadius = (nextLevelIndex < barrierRadiusLevels.Length) ? barrierRadiusLevels[nextLevelIndex] : barrierRadiusLevels[barrierRadiusLevels.Length - 1];
+
+            return $"{baseDescription}\n" +
+                   $"Lv {currentLevel + 1}:\n" +
+                   $"데미지: {nextLevelDamage} per {damageInterval}초\n" +
+                   $"장막 반경: {nextLevelRadius}m\n";
+        }
+        else
+        {
+            // 최대 레벨 설명
+            int maxLevelIndex = currentLevel - 1;
+            float finalDamage = (maxLevelIndex < damagePerTickLevels.Length) ? damagePerTickLevels[maxLevelIndex] : damagePerTickLevels[damagePerTickLevels.Length - 1];
+            float finalRadius = (maxLevelIndex < barrierRadiusLevels.Length) ? barrierRadiusLevels[maxLevelIndex] : barrierRadiusLevels[barrierRadiusLevels.Length - 1];
+
+            return $"{baseDescription}\n" +
+                   $"Max Level: {currentLevel}\n" +
+                   $"데미지: {finalDamage} per {damageInterval}초\n" +
+                   $"장막 반경: {finalRadius}m\n";
         }
     }
 
     /// <summary>
     /// 다음 레벨 증가에 필요한 값을 반환합니다.
+    /// (이 메서드는 더 이상 사용되지 않으므로 제거할 수 있습니다.)
     /// </summary>
-    /// <returns>다음 레벨 증가 시 필요한 값</returns>
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel < damagePerTickLevels.Length)
-        {
-            return Mathf.RoundToInt(damagePerTickLevels[currentLevel] + 5f);
-        }
-        return 1;
+        // 필요에 따라 구현하거나 제거
+        return 0;
     }
 
     /// <summary>
-    /// 능력의 설명을 반환합니다.
+    /// Gizmos를 사용하여 FlameBarrier 발사 방향 시각화
     /// </summary>
-    /// <returns>능력 설명 문자열</returns>
-    public override string GetDescription()
+    private void OnDrawGizmosSelected()
     {
-        string description = $"{baseDescription}\n";
+        if (playerInstance != null)
+        {
+            Vector2 facingDirection = playerInstance.GetFacingDirection();
+            Vector2 backwardDirection = -facingDirection;
 
-        description += $"Lv  {currentLevel + 1}:\n";
-        description += $"데미지: {GetCurrentDamagePerTick()} per {damageInterval}초\n";
-        description += $"장막 반경: {GetCurrentBarrierRadius()}m\n";
+            Vector3 origin = playerInstance.transform.position;
+            Vector3 direction = backwardDirection * 5f; // 예시: 5 단위 길이
 
-        return description;
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(origin, origin + (Vector3)direction);
+            Gizmos.DrawSphere(origin + (Vector3)direction, 0.2f);
+        }
     }
 }

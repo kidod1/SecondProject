@@ -19,6 +19,7 @@
 				</SoundBank>
 				<SoundBank Name="BGM_Sloth" ID="{8EFD76A5-6B03-4CBB-AA95-12AA7CBBB96E}">
 					<ObjectInclusionList>
+						<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Sloth" ID="{9D93C15E-A715-44CF-B2B2-886B7A794BAF}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
@@ -26,6 +27,7 @@
 				</SoundBank>
 				<SoundBank Name="BGM_Luxuria" ID="{3C98A042-73F7-41F1-8CA5-7A6B2CD366F1}">
 					<ObjectInclusionList>
+						<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Luxuria" ID="{B9D81CF6-97C7-45A2-B7D9-88EF1A74FEDC}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
@@ -36,14 +38,14 @@
 						<ObjectRef Name="Synopsis" ID="{D4348B5C-D1DE-42B7-A016-47AFB1C92078}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Credit" ID="{CCCD0DF5-BC88-4422-ACC8-62EA4C1B4DB5}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
-						<ObjectRef Name="GameOver" ID="{25ABF87D-B2CB-4939-8677-5C370C703D6F}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Tutorial" ID="{6A463FE9-F531-4B92-935F-66E30DF27E51}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>
 				</SoundBank>
-				<SoundBank Name="BGM_Title" ID="{035451EB-6E4C-4A67-A625-0BD78C2AA460}">
+				<SoundBank Name="BGM_Title" ID="{E51DE7D9-8745-4247-BC69-7DD257872A82}">
 					<ObjectInclusionList>
+						<ObjectRef Name="BGM_Stop" ID="{4A440214-D583-446E-A85D-2558305C450D}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Main_title" ID="{92E8B504-B30F-4E50-9C3F-4E11BCF55EAD}" WorkUnitID="{D817CCD5-E41C-4C3C-B168-2BB4A400DD33}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>

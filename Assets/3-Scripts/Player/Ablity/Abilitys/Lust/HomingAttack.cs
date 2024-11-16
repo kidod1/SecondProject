@@ -1,4 +1,5 @@
 using UnityEngine;
+using AK.Wwise;
 
 [CreateAssetMenu(menuName = "Abilities/HomingAttack")]
 public class HomingAttack : Ability
@@ -16,13 +17,12 @@ public class HomingAttack : Ability
     [Tooltip("유도 탄환 프리팹")]
     public GameObject homingProjectilePrefab;
 
+    [Tooltip("호밍 탄환 생성 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event homingProjectileSound;
+
     private Player playerInstance;
     private int attackCounter = 0; // 공격 카운터 추가
 
-    /// <summary>
-    /// 능력을 플레이어에게 적용합니다.
-    /// </summary>
-    /// <param name="player">능력을 적용할 플레이어</param>
     public override void Apply(Player player)
     {
         if (player == null)
@@ -46,18 +46,10 @@ public class HomingAttack : Ability
         }
     }
 
-
-    /// <summary>
-    /// 능력을 업그레이드합니다. 레벨이 증가할 때마다 Homing 파라미터가 증가합니다.
-    /// </summary>
     public override void Upgrade()
     {
         if (currentLevel < maxLevel - 1) // maxLevel이 5일 경우, currentLevel은 0~4
         {
-            currentLevel++;
-
-            // 레벨 업 시 필요한 로직 추가 (필요 시)
-            // 현재 이 능력은 레벨별 파라미터 배열을 통해 자동으로 조정되므로 별도의 조정은 필요 없습니다.
         }
         else
         {
@@ -65,9 +57,6 @@ public class HomingAttack : Ability
         }
     }
 
-    /// <summary>
-    /// 능력 레벨을 초기화합니다.
-    /// </summary>
     public override void ResetLevel()
     {
         base.ResetLevel();
@@ -83,11 +72,6 @@ public class HomingAttack : Ability
         attackCounter = 0;
     }
 
-
-    /// <summary>
-    /// 능력의 설명을 반환합니다.
-    /// </summary>
-    /// <returns>능력의 설명 문자열</returns>
     public override string GetDescription()
     {
         if (currentLevel < homingSpeedLevels.Length)
@@ -107,10 +91,6 @@ public class HomingAttack : Ability
         }
     }
 
-    /// <summary>
-    /// 다음 레벨 증가에 필요한 값을 반환합니다.
-    /// </summary>
-    /// <returns>다음 레벨 증가 시 필요한 값</returns>
     protected override int GetNextLevelIncrease()
     {
         if (currentLevel < homingSpeedLevels.Length)
@@ -122,12 +102,6 @@ public class HomingAttack : Ability
         return 1;
     }
 
-    /// <summary>
-    /// 능력이 적용된 후 플레이어가 발사할 때 호출되는 메서드입니다.
-    /// </summary>
-    /// <param name="direction">발사 방향</param>
-    /// <param name="prefabIndex">프리팹 인덱스</param>
-    /// <param name="projectile">생성된 프로젝트트</param>
     private void OnShootHandler(Vector2 direction, int prefabIndex, GameObject projectile)
     {
         attackCounter++; // 공격 카운터 증가
@@ -139,10 +113,6 @@ public class HomingAttack : Ability
         }
     }
 
-    /// <summary>
-    /// 호밍 탄환을 생성합니다.
-    /// </summary>
-    /// <param name="direction">발사 방향</param>
     private void CreateHomingProjectile(Vector2 direction)
     {
         if (homingProjectilePrefab == null)
@@ -164,6 +134,12 @@ public class HomingAttack : Ability
 
             projScript.Initialize(playerInstance.stat, currentDelay, currentSpeed, currentRange);
             projScript.SetDirection(direction);
+
+            // 호밍 탄환 생성 시 사운드 재생
+            if (homingProjectileSound != null)
+            {
+                homingProjectileSound.Post(homingProjectile.gameObject);
+            }
         }
         else
         {
@@ -171,10 +147,6 @@ public class HomingAttack : Ability
         }
     }
 
-    /// <summary>
-    /// 현재 레벨의 Homing 시작 지연 시간을 반환합니다.
-    /// </summary>
-    /// <returns>현재 레벨의 Homing 시작 지연 시간</returns>
     private float GetCurrentHomingStartDelay()
     {
         if (currentLevel < homingStartDelayLevels.Length)
@@ -188,10 +160,6 @@ public class HomingAttack : Ability
         }
     }
 
-    /// <summary>
-    /// 현재 레벨의 Homing 속도를 반환합니다.
-    /// </summary>
-    /// <returns>현재 레벨의 Homing 속도</returns>
     private float GetCurrentHomingSpeed()
     {
         if (currentLevel < homingSpeedLevels.Length)
@@ -205,10 +173,6 @@ public class HomingAttack : Ability
         }
     }
 
-    /// <summary>
-    /// 현재 레벨의 Homing 범위를 반환합니다.
-    /// </summary>
-    /// <returns>현재 레벨의 Homing 범위</returns>
     private float GetCurrentHomingRange()
     {
         if (currentLevel < homingRangeLevels.Length)
