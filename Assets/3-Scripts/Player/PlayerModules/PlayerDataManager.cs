@@ -196,7 +196,7 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     /// <summary>
-    /// PlayerAbilityManager의 abilities 리스트를 abilitiesData 리스트로 변환하여 저장
+    /// 플레이어의 능력 데이터를 업데이트하고 저장합니다.
     /// </summary>
     private void UpdateAbilitiesData()
     {
@@ -255,5 +255,40 @@ public class PlayerDataManager : MonoBehaviour
     public List<AbilityData> GetAbilitiesData()
     {
         return abilitiesData;
+    }
+
+    /// <summary>
+    /// 플레이어 데이터와 모든 관련 데이터를 초기화하는 메서드
+    /// </summary>
+    public void ResetPlayerData()
+    {
+        // 1. 플레이어 스탯 초기화
+        playerData.currentPlayerSpeed = playerData.defaultPlayerSpeed;
+        playerData.currentPlayerDamage = playerData.DataPlayerDamage;
+        playerData.currentAttackSpeed = playerData.DataPlayerAttackSpeed;
+        playerData.currentProjectileSpeed = playerData.defaultProjectileSpeed;
+        playerData.currentProjectileRange = playerData.defaultProjectileRange;
+        playerData.currentProjectileType = 0; // 기본 타입으로 설정 (필요 시 수정)
+        playerData.currentMaxHP = playerData.defaultMaxHP;
+        playerData.currentHP = playerData.currentMaxHP; // 최대 HP로 설정
+        playerData.currentShield = 0; // 기본값으로 설정 (필요 시 수정)
+        playerData.currentDefense = 0; // 기본값으로 설정 (필요 시 수정)
+        playerData.currentExperience = 0;
+        playerData.currentCurrency = 0;
+        playerData.currentLevel = 1; // 시작 레벨로 설정
+        playerData.experienceMultiplier = 1f; // 기본 배율로 설정
+
+        // 2. 능력 데이터 초기화
+        abilitiesData.Clear();
+        synergyAbilityData = new SynergyAbilityData();
+        synergyLevels.Clear();
+
+        // 3. PlayerAbilityManager에 초기화된 데이터 적용
+        ApplyLoadedAbilities();
+
+        // 4. 데이터 저장
+        SavePlayerData();
+
+        Debug.Log("플레이어 데이터가 초기화되었습니다.");
     }
 }

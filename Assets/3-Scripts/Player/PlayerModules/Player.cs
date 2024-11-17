@@ -844,6 +844,7 @@ public class Player : MonoBehaviour
     {
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
+        PlayerDataManager.Instance.ResetPlayerData();
         StartCoroutine(InvokeDeathCompleteEventAfterDelay(1.5f));
     }
 
