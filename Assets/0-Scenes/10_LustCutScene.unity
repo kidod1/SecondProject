@@ -341,6 +341,28 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2084323923}
   m_SourcePrefab: {fileID: 100100000, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+--- !u!114 &85176517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6246213537462555724, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+  m_PrefabInstance: {fileID: 85176516}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed962b3b0c3321428e384330dcb1dad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &85176518 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 355099892289650360, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+  m_PrefabInstance: {fileID: 85176516}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed962b3b0c3321428e384330dcb1dad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &192503907
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +377,7 @@ GameObject:
   - component: {fileID: 192503911}
   - component: {fileID: 192503912}
   m_Layer: 0
-  m_Name: Screen
+  m_Name: Asmodeus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +390,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192503907}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
@@ -377,8 +399,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 269.7, y: -511.9}
-  m_SizeDelta: {x: 1419, y: 1049}
+  m_AnchoredPosition: {x: 0, y: -90.66}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.48610994, y: 0.41335556}
 --- !u!114 &192503909
 MonoBehaviour:
@@ -400,11 +422,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  skeletonDataAsset: {fileID: 11400000, guid: 2ca31f0cbb433e6428d2d2f59e3b8cea, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 015665e3a4082b64187ba408a0dad7e5, type: 2}
   initialSkinName: 
   initialFlipX: 0
   initialFlipY: 0
-  startingAnimation: mod/dark
+  startingAnimation: idle
   startingLoop: 1
   timeScale: 1
   freeze: 0
@@ -464,12 +486,97 @@ MonoBehaviour:
   m_GameObject: {fileID: 192503907}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4f6a1704707665429b0e769ec1b29fe, type: 3}
+  m_Script: {fileID: 11500000, guid: e33be6ee1c53ebd458b637c3b1a5ecdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  surprisedAnimation: mod/dark
-  idleAnimation: idle
-  surprisedFaceAnimation: 
+  cutsceneDialogue:
+    dialogueLines:
+    - sentence: "\uC548\uB155 \uC790\uAE30~ \uC5EC\uAE30\uC5D0\uB294 \uBB34\uC2A8
+        \uC77C\uB85C \uC654\uC744\uAE4C~?"
+      characterName: "\uB9B4\uB9AC\uD2B8"
+      characterImage: {fileID: 192503907}
+      animationNames:
+      - animationName: idle
+      - animationName: close_up/pink/pink_top
+    - sentence: "\uB9B4\uB9AC\uD2B8..  \uC774\uAC70 \uD070\uC77C \uB09C \uC0C1\uD669
+        \uC544\uB2C8\uC57C?"
+      characterName: "\uC544\uB9AC\uC2A4"
+      characterImage: {fileID: 192503907}
+      animationNames:
+      - animationName: idle
+      - animationName: close_up/pink/pink_undo
+      - animationName: close_up/blue/blue_top
+    - sentence: "\uC5D0\uC774~ \uBB50 \uC5B4\uB54C~ \uB09C  \uC7E4 \uB108\uBB34 \uB9C8\uC74C\uC5D0
+        \uB4DC\uB294\uB370?"
+      characterName: "\uB9B4\uB9AC\uD2B8"
+      characterImage: {fileID: 192503907}
+      animationNames:
+      - animationName: idle
+      - animationName: close_up/blue/blue_undo
+      - animationName: close_up/pink/pink_top
+    - sentence: "\uB108! \uB0B4 \uB3D9\uB8CC\uAC00 \uB3FC\uB77C!"
+      characterName: "\uB9B4\uB9AC\uD2B8"
+      characterImage: {fileID: 192503907}
+      animationNames: []
+    - sentence: "\uB9B4\uB9AC\uD2B8.. \uADF8\uB0E5 \uBB34\uC2DC\uD558\uB294\uB370..?"
+      characterName: "\uC544\uB9AC\uC2A4"
+      characterImage: {fileID: 192503907}
+      animationNames:
+      - animationName: idle
+      - animationName: close_up/pink/pink_undo
+      - animationName: close_up/blue/blue_top
+    - sentence: "\uAC10\uD788..\uB0A0 \uBB34\uC2DC\uD574..? \uAC00\uC9C8 \uC218 \uC5C6\uB2E4\uBA74
+        \uBD80\uC234\uBC84\uB9AC\uACA0\uC5B4!"
+      characterName: "\uB9B4\uB9AC\uD2B8"
+      characterImage: {fileID: 192503907}
+      animationNames:
+      - animationName: idle
+      - animationName: close_up/blue/blue_undo
+      - animationName: close_up/pink/pink_top
+  nameText: {fileID: 841893378}
+  dialogueText: {fileID: 38448555}
+  animationImage: {fileID: 300900859}
+  nextSceneName: 11_LustMap
+  textAnimationSpeed: 0.05
+  OnCutsceneEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  typingSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 7c794c0c0b66d01489149809b0a689e3, type: 2}
+  OnTextFinished:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 85176518}
+        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
+        m_MethodName: PlayCustomSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnClickSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 85176517}
+        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
+        m_MethodName: PlayCustomSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  sceneChangeSkeleton: {fileID: 285038837}
+  lastCut: 0
 --- !u!1 &275401240
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,7 +902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &315589013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -934,7 +1041,6 @@ GameObject:
   - component: {fileID: 371170065}
   - component: {fileID: 371170064}
   - component: {fileID: 371170063}
-  - component: {fileID: 371170062}
   m_Layer: 0
   m_Name: SkeletonGraphic (sloth_cutcene)
   m_TagString: Untagged
@@ -942,38 +1048,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &371170062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371170061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46c61e4fcc7117c419b83435c260951c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInAnimation: Fade_In
-  animation1: animation
-  fadeOutAnimation: Fade_out
-  animation2: animation2
-  skeletonGraphic: {fileID: 371170064}
-  onCutsceneEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2084323919}
-        m_TargetAssemblyTypeName: AkEvent, AK.Wwise.Unity.MonoBehaviour
-        m_MethodName: Stop
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!95 &371170063
 Animator:
   serializedVersion: 5
@@ -1015,7 +1089,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  skeletonDataAsset: {fileID: 11400000, guid: 99fe961b4fb65fd4e928142919d1a655, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 73ab23ebde1c1ac43bf3d44ca18e9487, type: 2}
   initialSkinName: 
   initialFlipX: 0
   initialFlipY: 0
@@ -1652,7 +1726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &839392916
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1880,7 +1954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &843397711
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2056,117 +2130,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1322077952
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1322077955}
-  - component: {fileID: 1322077956}
-  m_Layer: 0
-  m_Name: DialogueManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1322077955
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322077952}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 955.5, y: 673.4756, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1322077956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322077952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26320accb0aed7e47adf5838ca06750d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cutsceneDialogue:
-    sentences:
-    - ....?
-    - "\uCE68\uC785\uC790?"
-    - "\uC73C\uC73C\uC73C \uADC0\uCC2E\uAC8C \uB410\uB124..."
-    dialogueEntries:
-    - characterName: "\uBCA8\uD398\uACE0\uB974"
-      characterImage: {fileID: 192503907}
-      hideAfterSentence: 6
-      speechBubbleSprite: {fileID: 21300000, guid: 5b9c1208fce6bba4f8775758eb2e1998, type: 3}
-    characterImageTogglePoints: 01000000
-    fadeTriggers: 00000000010000000000000002000000
-    impAppearAfterSentenceIndex: 3
-    impFadeOutAfterDialogueCount: 1
-    speechBubbleSprites:
-    - {fileID: 21300000, guid: 8d9a29e0b6401434492081401c4bd752, type: 3}
-    - {fileID: 21300000, guid: 8d9a29e0b6401434492081401c4bd752, type: 3}
-  nameText: {fileID: 841893378}
-  dialogueText: {fileID: 38448555}
-  animationImage: {fileID: 300900859}
-  nextSceneName: 7_SlothMap
-  textAnimationSpeed: 0.05
-  speechBubble: {fileID: 1332464351}
-  speechBubble2: {fileID: 1332464351}
-  speechBubbleAnimator: {fileID: 1332464353}
-  speechBubbleImage: {fileID: 674500514}
-  impCharacterImage: {fileID: 1332464351}
-  impCharacterName: Imp
-  OnCutsceneEnded:
-    m_PersistentCalls:
-      m_Calls: []
-  typingSoundEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 7c794c0c0b66d01489149809b0a689e3, type: 2}
-  OnTextFinished:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1933993894}
-        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
-        m_MethodName: PlayCustomSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnClickSound:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1635412954}
-        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
-        m_MethodName: PlayCustomSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  sceneChangeSkeleton: {fileID: 285038837}
-  lastCut: 0
 --- !u!1 &1332464351
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,7 +2636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &1612011179
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2800,17 +2763,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629294020}
   m_CullTransparentMesh: 1
---- !u!114 &1635412954 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6246213537462555724, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-  m_PrefabInstance: {fileID: 85176516}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ed962b3b0c3321428e384330dcb1dad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1721570254
 GameObject:
   m_ObjectHideFlags: 0
@@ -2823,7 +2775,7 @@ GameObject:
   - component: {fileID: 1721570257}
   - component: {fileID: 1721570256}
   - component: {fileID: 1721570258}
-  - component: {fileID: 1721570259}
+  - component: {fileID: 1721570260}
   m_Layer: 0
   m_Name: SkeletonGraphic (sloth_cutcene)
   m_TagString: Untagged
@@ -2880,7 +2832,7 @@ MonoBehaviour:
   initialSkinName: 
   initialFlipX: 0
   initialFlipY: 0
-  startingAnimation: animation2
+  startingAnimation: 
   startingLoop: 0
   timeScale: 1
   freeze: 0
@@ -2937,7 +2889,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1721570259
+--- !u!114 &1721570260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2946,13 +2898,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1721570254}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46c61e4fcc7117c419b83435c260951c, type: 3}
+  m_Script: {fileID: 11500000, guid: bb1b04a880e513e4da4722d1881f1a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInAnimation: Fade_In
-  animation1: animation
-  fadeOutAnimation: Fade_out
-  animation2: animation2
+  fadeInAnimation: Bloom_on
+  animation1: cut_on
+  fadeOutAnimation: Bloom_on2
+  animation2: cut_off
   skeletonGraphic: {fileID: 1721570256}
   onCutsceneEnd:
     m_PersistentCalls:
@@ -2969,17 +2921,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1933993894 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 355099892289650360, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-  m_PrefabInstance: {fileID: 85176516}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ed962b3b0c3321428e384330dcb1dad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2019731251
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,7 +2938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &2019731252
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3148,7 +3089,6 @@ SceneRoots:
   - {fileID: 1458633820}
   - {fileID: 1070887806}
   - {fileID: 558000613}
-  - {fileID: 1322077955}
   - {fileID: 1504342883}
   - {fileID: 832944241}
   - {fileID: 85176516}
