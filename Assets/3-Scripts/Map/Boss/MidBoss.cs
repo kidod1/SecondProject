@@ -53,6 +53,19 @@ public class MidBoss : Monster
     private MeshRenderer redMeshRenderer;
     private Color bossOriginalColor;
 
+    [Header("WWISE Sound Events")]
+    [SerializeField]
+    private AK.Wwise.Event bulletPatternSound;
+
+    [SerializeField]
+    private AK.Wwise.Event warningAttackPatternSound;
+
+    [SerializeField]
+    private AK.Wwise.Event warningLaserPatternSound;
+
+    [SerializeField]
+    private AK.Wwise.Event groundSmashPatternSound;
+
     protected override void Start()
     {
         base.Start();
@@ -323,6 +336,10 @@ public class MidBoss : Monster
         // 경고 표시 순서대로 레이저 공격 실행
         foreach (Transform position in selectedPositions)
         {
+            if (warningLaserPatternSound != null)
+            {
+                warningLaserPatternSound.Post(gameObject);
+            }
             // 레이저 공격 프리팹 인스턴스화
             GameObject laserAttack = Instantiate(patternData.warningLaserAttackPrefab, position.position, Quaternion.identity, patternParent);
             Destroy(laserAttack, patternData.warningLaserAttackDuration);
@@ -372,6 +389,10 @@ public class MidBoss : Monster
 
         for (int i = 0; i < bulletCount; i++)
         {
+            if (bulletPatternSound != null)
+            {
+                bulletPatternSound.Post(gameObject);
+            }
             float angle = (-spreadAngle) + (spreadAngle * i);
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             Vector3 bulletDirection = rotation * direction;
@@ -421,6 +442,10 @@ public class MidBoss : Monster
             // 4. 공격 이펙트 생성 및 데미지 적용
             if (patternData.attackEffectPrefab != null)
             {
+                if (warningAttackPatternSound != null)
+                {
+                    warningAttackPatternSound.Post(gameObject);
+                }
                 GameObject attackEffect = Instantiate(patternData.attackEffectPrefab, targetPosition, Quaternion.identity, patternParent);
                 Destroy(attackEffect, patternData.attackEffectDuration);
 
@@ -453,7 +478,10 @@ public class MidBoss : Monster
 
         // 새로운 바닥 찍기 패턴 생성
         SpawnGroundSmashObjects(targetPosition);
-
+        if (groundSmashPatternSound != null)
+        {
+            groundSmashPatternSound.Post(gameObject);
+        }
         yield return new WaitForSeconds(patternData.groundSmashCooldown);
     }
 
