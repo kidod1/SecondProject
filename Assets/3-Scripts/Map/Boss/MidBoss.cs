@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using Spine.Unity;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class MidBoss : Monster
 {
@@ -65,6 +66,9 @@ public class MidBoss : Monster
 
     [SerializeField]
     private AK.Wwise.Event groundSmashPatternSound;
+
+    // 추가된 부분
+    private bool isPlayerDead = false; // 플레이어의 죽음 상태를 추적하는 변수
 
     protected override void Start()
     {
@@ -134,6 +138,47 @@ public class MidBoss : Monster
         {
             Debug.LogWarning("MeshRenderer를 찾을 수 없습니다.");
         }
+
+        // 플레이어의 죽음 이벤트를 구독합니다.
+        if (player != null)
+        {
+            player.OnPlayerDeath.AddListener(OnPlayerDeathHandler);
+        }
+        else
+        {
+            Debug.LogError("Player 오브젝트를 찾을 수 없습니다.");
+        }
+    }
+
+    private void Update()
+    {
+        if (isDead || isPlayerDead) return;
+
+        currentState?.UpdateState();
+    }
+
+    // 플레이어가 죽었을 때 호출되는 메서드
+    private void OnPlayerDeathHandler()
+    {
+        isPlayerDead = true;
+
+        // 공격 불가능 상태로 설정
+        SetAttackable(false);
+
+        // 애니메이션 정지 등 추가적인 처리가 필요하면 여기에 추가
+        if (redMeshRenderer != null && redMeshRenderer.material != null)
+        {
+            redMeshRenderer.material.color = bossOriginalColor; // 색상 초기화
+        }
+    }
+
+    // OnDestroy에서 이벤트 구독 해제
+    private void OnDestroy()
+    {
+        if (player != null)
+        {
+            player.OnPlayerDeath.RemoveListener(OnPlayerDeathHandler);
+        }
     }
 
     protected override void InitializeStates()
@@ -150,9 +195,12 @@ public class MidBoss : Monster
         isAttackable = value;
         if (isAttackable)
         {
-            // ExecutePatterns 코루틴을 시작하고 참조를 저장합니다.
-            executePatternsCoroutine = StartCoroutine(ExecutePatterns());
-            Debug.Log("보스 몬스터가 공격을 시작합니다.");
+            if (executePatternsCoroutine == null)
+            {
+                // ExecutePatterns 코루틴을 시작하고 참조를 저장합니다.
+                executePatternsCoroutine = StartCoroutine(ExecutePatterns());
+                Debug.Log("보스 몬스터가 공격을 시작합니다.");
+            }
         }
         else
         {
@@ -168,7 +216,7 @@ public class MidBoss : Monster
 
     public override void TakeDamage(int damage, Vector3 damageSourcePosition, bool Nun = false)
     {
-        if (isDead)
+        if (isDead || isPlayerDead)
         {
             return;
         }
@@ -217,12 +265,7 @@ public class MidBoss : Monster
 
         GameManager gameManager = FindFirstObjectByType<GameManager>();
         // 보스가 죽을 때 공격 패턴 코루틴을 정지합니다.
-        if (executePatternsCoroutine != null)
-        {
-            StopCoroutine(executePatternsCoroutine);
-            executePatternsCoroutine = null;
-            Debug.Log("보스 몬스터의 공격 패턴이 정지되었습니다.");
-        }
+        SetAttackable(false);
 
         if (playerUIManager != null)
         {
@@ -269,7 +312,7 @@ public class MidBoss : Monster
     {
         while (true)
         {
-            if (isDead)
+            if (isDead || isPlayerDead)
             {
                 yield break;
             }
@@ -301,8 +344,14 @@ public class MidBoss : Monster
         }
     }
 
+    // 각 패턴 메서드에서도 isPlayerDead를 확인하여 조기 종료
     private IEnumerator WarningLaserPattern()
     {
+        if (isDead || isPlayerDead)
+        {
+            yield break;
+        }
+
         Debug.Log("경고 레이저 패턴 시작");
 
         if (warningLaserPositions == null || warningLaserPositions.Length < 5)
@@ -325,6 +374,11 @@ public class MidBoss : Monster
         // 선택된 위치에서 순서대로 경고 표시
         foreach (Transform position in selectedPositions)
         {
+            if (isDead || isPlayerDead)
+            {
+                yield break;
+            }
+
             // 경고 프리팹 인스턴스화
             GameObject warning = Instantiate(patternData.warningLaserWarningPrefab, position.position, Quaternion.identity, patternParent);
             Destroy(warning, patternData.warningLaserWarningDuration);
@@ -336,6 +390,11 @@ public class MidBoss : Monster
         // 경고 표시 순서대로 레이저 공격 실행
         foreach (Transform position in selectedPositions)
         {
+            if (isDead || isPlayerDead)
+            {
+                yield break;
+            }
+
             if (warningLaserPatternSound != null)
             {
                 warningLaserPatternSound.Post(gameObject);
@@ -359,9 +418,19 @@ public class MidBoss : Monster
 
     private IEnumerator BulletPattern()
     {
+        if (isDead || isPlayerDead)
+        {
+            yield break;
+        }
+
         Debug.Log("탄막 패턴 시작");
         for (int i = 0; i < patternData.bulletPatternRepeatCount; i++)
         {
+            if (isDead || isPlayerDead)
+            {
+                yield break;
+            }
+
             FireBullets();
             yield return new WaitForSeconds(patternData.bulletFireInterval);
         }
@@ -389,10 +458,6 @@ public class MidBoss : Monster
 
         for (int i = 0; i < bulletCount; i++)
         {
-            if (bulletPatternSound != null)
-            {
-                bulletPatternSound.Post(gameObject);
-            }
             float angle = (-spreadAngle) + (spreadAngle * i);
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             Vector3 bulletDirection = rotation * direction;
@@ -421,8 +486,18 @@ public class MidBoss : Monster
 
     private IEnumerator WarningAttackPattern()
     {
+        if (isDead || isPlayerDead)
+        {
+            yield break;
+        }
+
         for (int i = 0; i < patternData.warningAttackRepeatCount; i++)
         {
+            if (isDead || isPlayerDead)
+            {
+                yield break;
+            }
+
             Vector3 targetPosition = GetPlayerPosition();
 
             // 1. 경고 이펙트 생성
@@ -438,6 +513,11 @@ public class MidBoss : Monster
 
             // 3. 경고 이펙트 지속 시간만큼 대기
             yield return new WaitForSeconds(patternData.warningDuration);
+
+            if (isDead || isPlayerDead)
+            {
+                yield break;
+            }
 
             // 4. 공격 이펙트 생성 및 데미지 적용
             if (patternData.attackEffectPrefab != null)
@@ -469,12 +549,22 @@ public class MidBoss : Monster
 
     private IEnumerator GroundSmashPattern()
     {
+        if (isDead || isPlayerDead)
+        {
+            yield break;
+        }
+
         Debug.Log("바닥 찍기 패턴 시작");
 
         Vector3 targetPosition = GetPlayerPosition();
         GameObject warning = Instantiate(patternData.groundSmashWarningPrefab, targetPosition, Quaternion.identity, patternParent);
         Destroy(warning, patternData.groundSmashWarningDuration);
         yield return new WaitForSeconds(patternData.groundSmashWarningDuration);
+
+        if (isDead || isPlayerDead)
+        {
+            yield break;
+        }
 
         // 새로운 바닥 찍기 패턴 생성
         SpawnGroundSmashObjects(targetPosition);
@@ -489,6 +579,11 @@ public class MidBoss : Monster
     {
         for (int i = 0; i < patternData.groundSmashMeteorCount; i++)
         {
+            if (isDead || isPlayerDead)
+            {
+                return;
+            }
+
             float angleRad = patternData.groundSmashAngle * Mathf.Deg2Rad;
             Vector3 offset = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0) * patternData.groundSmashSpawnRadius;
             Vector3 spawnPosition = targetPosition + offset;
@@ -515,6 +610,12 @@ public class MidBoss : Monster
     {
         while (groundSmashObject != null)
         {
+            if (isDead || isPlayerDead)
+            {
+                Destroy(groundSmashObject);
+                yield break;
+            }
+
             if (Vector3.Distance(groundSmashObject.transform.position, targetPosition) > 0.1f)
             {
                 groundSmashObject.transform.position = Vector3.MoveTowards(groundSmashObject.transform.position, targetPosition, fallSpeed * Time.deltaTime);
@@ -534,6 +635,11 @@ public class MidBoss : Monster
 
     private void ApplyGroundSmashDamage(Vector3 position)
     {
+        if (isDead || isPlayerDead)
+        {
+            return;
+        }
+
         Collider2D[] hits = Physics2D.OverlapCircleAll(position, patternData.groundSmashMeteorRadius);
         foreach (Collider2D hit in hits)
         {
@@ -554,6 +660,12 @@ public class MidBoss : Monster
 
         while (elapsed < duration && obj != null)
         {
+            if (isDead || isPlayerDead)
+            {
+                Destroy(obj);
+                yield break;
+            }
+
             obj.transform.position += upwardDirection * speed * Time.deltaTime;
             elapsed += Time.deltaTime;
             yield return null;
@@ -567,6 +679,11 @@ public class MidBoss : Monster
 
     private void SpawnGroundSmashBullets(Vector3 position)
     {
+        if (isDead || isPlayerDead)
+        {
+            return;
+        }
+
         if (patternData.groundSmashBulletPrefab == null)
         {
             Debug.LogError("groundSmashBulletPrefab이 할당되지 않았습니다.");
@@ -579,6 +696,11 @@ public class MidBoss : Monster
 
         for (int i = 0; i < bulletCount; i++)
         {
+            if (isDead || isPlayerDead)
+            {
+                return;
+            }
+
             float angle = i * (360f / bulletCount);
             float angleRad = angle * Mathf.Deg2Rad;
             Vector3 direction = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0).normalized;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class LustBoss : Monster
 {
@@ -30,8 +31,16 @@ public class LustBoss : Monster
     [SerializeField, Tooltip("스폰 후 폭발 패턴의 발사 지점들")]
     private Transform[] spawnExplosionSpawnPoints;
 
+    // 추가: PlayerUIManager 참조
+    [Header("UI Manager")]
+    [SerializeField, Tooltip("PlayerUIManager")]
+    private PlayerUIManager playerUIManager;
+
     // 패턴 실행 코루틴을 제어하기 위한 변수
     private Coroutine executePatternsCoroutine;
+
+    // 소환된 탄환들을 관리하기 위한 리스트
+    private List<GameObject> spawnedCircleBullets = new List<GameObject>();
 
     // AngleBulletSpawnData 클래스 정의
     [System.Serializable]
@@ -47,7 +56,6 @@ public class LustBoss : Monster
     protected override void Start()
     {
         base.Start();
-
         // LustBoss 전용 패턴 데이터를 설정합니다.
         if (lustPatternData == null)
         {
@@ -62,15 +70,80 @@ public class LustBoss : Monster
             patternParent = parentObj.transform;
         }
 
+        // 보스의 최대 체력 설정 및 UI 초기화
+        if (monsterBaseStat != null)
+        {
+            monsterBaseStat.maxHP = monsterBaseStat.maxHP > 0 ? monsterBaseStat.maxHP : 1000; // 예시로 1000 설정
+            currentHP = monsterBaseStat.maxHP;
+        }
+        else
+        {
+            Debug.LogError("LustBoss: MonsterData(monsterBaseStat)가 할당되지 않았습니다.");
+            currentHP = 1000; // 기본 체력 설정
+        }
+
+        // PlayerUIManager 초기화
+        if (playerUIManager != null)
+        {
+            playerUIManager.InitializeBossHealth(currentHP);
+        }
+        else
+        {
+            Debug.LogError("LustBoss: PlayerUIManager가 할당되지 않았습니다.");
+        }
+
         // 패턴 실행을 시작합니다.
         SetAttackable(true);
     }
 
+    public override void TakeDamage(int damage, Vector3 damageSourcePosition, bool Nun = false)
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        ShowDamageText(damage);
+
+        currentHP -= damage;
+
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            Die();
+        }
+        else
+        {
+            // 필요한 경우 피격 시 효과 추가
+        }
+
+        Debug.Log($"LustBoss가 데미지를 입었습니다! 남은 체력: {currentHP}/{monsterBaseStat.maxHP}");
+
+        // 보스 체력 UI 업데이트
+        if (playerUIManager != null)
+        {
+            playerUIManager.UpdateBossHealth(currentHP);
+        }
+        else
+        {
+            Debug.LogWarning("LustBoss: PlayerUIManager가 할당되지 않았습니다.");
+        }
+    }
+
     protected override void Die()
     {
-        base.Die();
+        if (isDead) return;
+        isDead = true;
+
+        // 보스 체력 UI 숨김
+        if (playerUIManager != null)
+        {
+            playerUIManager.UpdateBossHealth(0);
+            playerUIManager.HideBossHealthUI(); // 보스 체력 UI 패널 비활성화
+        }
 
         // 추가적으로 필요한 사망 처리 로직이 있다면 여기에 추가합니다.
+        Destroy(gameObject); // 예시로 보스 오브젝트를 삭제합니다.
     }
 
     /// <summary>
@@ -131,7 +204,7 @@ public class LustBoss : Monster
         }
     }
 
-    // 1번 패턴: 원형 탄환 패턴
+    // 1번 패턴: 원형 탄환 패턴 수정
     private IEnumerator CircleBulletPattern()
     {
         Debug.Log("원형 탄환 패턴 시작");
@@ -142,27 +215,29 @@ public class LustBoss : Monster
         {
             foreach (Transform spawnPoint in circleBulletSpawnPoints)
             {
+                // 탄환 소환
                 SpawnCircleBullets(spawnPoint);
+
+                // 0.5초 대기
+                yield return new WaitForSeconds(0.1f);
+
+                // 탄환 발사
+                ActivateCircleBullets();
             }
-
-            yield return new WaitForSeconds(1f); // 모든 탄환이 소환된 후 대기 시간
-
-            ActivateCircleBullets();
-
-            yield return new WaitForSeconds(0.5f); // 다음 반복 전 대기 시간
         }
     }
-
-    private List<GameObject> spawnedCircleBullets = new List<GameObject>();
 
     private void SpawnCircleBullets(Transform spawnPoint)
     {
         int bulletCount = lustPatternData.circleBulletCount;
+        float angleStep = 360f / bulletCount;
 
         for (int i = 0; i < bulletCount; i++)
         {
-            GameObject bullet = Instantiate(lustPatternData.circleBulletPrefab, spawnPoint.position, Quaternion.identity, patternParent);
-            bullet.SetActive(false); // 일단 비활성화하여 정지 상태로 둡니다.
+            float angle = i * angleStep;
+            Quaternion rotation = Quaternion.Euler(0, 0, angle);
+
+            GameObject bullet = Instantiate(lustPatternData.circleBulletPrefab, spawnPoint.position, rotation, patternParent);
 
             spawnedCircleBullets.Add(bullet);
         }
@@ -170,6 +245,8 @@ public class LustBoss : Monster
 
     private void ActivateCircleBullets()
     {
+        Vector3 playerPosition = GetPlayerPosition();
+
         foreach (GameObject bullet in spawnedCircleBullets)
         {
             if (bullet != null)
@@ -178,8 +255,8 @@ public class LustBoss : Monster
                 Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
                 if (bulletRb != null)
                 {
-                    // 탄환이 원래 위치에서 방사형으로 발사되도록 속도를 설정합니다.
-                    Vector2 direction = (bullet.transform.position - transform.position).normalized;
+                    // 탄환이 플레이어를 향해 날아가도록 방향 설정
+                    Vector2 direction = (playerPosition - bullet.transform.position).normalized;
                     bulletRb.velocity = direction * lustPatternData.circleBulletSpeed;
                 }
                 else
@@ -202,7 +279,10 @@ public class LustBoss : Monster
 
         for (int i = 0; i < repeatCount; i++)
         {
-            foreach (Transform spawnPoint in heartBulletSpawnPoints)
+            // 하트 탄환 패턴의 발사 지점 중 4개를 랜덤하게 선택
+            List<Transform> randomSpawnPoints = heartBulletSpawnPoints.OrderBy(x => Random.value).Take(4).ToList();
+
+            foreach (Transform spawnPoint in randomSpawnPoints)
             {
                 SpawnHeartBullets(spawnPoint);
             }

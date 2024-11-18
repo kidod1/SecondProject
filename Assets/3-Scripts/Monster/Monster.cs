@@ -91,7 +91,7 @@ public abstract class Monster : MonoBehaviour
     [SerializeField]
     [Tooltip("데미지 간격을 설정합니다.")]
     private float damageInterval = 1f;
-
+    protected bool isPlayerDead = false;
     private bool isStunned = false;
     public bool IsStunned => isStunned;
     private float stunEndTime;
@@ -167,6 +167,7 @@ public abstract class Monster : MonoBehaviour
                 Debug.LogWarning("damageArea가 설정되지 않았습니다. 장판 데미지 시스템을 비활성화합니다.");
             }
         }
+        player.OnPlayerDeath.AddListener(OnPlayerDeathHandler);
     }
 
     /// <summary>
@@ -182,10 +183,17 @@ public abstract class Monster : MonoBehaviour
                 InitializeStates();
             }
         }
-
-        if (isStunned) return;
+        if (isStunned || isPlayerDead) return;
         currentState?.UpdateState();
     }
+    private void OnDestroy()
+    {
+        if (player != null)
+        {
+            player.OnPlayerDeath.RemoveListener(OnPlayerDeathHandler);
+        }
+    }
+
 
     /// <summary>
     /// 몬스터의 상태를 초기화합니다. 서브클래스에서 구현해야 합니다.
@@ -533,6 +541,22 @@ public abstract class Monster : MonoBehaviour
         DropExperienceItem();
 
         Destroy(gameObject);
+    }
+
+    private void OnPlayerDeathHandler()
+    {
+        isPlayerDead = true;
+
+        // 필요한 경우 몬스터의 움직임을 멈추거나 애니메이션을 변경합니다.
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
+        if (skeletonAnimations != null)
+        {
+            skeletonAnimations.timeScale = 0f; // 애니메이션 정지
+        }
     }
 
     /// <summary>

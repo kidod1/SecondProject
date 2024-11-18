@@ -17,6 +17,9 @@ public class PlayerAbilityManager : MonoBehaviour
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     public Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
+    // 추가된 부분: 시너지 획득 여부를 추적하는 변수
+    private bool hasAcquiredSynergy = false;
+
     // UI 관련 변수들
     private Coroutine selectionAnimationCoroutine;
     public event Action OnAbilitiesChanged;
@@ -327,6 +330,9 @@ public class PlayerAbilityManager : MonoBehaviour
 
         ResetResultImages();
 
+        // 추가된 부분: 시너지 획득 여부를 초기화
+        hasAcquiredSynergy = false;
+
         OnAbilitiesChanged?.Invoke();
     }
 
@@ -464,6 +470,12 @@ public class PlayerAbilityManager : MonoBehaviour
 
     public void CheckForSynergy(string category)
     {
+        // 추가된 부분: 이미 시너지를 획득한 경우 메서드 종료
+        if (hasAcquiredSynergy)
+        {
+            return;
+        }
+
         if (string.IsNullOrEmpty(category))
         {
             Debug.LogError("CheckForSynergy에서 category가 null이거나 빈 문자열입니다.");
@@ -512,6 +524,9 @@ public class PlayerAbilityManager : MonoBehaviour
         if (synergyAbility != null)
         {
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
+
+            // 추가된 부분: 시너지 획득 여부를 true로 설정
+            hasAcquiredSynergy = true;
 
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)

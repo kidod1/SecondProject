@@ -303,6 +303,6 @@ public class PlayerDataManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         Debug.Log("게임이 종료됩니다. 데이터를 저장합니다.");
-        SavePlayerData();
+        ResetPlayerData();
     }
 }

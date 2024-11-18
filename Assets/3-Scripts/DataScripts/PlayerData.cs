@@ -85,6 +85,7 @@ public class PlayerData : ScriptableObject
     /// </summary>
     public void InitializeStats()
     {
+        // 기본 스탯 설정
         defaultPlayerDamage = DataPlayerDamage;
         defaultAttackSpeed = DataPlayerAttackSpeed;
         defaultDefense = DataPlayerDefense;
@@ -98,11 +99,8 @@ public class PlayerData : ScriptableObject
         currentDefense = defaultDefense;
         currentMaxHP = defaultMaxHP;
         currentHP = currentMaxHP;
-        currentExperience = 0;
-        currentLevel = 1;
         currentCurrency = 0;
         currentShield = defaultShield;
-
         currentAttackSpeed = defaultAttackSpeed;
 
         // 버프 딕셔너리 초기화
@@ -112,6 +110,7 @@ public class PlayerData : ScriptableObject
 
         OnStatsChanged?.Invoke();
     }
+
 
     // 현재 스탯 프로퍼티들
     public float currentPlayerSpeed

@@ -27,44 +27,93 @@ public class SettingsManager : MonoBehaviour
         InitializeGraphicsSettings();
 
         // 오디오 설정 초기화
-        masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
-        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
-        sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+        if (masterVolumeSlider != null)
+        {
+            masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+            masterVolumeSlider.value = 1.0f;
+        }
+        else
+        {
+            Debug.LogWarning("MasterVolumeSlider가 할당되지 않았습니다.");
+        }
 
-        // 초기 볼륨 값 설정 (필요에 따라 조정)
-        masterVolumeSlider.value = 1.0f;
-        musicVolumeSlider.value = 1.0f;
-        sfxVolumeSlider.value = 1.0f;
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+            musicVolumeSlider.value = 1.0f;
+        }
+        else
+        {
+            Debug.LogWarning("MusicVolumeSlider가 할당되지 않았습니다.");
+        }
+
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+            sfxVolumeSlider.value = 1.0f;
+        }
+        else
+        {
+            Debug.LogWarning("SFXVolumeSlider가 할당되지 않았습니다.");
+        }
     }
 
     // 그래픽 설정 초기화
     void InitializeGraphicsSettings()
     {
         // 해상도 설정 초기화
-        resolutionDropdown.ClearOptions();
-        List<string> options = new List<string>();
-        foreach (Resolution res in Screen.resolutions)
+        if (resolutionDropdown != null)
         {
-            options.Add(res.width + "x" + res.height);
+            resolutionDropdown.ClearOptions();
+            List<string> options = new List<string>();
+            foreach (Resolution res in Screen.resolutions)
+            {
+                options.Add(res.width + "x" + res.height);
+            }
+            resolutionDropdown.AddOptions(options);
+            resolutionDropdown.onValueChanged.AddListener(SetResolution);
         }
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.onValueChanged.AddListener(SetResolution);
+        else
+        {
+            Debug.LogWarning("ResolutionDropdown이 할당되지 않았습니다.");
+        }
 
         // 품질 설정 초기화
-        qualityDropdown.ClearOptions();
-        qualityDropdown.AddOptions(new List<string> { "Low", "Medium", "High" });
-        qualityDropdown.onValueChanged.AddListener(SetQuality);
+        if (qualityDropdown != null)
+        {
+            qualityDropdown.ClearOptions();
+            qualityDropdown.AddOptions(new List<string> { "Low", "Medium", "High" });
+            qualityDropdown.onValueChanged.AddListener(SetQuality);
+        }
+        else
+        {
+            Debug.LogWarning("QualityDropdown이 할당되지 않았습니다.");
+        }
 
         // 전체 화면 설정 초기화
-        fullscreenToggle.isOn = Screen.fullScreen;
-        fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
+        if (fullscreenToggle != null)
+        {
+            fullscreenToggle.isOn = Screen.fullScreen;
+            fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
+        }
+        else
+        {
+            Debug.LogWarning("FullscreenToggle이 할당되지 않았습니다.");
+        }
     }
 
     // 해상도 변경
     public void SetResolution(int index)
     {
-        Resolution res = Screen.resolutions[index];
-        Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+        if (Screen.resolutions.Length > index)
+        {
+            Resolution res = Screen.resolutions[index];
+            Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+        }
+        else
+        {
+            Debug.LogWarning("해상도 인덱스가 유효하지 않습니다.");
+        }
     }
 
     // 품질 변경

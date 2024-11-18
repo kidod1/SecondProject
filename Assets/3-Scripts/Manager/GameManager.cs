@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     public AbilityManager abilityUIManager;
     public SceneChangeSkeleton chanageSkeleton;
 
+    // 추가된 부분
+    public GameObject pauseCanvas;
+    private bool isPausedByEscape = false; // ESC 키로 인한 일시정지 여부
+
     // 게임 스탯 변수들
     [Header("Game Stats")]
     public float playTime;
@@ -97,6 +101,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("GameResultPanel이 할당되지 않았습니다.");
         }
+
+        // 일시정지 캔버스 비활성화
+        if (pauseCanvas != null)
+        {
+            pauseCanvas.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("PauseCanvas가 할당되지 않았습니다.");
+        }
     }
 
     private void Update()
@@ -113,33 +127,52 @@ public class GameManager : MonoBehaviour
                 RestartScene();
             }
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            TogglePause();
-        }
         else if (Input.GetKeyUp(KeyCode.R))
         {
             restartTimer = 0f;
             isRestarting = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TogglePause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGameByEscape();
+        }
+        else if (Input.GetKeyDown(KeyCode.T))
         {
             abilityUIManager.ShowAbilitySelection(); // T 키를 누르면 능력 선택 창을 띄운다
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            // 테스트용으로 L키를 누르면 점수 패널을 활성화 (게임 오버 로직 호출하지 않음)
-            ShowGameResultPanelTest();
-        }
-        if (Time.timeScale == 0)
+        // Time.timeScale에 따른 pauseRTPC 설정 (ESC로 인한 일시정지가 아닐 때만)
+        if (Time.timeScale == 0 && !isPausedByEscape)
         {
             pauseRTPC.SetGlobalValue(1);
         }
         else if (Time.timeScale == 1)
         {
             pauseRTPC.SetGlobalValue(2);
+        }
+    }
+
+    private void PauseGameByEscape()
+    {
+        if (!isPausedByEscape)
+        {
+            isPausedByEscape = true;
+            pauseCanvas.SetActive(true);
+            Time.timeScale = 0f;
+            PauseAnimations();
+        }
+        else
+        {
+            isPausedByEscape = false;
+            pauseCanvas.SetActive(false);
+            Time.timeScale = 1f;
+            ResumeAnimations();
         }
     }
 
@@ -201,6 +234,11 @@ public class GameManager : MonoBehaviour
         {
             gameResultPanel.SetActive(true);
         }
+    }
+
+    public void SetGame()
+    {
+        Time.timeScale = 1;
     }
 
     private void CalculateTotalScore()

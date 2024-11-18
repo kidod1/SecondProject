@@ -35,16 +35,6 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject); // 중복된 인스턴스는 삭제
         }
     }
-
-    private void Update()
-    {
-        // Esc 키가 눌렸을 때 게임 종료
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            QuitGame();
-        }
-    }
-
     /// <summary>
     /// 즉시 씬을 변경하는 메서드
     /// </summary>

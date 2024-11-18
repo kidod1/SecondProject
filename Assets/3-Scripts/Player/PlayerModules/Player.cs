@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
 
     [Tooltip("방어막 능력")]
     public Barrier barrierAbility;
+    private PlayerUIManager uiManager;
 
     private List<UIShaker> healthBarShakers = new List<UIShaker>();
 
@@ -221,9 +222,19 @@ public class Player : MonoBehaviour
     private void Start()
     {
         healthBarShakers.AddRange(FindObjectsOfType<UIShaker>());
-        InitializePlayer();
-        UpdateUI();
         PlayRandomGameStartAnimation();
+
+        uiManager = FindObjectOfType<PlayerUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.Initialize(this);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
+        }
+        UpdateUI();
+        InitializePlayer();
     }
 
     /// <summary>
@@ -843,9 +854,9 @@ public class Player : MonoBehaviour
     private void Die()
     {
         PlayManager.I.StopAllSounds();
+        PlayerDataManager.Instance.ResetPlayerData();
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
-        PlayerDataManager.Instance.ResetPlayerData();
         StartCoroutine(InvokeDeathCompleteEventAfterDelay(1.5f));
     }
 
@@ -919,11 +930,9 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateUI()
     {
-        PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
         if (uiManager != null)
         {
             uiManager.UpdateExperienceUI();
-            uiManager.Initialize(this);
             uiManager.UpdateHealthUI();
             uiManager.UpdateCurrencyUI(stat.currentCurrency);
         }
@@ -934,6 +943,7 @@ public class Player : MonoBehaviour
 
         OnUIUpdated.Invoke(); // UI 업데이트 이벤트 호출
     }
+
 
     /// <summary>
     /// 플레이어의 스탯을 초기화합니다.
