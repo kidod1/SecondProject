@@ -159,7 +159,7 @@ Transform:
   m_GameObject: {fileID: 535158539676577787}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.64, y: -3.52, z: 0}
+  m_LocalPosition: {x: 3.33, y: 4.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -570,7 +570,7 @@ Transform:
   m_GameObject: {fileID: 2421850868732794111}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.59, y: -3.92, z: 0}
+  m_LocalPosition: {x: -4.33, y: -1.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -601,7 +601,7 @@ Transform:
   m_GameObject: {fileID: 2564461244247828436}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.82, y: -2.84, z: 0}
+  m_LocalPosition: {x: 9.45, y: 3.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -632,7 +632,7 @@ Transform:
   m_GameObject: {fileID: 2627022933945296680}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.95, y: -4.8, z: 0}
+  m_LocalPosition: {x: -1.63, y: 2.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -725,7 +725,7 @@ Transform:
   m_GameObject: {fileID: 3001471852261171801}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.68, y: -1.72, z: 0}
+  m_LocalPosition: {x: -5.92, y: -2.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1010,7 +1010,7 @@ Transform:
   m_GameObject: {fileID: 3769257088783979747}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.95, y: -4.05, z: 0}
+  m_LocalPosition: {x: 5.39, y: -4.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1218,7 +1218,7 @@ MonoBehaviour:
   waves:
   - spawnInfos:
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 30
+      count: 15
       spawnInterval: 0.5
       customSpawnPoints:
       - {fileID: 6778611483384224163}
@@ -1228,17 +1228,10 @@ MonoBehaviour:
       - {fileID: 4707590977929753090}
       - {fileID: 8812675864049452401}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 30
+      count: 10
       spawnInterval: 0.3
       customSpawnPoints:
       - {fileID: 8781965307698241644}
-      - {fileID: 4495814558345034533}
-      - {fileID: 3389908002039988169}
-      - {fileID: 7463457448707758733}
-      - {fileID: 3789910872644566967}
-      - {fileID: 3539085878785079624}
-      - {fileID: 2917381808704727659}
-      - {fileID: 6012197283796074215}
     - monsterPrefab: {fileID: 5951554319984575952, guid: 9c39b8f392c18014aa5ab5091c9b20f6, type: 3}
       count: 1
       spawnInterval: 0.1
@@ -1270,18 +1263,18 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 50830953070697336}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 20
+      count: 15
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 4495814558345034533}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 20
+      count: 15
       spawnInterval: 0.1
       customSpawnPoints:
-      - {fileID: 7463457448707758733}
+      - {fileID: 3389908002039988169}
   - spawnInfos:
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 15
+      count: 25
       spawnInterval: 0.2
       customSpawnPoints:
       - {fileID: 3751144339783150742}
@@ -1291,7 +1284,7 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 3751144339783150742}
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 15
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 671635444064834631}
@@ -1301,7 +1294,7 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 3751144339783150742}
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 15
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 5826103000884786815}
@@ -1311,7 +1304,7 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 3751144339783150742}
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 15
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 575030556898825584}
@@ -1321,7 +1314,7 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 3751144339783150742}
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 35
+      count: 50
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 246027458518875939}
@@ -1329,7 +1322,7 @@ MonoBehaviour:
       - {fileID: 2276287753411275490}
   - spawnInfos:
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 15
+      count: 20
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 2644639966618969485}
@@ -1339,7 +1332,7 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 7473728514320246037}
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 15
+      count: 20
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 3771195336477664}
@@ -1349,7 +1342,7 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 7886462461370400137}
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 15
+      count: 20
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 1362473326237156403}
@@ -1359,13 +1352,13 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 5908697096496567351}
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 15
+      count: 20
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 2909750397146101170}
   - spawnInfos:
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 30
+      count: 70
       spawnInterval: 0.2
       customSpawnPoints:
       - {fileID: 4406984902686005533}
@@ -1388,7 +1381,7 @@ MonoBehaviour:
       - {fileID: 5590964702911557523}
   - spawnInfos:
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
-      count: 30
+      count: 70
       spawnInterval: 0.2
       customSpawnPoints:
       - {fileID: 8422284511179033431}
@@ -1411,52 +1404,37 @@ MonoBehaviour:
       - {fileID: 6582420354670751207}
   - spawnInfos:
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 10
+      count: 20
       spawnInterval: 0.2
       customSpawnPoints:
       - {fileID: 7634517454383349066}
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 10
+      count: 20
       spawnInterval: 0.2
       customSpawnPoints:
       - {fileID: 871273145021971754}
-    - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 10
-      spawnInterval: 0.2
-      customSpawnPoints:
-      - {fileID: 9089351652406397352}
-    - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 10
-      spawnInterval: 0.2
-      customSpawnPoints:
-      - {fileID: 5055644427953313526}
-    - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
-      count: 10
-      spawnInterval: 0.2
-      customSpawnPoints:
-      - {fileID: 1600680540658206446}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
       count: 1
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 1598644484621922576}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 10
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 5763490469351911061}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 10
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 1962974793816593304}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 10
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 5114473573749866186}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
-      count: 10
+      count: 25
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 6627847706956705796}
@@ -1482,12 +1460,27 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 7579732416025245211}
       - {fileID: 8184335025020795664}
+    - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
+      count: 20
+      spawnInterval: 0.2
+      customSpawnPoints:
+      - {fileID: 9089351652406397352}
+    - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
+      count: 20
+      spawnInterval: 0.2
+      customSpawnPoints:
+      - {fileID: 5055644427953313526}
+    - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
+      count: 20
+      spawnInterval: 0.2
+      customSpawnPoints:
+      - {fileID: 1600680540658206446}
   spawnPoints: []
-  isSlothArea: 0
+  isSlothArea: 1
   spawnEffectPrefab: {fileID: 711045845941302898, guid: 9a79cd9b9ce165c428ac544cab3f2f29, type: 3}
   waveNumberText: {fileID: 0}
   waveNumberAnimator: {fileID: 0}
-  midBossPrefab: {fileID: 0}
+  bossPrefab: {fileID: 0}
   experienceItemsParent: {fileID: 0}
 --- !u!1 &4509859211657182001
 GameObject:
@@ -1703,7 +1696,7 @@ Transform:
   m_GameObject: {fileID: 4877476140871175004}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.72, y: -5.99, z: 0}
+  m_LocalPosition: {x: -6.05, y: 1.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1827,7 +1820,7 @@ Transform:
   m_GameObject: {fileID: 5430484198438525542}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.06, y: 3.77, z: 0}
+  m_LocalPosition: {x: 9.45, y: -3.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1889,7 +1882,7 @@ Transform:
   m_GameObject: {fileID: 5715867853680945822}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.93, y: -2.56, z: 0}
+  m_LocalPosition: {x: -4.37, y: -4.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2013,7 +2006,7 @@ Transform:
   m_GameObject: {fileID: 5877390788116086493}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.15, y: -4.16, z: 0}
+  m_LocalPosition: {x: 11.21, y: -1.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2109,7 +2102,7 @@ Transform:
   m_GameObject: {fileID: 6801279540440587186}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0.46, z: 0}
+  m_LocalPosition: {x: 2.83, y: -3.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2202,7 +2195,7 @@ Transform:
   m_GameObject: {fileID: 6993939565237181100}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.15, y: -5.46, z: 0}
+  m_LocalPosition: {x: 3.28, y: 0.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2233,7 +2226,7 @@ Transform:
   m_GameObject: {fileID: 7182897397293931180}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.27, y: 3.73, z: 0}
+  m_LocalPosition: {x: 6.23, y: -3.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2397,7 +2390,7 @@ Transform:
   m_GameObject: {fileID: 7578094594267051439}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.86, y: -1.94, z: 0}
+  m_LocalPosition: {x: 5.96, y: -2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2743,7 +2736,7 @@ Transform:
   m_GameObject: {fileID: 8759175578089389777}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.73, y: 0.35, z: 0}
+  m_LocalPosition: {x: 10.41, y: 2.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2774,7 +2767,7 @@ Transform:
   m_GameObject: {fileID: 8802745867306173789}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.89, y: -2.69, z: 0}
+  m_LocalPosition: {x: 5.34, y: -1.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2805,7 +2798,7 @@ Transform:
   m_GameObject: {fileID: 8954500769115902740}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.19, y: 3.93, z: 0}
+  m_LocalPosition: {x: 6.17, y: 3.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
