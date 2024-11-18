@@ -27,6 +27,7 @@ public class SlothMapManager : MonoBehaviour
     public event Action OnDeathAnimationsCompleted;
 
     public GameObject PortalObjectNextScene;
+
     private void Awake()
     {
         if (skeletonAnimation == null)
@@ -34,7 +35,6 @@ public class SlothMapManager : MonoBehaviour
             skeletonAnimation = GetComponent<SkeletonAnimation>();
             if (skeletonAnimation == null)
             {
-                Debug.LogError("SkeletonAnimation component is not assigned or found on " + gameObject.name);
                 return;
             }
         }
@@ -43,7 +43,6 @@ public class SlothMapManager : MonoBehaviour
 
         if (spineAnimationState == null)
         {
-            Debug.LogError("AnimationState is null in SkeletonAnimation.");
             return;
         }
 
@@ -63,28 +62,24 @@ public class SlothMapManager : MonoBehaviour
     {
         if (standardAnimationAsset == null || standardAnimationAsset.Animation == null)
         {
-            Debug.LogError("StandardAnimationAsset이 할당되지 않았거나 Animation이 없습니다.");
             return;
         }
         spineAnimationState.SetAnimation(0, standardAnimationAsset.Animation.Name, true).MixDuration = 0.2f;
-        Debug.Log($"Standard 애니메이션 설정: {standardAnimationAsset.Animation.Name}");
     }
+
     private void SetEndAnimation()
     {
         if (shokingAnimation == null || shokingAnimation.Animation == null)
         {
-            Debug.LogError("shoking AnmationAsset이 할당되지 않았거나 Animation이 없습니다.");
             return;
         }
         spineAnimationState.SetAnimation(0, shokingAnimation.Animation.Name, true).MixDuration = 0.2f;
-        Debug.Log($"shoking 애니메이션 설정: {shokingAnimation.Animation.Name}");
     }
 
     public void PlayDeathAnimations()
     {
         if (skeletonAnimation == null || spineAnimationState == null)
         {
-            Debug.LogError("SkeletonAnimation 또는 AnimationState가 할당되지 않았습니다.");
             return;
         }
 
@@ -95,20 +90,17 @@ public class SlothMapManager : MonoBehaviour
     {
         if (firstDeathAnimationAsset == null || firstDeathAnimationAsset.Animation == null)
         {
-            Debug.LogError("FirstDeathAnimationAsset이 할당되지 않았습니다.");
             return;
         }
 
         int deathTrack = 1;
         spineAnimationState.SetAnimation(deathTrack, firstDeathAnimationAsset.Animation.Name, false).MixDuration = 0.2f;
-        Debug.Log($"첫 번째 애니메이션 설정: {firstDeathAnimationAsset.Animation.Name}");
     }
 
     private void PlaySecondDeathAnimation()
     {
         if (secondDeathAnimationAsset == null || secondDeathAnimationAsset.Animation == null)
         {
-            Debug.LogError("SecondDeathAnimationAsset이 할당되지 않았습니다.");
             return;
         }
 
@@ -127,7 +119,6 @@ public class SlothMapManager : MonoBehaviour
             }
             else if (trackEntry.Animation.Name == secondDeathAnimationAsset.Animation.Name)
             {
-
                 // Standard 애니메이션 루프 시작
                 SetEndAnimation();
                 OnDeathAnimationsCompleted?.Invoke();

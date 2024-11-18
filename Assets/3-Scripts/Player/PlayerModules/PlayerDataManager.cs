@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 [System.Serializable]
 public class AbilityData
@@ -16,38 +18,6 @@ public class SynergyAbilityData
     public string abilityName;
     public int currentLevel;
     public string category;
-}
-
-[System.Serializable]
-public class PlayerDataToJson
-{
-    // PlayerData 스탯
-    public float currentPlayerSpeed;
-    public int currentPlayerDamage;
-    public float currentProjectileSpeed;
-    public float currentProjectileRange;
-    public int currentProjectileType;
-    public int currentMaxHP;
-    public int currentHP;
-    public int currentShield;
-    public float currentAttackSpeed;
-    public int currentDefense;
-    public int currentExperience;
-    public int currentCurrency;
-    public int currentLevel;
-    public float experienceMultiplier;
-
-    public int defaultPlayerDamage;
-    public float defaultPlayerSpeed;
-    public float defaultAttackSpeed;
-    public int defaultMaxHP;
-    public float defaultProjectileSpeed;
-    public float defaultProjectileRange;
-
-    // 능력 데이터
-    public List<AbilityData> abilitiesData;
-    public SynergyAbilityData synergyAbilityData;
-    public Dictionary<string, int> synergyLevels;
 }
 
 public class PlayerDataManager : MonoBehaviour
@@ -79,8 +49,8 @@ public class PlayerDataManager : MonoBehaviour
         // 씬 전환 시 파괴되지 않도록 설정
         DontDestroyOnLoad(gameObject);
 
-        saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
-        Debug.Log(Application.persistentDataPath);
+        saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.dat");
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start()
@@ -105,142 +75,60 @@ public class PlayerDataManager : MonoBehaviour
         {
             playerAbilityManager.OnAbilitiesChanged -= UpdateAbilitiesData;
         }
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    /// <summary>
-    /// 플레이어 데이터를 저장합니다.
-    /// </summary>
-    public void SavePlayerData()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // PlayerData의 현재 스탯 저장
-        PlayerDataToJson data = new PlayerDataToJson
+        // 전투 씬의 이름을 실제 이름으로 변경하세요
+        if (scene.name == "11_LustMap")
         {
-            currentPlayerSpeed = playerData.currentPlayerSpeed,
-            currentPlayerDamage = playerData.currentPlayerDamage,
-            currentProjectileSpeed = playerData.currentProjectileSpeed,
-            currentProjectileRange = playerData.currentProjectileRange,
-            currentProjectileType = playerData.currentProjectileType,
-            currentMaxHP = playerData.currentMaxHP,
-            currentHP = playerData.currentHP,
-            currentShield = playerData.currentShield,
-            currentAttackSpeed = playerData.currentAttackSpeed,
-            currentDefense = playerData.currentDefense,
-            currentExperience = playerData.currentExperience,
-            currentCurrency = playerData.currentCurrency,
-            currentLevel = playerData.currentLevel,
-            experienceMultiplier = playerData.experienceMultiplier,
-            defaultPlayerDamage = playerData.defaultPlayerDamage,
-            defaultPlayerSpeed = playerData.defaultPlayerSpeed,
-            defaultAttackSpeed = playerData.defaultAttackSpeed,
-            defaultMaxHP = playerData.defaultMaxHP,
-            defaultProjectileSpeed = playerData.defaultProjectileSpeed,
-            defaultProjectileRange = playerData.defaultProjectileRange,
-
-            // 능력 데이터 저장
-            abilitiesData = abilitiesData,
-            synergyAbilityData = synergyAbilityData,
-            synergyLevels = synergyLevels
-        };
-
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(saveFilePath, json);
-
-        Debug.Log("플레이어 데이터가 저장되었습니다.");
-    }
-
-    /// <summary>
-    /// 플레이어 데이터를 로드합니다.
-    /// </summary>
-    public void LoadPlayerData()
-    {
-        if (File.Exists(saveFilePath))
-        {
-            string json = File.ReadAllText(saveFilePath);
-            PlayerDataToJson data = JsonUtility.FromJson<PlayerDataToJson>(json);
-
-            // PlayerData의 현재 스탯 로드
-            playerData.currentPlayerSpeed = data.currentPlayerSpeed;
-            playerData.currentPlayerDamage = data.currentPlayerDamage;
-            playerData.currentProjectileSpeed = data.currentProjectileSpeed;
-            playerData.currentProjectileRange = data.currentProjectileRange;
-            playerData.currentProjectileType = data.currentProjectileType;
-            playerData.currentMaxHP = data.currentMaxHP;
-            playerData.currentHP = data.currentHP;
-            playerData.currentShield = data.currentShield;
-            playerData.currentAttackSpeed = data.currentAttackSpeed;
-            playerData.currentDefense = data.currentDefense;
-            playerData.currentExperience = data.currentExperience;
-            playerData.currentCurrency = data.currentCurrency;
-            playerData.currentLevel = data.currentLevel;
-            playerData.experienceMultiplier = data.experienceMultiplier;
-            playerData.defaultPlayerDamage = data.defaultPlayerDamage;
-            playerData.defaultPlayerSpeed = data.defaultPlayerSpeed;
-            playerData.defaultAttackSpeed = data.defaultAttackSpeed;
-            playerData.defaultMaxHP = data.defaultMaxHP;
-            playerData.defaultProjectileSpeed = data.defaultProjectileSpeed;
-            playerData.defaultProjectileRange = data.defaultProjectileRange;
-
-            // 능력 데이터 로드
-            abilitiesData = data.abilitiesData;
-            synergyAbilityData = data.synergyAbilityData;
-            synergyLevels = data.synergyLevels;
-
-            // **로드된 abilitiesData를 PlayerAbilityManager에 적용**
-            ApplyLoadedAbilities();
-
-            Debug.Log("플레이어 데이터가 로드되었습니다.");
-        }
-        else
-        {
-            Debug.LogWarning("저장된 플레이어 데이터가 없습니다.");
+            LoadPlayerData();
+            StartCoroutine(ApplyDataWithDelay());
         }
     }
 
-    /// <summary>
-    /// 플레이어의 능력 데이터를 업데이트하고 저장합니다.
-    /// </summary>
-    private void UpdateAbilitiesData()
+    private IEnumerator ApplyDataWithDelay()
     {
+        yield return null; // 한 프레임 대기
+
+        ApplyLoadedDataToPlayer();
+    }
+
+    private void ApplyLoadedDataToPlayer()
+    {
+        // 씬에서 Player 객체를 찾습니다.
+        Player player = FindObjectOfType<Player>();
+        if (player == null)
+        {
+            Debug.LogError("PlayerDataManager: Player 객체를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 플레이어의 스탯을 기본값으로 초기화
+        player.stat.InitializeStats();
+
+        // 플레이어의 능력 적용
+        playerAbilityManager = player.GetComponent<PlayerAbilityManager>();
         if (playerAbilityManager != null)
         {
-            abilitiesData = playerAbilityManager.GetAbilitiesData();
-        }
-
-        // 필요 시 데이터 저장
-        SavePlayerData();
-    }
-
-    /// <summary>
-    /// 로드된 abilitiesData를 PlayerAbilityManager의 abilities 리스트에 적용
-    /// </summary>
-    private void ApplyLoadedAbilities()
-    {
-        playerAbilityManager = FindObjectOfType<PlayerAbilityManager>();
-        if (playerAbilityManager != null)
-        {
-            // 능력 변경 이벤트 구독
-            playerAbilityManager.OnAbilitiesChanged += UpdateAbilitiesData;
-        }
-
-        if (playerAbilityManager != null)
-        {
-            // 모든 능력을 초기화
+            // 능력 데이터 초기화
             playerAbilityManager.ResetAllAbilities();
 
             // 저장된 abilitiesData를 적용
-            playerAbilityManager.ApplySavedAbilities(abilitiesData);
+            if (abilitiesData != null && abilitiesData.Count > 0)
+            {
+                playerAbilityManager.ApplySavedAbilities(abilitiesData);
+            }
 
-            // 시너지 능력 적용 (필요하다면)
+            // 시너지 능력 적용
             if (synergyAbilityData != null && !string.IsNullOrEmpty(synergyAbilityData.abilityName))
             {
                 // 시너지 능력을 로드하고 적용
-                Ability synergyAbilityTemplate = Resources.Load<Ability>($"Abilities/{synergyAbilityData.abilityName}");
+                SynergyAbility synergyAbilityTemplate = Resources.Load<SynergyAbility>($"SynergyAbilities/{synergyAbilityData.abilityName}");
                 if (synergyAbilityTemplate != null)
                 {
-                    PlayerAbility synergyPlayerAbility = new PlayerAbility(synergyAbilityTemplate, synergyAbilityData.currentLevel);
-                    playerAbilityManager.abilities.Add(synergyPlayerAbility);
-
-                    synergyPlayerAbility.Apply(FindObjectOfType<Player>());
+                    playerAbilityManager.ApplySynergyAbility(synergyAbilityTemplate);
                 }
                 else
                 {
@@ -253,50 +141,168 @@ public class PlayerDataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("PlayerAbilityManager가 존재하지 않습니다. 능력을 로드할 수 없습니다.");
+            Debug.LogError("PlayerAbilityManager를 찾을 수 없습니다.");
+        }
+
+        // 플레이어의 진행 상황 적용
+        player.stat.currentExperience = playerData.currentExperience;
+        player.stat.currentCurrency = playerData.currentCurrency;
+        player.stat.currentLevel = playerData.currentLevel;
+        player.stat.currentHP = playerData.currentHP;
+        player.stat.currentMaxHP = playerData.currentMaxHP;
+        player.stat.currentShield = playerData.currentShield;
+
+        // 플레이어의 UI 업데이트
+        player.UpdateUI();
+    }
+
+    public void SavePlayerData()
+    {
+        // 이진 파일로 저장
+        using (FileStream fs = new FileStream(saveFilePath, FileMode.Create))
+        {
+            using (BinaryWriter writer = new BinaryWriter(fs))
+            {
+                // 플레이어 진행 상황 저장
+                writer.Write(playerData.currentExperience);
+                writer.Write(playerData.currentCurrency);
+                writer.Write(playerData.currentLevel);
+                writer.Write(playerData.currentHP);
+                writer.Write(playerData.currentMaxHP);
+                writer.Write(playerData.currentShield);
+
+                // abilitiesData 저장
+                writer.Write(abilitiesData.Count);
+                foreach (var ability in abilitiesData)
+                {
+                    writer.Write(ability.abilityName);
+                    writer.Write(ability.currentLevel);
+                    writer.Write(ability.category);
+                }
+
+                // synergyAbilityData 저장
+                bool hasSynergyAbility = synergyAbilityData != null && !string.IsNullOrEmpty(synergyAbilityData.abilityName);
+                writer.Write(hasSynergyAbility);
+                if (hasSynergyAbility)
+                {
+                    writer.Write(synergyAbilityData.abilityName);
+                    writer.Write(synergyAbilityData.currentLevel);
+                    writer.Write(synergyAbilityData.category);
+                }
+
+                // synergyLevels 저장
+                writer.Write(synergyLevels.Count);
+                foreach (var kvp in synergyLevels)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        }
+
+        Debug.Log("플레이어 데이터가 저장되었습니다.");
+    }
+
+    public void LoadPlayerData()
+    {
+        if (File.Exists(saveFilePath))
+        {
+            using (FileStream fs = new FileStream(saveFilePath, FileMode.Open))
+            {
+                using (BinaryReader reader = new BinaryReader(fs))
+                {
+                    // 플레이어 진행 상황 로드
+                    playerData.currentExperience = reader.ReadInt32();
+                    playerData.currentCurrency = reader.ReadInt32();
+                    playerData.currentLevel = reader.ReadInt32();
+                    playerData.currentHP = reader.ReadInt32();
+                    playerData.currentMaxHP = reader.ReadInt32();
+                    playerData.currentShield = reader.ReadInt32();
+
+                    // abilitiesData 로드
+                    int abilitiesCount = reader.ReadInt32();
+                    abilitiesData = new List<AbilityData>();
+                    for (int i = 0; i < abilitiesCount; i++)
+                    {
+                        AbilityData ability = new AbilityData();
+                        ability.abilityName = reader.ReadString();
+                        ability.currentLevel = reader.ReadInt32();
+                        ability.category = reader.ReadString();
+                        abilitiesData.Add(ability);
+                    }
+
+                    // synergyAbilityData 로드
+                    bool hasSynergyAbility = reader.ReadBoolean();
+                    if (hasSynergyAbility)
+                    {
+                        synergyAbilityData = new SynergyAbilityData();
+                        synergyAbilityData.abilityName = reader.ReadString();
+                        synergyAbilityData.currentLevel = reader.ReadInt32();
+                        synergyAbilityData.category = reader.ReadString();
+                    }
+                    else
+                    {
+                        synergyAbilityData = null;
+                    }
+
+                    // synergyLevels 로드
+                    int synergyLevelsCount = reader.ReadInt32();
+                    synergyLevels = new Dictionary<string, int>();
+                    for (int i = 0; i < synergyLevelsCount; i++)
+                    {
+                        string key = reader.ReadString();
+                        int value = reader.ReadInt32();
+                        synergyLevels.Add(key, value);
+                    }
+                }
+            }
+
+            Debug.Log("플레이어 데이터가 로드되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("저장된 플레이어 데이터가 없습니다.");
         }
     }
 
-    /// <summary>
-    /// 플레이어의 능력 데이터 리스트를 반환합니다.
-    /// </summary>
+    private void UpdateAbilitiesData()
+    {
+        if (playerAbilityManager != null)
+        {
+            abilitiesData = playerAbilityManager.GetAbilitiesData();
+            synergyLevels = playerAbilityManager.synergyLevels;
+        }
+    }
+
     public List<AbilityData> GetAbilitiesData()
     {
         return abilitiesData;
     }
 
-    /// <summary>
-    /// 플레이어 데이터와 모든 관련 데이터를 초기화하는 메서드
-    /// </summary>
     public void ResetPlayerData()
     {
-        // 1. 플레이어 스탯 초기화
-        playerData.currentPlayerSpeed = playerData.defaultPlayerSpeed;
-        playerData.currentPlayerDamage = playerData.DataPlayerDamage;
-        playerData.currentAttackSpeed = playerData.DataPlayerAttackSpeed;
-        playerData.currentProjectileSpeed = playerData.defaultProjectileSpeed;
-        playerData.currentProjectileRange = playerData.defaultProjectileRange;
-        playerData.currentProjectileType = 0; // 기본 타입으로 설정 (필요 시 수정)
-        playerData.currentMaxHP = playerData.defaultMaxHP;
-        playerData.currentHP = playerData.currentMaxHP; // 최대 HP로 설정
-        playerData.currentShield = 0; // 기본값으로 설정 (필요 시 수정)
-        playerData.currentDefense = 0; // 기본값으로 설정 (필요 시 수정)
+        // 플레이어 진행 상황 초기화
         playerData.currentExperience = 0;
         playerData.currentCurrency = 0;
-        playerData.currentLevel = 1; // 시작 레벨로 설정
-        playerData.experienceMultiplier = 1f; // 기본 배율로 설정
+        playerData.currentLevel = 1;
+        playerData.currentHP = playerData.defaultMaxHP;
+        playerData.currentMaxHP = playerData.defaultMaxHP;
+        playerData.currentShield = 0;
 
-        // 2. 능력 데이터 초기화
+        // 능력 데이터 초기화
         abilitiesData.Clear();
         synergyAbilityData = new SynergyAbilityData();
         synergyLevels.Clear();
 
-        // 3. PlayerAbilityManager에 초기화된 데이터 적용
-        ApplyLoadedAbilities();
-
-        // 4. 데이터 저장
+        // 데이터 저장
         SavePlayerData();
 
         Debug.Log("플레이어 데이터가 초기화되었습니다.");
+    }
+
+    private void OnApplicationQuit()
+    {
+        Debug.Log("게임이 종료됩니다. 데이터를 저장합니다.");
+        SavePlayerData();
     }
 }

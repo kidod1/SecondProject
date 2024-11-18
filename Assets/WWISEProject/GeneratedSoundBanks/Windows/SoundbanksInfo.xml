@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="393239870" Type="User" Language="SFX" Hash="{D9B825B7-40DB-263D-CD1F-0A2428818843}">
+		<SoundBank Id="393239870" Type="User" Language="SFX" Hash="{0BC9FB15-095F-F548-0C25-2316065F0D20}">
 			<ShortName>SFX</ShortName>
 			<Path>SFX.bnk</Path>
 			<Media>
@@ -778,6 +778,7 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="187427145" Name="Hyper"/>
 				<GameParameter Id="509499584" Name="AMB_Volume"/>
 				<GameParameter Id="527216696" Name="LVUP"/>
 				<GameParameter Id="1564184899" Name="SFX_Volume"/>
@@ -793,7 +794,7 @@
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>
-		<SoundBank Id="737535402" Type="User" Language="SFX" Hash="{5554EB86-6E2E-8D05-1484-50A13D08BBFB}">
+		<SoundBank Id="737535402" Type="User" Language="SFX" Hash="{5E41DF52-4A56-72AD-0B4B-1D01772209D8}">
 			<ShortName>BGM_Title</ShortName>
 			<Path>BGM_Title.bnk</Path>
 			<Media>
@@ -812,14 +813,14 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="187427145" Name="Hyper"/>
 				<GameParameter Id="527216696" Name="LVUP"/>
-				<GameParameter Id="558917848" Name="Hyper_NotUsed"/>
 				<GameParameter Id="1006694123" Name="Music_Volume"/>
 				<GameParameter Id="3092587493" Name="pause"/>
 				<GameParameter Id="4179668880" Name="Master_Volume"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{802ACDA3-8086-CB07-FDB6-8590E84E2B11}">
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{6CAA9888-C877-B497-2BA2-2FAC4748B8B1}">
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 			<Plugins>
@@ -837,10 +838,9 @@
 			</Busses>
 			<GameParameters>
 				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="187427145" Name="Hyper"/>
 				<GameParameter Id="509499584" Name="AMB_Volume"/>
 				<GameParameter Id="527216696" Name="LVUP"/>
-				<GameParameter Id="558917848" Name="Hyper_NotUsed"/>
-				<GameParameter Id="608722465" Name="BossEncounter"/>
 				<GameParameter Id="822163944" Name="SS_Air_RPM"/>
 				<GameParameter Id="1006694123" Name="Music_Volume"/>
 				<GameParameter Id="1029930033" Name="SS_Air_Fury"/>
@@ -852,6 +852,7 @@
 				<GameParameter Id="3074696722" Name="SS_Air_Size"/>
 				<GameParameter Id="3092587493" Name="pause"/>
 				<GameParameter Id="3203397129" Name="SS_Air_TimeOfDay"/>
+				<GameParameter Id="3476964000" Name="BossEncounter_NotUsed"/>
 				<GameParameter Id="3715662592" Name="SS_Air_Storm"/>
 				<GameParameter Id="3847924954" Name="SS_Air_Presence"/>
 				<GameParameter Id="4160247818" Name="SS_Air_Turbulence"/>
@@ -993,7 +994,7 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="2074096896" Type="User" Language="SFX" Hash="{CC692220-02B1-8328-2550-C434FAA8BDAF}">
+		<SoundBank Id="2074096896" Type="User" Language="SFX" Hash="{A43554DE-E398-EFB2-7F2D-E51BC2CC4BDA}">
 			<ShortName>BGM_Luxuria</ShortName>
 			<Path>BGM_Luxuria.bnk</Path>
 			<Media>
@@ -1030,8 +1031,8 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="187427145" Name="Hyper"/>
 				<GameParameter Id="527216696" Name="LVUP"/>
-				<GameParameter Id="558917848" Name="Hyper_NotUsed"/>
 				<GameParameter Id="1006694123" Name="Music_Volume"/>
 				<GameParameter Id="3092587493" Name="pause"/>
 				<GameParameter Id="4179668880" Name="Master_Volume"/>
@@ -1041,7 +1042,7 @@
 			<ShortName>Main</ShortName>
 			<Path>Main.bnk</Path>
 		</SoundBank>
-		<SoundBank Id="3382924279" Type="User" Language="SFX" Hash="{CFFAD9E5-F95D-05F2-D170-D8CB8654F132}">
+		<SoundBank Id="3382924279" Type="User" Language="SFX" Hash="{CE3B2AB9-AE75-37B0-15AC-FB291A6D3B2A}">
 			<ShortName>BGM_Default</ShortName>
 			<Path>BGM_Default.bnk</Path>
 			<Media>
@@ -1078,14 +1079,14 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="187427145" Name="Hyper"/>
 				<GameParameter Id="527216696" Name="LVUP"/>
-				<GameParameter Id="558917848" Name="Hyper_NotUsed"/>
 				<GameParameter Id="1006694123" Name="Music_Volume"/>
 				<GameParameter Id="3092587493" Name="pause"/>
 				<GameParameter Id="4179668880" Name="Master_Volume"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="3929694284" Type="User" Language="SFX" Hash="{EEE514FA-5CF5-D511-8040-2846D23AA859}">
+		<SoundBank Id="3929694284" Type="User" Language="SFX" Hash="{3A70D5E7-DE6C-03ED-6AFC-45AEE3EFCB0A}">
 			<ShortName>BGM_Sloth</ShortName>
 			<Path>BGM_Sloth.bnk</Path>
 			<Media>
@@ -1122,14 +1123,13 @@
 			</Events>
 			<GameParameters>
 				<GameParameter Id="151362964" Name="PlayerHealth"/>
+				<GameParameter Id="187427145" Name="Hyper"/>
 				<GameParameter Id="527216696" Name="LVUP"/>
-				<GameParameter Id="558917848" Name="Hyper_NotUsed"/>
-				<GameParameter Id="608722465" Name="BossEncounter"/>
 				<GameParameter Id="1006694123" Name="Music_Volume"/>
 				<GameParameter Id="3092587493" Name="pause"/>
 				<GameParameter Id="4179668880" Name="Master_Volume"/>
 			</GameParameters>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{AC7718AF-C537-039D-AF77-681D0BB7A346}</FileHash>
+	<FileHash>{E88E0A04-4535-07DF-7818-D60F6B686BAA}</FileHash>
 </SoundBanksInfo>

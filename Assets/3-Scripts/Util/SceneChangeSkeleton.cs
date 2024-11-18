@@ -117,7 +117,6 @@ public class SceneChangeSkeleton : MonoBehaviour
         skeletonGraphic.AnimationState.SetAnimation(0, closeAnimationName, false);
         // Close 애니메이션 완료 후 이벤트 호출
         OnCloseAnimationComplete?.Invoke();
-        Debug.Log($"Close 애니메이션 '{closeAnimationName}' 재생 시작.");
     }
 
     /// <summary>
@@ -149,7 +148,6 @@ public class SceneChangeSkeleton : MonoBehaviour
         skeletonGraphic.AnimationState.SetAnimation(0, openAnimationName, false);
         // Open 애니메이션 완료 후 이벤트 호출
         OnOpenAnimationComplete?.Invoke();
-        Debug.Log($"Open 애니메이션 '{openAnimationName}' 재생 시작.");
     }
 
     /// <summary>
@@ -162,13 +160,11 @@ public class SceneChangeSkeleton : MonoBehaviour
         {
             // Open 애니메이션 완료 시
             StartCoroutine(HandleOpenAnimationComplete());
-            Debug.Log("Open 애니메이션 완료. 씬 전환 준비.");
         }
         else
         {
             // Close 애니메이션 완료 시
             StartCoroutine(HandleCloseAnimationComplete());
-            Debug.Log("Close 애니메이션 완료. Open 애니메이션 재생을 시작합니다.");
         }
     }
 
@@ -180,7 +176,6 @@ public class SceneChangeSkeleton : MonoBehaviour
     {
         // 2초 딜레이
         yield return new WaitForSeconds(delayAfterClose);
-        Debug.Log($"2초 딜레이 후 Open 애니메이션 재생 시작.");
 
         // isAnimating을 false로 설정하여 PlayOpenAnimation이 실행될 수 있도록 함
         isAnimating = false;
@@ -197,7 +192,6 @@ public class SceneChangeSkeleton : MonoBehaviour
     {
         // 씬 전환 딜레이
         yield return new WaitForSeconds(sceneChangeDelay);
-        Debug.Log($"씬 전환 딜레이 후 씬 '{targetSceneName}' 로드 시작.");
 
         // 씬 전환
         SceneManager.LoadScene(targetSceneName);
@@ -213,7 +207,6 @@ public class SceneChangeSkeleton : MonoBehaviour
         // 현재 애니메이션이 재생 중이 아니고 Open 애니메이션 이름이 설정되어 있을 때만 실행
         if (!isAnimating && !string.IsNullOrEmpty(openAnimationName))
         {
-            Debug.Log($"씬 '{scene.name}' 로드 완료. Open 애니메이션 재생.");
             PlayOpenAnimation();
         }
     }
