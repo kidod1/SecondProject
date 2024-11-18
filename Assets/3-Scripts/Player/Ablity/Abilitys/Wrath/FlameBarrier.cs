@@ -80,8 +80,6 @@ public class FlameBarrier : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         if (activeFlameBarrier != null)
         {
             UnityEngine.Object.Destroy(activeFlameBarrier);

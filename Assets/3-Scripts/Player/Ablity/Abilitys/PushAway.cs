@@ -71,8 +71,6 @@ public class PushAway : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         if (shockwaveInstance != null)
         {
             Destroy(shockwaveInstance.gameObject);

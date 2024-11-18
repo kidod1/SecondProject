@@ -95,7 +95,6 @@ public class JokerDraw : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         playerInstance = null;
     }
 

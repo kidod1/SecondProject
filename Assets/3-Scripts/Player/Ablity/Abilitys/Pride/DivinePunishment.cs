@@ -88,8 +88,6 @@ public class DivinePunishment : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         if (abilityCoroutine != null)
         {
             playerInstance.StopCoroutine(abilityCoroutine);

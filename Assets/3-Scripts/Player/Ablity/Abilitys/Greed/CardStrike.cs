@@ -231,7 +231,6 @@ public class CardStrike : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
         hitCount = 0;
         currentLevel = 0;
 

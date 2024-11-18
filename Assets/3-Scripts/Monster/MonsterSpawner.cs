@@ -31,11 +31,11 @@ public class MonsterSpawner : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI waveNumberText; // 웨이브 클리어 및 시작 UI 텍스트
     public Animator waveNumberAnimator; // 웨이브 텍스트의 Animator 컴포넌트
-    public GameObject midBossPrefab; // 씬에 미리 배치된 중간 보스 오브젝트 참조
+    public GameObject bossPrefab; // 씬에 미리 배치된 보스 오브젝트 참조
 
     private List<GameObject> spawnedMonsters = new List<GameObject>(); // 현재 활성화된 몬스터 리스트
     private int currentWaveIndex = 0; // 현재 웨이브 인덱스
-    private MidBoss midBossInstance; // 중간 보스 인스턴스 참조
+    private MonoBehaviour bossInstance; // 보스 인스턴스 참조 (MidBoss 또는 LustBoss)
 
     [Header("Experience Items")]
     public Transform experienceItemsParent; // 경험치 아이템의 공통 부모
@@ -54,21 +54,26 @@ public class MonsterSpawner : MonoBehaviour
         // 경험치 아이템 부모 오브젝트 초기화
         InitializeExperienceItemsParent();
 
-        // 씬에 배치된 중간 보스 오브젝트가 할당되어 있는지 확인하고, 초기에는 비활성화 상태로 설정
-        if (midBossPrefab != null)
+        // 씬에 배치된 보스 오브젝트가 할당되어 있는지 확인하고, 초기에는 비활성화 상태로 설정
+        if (bossPrefab != null)
         {
-            midBossPrefab.SetActive(false); // 보스 초기 비활성화
+            bossPrefab.SetActive(false); // 보스 초기 비활성화
 
-            // midBossPrefab이 이미 씬에 배치된 오브젝트라면 Instantiate 대신 참조를 가져옵니다.
-            midBossInstance = midBossPrefab.GetComponent<MidBoss>();
-            if (midBossInstance == null)
+            // MidBoss 컴포넌트 확인
+            bossInstance = bossPrefab.GetComponent<MidBoss>();
+            if (bossInstance == null)
             {
-                Debug.LogError("midBossPrefab 오브젝트에 MidBoss 컴포넌트가 없습니다.");
+                // LustBoss 컴포넌트 확인
+                bossInstance = bossPrefab.GetComponent<LustBoss>();
+                if (bossInstance == null)
+                {
+                    Debug.LogError("bossPrefab 오브젝트에 MidBoss 또는 LustBoss 컴포넌트가 없습니다.");
+                }
             }
         }
         else
         {
-            Debug.LogWarning("MonsterSpawner: midBossPrefab 오브젝트가 설정되지 않았습니다.");
+            Debug.LogWarning("MonsterSpawner: bossPrefab 오브젝트가 설정되지 않았습니다.");
         }
 
         // Animator 참조 확인
@@ -155,28 +160,35 @@ public class MonsterSpawner : MonoBehaviour
             currentWaveIndex++;
         }
 
-        // 모든 웨이브가 완료된 후 중간 보스 활성화
+        // 모든 웨이브가 완료된 후 보스 활성화
         SpawnMidBoss();
 
-        if (isSlothArea && midBossInstance != null)
+        if (isSlothArea && bossInstance != null)
         {
-            midBossInstance.SetAttackable(true); // 슬로스 지역일 경우 보스 공격 가능 상태로 설정
+            if (bossInstance is MidBoss midBoss)
+            {
+                midBoss.SetAttackable(true); // 슬로스 지역일 경우 MidBoss 공격 가능 상태로 설정
+            }
+            else if (bossInstance is LustBoss lustBoss)
+            {
+                lustBoss.SetAttackable(true); // 슬로스 지역일 경우 LustBoss 공격 가능 상태로 설정
+            }
         }
     }
 
     /// <summary>
-    /// 씬에 미리 배치된 중간 보스 오브젝트를 활성화합니다.
+    /// 씬에 미리 배치된 보스 오브젝트를 활성화합니다.
     /// </summary>
     private void SpawnMidBoss()
     {
-        if (midBossPrefab != null)
+        if (bossPrefab != null)
         {
-            midBossPrefab.SetActive(true); // 보스 활성화
-            Debug.Log("MonsterSpawner: 중간 보스가 활성화되었습니다.");
+            bossPrefab.SetActive(true); // 보스 활성화
+            Debug.Log("MonsterSpawner: 보스가 활성화되었습니다.");
         }
         else
         {
-            Debug.LogWarning("MonsterSpawner: midBossPrefab 오브젝트가 설정되지 않았습니다.");
+            Debug.LogWarning("MonsterSpawner: bossPrefab 오브젝트가 설정되지 않았습니다.");
         }
     }
 
@@ -260,6 +272,11 @@ public class MonsterSpawner : MonoBehaviour
     /// <returns></returns>
     private IEnumerator FadeOutWaveNumber(float duration)
     {
+        if (waveNumberText == null)
+        {
+            yield break;
+        }
+
         float elapsedTime = 0f;
         Color originalColor = waveNumberText.color;
 

@@ -60,7 +60,6 @@ public class SynergyAbility : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         lastUsedTime = 0;
     }
 }

@@ -240,8 +240,6 @@ public class Breath : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         // 브레스 코루틴 중지 및 변수 초기화
         if (breathCoroutine != null && playerInstance != null)
         {

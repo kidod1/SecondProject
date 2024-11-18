@@ -223,7 +223,6 @@ public class Player : MonoBehaviour
         healthBarShakers.AddRange(FindObjectsOfType<UIShaker>());
         InitializePlayer();
         UpdateUI();
-
         PlayRandomGameStartAnimation();
     }
 
@@ -245,6 +244,7 @@ public class Player : MonoBehaviour
         spineAnimationState.SetAnimation(trackIndex, selectedAnimation, false);
 
         Spine.TrackEntry trackEntry = spineAnimationState.GetCurrent(trackIndex);
+
         if (trackEntry != null)
         {
             trackEntry.Complete += OnGameStartAnimationComplete;

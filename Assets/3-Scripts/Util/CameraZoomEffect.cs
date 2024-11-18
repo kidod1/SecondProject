@@ -15,6 +15,10 @@ public class CameraZoomEffect : MonoBehaviour
     private void Start()
     {
         originalOrthoSize = cinemachineCamera.m_Lens.OrthographicSize;
+
+        // 코루틴 시작 전에 플레이어 데이터 로드
+        LoadPlayerData();
+
         StartCoroutine(ZoomEffect());
     }
 
@@ -46,5 +50,19 @@ public class CameraZoomEffect : MonoBehaviour
 
         cinemachineCamera.m_Lens.OrthographicSize = originalOrthoSize;
         isZooming = false;
+    }
+
+    private void LoadPlayerData()
+    {
+        PlayerDataManager dataManager = PlayerDataManager.Instance;
+        if (dataManager != null)
+        {
+            dataManager.LoadPlayerData();
+            Debug.Log("플레이어 데이터가 성공적으로 로드되었습니다.");
+        }
+        else
+        {
+            Debug.LogError("PlayerDataManager 인스턴스가 존재하지 않습니다. 플레이어 데이터를 로드할 수 없습니다.");
+        }
     }
 }

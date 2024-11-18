@@ -99,7 +99,6 @@ public class StunAbility : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
         currentLevel = 0;
     }
 

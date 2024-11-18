@@ -80,7 +80,6 @@ public class SummonClone : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         if (cloneInstance != null)
         {
             Destroy(cloneInstance);

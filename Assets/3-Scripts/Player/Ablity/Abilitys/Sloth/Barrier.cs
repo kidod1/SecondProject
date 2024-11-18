@@ -102,8 +102,6 @@ public class Barrier : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         if (activeBarrierInstance != null)
         {
             // Barrier 비활성화

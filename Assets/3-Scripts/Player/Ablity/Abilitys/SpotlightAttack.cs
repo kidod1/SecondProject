@@ -58,7 +58,6 @@ public class SpotlightAttack : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         if (spotlightInstance != null)
         {
             Destroy(spotlightInstance.gameObject);

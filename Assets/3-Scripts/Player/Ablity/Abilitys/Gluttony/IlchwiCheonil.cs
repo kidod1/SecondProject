@@ -87,8 +87,6 @@ public class IlchwiCheonil : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         if (playerInstance != null)
         {
             if (poisonCloudCoroutine != null)

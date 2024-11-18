@@ -59,8 +59,6 @@ public class HomingAttack : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
-
         // 이벤트 리스너 제거
         if (playerInstance != null)
         {

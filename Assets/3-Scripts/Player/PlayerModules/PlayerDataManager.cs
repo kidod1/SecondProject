@@ -80,6 +80,7 @@ public class PlayerDataManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.json");
+        Debug.Log(Application.persistentDataPath);
     }
 
     private void Start()
@@ -214,6 +215,13 @@ public class PlayerDataManager : MonoBehaviour
     /// </summary>
     private void ApplyLoadedAbilities()
     {
+        playerAbilityManager = FindObjectOfType<PlayerAbilityManager>();
+        if (playerAbilityManager != null)
+        {
+            // 능력 변경 이벤트 구독
+            playerAbilityManager.OnAbilitiesChanged += UpdateAbilitiesData;
+        }
+
         if (playerAbilityManager != null)
         {
             // 모든 능력을 초기화

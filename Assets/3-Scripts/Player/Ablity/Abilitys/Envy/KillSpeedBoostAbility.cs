@@ -36,7 +36,6 @@ public class KillSpeedBoostAbility : Ability
     /// </summary>
     public override void ResetLevel()
     {
-        base.ResetLevel();
         playerInstance = null;
         killCount = 0;
         isBoostActive = false;

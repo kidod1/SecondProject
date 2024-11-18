@@ -65,6 +65,6 @@ public class IncreaseExperience : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
+        currentLevel = 0;
     }
 }

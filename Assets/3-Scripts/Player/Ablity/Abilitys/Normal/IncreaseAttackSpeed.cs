@@ -71,4 +71,9 @@ public class IncreaseAttackSpeed : Ability
         Debug.LogWarning($"IncreaseAttackSpeed: currentLevel ({currentLevel})이 attackSpeedIncrements 배열의 범위를 벗어났습니다. 기본값 0을 반환합니다.");
         return 0;
     }
+
+    public override void ResetLevel()
+    {
+        currentLevel = 0;
+    }
 }

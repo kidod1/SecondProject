@@ -464,9 +464,15 @@ public class PlayerAbilityManager : MonoBehaviour
 
     public void CheckForSynergy(string category)
     {
+        if (string.IsNullOrEmpty(category))
+        {
+            Debug.LogError("CheckForSynergy에서 category가 null이거나 빈 문자열입니다.");
+            return;
+        }
+
         if (!synergyAbilityAcquired.ContainsKey(category) || !synergyLevels.ContainsKey(category))
         {
-            Debug.LogError($"Category '{category}' not found in synergyAbilityAcquired or synergyLevels dictionary");
+            Debug.LogError($"카테고리 '{category}'가 synergyAbilityAcquired 또는 synergyLevels 딕셔너리에 존재하지 않습니다.");
             return;
         }
 
@@ -479,7 +485,7 @@ public class PlayerAbilityManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"Category: {category}, Total Level: {totalLevel}");
+        Debug.Log($"카테고리: {category}, 총 레벨: {totalLevel}");
 
         if (totalLevel >= 15 && synergyLevels[category] < 15)
         {
@@ -497,6 +503,7 @@ public class PlayerAbilityManager : MonoBehaviour
             synergyLevels[category] = 5;
         }
     }
+
 
     private void AssignSynergyAbility(string category, int level)
     {

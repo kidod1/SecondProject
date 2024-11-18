@@ -97,7 +97,6 @@ public class SharkStrike : Ability
 
     public override void ResetLevel()
     {
-        base.ResetLevel();
         hitCount = 0;
         currentLevel = 0;
     }
