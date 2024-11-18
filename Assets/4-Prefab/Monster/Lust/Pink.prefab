@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: 606636f7807dd18448076f10ac2a60d7, type: 2}
   minKnockbackForce: 1
-  maxKnockbackForce: 2
+  maxKnockbackForce: 1
   blinkInterval: 0.1
   blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 2554013357090995075, guid: ebc5b85bc266c1c4787716e6fa7537d4, type: 3}
@@ -172,8 +172,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 13
-  m_LinearDrag: 10
+  m_Mass: 30
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -186,7 +186,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &6710173728812217016
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
