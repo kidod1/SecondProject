@@ -483,11 +483,11 @@ PrefabInstance:
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 944326445}
+      objectReference: {fileID: 0}
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 944326444}
+      objectReference: {fileID: 0}
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -1023,11 +1023,11 @@ PrefabInstance:
     - target: {fileID: 7283261625411239914, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: OnCloseAnimationComplete.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 944326445}
+      objectReference: {fileID: 0}
     - target: {fileID: 7283261625411239914, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: OnCloseAnimationComplete.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 944326444}
+      objectReference: {fileID: 0}
     - target: {fileID: 7283261625411239914, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: OnCloseAnimationComplete.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
@@ -3669,11 +3669,11 @@ PrefabInstance:
     - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: OnPlayerDeath.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 944326445}
+      objectReference: {fileID: 0}
     - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: OnPlayerDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 944326444}
+      objectReference: {fileID: 0}
     - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: OnPlayerDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
@@ -4331,6 +4331,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9093004729855188117, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
     - {fileID: 1715094169789739647, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+    - {fileID: 5032873592357059642, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+    - {fileID: 1699618985307465637, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -4436,28 +4438,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ed962b3b0c3321428e384330dcb1dad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &944326444 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1699618985307465637, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-  m_PrefabInstance: {fileID: 944326435}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944326447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b4cf356de0122543b1f0d679a7f60f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &944326445 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5032873592357059642, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-  m_PrefabInstance: {fileID: 944326435}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944326447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b4cf356de0122543b1f0d679a7f60f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &944326446 stripped
@@ -4632,8 +4612,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1934801322940994144, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
+      propertyPath: bossPrefab
+      value: 
+      objectReference: {fileID: 7334856939532335900}
     - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: midBossPrefab
       value: 
@@ -4958,6 +4942,22 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!95 &1129859440 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3002844131367384765, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+  m_PrefabInstance: {fileID: 152472774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1129859441 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2632851158319035852, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+  m_PrefabInstance: {fileID: 152472774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1220701998 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6932425234171922166, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
@@ -6698,14 +6698,18 @@ PrefabInstance:
     - target: {fileID: 531903406392488182, guid: 1e969c23d7a055b49aa9bf50830f1947, type: 3}
       propertyPath: waveNumberText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1129859441}
     - target: {fileID: 531903406392488182, guid: 1e969c23d7a055b49aa9bf50830f1947, type: 3}
       propertyPath: waveNumberAnimator
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1129859440}
     - target: {fileID: 4308307825453309195, guid: 1e969c23d7a055b49aa9bf50830f1947, type: 3}
       propertyPath: m_Name
       value: LustSpawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 4308307825453309195, guid: 1e969c23d7a055b49aa9bf50830f1947, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8453720178494538440, guid: 1e969c23d7a055b49aa9bf50830f1947, type: 3}
       propertyPath: m_LocalPosition.x

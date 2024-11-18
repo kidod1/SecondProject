@@ -102,26 +102,29 @@ public class LustBoss : Monster
                 yield break;
             }
 
-            // 패턴을 랜덤하게 선택합니다. 현재 1~4번 패턴이 구현되어 있음
-            int patternIndex = Random.Range(1, 5); // 1, 2, 3, 4 중 랜덤 선택
+            float randomValue = Random.value; // 0.0부터 1.0 사이의 랜덤 값
+            float cumulativeProbability = 0f;
 
-            switch (patternIndex)
+            // 각 패턴의 확률을 비교하여 패턴을 선택합니다.
+            if (randomValue < (cumulativeProbability += lustPatternData.circlePatternProbability))
             {
-                case 1:
-                    yield return StartCoroutine(CircleBulletPattern());
-                    break;
-                case 2:
-                    yield return StartCoroutine(HeartBulletPattern());
-                    break;
-                case 3:
-                    yield return StartCoroutine(AngleBulletPattern());
-                    break;
-                case 4:
-                    yield return StartCoroutine(SpawnExplosionPattern());
-                    break;
-                default:
-                    Debug.LogWarning("알 수 없는 패턴 인덱스입니다.");
-                    break;
+                yield return StartCoroutine(CircleBulletPattern());
+            }
+            else if (randomValue < (cumulativeProbability += lustPatternData.heartPatternProbability))
+            {
+                yield return StartCoroutine(HeartBulletPattern());
+            }
+            else if (randomValue < (cumulativeProbability += lustPatternData.anglePatternProbability))
+            {
+                yield return StartCoroutine(AngleBulletPattern());
+            }
+            else if (randomValue < (cumulativeProbability += lustPatternData.spawnExplosionPatternProbability))
+            {
+                yield return StartCoroutine(SpawnExplosionPattern());
+            }
+            else
+            {
+                Debug.LogWarning("알 수 없는 패턴 인덱스입니다.");
             }
 
             yield return new WaitForSeconds(1f); // 패턴 간 대기 시간
