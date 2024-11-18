@@ -323,6 +323,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4380470064051323690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1234430254348410561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6064464449216506457}
+  m_Layer: 0
+  m_Name: 5WaveDog (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6064464449216506457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234430254348410561}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.37, y: 1.31, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9014051997024446464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1400164719551566337
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +575,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 751175950215164589}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2293462988958258773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3360280172395507437}
+  m_Layer: 0
+  m_Name: 4WaveDog (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3360280172395507437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2293462988958258773}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.36, y: -7.07, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7160459211882714596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2421850868732794111
 GameObject:
@@ -1268,6 +1330,11 @@ MonoBehaviour:
       customSpawnPoints:
       - {fileID: 4495814558345034533}
     - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
+      count: 3
+      spawnInterval: 1
+      customSpawnPoints:
+      - {fileID: 3389908002039988169}
+    - monsterPrefab: {fileID: 5257169338272492925, guid: d54605ec4d0b007438a308c717d39355, type: 3}
       count: 15
       spawnInterval: 0.1
       customSpawnPoints:
@@ -1379,6 +1446,21 @@ MonoBehaviour:
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 5590964702911557523}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
+      count: 1
+      spawnInterval: 3
+      customSpawnPoints:
+      - {fileID: 4406984902686005533}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
+      count: 30
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 3360280172395507437}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
+      count: 30
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 835950380446509849}
   - spawnInfos:
     - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
       count: 70
@@ -1402,6 +1484,21 @@ MonoBehaviour:
       spawnInterval: 0.1
       customSpawnPoints:
       - {fileID: 6582420354670751207}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
+      count: 1
+      spawnInterval: 3
+      customSpawnPoints:
+      - {fileID: 6582420354670751207}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
+      count: 30
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 6064464449216506457}
+    - monsterPrefab: {fileID: 6073249613970012703, guid: 6b2e72ad82fd9854db15ab114d16240f, type: 3}
+      count: 30
+      spawnInterval: 0.1
+      customSpawnPoints:
+      - {fileID: 9054974122032123187}
   - spawnInfos:
     - monsterPrefab: {fileID: 573475507550338829, guid: 2f23c620bc95c5441be7a9f2a37cd4f9, type: 3}
       count: 20
@@ -1482,6 +1579,37 @@ MonoBehaviour:
   waveNumberAnimator: {fileID: 0}
   bossPrefab: {fileID: 0}
   experienceItemsParent: {fileID: 0}
+--- !u!1 &4407601464238472159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9054974122032123187}
+  m_Layer: 0
+  m_Name: 5WaveDog (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9054974122032123187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4407601464238472159}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.04, y: -6.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9014051997024446464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4509859211657182001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1766,8 @@ Transform:
   - {fileID: 8422284511179033431}
   - {fileID: 7251660966652817290}
   - {fileID: 4466266897880621662}
+  - {fileID: 6064464449216506457}
+  - {fileID: 9054974122032123187}
   m_Father: {fileID: 8453720178494538440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4848788752047172221
@@ -2269,6 +2399,37 @@ Transform:
   - {fileID: 50830953070697336}
   m_Father: {fileID: 8453720178494538440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7276683558697753852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 835950380446509849}
+  m_Layer: 0
+  m_Name: 4WaveDog (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &835950380446509849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7276683558697753852}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.16, y: 1.39, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7160459211882714596}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7326975439906746929
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,6 +2524,8 @@ Transform:
   - {fileID: 4406984902686005533}
   - {fileID: 4905341850642660546}
   - {fileID: 8036500788491078781}
+  - {fileID: 835950380446509849}
+  - {fileID: 3360280172395507437}
   m_Father: {fileID: 8453720178494538440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7578094594267051439
@@ -2736,7 +2899,7 @@ Transform:
   m_GameObject: {fileID: 8759175578089389777}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.41, y: 2.66, z: 0}
+  m_LocalPosition: {x: 9.23, y: 3.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
