@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584699609146271055
+    m_lastTime: -8584696778037020830
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584699609146000616
+    m_lastTime: -8584696778036733116
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584699609270450837
+    m_lastTime: -8584696778022059411
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584696982678659386
+    m_lastTime: -8584696777892183289
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584696982710436413
+    m_lastTime: -8584696767714816538
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -3592,7 +3592,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584696982710426444
+    m_lastTime: -8584696778022991151
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -3608,9 +3608,9 @@ MonoBehaviour:
         ObjectType: 13
         guid: 18ad938ae260b14da0dd3932b6694d9b
       Path: Game Parameters\Default Work Unit\AMB_Volume
-    - name: BossEncounter
+    - name: BossEncounter_NotUsed
       guid: 18985a920031b54c8f9a89e95dae182b
-      id: 608722465
+      id: 3476964000
       PathAndIcons:
       - ElementName: Game Parameters
         ObjectType: 5
@@ -3618,13 +3618,13 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
-      - ElementName: BossEncounter
+      - ElementName: BossEncounter_NotUsed
         ObjectType: 13
         guid: 18985a920031b54c8f9a89e95dae182b
-      Path: Game Parameters\Default Work Unit\BossEncounter
-    - name: Hyper_NotUsed
+      Path: Game Parameters\Default Work Unit\BossEncounter_NotUsed
+    - name: Hyper
       guid: ee1e567918079c46a27126f1d1107d20
-      id: 558917848
+      id: 187427145
       PathAndIcons:
       - ElementName: Game Parameters
         ObjectType: 5
@@ -3632,10 +3632,10 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
-      - ElementName: Hyper_NotUsed
+      - ElementName: Hyper
         ObjectType: 13
         guid: ee1e567918079c46a27126f1d1107d20
-      Path: Game Parameters\Default Work Unit\Hyper_NotUsed
+      Path: Game Parameters\Default Work Unit\Hyper
     - name: LVUP
       guid: 9915111111ba744abe93605096d6ecf9
       id: 527216696
@@ -3745,7 +3745,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584699609271178289
+    m_lastTime: -8584696778022702214
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -3899,7 +3899,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584699609147159470
+    m_lastTime: -8584696778037965105
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -3913,7 +3913,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584699609146852309
+    m_lastTime: -8584696778037649373
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -4012,9 +4012,9 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584699609146573055
+    m_lastTime: -8584696778037329782
     List: []
-  ExpandedFileSystemItemIds: 
+  ExpandedFileSystemItemIds: 0200000003000000080000002d0000006d000000
   ExpandedWaapiItemIds: 
   AutoSyncSelection: 0
   autoPopulateEnabled: 1

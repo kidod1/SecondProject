@@ -48,8 +48,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.6862745, g: 0.96748793, b: 0.99215686, a: 1}
-  m_Intensity: 1.26
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 3.52
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 1d4efc11
@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 4001218635929388884}
   - component: {fileID: 5650008579786270311}
   - component: {fileID: 5071350445137868259}
-  - component: {fileID: -3774386995316860581}
   m_Layer: 12
   m_Name: LustBat
   m_TagString: Monster
@@ -303,28 +302,6 @@ MonoBehaviour:
   stat: {fileID: 11400000, guid: 4f7d7ae15291658498c72fd91aab3738, type: 2}
   dashAnimation: 
   explodeAnimation: 
---- !u!114 &-3774386995316860581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257169338272492925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21c9538588898a45a3da22bf4779ab3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootMotionBoneName: root
-  transformPositionX: 1
-  transformPositionY: 1
-  rootMotionScaleX: 1
-  rootMotionScaleY: 1
-  rootMotionTranslateXPerY: 0
-  rootMotionTranslateYPerX: 0
-  rigidBody2D: {fileID: 4001218635929388884}
-  rigidBody: {fileID: 0}
-  animationTrackFlags: -1
 --- !u!1 &6197392932231383455
 GameObject:
   m_ObjectHideFlags: 0

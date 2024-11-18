@@ -142,15 +142,11 @@ public class TooMuchWork : Ability
 
             playerInstance.stat.currentAttackSpeed = newAttackSpeed;
 
-            Debug.Log($"IncreaseAttackSpeed: Updated attack speed to {newAttackSpeed}");
-
             yield return null;
         }
 
         // 최대 공격 속도 도달
         playerInstance.stat.currentAttackSpeed = targetAttackSpeed;
-        Debug.Log("IncreaseAttackSpeed: Reached max attack speed, triggering overheat.");
-
         // 과열 상태 트리거 및 사운드 재생
         TriggerOverheat();
 

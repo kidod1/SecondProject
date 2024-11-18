@@ -99,7 +99,6 @@ GameObject:
   - component: {fileID: 2336044391891397573}
   - component: {fileID: 3578104529259084725}
   - component: {fileID: 7908845165281568376}
-  - component: {fileID: -5367473846436678839}
   m_Layer: 12
   m_Name: LustDog
   m_TagString: Monster
@@ -305,28 +304,6 @@ MonoBehaviour:
   stat: {fileID: 11400000, guid: e2b18ce647237e9439f67207583f1c26, type: 2}
   idleAnimation: idle_move
   attackAnimation: attack
---- !u!114 &-5367473846436678839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6073249613970012703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21c9538588898a45a3da22bf4779ab3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootMotionBoneName: root
-  transformPositionX: 1
-  transformPositionY: 1
-  rootMotionScaleX: 1
-  rootMotionScaleY: 1
-  rootMotionTranslateXPerY: 0
-  rootMotionTranslateYPerX: 0
-  rigidBody2D: {fileID: 2336044391891397573}
-  rigidBody: {fileID: 0}
-  animationTrackFlags: -1
 --- !u!1 &7699502011843278974
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,8 +352,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.6862745, g: 0.99215686, b: 0.9532559, a: 1}
-  m_Intensity: 1.27
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 3.63
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 1d4efc11

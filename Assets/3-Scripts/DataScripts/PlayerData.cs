@@ -19,7 +19,10 @@ public class PlayerData : ScriptableObject
     // ±‚∫ª Ω∫≈»
     [Header("Default Stats")]
     public int DataPlayerDamage = 10;
-    public float DataPlayerAttackSpeed = 2;
+    public float DataPlayerAttackSpeed = 2f;
+    public float DataPlayerMoveSpeed = 5f;
+    public int DataPlayerDefense = 0;
+
     public float defaultPlayerSpeed = 5f;
     public int defaultPlayerDamage = 10;
     public float defaultProjectileSpeed = 10f;
@@ -27,7 +30,7 @@ public class PlayerData : ScriptableObject
     public int defaultProjectileType = 0;
     public int defaultMaxHP = 100;
     public int defaultShield = 0;
-    public float defaultAttackSpeed = 1.0f;
+    public float defaultAttackSpeed = 2.0f;
     public int defaultDefense = 0;
 
     [SerializeField]
@@ -84,6 +87,8 @@ public class PlayerData : ScriptableObject
     {
         defaultPlayerDamage = DataPlayerDamage;
         defaultAttackSpeed = DataPlayerAttackSpeed;
+        defaultDefense = DataPlayerDefense;
+        defaultPlayerSpeed = DataPlayerMoveSpeed;
 
         currentPlayerSpeed = defaultPlayerSpeed;
         currentPlayerDamage = defaultPlayerDamage;

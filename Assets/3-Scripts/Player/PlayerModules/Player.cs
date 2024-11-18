@@ -842,6 +842,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Die()
     {
+        PlayManager.I.StopAllSounds();
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
         PlayerDataManager.Instance.ResetPlayerData();
@@ -916,7 +917,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 플레이어의 UI를 업데이트합니다.
     /// </summary>
-    private void UpdateUI()
+    public void UpdateUI()
     {
         PlayerUIManager uiManager = FindObjectOfType<PlayerUIManager>();
         if (uiManager != null)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using AK.Wwise; // WWISE 네임스페이스 추가
 
 public class PlayManager : MonoBehaviour
 {
@@ -78,5 +79,15 @@ public class PlayManager : MonoBehaviour
     public void isPlayerDie()
     {
         isPlayerDied = true;
+    }
+
+    /// <summary>
+    /// 모든 WWISE 사운드를 중지합니다.
+    /// </summary>
+    public void StopAllSounds()
+    {
+        // WWISE의 모든 사운드를 중지합니다.
+        AkSoundEngine.StopAll();
+        Debug.Log("모든 WWISE 사운드가 중지되었습니다.");
     }
 }

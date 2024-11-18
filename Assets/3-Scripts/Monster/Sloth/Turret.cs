@@ -138,7 +138,6 @@ public class Turret : Monster
     {
         if (in_type == AkCallbackType.AK_EndOfEvent)
         {
-            Debug.Log("Attack sound has ended.");
             attackSoundPlayingID = 0; // 재생 ID 초기화
             // 추가적인 동작을 원한다면 여기서 수행
         }
