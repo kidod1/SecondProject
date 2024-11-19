@@ -6,15 +6,12 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Spine.Unity; // Spine.Unity 네임스페이스 추가
 
-/// <summary>
-/// 컷신 다이얼로그를 관리하는 매니저 클래스
-/// </summary>
 public class LustCutSceneManager : MonoBehaviour
 {
     [System.Serializable]
     public class AnimationName
     {
-        [Spine.Unity.SpineAnimation]
+        [SpineAnimation]
         public string animationName; // 재생할 애니메이션의 이름
     }
 
@@ -25,7 +22,17 @@ public class LustCutSceneManager : MonoBehaviour
         public string sentence; // 대사
         public string characterName; // 캐릭터 이름
         public GameObject characterImage; // 캐릭터 이미지 오브젝트
-        public List<AnimationName> animationNames; // 순차적으로 재생할 애니메이션 이름 리스트
+        public List<AnimationName> animationNames; // 재생할 애니메이션 이름 리스트
+        public int dialogueBoxIndex; // 사용할 대화창의 인덱스
+    }
+
+    [System.Serializable]
+    public class DialogueBox
+    {
+        public TMP_Text nameText;
+        public TMP_Text dialogueText;
+        public Image speechBubble;
+        public GameObject dialogueBoxObject; // 대화창 전체 오브젝트
     }
 
     [System.Serializable]
@@ -35,13 +42,15 @@ public class LustCutSceneManager : MonoBehaviour
     }
 
     public CutsceneDialogue cutsceneDialogue;
-    public TMP_Text nameText;
-    public TMP_Text dialogueText;
-    public Image animationImage;
+    public DialogueBox[] dialogueBoxes; // 대화창 배열
+
+    public Image animationImage; // animationImage는 개별적으로 관리
+
     public string nextSceneName;
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
     [Header("Cutscene Events")]
+    public UnityEvent OnCutsceneStarted;
     public UnityEvent OnCutsceneEnded; // 컷신이 종료될 때 호출되는 이벤트
 
     [Header("Sound Events")]
@@ -62,8 +71,13 @@ public class LustCutSceneManager : MonoBehaviour
     [SerializeField]
     private bool lastCut = false;
 
-    // 추가된 부분: 타이핑 사운드가 재생 중인지 확인하는 변수
+    private DialogueBox currentDialogueBox;
+
+    // 타이핑 사운드가 재생 중인지 확인하는 변수
     private uint typingSoundPlayingID = 0;
+
+    // 이전 캐릭터 이름 저장용 변수
+    private string previousCharacterName = "";
 
     private void Start()
     {
@@ -78,11 +92,28 @@ public class LustCutSceneManager : MonoBehaviour
             }
         }
 
-        animationImage.gameObject.SetActive(false); // 초기화할 때 애니메이션 이미지를 비활성화
+        // 시작할 때 모든 대화창 비활성화
+        foreach (var dialogueBox in dialogueBoxes)
+        {
+            if (dialogueBox.dialogueBoxObject != null)
+            {
+                dialogueBox.dialogueBoxObject.SetActive(false);
+            }
+        }
+
+        // animationImage의 위치를 변경하지 않고 초기화 (필요에 따라 설정)
+        if (animationImage != null)
+        {
+            animationImage.gameObject.SetActive(false); // 처음에는 비활성화
+        }
 
         StartCutscene();
     }
 
+    private void OnEnable()
+    {
+        OnCutsceneStarted?.Invoke();
+    }
     public bool IsCutsceneEnded()
     {
         return cutsceneEnded;
@@ -100,7 +131,7 @@ public class LustCutSceneManager : MonoBehaviour
         DisplayNextSentence();
     }
 
-    public void DisplayNextSentence()
+    private void DisplayNextSentence()
     {
         if (!canProceed) return;
 
@@ -114,30 +145,79 @@ public class LustCutSceneManager : MonoBehaviour
 
         if (textAnimationCoroutine != null)
         {
-            StopCoroutine(textAnimationCoroutine); // 이전 애니메이션 중지
+            StopCoroutine(textAnimationCoroutine);
         }
 
-        // 새로운 대사가 출력되기 전에 이미지를 비활성화
-        animationImage.gameObject.SetActive(false);
+        // 이전 대화창 비활성화
+        if (currentDialogueBox != null && currentDialogueBox.dialogueBoxObject != null)
+        {
+            currentDialogueBox.dialogueBoxObject.SetActive(false);
+        }
 
         DialogueLine currentLine = dialogueQueue.Dequeue();
         currentSentenceIndex++;
-        currentSentence = currentLine.sentence; // 현재 대사 저장
+        currentSentence = currentLine.sentence;
 
-        ToggleCharacterImagesAndNames(currentLine);
-
-        // Spine 애니메이션 재생은 ActivateSkeletonGraphic에서 처리
-        ActivateSkeletonGraphic(currentLine);
-
-        // 첫 번째 대사에만 딜레이 추가
-        if (currentSentenceIndex == 1)
+        // 대화창 선택
+        if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
         {
-            StartCoroutine(DisplayNameAndSentenceWithDelay(currentLine.sentence, 3.3f)); // 딜레이 추가
+            currentDialogueBox = dialogueBoxes[currentLine.dialogueBoxIndex];
+            currentDialogueBox.dialogueBoxObject.SetActive(true);
         }
         else
         {
-            DisplayNameAndSentence(currentLine.sentence);
+            Debug.LogWarning("유효하지 않은 dialogueBoxIndex입니다.");
+            return;
         }
+
+        // 이름과 대사 설정
+        currentDialogueBox.nameText.text = currentLine.characterName;
+        currentDialogueBox.dialogueText.text = "";
+
+        // 캐릭터 이미지 및 애니메이션 처리
+        ToggleCharacterImagesAndNames(currentLine);
+
+        // animationImage 처리
+        if (animationImage != null)
+        {
+            animationImage.gameObject.SetActive(true);
+        }
+
+        // 텍스트 애니메이션 시작
+        textAnimationCoroutine = StartCoroutine(
+            AnimateText(currentDialogueBox.dialogueText, currentLine.sentence)
+        );
+    }
+
+    private IEnumerator AnimateText(TMP_Text dialogueText, string sentence)
+    {
+        isAnimating = true;
+        dialogueText.text = "";
+
+        // 타이핑 사운드 재생
+        if (typingSoundEvent != null)
+        {
+            typingSoundPlayingID = typingSoundEvent.Post(gameObject);
+        }
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSecondsRealtime(textAnimationSpeed);
+        }
+
+        isAnimating = false;
+
+        // 타이핑 사운드 정지
+        if (typingSoundPlayingID != 0)
+        {
+            AkSoundEngine.StopPlayingID(typingSoundPlayingID);
+            typingSoundPlayingID = 0;
+        }
+
+        OnTextFinished?.Invoke();
+
+        canProceed = true;
     }
 
     private void ActivateSkeletonGraphic(DialogueLine currentLine)
@@ -169,11 +249,8 @@ public class LustCutSceneManager : MonoBehaviour
                     else if (i == 1)
                     {
                         skeletonGraphic.AnimationState.ClearTrack(0);
-                        // 나머지 애니메이션은 AddAnimation으로 큐에 추가 (트랙 0 사용)
+                        // 나머지 애니메이션은 SetAnimation으로 (트랙 0 사용)
                         skeletonGraphic.AnimationState.SetAnimation(0, animName, false);
-
-                        // 현재 트랙 0의 애니메이션 상태 로그 출력
-                        var currentAnim = skeletonGraphic.AnimationState.GetCurrent(0);
                     }
                     else
                     {
@@ -185,68 +262,6 @@ public class LustCutSceneManager : MonoBehaviour
         }
     }
 
-    private void ExecuteFadeTrigger(FadeTrigger trigger)
-    {
-        switch (trigger)
-        {
-            case FadeTrigger.None:
-            default:
-                // 아무 트리거도 실행하지 않음
-                break;
-        }
-    }
-
-    private void DisplayNameAndSentence(string sentence)
-    {
-        if (textAnimationCoroutine != null)
-        {
-            StopCoroutine(textAnimationCoroutine);
-        }
-
-        textAnimationCoroutine = StartCoroutine(AnimateText(sentence));
-    }
-
-    private IEnumerator DisplayNameAndSentenceWithDelay(string sentence, float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-        DisplayNameAndSentence(sentence);
-    }
-
-    private IEnumerator AnimateText(string sentence)
-    {
-        isAnimating = true; // 애니메이션 시작
-        dialogueText.text = "";
-
-        // 타이핑 사운드 재생
-        if (typingSoundEvent != null)
-        {
-            typingSoundPlayingID = typingSoundEvent.Post(gameObject);
-        }
-
-        foreach (char letter in sentence.ToCharArray())
-        {
-            dialogueText.text += letter;
-
-            yield return new WaitForSecondsRealtime(textAnimationSpeed);
-        }
-
-        isAnimating = false; // 애니메이션 종료
-
-        // 타이핑 사운드 정지
-        if (typingSoundPlayingID != 0)
-        {
-            AkSoundEngine.StopPlayingID(typingSoundPlayingID);
-            typingSoundPlayingID = 0;
-        }
-
-        // 텍스트 출력 완료 사운드 이벤트 호출
-        OnTextFinished?.Invoke();
-
-        // 애니메이션이 끝나면 이미지를 활성화하고, 진행 가능하도록 설정
-        animationImage.gameObject.SetActive(true);
-        canProceed = true; // 다음 대사로 넘어갈 수 있도록 설정
-    }
-
     private void ToggleCharacterImagesAndNames(DialogueLine currentLine)
     {
         // 현재 대사에 해당하는 캐릭터 이미지 활성화
@@ -255,15 +270,11 @@ public class LustCutSceneManager : MonoBehaviour
             currentLine.characterImage.SetActive(true);
         }
 
-        // 캐릭터 이름 설정
-        if (!string.IsNullOrEmpty(currentLine.characterName))
+        // 캐릭터 이름이 이전과 다르면 애니메이션 재생
+        if (previousCharacterName != currentLine.characterName)
         {
-            // 이전 캐릭터 이름과 다를 경우에만 애니메이션 재생
-            if (nameText.text != currentLine.characterName)
-            {
-                nameText.text = currentLine.characterName;
-                ActivateSkeletonGraphic(currentLine); // 애니메이션 재생
-            }
+            ActivateSkeletonGraphic(currentLine);
+            previousCharacterName = currentLine.characterName;
         }
     }
 
@@ -281,13 +292,6 @@ public class LustCutSceneManager : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayForEndCutSence(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-        sceneChangeSkeleton.gameObject.SetActive(true);
-        sceneChangeSkeleton.PlayCloseAnimation(nextSceneName);
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -302,10 +306,9 @@ public class LustCutSceneManager : MonoBehaviour
                 {
                     StopCoroutine(textAnimationCoroutine);
                 }
-                dialogueText.text = currentSentence;
+                currentDialogueBox.dialogueText.text = currentSentence;
                 isAnimating = false;
-                animationImage.gameObject.SetActive(true); // 애니메이션 이미지를 활성화
-                canProceed = true; // 다음 대사로 넘어갈 수 있도록 설정
+                canProceed = true;
 
                 // 타이핑 사운드 정지
                 if (typingSoundPlayingID != 0)
