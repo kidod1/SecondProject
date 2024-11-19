@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 [System.Serializable]
 public class AbilityData
@@ -32,8 +31,6 @@ public class PlayerDataManager : MonoBehaviour
     public SynergyAbilityData synergyAbilityData;
     public Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
 
-    private PlayerAbilityManager playerAbilityManager;
-
     private string saveFilePath;
 
     private void Awake()
@@ -50,110 +47,24 @@ public class PlayerDataManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         saveFilePath = Path.Combine(Application.persistentDataPath, "playerData.dat");
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-    private void Start()
-    {
-        // PlayerAbilityManager 찾기
-        playerAbilityManager = FindObjectOfType<PlayerAbilityManager>();
-        if (playerAbilityManager != null)
-        {
-            // 능력 변경 이벤트 구독
-            playerAbilityManager.OnAbilitiesChanged += UpdateAbilitiesData;
-        }
-        else
-        {
-            Debug.LogError("PlayerAbilityManager를 찾을 수 없습니다.");
-        }
+        // 씬 로드 이벤트 구독
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDestroy()
     {
-        // 이벤트 구독 해제
-        if (playerAbilityManager != null)
-        {
-            playerAbilityManager.OnAbilitiesChanged -= UpdateAbilitiesData;
-        }
+        // 씬 로드 이벤트 구독 해제
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 전투 씬의 이름을 실제 이름으로 변경하세요
         if (scene.name == "11_LustMap")
         {
             LoadPlayerData();
-            StartCoroutine(ApplyDataWithDelay());
+            // 필요한 경우 추가적인 초기화 작업 수행
         }
-    }
-
-    private IEnumerator ApplyDataWithDelay()
-    {
-        yield return null; // 한 프레임 대기
-
-        ApplyLoadedDataToPlayer();
-    }
-
-    private void ApplyLoadedDataToPlayer()
-    {
-        // 씬에서 Player 객체를 찾습니다.
-        Player player = FindObjectOfType<Player>();
-        if (player == null)
-        {
-            Debug.LogError("PlayerDataManager: Player 객체를 찾을 수 없습니다.");
-            return;
-        }
-
-        // 플레이어의 스탯을 기본값으로 초기화
-        player.stat.InitializeStats();
-
-        // 플레이어의 능력 적용
-        playerAbilityManager = player.GetComponent<PlayerAbilityManager>();
-        if (playerAbilityManager != null)
-        {
-            // 능력 데이터 초기화
-            playerAbilityManager.ResetAllAbilities();
-
-            // 저장된 abilitiesData를 적용
-            if (abilitiesData != null && abilitiesData.Count > 0)
-            {
-                playerAbilityManager.ApplySavedAbilities(abilitiesData);
-            }
-
-            // 시너지 능력 적용
-            if (synergyAbilityData != null && !string.IsNullOrEmpty(synergyAbilityData.abilityName))
-            {
-                // 시너지 능력을 로드하고 적용
-                SynergyAbility synergyAbilityTemplate = Resources.Load<SynergyAbility>($"SynergyAbilities/{synergyAbilityData.abilityName}");
-                if (synergyAbilityTemplate != null)
-                {
-                    playerAbilityManager.ApplySynergyAbility(synergyAbilityTemplate);
-                }
-                else
-                {
-                    Debug.LogWarning($"Synergy Ability '{synergyAbilityData.abilityName}'을(를) 찾을 수 없습니다.");
-                }
-            }
-
-            // 시너지 레벨 적용
-            playerAbilityManager.synergyLevels = synergyLevels;
-        }
-        else
-        {
-            Debug.LogError("PlayerAbilityManager를 찾을 수 없습니다.");
-        }
-
-        // 플레이어의 진행 상황 적용
-        player.stat.currentExperience = playerData.currentExperience;
-        player.stat.currentCurrency = playerData.currentCurrency;
-        player.stat.currentLevel = playerData.currentLevel;
-        player.stat.currentHP = playerData.currentHP;
-        player.stat.currentMaxHP = playerData.currentMaxHP;
-        player.stat.currentShield = playerData.currentShield;
-
-        // 플레이어의 UI 업데이트
-        player.UpdateUI();
     }
 
     public void SavePlayerData()
@@ -265,18 +176,24 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
-    private void UpdateAbilitiesData()
-    {
-        if (playerAbilityManager != null)
-        {
-            abilitiesData = playerAbilityManager.GetAbilitiesData();
-            synergyLevels = playerAbilityManager.synergyLevels;
-        }
-    }
-
     public List<AbilityData> GetAbilitiesData()
     {
         return abilitiesData;
+    }
+
+    public void SetAbilitiesData(List<AbilityData> data)
+    {
+        abilitiesData = data;
+    }
+
+    public Dictionary<string, int> GetSynergyLevels()
+    {
+        return synergyLevels;
+    }
+
+    public void SetSynergyLevels(Dictionary<string, int> levels)
+    {
+        synergyLevels = levels;
     }
 
     public void ResetPlayerData()
@@ -303,6 +220,6 @@ public class PlayerDataManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         Debug.Log("게임이 종료됩니다. 데이터를 저장합니다.");
-        ResetPlayerData();
+        SavePlayerData();
     }
 }

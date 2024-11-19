@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="393239870" Type="User" Language="SFX" Hash="{0BC9FB15-095F-F548-0C25-2316065F0D20}">
+		<SoundBank Id="393239870" Type="User" Language="SFX" Hash="{54853AA1-9E69-536C-E8B9-50ED024B76DE}">
 			<ShortName>SFX</ShortName>
 			<Path>SFX.bnk</Path>
 			<Media>
@@ -36,6 +36,10 @@
 				<File Id="70255767" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX_General_Object_destroy02.wav</ShortName>
 					<CachePath>SFX/SFX_General_Object_destroy02_818F3B66.wem</CachePath>
+				</File>
+				<File Id="70441014" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>retro_ui_menu_popup_11.wav</ShortName>
+					<CachePath>SFX/retro_ui_menu_popup_11_FBC78EF0.wem</CachePath>
 				</File>
 				<File Id="71992266" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>ui_button_simple_click_07.wav</ShortName>
@@ -96,6 +100,10 @@
 				<File Id="257276880" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>click4.wav</ShortName>
 					<CachePath>SFX/click4_818F3B66.wem</CachePath>
+				</File>
+				<File Id="257332666" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Shot2.wav</ShortName>
+					<CachePath>SFX/Shot2_818F3B66.wem</CachePath>
 				</File>
 				<File Id="263560061" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Punch_Boxing_BodyHit04.wav</ShortName>
@@ -213,6 +221,10 @@
 					<ShortName>SFX_Player_Ablilty_Sloth_L-Bullet_hit (2).wav</ShortName>
 					<CachePath>SFX/SFX_Player_Ablilty_Sloth_L-Bullet_hit (2)_818F3B66.wem</CachePath>
 				</File>
+				<File Id="642733992" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Shot.wav</ShortName>
+					<CachePath>SFX/Shot_818F3B66.wem</CachePath>
+				</File>
 				<File Id="650745981" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Bodyfall_Hollow_Metal1.wav</ShortName>
 					<CachePath>SFX/Bodyfall_Hollow_Metal1_818F3B66.wem</CachePath>
@@ -232,6 +244,10 @@
 				<File Id="672466587" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>cliekekek23.wav</ShortName>
 					<CachePath>SFX/cliekekek23_818F3B66.wem</CachePath>
+				</File>
+				<File Id="688075084" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Click.wav</ShortName>
+					<CachePath>SFX/Click_5E664EA7.wem</CachePath>
 				</File>
 				<File Id="704672617" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX_Player_Ablilty_Sloth_turret.wav</ShortName>
@@ -305,6 +321,10 @@
 					<ShortName>Hockey_Puck_Hit_Pad1.wav</ShortName>
 					<CachePath>SFX/Hockey_Puck_Hit_Pad1_818F3B66.wem</CachePath>
 				</File>
+				<File Id="882030918" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Shot4.wav</ShortName>
+					<CachePath>SFX/Shot4_818F3B66.wem</CachePath>
+				</File>
 				<File Id="891486426" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>meteor 01.wav</ShortName>
 					<CachePath>SFX/meteor 01_B50DCED2.wem</CachePath>
@@ -316,6 +336,10 @@
 				<File Id="896292773" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX_Player_Ablilty_Fury_FireBreath.wav</ShortName>
 					<CachePath>SFX/SFX_Player_Ablilty_Fury_FireBreath_818F3B66.wem</CachePath>
+				</File>
+				<File Id="923484973" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>ui_stamp_01.wav</ShortName>
+					<CachePath>SFX/ui_stamp_01_818F3B66.wem</CachePath>
 				</File>
 				<File Id="936067348" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>gee.wav</ShortName>
@@ -380,150 +404,178 @@
 				</ShareSets>
 			</Plugins>
 			<Events>
-				<Event Id="3159735458" Name="Ability_hover" DurationType="OneShot" DurationMin="0.0771875" DurationMax="0.0771875">
+				<Event Id="3159735458" Name="Ability_hover">
 					<MediaRefs>
 						<MediaRef Id="496274680"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3637490847" Name="Ability_Pick" DurationType="OneShot" DurationMin="2" DurationMax="2">
+				<Event Id="3637490847" Name="Ability_Pick">
 					<MediaRefs>
 						<MediaRef Id="257276880"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1955875006" Name="Ablilty_Fury_FireBreath" DurationType="OneShot" DurationMin="1.137937" DurationMax="1.4337107">
+				<Event Id="1955875006" Name="Ablilty_Fury_FireBreath">
 					<MediaRefs>
 						<MediaRef Id="896292773"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="473077560" Name="Ablilty_Fury_FlameCurtain_start" DurationType="Infinite">
+				<Event Id="473077560" Name="Ablilty_Fury_FlameCurtain_start">
 					<MediaRefs>
 						<MediaRef Id="942949351"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2065816388" Name="Ablilty_Fury_FlameCurtain_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="1047829572" Name="Ablilty_Fury_Meteor" DurationType="OneShot" DurationMin="7.7363176" DurationMax="9.87711">
+				<Event Id="2065816388" Name="Ablilty_Fury_FlameCurtain_stop"/>
+				<Event Id="1047829572" Name="Ablilty_Fury_Meteor">
 					<MediaRefs>
 						<MediaRef Id="741798733"/>
 						<MediaRef Id="798646191"/>
 						<MediaRef Id="891486426"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1545538756" Name="Ablilty_Greed_Joker" DurationType="OneShot" DurationMin="1.4855837" DurationMax="1.8717182">
+				<Event Id="1545538756" Name="Ablilty_Greed_Joker">
 					<MediaRefs>
 						<MediaRef Id="473718757"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1570168993" Name="Ablilty_Greed_shuffle_R" DurationType="OneShot" DurationMin="0.22092801" DurationMax="0.27835187">
+				<Event Id="1570168993" Name="Ablilty_Greed_shuffle_R">
 					<MediaRefs>
 						<MediaRef Id="379294076"/>
 						<MediaRef Id="1033427025"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2915978152" Name="Ablilty_Jealousy_Ouroboros" DurationType="OneShot" DurationMin="0.8880042" DurationMax="1.1188152">
+				<Event Id="2915978152" Name="Ablilty_Jealousy_Ouroboros">
 					<MediaRefs>
 						<MediaRef Id="873602043"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="359925860" Name="Ablilty_Jealousy_SwordDance" DurationType="OneShot" DurationMin="1.7869049" DurationMax="2.2513592">
+				<Event Id="359925860" Name="Ablilty_Jealousy_SwordDance">
 					<MediaRefs>
 						<MediaRef Id="753434404"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="871723078" Name="Ablilty_Luxuria_Doppelganger" DurationType="OneShot" DurationMin="1.2877103" DurationMax="1.6224133">
+				<Event Id="871723078" Name="Ablilty_Luxuria_Doppelganger">
 					<MediaRefs>
 						<MediaRef Id="491235446"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="307190599" Name="Ablilty_Luxuria_FascinatingMelody" DurationType="OneShot" DurationMin="0.5886275" DurationMax="0.7416242">
+				<Event Id="307190599" Name="Ablilty_Luxuria_FascinatingMelody">
 					<MediaRefs>
 						<MediaRef Id="619626"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1813255844" Name="Ablilty_Luxuria_LilithKiss" DurationType="OneShot" DurationMin="0.49928224" DurationMax="0.6290562">
+				<Event Id="1813255844" Name="Ablilty_Luxuria_LilithKiss">
 					<MediaRefs>
 						<MediaRef Id="1054154404"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3838459994" Name="Ablilty_Luxuria_Tingling" DurationType="OneShot" DurationMin="2.154797" DurationMax="2.7148743">
+				<Event Id="3838459994" Name="Ablilty_Luxuria_Tingling">
 					<MediaRefs>
 						<MediaRef Id="224189159"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3253800600" Name="Ablilty_LVUP" DurationType="OneShot" DurationMin="0.7089792" DurationMax="0.7089792">
+				<Event Id="3253800600" Name="Ablilty_LVUP">
 					<MediaRefs>
 						<MediaRef Id="672466587"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2106314190" Name="Ablilty_Pride_DivinePunishment" DurationType="OneShot" DurationMin="0.9815416" DurationMax="1.236665">
+				<Event Id="2106314190" Name="Ablilty_Pride_DivinePunishment">
 					<MediaRefs>
 						<MediaRef Id="10425342"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2850796585" Name="Ablilty_Pride_glare" DurationType="OneShot" DurationMin="0.6101743" DurationMax="0.76877147">
+				<Event Id="2850796585" Name="Ablilty_Pride_glare">
 					<MediaRefs>
 						<MediaRef Id="941935925"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="394947470" Name="Ablilty_Pride_rush" DurationType="OneShot" DurationMin="0.6101743" DurationMax="0.76877147">
+				<Event Id="394947470" Name="Ablilty_Pride_rush">
 					<MediaRefs>
 						<MediaRef Id="941935925"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="772338355" Name="Ablilty_Pride_warrant" DurationType="OneShot" DurationMin="2.102241" DurationMax="2.6486578">
+				<Event Id="772338355" Name="Ablilty_Pride_warrant">
 					<MediaRefs>
 						<MediaRef Id="805674430"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3891415587" Name="AMB_CityScape" DurationType="Infinite">
+				<Event Id="3891415587" Name="AMB_CityScape">
 					<MediaRefs>
 						<MediaRef Id="819973220"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3582440336" Name="AMB_Clock" DurationType="Infinite">
+				<Event Id="3582440336" Name="AMB_Clock">
 					<MediaRefs>
 						<MediaRef Id="362325445"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="729984210" Name="AMB_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="116530894" Name="Asmo_Guitar" DurationType="OneShot" DurationMin="1.2402555" DurationMax="1.5626241">
+				<Event Id="729984210" Name="AMB_stop"/>
+				<Event Id="116530894" Name="Asmo_Guitar">
 					<MediaRefs>
 						<MediaRef Id="814424785"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3173416568" Name="Asmo_Guitar2" DurationType="OneShot" DurationMin="1.4420326" DurationMax="1.8168472">
+				<Event Id="3173416568" Name="Asmo_Guitar2">
 					<MediaRefs>
 						<MediaRef Id="32056380"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="230523991" Name="Bee_sfx" DurationType="OneShot" DurationMin="12.22073" DurationMax="15.397156">
+				<Event Id="230523991" Name="Bee_sfx">
 					<MediaRefs>
 						<MediaRef Id="419836732"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3778321934" Name="Bee_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="128625444" Name="Door_close" DurationType="OneShot" DurationMin="2.1869166" DurationMax="2.1869166">
+				<Event Id="3778321934" Name="Bee_Stop"/>
+				<Event Id="3851889286" Name="CheerTime_roop">
+					<MediaRefs>
+						<MediaRef Id="688075084"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2072251662" Name="CheerTime_roopSTop"/>
+				<Event Id="845982558" Name="CheerTime_Shot">
+					<MediaRefs>
+						<MediaRef Id="882030918"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="128625444" Name="Door_close">
 					<MediaRefs>
 						<MediaRef Id="573794236"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="535830432" Name="Door_open" DurationType="OneShot" DurationMin="2.3336458" DurationMax="2.3336458">
+				<Event Id="535830432" Name="Door_open">
 					<MediaRefs>
 						<MediaRef Id="2658042"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1010055213" Name="Enemy_Hit" DurationType="OneShot" DurationMin="0.11894585" DurationMax="0.2427636">
+				<Event Id="1010055213" Name="Enemy_Hit">
 					<MediaRefs>
 						<MediaRef Id="878757334"/>
 						<MediaRef Id="949197025"/>
 						<MediaRef Id="968935746"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="948631664" Name="Explode" DurationType="OneShot" DurationMin="0.9670309" DurationMax="1.2183826">
+				<Event Id="948631664" Name="Explode">
 					<MediaRefs>
 						<MediaRef Id="608414734"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1866025847" Name="FootStep" DurationType="OneShot" DurationMin="0.23855908" DurationMax="0.4060795">
+				<Event Id="3574395361" Name="FanService_SHoot">
+					<MediaRefs>
+						<MediaRef Id="923484973"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2529774201" Name="FanService_Spawn">
+					<MediaRefs>
+						<MediaRef Id="70441014"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1155634188" Name="FanService_Spawn_stop"/>
+				<Event Id="3614079800" Name="FanService_Start">
+					<MediaRefs>
+						<MediaRef Id="577382122"/>
+						<MediaRef Id="895922540"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1866025847" Name="FootStep">
 					<MediaRefs>
 						<MediaRef Id="85626295"/>
 						<MediaRef Id="155649356"/>
@@ -532,71 +584,70 @@
 						<MediaRef Id="378354398"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="4175340882" Name="FootStep_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="3448274447" Name="Heal" DurationType="OneShot" DurationMin="0.65069616" DurationMax="0.81982577">
+				<Event Id="4175340882" Name="FootStep_stop"/>
+				<Event Id="3448274447" Name="Heal">
 					<MediaRefs>
 						<MediaRef Id="962180818"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="782578156" Name="L_Bullet_hit" DurationType="OneShot" DurationMin="0.23087864" DurationMax="0.36339584">
+				<Event Id="782578156" Name="L_Bullet_hit">
 					<MediaRefs>
 						<MediaRef Id="174567308"/>
 						<MediaRef Id="435140414"/>
 						<MediaRef Id="622552658"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3226347240" Name="Low_HP" DurationType="Infinite">
+				<Event Id="2468193350" Name="LoveRain_Shot">
+					<MediaRefs>
+						<MediaRef Id="642733992"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1981230731" Name="LoveRain_Spawn">
+					<MediaRefs>
+						<MediaRef Id="257332666"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3226347240" Name="Low_HP">
 					<MediaRefs>
 						<MediaRef Id="439489616"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2455294023" Name="Luxuria_Boss_Pattern01" DurationType="OneShot" DurationMin="1.5977032" DurationMax="2.6013792">
-					<MediaRefs>
-						<MediaRef Id="577382122"/>
-						<MediaRef Id="895922540"/>
-					</MediaRefs>
-				</Event>
-				<Event Id="2455294020" Name="Luxuria_Boss_Pattern02" DurationType="OneShot" DurationMin="3.6354053" DurationMax="4.5803237">
-					<MediaRefs>
-						<MediaRef Id="195993661"/>
-					</MediaRefs>
-				</Event>
-				<Event Id="1246132400" Name="Luxuria_Stage" DurationType="Infinite">
+				<Event Id="1246132400" Name="Luxuria_Stage">
 					<MediaRefs>
 						<MediaRef Id="401221416"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2448346302" Name="MyChild_Attack" DurationType="OneShot" DurationMin="0.5438178" DurationMax="0.68516755">
+				<Event Id="2448346302" Name="MyChild_Attack">
 					<MediaRefs>
 						<MediaRef Id="707983699"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2532991578" Name="MyChild_Start" DurationType="OneShot" DurationMin="4.2691607" DurationMax="5.3788056">
+				<Event Id="2532991578" Name="MyChild_Start">
 					<MediaRefs>
 						<MediaRef Id="658219301"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2978102398" Name="Nomal_atk1" DurationType="OneShot" DurationMin="1.0511205" DurationMax="1.3243289">
+				<Event Id="2978102398" Name="Nomal_atk1">
 					<MediaRefs>
 						<MediaRef Id="936067348"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2434695444" Name="Object_Broken" DurationType="OneShot" DurationMin="0.34982055" DurationMax="0.44074628">
+				<Event Id="2434695444" Name="Object_Broken">
 					<MediaRefs>
 						<MediaRef Id="70255767"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3092587493" Name="Pause" DurationType="OneShot" DurationMin="0.6082313" DurationMax="0.6082313">
+				<Event Id="3092587493" Name="Pause">
 					<MediaRefs>
 						<MediaRef Id="193630534"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3083087645" Name="Player_Death" DurationType="OneShot" DurationMin="2.17378" DurationMax="2.17378">
+				<Event Id="3083087645" Name="Player_Death">
 					<MediaRefs>
 						<MediaRef Id="486741315"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="871813740" Name="Player_Hit" DurationType="OneShot" DurationMin="0.17626409" DurationMax="0.45189345">
+				<Event Id="871813740" Name="Player_Hit">
 					<MediaRefs>
 						<MediaRef Id="124444081"/>
 						<MediaRef Id="263560061"/>
@@ -604,79 +655,79 @@
 						<MediaRef Id="533563013"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3379829983" Name="Player_take_Gun" DurationType="OneShot" DurationMin="1.1297185" DurationMax="1.4233563">
+				<Event Id="3379829983" Name="Player_take_Gun">
 					<MediaRefs>
 						<MediaRef Id="429336170"/>
 						<MediaRef Id="783668030"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1037997653" Name="SFX_Player_Ablilty_Greed_CoinBetting" DurationType="OneShot" DurationMin="0.62237775" DurationMax="0.78414685">
+				<Event Id="1037997653" Name="SFX_Player_Ablilty_Greed_CoinBetting">
 					<MediaRefs>
 						<MediaRef Id="495665146"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="392565905" Name="SFX_Player_Ablilty_Greed_CoinBetting_boom" DurationType="OneShot" DurationMin="1.2350667" DurationMax="1.5560865">
+				<Event Id="392565905" Name="SFX_Player_Ablilty_Greed_CoinBetting_boom">
 					<MediaRefs>
 						<MediaRef Id="557308535"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1964256854" Name="SFX_Player_Ablilty_Greed_CoinRain_Drop" DurationType="Infinite">
+				<Event Id="1964256854" Name="SFX_Player_Ablilty_Greed_CoinRain_Drop">
 					<MediaRefs>
 						<MediaRef Id="976395976"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2941655752" Name="SFX_Player_Ablilty_Greed_CoinRain_DropLoopStop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="718516402" Name="SFX_Player_Ablilty_Greed_CoinRain_Land" DurationType="OneShot" DurationMin="0.8502164" DurationMax="1.0712056">
+				<Event Id="2941655752" Name="SFX_Player_Ablilty_Greed_CoinRain_DropLoopStop"/>
+				<Event Id="718516402" Name="SFX_Player_Ablilty_Greed_CoinRain_Land">
 					<MediaRefs>
 						<MediaRef Id="782471653"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3307520067" Name="SFX_Player_Ablilty_Greed_CoinRain_Start" DurationType="OneShot" DurationMin="0.58039373" DurationMax="0.7312503">
+				<Event Id="3307520067" Name="SFX_Player_Ablilty_Greed_CoinRain_Start">
 					<MediaRefs>
 						<MediaRef Id="766686657"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="743609202" Name="SFX_Player_Ablilty_Jealousy_WanderingWave" DurationType="OneShot" DurationMin="1.7467954" DurationMax="2.2008243">
+				<Event Id="743609202" Name="SFX_Player_Ablilty_Jealousy_WanderingWave">
 					<MediaRefs>
 						<MediaRef Id="138226317"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="936558308" Name="SFX_Player_Ablilty_Jealousy_WanderingWave_HIT" DurationType="OneShot" DurationMin="0.7436152" DurationMax="0.9368965">
+				<Event Id="936558308" Name="SFX_Player_Ablilty_Jealousy_WanderingWave_HIT">
 					<MediaRefs>
 						<MediaRef Id="1003029652"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2385642374" Name="SFX_Player_Ablilty_Sloth_Barrier_Out" DurationType="OneShot" DurationMin="0.5718096" DurationMax="0.72043496">
+				<Event Id="2385642374" Name="SFX_Player_Ablilty_Sloth_Barrier_Out">
 					<MediaRefs>
 						<MediaRef Id="1052683144"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1603885962" Name="SFX_Player_Ablilty_Sloth_Barrier_start" DurationType="OneShot" DurationMin="0.28056577" DurationMax="0.3534907">
+				<Event Id="1603885962" Name="SFX_Player_Ablilty_Sloth_Barrier_start">
 					<MediaRefs>
 						<MediaRef Id="357382880"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1178676313" Name="SFX_Player_Ablilty_Sloth_L_Bullet2" DurationType="OneShot" DurationMin="1.1836809" DurationMax="1.4913446">
+				<Event Id="1178676313" Name="SFX_Player_Ablilty_Sloth_L_Bullet2">
 					<MediaRefs>
 						<MediaRef Id="1032445781"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="377751402" Name="SFX_Player_Ablilty_Sloth_Overclocking" DurationType="OneShot" DurationMin="0.7713747" DurationMax="0.97187126">
+				<Event Id="377751402" Name="SFX_Player_Ablilty_Sloth_Overclocking">
 					<MediaRefs>
 						<MediaRef Id="170126801"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="802699080" Name="SFX_Player_Ablilty_Sloth_turret" DurationType="OneShot" DurationMin="0.89345247" DurationMax="1.1256796">
+				<Event Id="802699080" Name="SFX_Player_Ablilty_Sloth_turret">
 					<MediaRefs>
 						<MediaRef Id="704672617"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2653719656" Name="SFX_Player_Ablilty_Sloth_turretSHOT" DurationType="OneShot" DurationMin="0.79785305" DurationMax="1.0052319">
+				<Event Id="2653719656" Name="SFX_Player_Ablilty_Sloth_turretSHOT">
 					<MediaRefs>
 						<MediaRef Id="553420489"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3111968065" Name="Shotgun_IN" DurationType="OneShot" DurationMin="0.63678634" DurationMax="0.8108138">
+				<Event Id="3111968065" Name="Shotgun_IN">
 					<MediaRefs>
 						<MediaRef Id="333803756"/>
 						<MediaRef Id="441935713"/>
@@ -688,91 +739,107 @@
 						</ShareSets>
 					</PluginRefs>
 				</Event>
-				<Event Id="1435234624" Name="Shotgun_OUT" DurationType="OneShot" DurationMin="0.63678634" DurationMax="0.8108138">
+				<Event Id="1435234624" Name="Shotgun_OUT">
 					<MediaRefs>
 						<MediaRef Id="333803756"/>
 						<MediaRef Id="441935713"/>
 						<MediaRef Id="790862015"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="734002816" Name="Siren" DurationType="Infinite">
+				<Event Id="734002816" Name="Siren">
 					<MediaRefs>
 						<MediaRef Id="164746853"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="791100847" Name="Siren_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="4114013180" Name="Sloth_B_Attack1" DurationType="OneShot" DurationMin="0.7237239" DurationMax="0.91183496">
+				<Event Id="791100847" Name="Siren_stop"/>
+				<Event Id="4114013180" Name="Sloth_B_Attack1">
 					<MediaRefs>
 						<MediaRef Id="650745981"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="437125043" Name="Sloth_Boss_Pattern01" DurationType="OneShot" DurationMin="0.6428758" DurationMax="1.0524962">
+				<Event Id="437125043" Name="Sloth_Boss_Pattern01">
 					<MediaRefs>
 						<MediaRef Id="569057299"/>
 						<MediaRef Id="653049683"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="437125040" Name="Sloth_Boss_Pattern02" DurationType="OneShot" DurationMin="0.6389288" DurationMax="1.0545622">
+				<Event Id="437125040" Name="Sloth_Boss_Pattern02">
 					<MediaRefs>
 						<MediaRef Id="83031587"/>
 						<MediaRef Id="389971002"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="4241994286" Name="Sloth_E_Fire" DurationType="OneShot" DurationMin="0.36451107" DurationMax="0.4592552">
+				<Event Id="4241994286" Name="Sloth_E_Fire">
 					<MediaRefs>
 						<MediaRef Id="814081132"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="628129172" Name="Sloth_E_Thunder" DurationType="OneShot" DurationMin="0.8213899" DurationMax="1.0348865">
+				<Event Id="628129172" Name="Sloth_E_Thunder">
 					<MediaRefs>
 						<MediaRef Id="170451563"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1799481692" Name="Sloth_Stage" DurationType="Infinite">
+				<Event Id="1799481692" Name="Sloth_Stage">
 					<MediaRefs>
 						<MediaRef Id="672083686"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1518697007" Name="Souleater" DurationType="OneShot" DurationMin="1.7028438" DurationMax="2.145449">
+				<Event Id="1518697007" Name="Souleater">
 					<MediaRefs>
 						<MediaRef Id="831653086"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2735358682" Name="Synopsis_Start" DurationType="Infinite">
+				<Event Id="2735358682" Name="Synopsis_Start">
 					<MediaRefs>
 						<MediaRef Id="845954351"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="385127538" Name="Synopsis_stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="816617448" Name="TeamLogoSFX" DurationType="OneShot" DurationMin="0.90986395" DurationMax="0.90986395">
+				<Event Id="385127538" Name="Synopsis_stop"/>
+				<Event Id="816617448" Name="TeamLogoSFX">
 					<MediaRefs>
 						<MediaRef Id="981132485"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2972449336" Name="Text" DurationType="Infinite">
+				<Event Id="2972449336" Name="Text">
 					<MediaRefs>
 						<MediaRef Id="340894199"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="4020169861" Name="Text_click" DurationType="OneShot" DurationMin="0.0873125" DurationMax="0.0873125">
+				<Event Id="4020169861" Name="Text_click">
 					<MediaRefs>
 						<MediaRef Id="801585478"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1162641783" Name="Text_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="2131322261" Name="UI_mouseClick" DurationType="OneShot" DurationMin="0.113428265" DurationMax="0.11369065">
+				<Event Id="1162641783" Name="Text_Stop"/>
+				<Event Id="2131322261" Name="UI_mouseClick">
 					<MediaRefs>
 						<MediaRef Id="63220623"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="234822047" Name="UI_mouseHover" DurationType="OneShot" DurationMin="0.09691524" DurationMax="0.097139426">
+				<Event Id="234822047" Name="UI_mouseHover">
 					<MediaRefs>
 						<MediaRef Id="71992266"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2235071114" Name="UI_StartClick" DurationType="OneShot" DurationMin="1.25" DurationMax="1.25">
+				<Event Id="2235071114" Name="UI_StartClick">
 					<MediaRefs>
 						<MediaRef Id="1054926503"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="829024783" Name="VolumeUP_roopStop"/>
+				<Event Id="2159866851" Name="VolumeUP_Shot">
+					<MediaRefs>
+						<MediaRef Id="882030918"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2206846009" Name="VolumeUP_Start">
+					<MediaRefs>
+						<MediaRef Id="688075084"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="142118675" Name="Wave_Start">
+					<MediaRefs>
+						<MediaRef Id="195993661"/>
 					</MediaRefs>
 				</Event>
 			</Events>
@@ -804,8 +871,8 @@
 				</File>
 			</Media>
 			<Events>
-				<Event Id="2090192256" Name="BGM_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="654742305" Name="Main_title" DurationType="Infinite">
+				<Event Id="2090192256" Name="BGM_Stop"/>
+				<Event Id="654742305" Name="Main_title">
 					<MediaRefs>
 						<MediaRef Id="256709039"/>
 					</MediaRefs>
@@ -1012,18 +1079,18 @@
 				</File>
 			</Media>
 			<Events>
-				<Event Id="2090192256" Name="BGM_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="3507238269" Name="Luxuria_Boss" DurationType="Infinite">
+				<Event Id="2090192256" Name="BGM_Stop"/>
+				<Event Id="3507238269" Name="Luxuria_Boss">
 					<MediaRefs>
 						<MediaRef Id="65889658"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3819148614" Name="Luxuria_Field" DurationType="Infinite">
+				<Event Id="3819148614" Name="Luxuria_Field">
 					<MediaRefs>
 						<MediaRef Id="320087089"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3943870292" Name="Luxuria_Log" DurationType="Infinite">
+				<Event Id="3943870292" Name="Luxuria_Log">
 					<MediaRefs>
 						<MediaRef Id="63086345"/>
 					</MediaRefs>
@@ -1060,18 +1127,18 @@
 				</File>
 			</Media>
 			<Events>
-				<Event Id="2090192256" Name="BGM_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="4072209002" Name="Credit" DurationType="OneShot" DurationMin="89.99998" DurationMax="89.99998">
+				<Event Id="2090192256" Name="BGM_Stop"/>
+				<Event Id="4072209002" Name="Credit">
 					<MediaRefs>
 						<MediaRef Id="178219412"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="128845783" Name="Synopsis" DurationType="OneShot" DurationMin="156.38579" DurationMax="156.38579">
+				<Event Id="128845783" Name="Synopsis">
 					<MediaRefs>
 						<MediaRef Id="602024453"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3762955427" Name="Tutorial" DurationType="Infinite">
+				<Event Id="3762955427" Name="Tutorial">
 					<MediaRefs>
 						<MediaRef Id="717954242"/>
 					</MediaRefs>
@@ -1104,18 +1171,18 @@
 				</File>
 			</Media>
 			<Events>
-				<Event Id="2090192256" Name="BGM_Stop" DurationType="OneShot" DurationMin="0" DurationMax="0"/>
-				<Event Id="3242833905" Name="Sloth_boss" DurationType="Infinite">
+				<Event Id="2090192256" Name="BGM_Stop"/>
+				<Event Id="3242833905" Name="Sloth_boss">
 					<MediaRefs>
 						<MediaRef Id="559473450"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3956129242" Name="Sloth_Field" DurationType="Infinite">
+				<Event Id="3956129242" Name="Sloth_Field">
 					<MediaRefs>
 						<MediaRef Id="660182532"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="1502881520" Name="Sloth_log" DurationType="Infinite">
+				<Event Id="1502881520" Name="Sloth_log">
 					<MediaRefs>
 						<MediaRef Id="129863457"/>
 					</MediaRefs>
@@ -1131,5 +1198,5 @@
 			</GameParameters>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{E88E0A04-4535-07DF-7818-D60F6B686BAA}</FileHash>
+	<FileHash>{408DEF04-A647-B606-A705-6A3368F2A511}</FileHash>
 </SoundBanksInfo>

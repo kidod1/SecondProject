@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 4001218635929388884}
   - component: {fileID: 5650008579786270311}
   - component: {fileID: 5071350445137868259}
-  - component: {fileID: -3774386995316860581}
   m_Layer: 12
   m_Name: SlothBat2
   m_TagString: Monster
@@ -301,32 +300,8 @@ MonoBehaviour:
   stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
   isInstantKilled: 0
   stat: {fileID: 11400000, guid: 43ef9010855ec76448aec0cd12df3b05, type: 2}
-  idleAnimation: idle
-  prepareAnimation: 
   dashAnimation: 
   explodeAnimation: 
---- !u!114 &-3774386995316860581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257169338272492925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21c9538588898a45a3da22bf4779ab3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootMotionBoneName: root
-  transformPositionX: 1
-  transformPositionY: 1
-  rootMotionScaleX: 1
-  rootMotionScaleY: 1
-  rootMotionTranslateXPerY: 0
-  rootMotionTranslateYPerX: 0
-  rigidBody2D: {fileID: 4001218635929388884}
-  rigidBody: {fileID: 0}
-  animationTrackFlags: -1
 --- !u!1 &6197392932231383455
 GameObject:
   m_ObjectHideFlags: 0

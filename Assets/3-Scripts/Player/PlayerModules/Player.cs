@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     // WWISE에서 생성한 게임 파라미터를 참조하기 위한 변수
     public RTPC playerHealthRTPC;
     public RTPC playerHealthLow;
+    public RTPC playerAttackSpeedRTPC;
     [Tooltip("플레이어의 스탯 데이터")]
     public PlayerData stat;
 
@@ -215,6 +216,7 @@ public class Player : MonoBehaviour
 
         spineAnimationState.Complete += OnSpineAnimationComplete;
     }
+
 
     /// <summary>
     /// 플레이어를 초기화하고 UI를 업데이트합니다.

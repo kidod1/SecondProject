@@ -10,21 +10,33 @@ public class SettingsManager : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     public TMP_Dropdown qualityDropdown;
     public Toggle fullscreenToggle;
-
     [Header("Audio Settings")]
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public Slider uiVolumeSlider;
 
     // WWISE RTPC 이름 상수 정의
     private const string MasterVolumeRTPC = "Master_Volume";
     private const string MusicVolumeRTPC = "Music_Volume";
     private const string SFXVolumeRTPC = "SFX_Volume";
+    private const string UIVolumeRTPC = "UI_Volume"; // 수정된 부분: UIVolumeRTPC로 이름 수정
 
     private void Start()
     {
         // 그래픽 설정 초기화
         InitializeGraphicsSettings();
+
+        // UI 볼륨 슬라이더 초기화 및 이벤트 연결
+        if (uiVolumeSlider != null)
+        {
+            uiVolumeSlider.onValueChanged.AddListener(SetUIVolume); // 수정된 부분: SetUIVolume 메서드로 변경
+            uiVolumeSlider.value = 1.0f;
+        }
+        else
+        {
+            Debug.LogWarning("UIVolumeSlider가 할당되지 않았습니다.");
+        }
 
         // 오디오 설정 초기화
         if (masterVolumeSlider != null)
@@ -102,6 +114,10 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    public void SetWindowedMode(int width, int height)
+    {
+        Screen.SetResolution(width, height, false);
+    }
     // 해상도 변경
     public void SetResolution(int index)
     {
@@ -144,6 +160,12 @@ public class SettingsManager : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         AkSoundEngine.SetRTPCValue(SFXVolumeRTPC, volume * 100);
+    }
+
+    // UI 볼륨 설정 - 추가된 부분
+    public void SetUIVolume(float volume)
+    {
+        AkSoundEngine.SetRTPCValue(UIVolumeRTPC, volume * 100);
     }
 
     public void SetMouseSensitivity(float sensitivity)

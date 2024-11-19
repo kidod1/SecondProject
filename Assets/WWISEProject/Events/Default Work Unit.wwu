@@ -702,28 +702,6 @@
 								</Folder>
 								<Folder Name="Luxuria_Boss" ID="{776FD361-5DAB-449D-BBBC-677C60073889}" ShortID="826018984">
 									<ChildrenList>
-										<Event Name="Luxuria_Boss_Pattern01" ID="{CA14AB5F-36D5-4834-9AB3-E90185EA703B}">
-											<ChildrenList>
-												<Action Name="" ID="{5E3997A1-6CBF-4D91-B516-C88223B42F57}" ShortID="504781728">
-													<ReferenceList>
-														<Reference Name="Target">
-															<ObjectRef Name="Luxuria_Pattern01" ID="{D8330EFC-6E9E-4B81-BE51-0495445D7EDA}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
-														</Reference>
-													</ReferenceList>
-												</Action>
-											</ChildrenList>
-										</Event>
-										<Event Name="Luxuria_Boss_Pattern02" ID="{8DAC3A36-8A75-4365-A718-55636576AEDC}">
-											<ChildrenList>
-												<Action Name="" ID="{3F217551-85E5-4436-A5FA-1E785C280A22}" ShortID="1006252580">
-													<ReferenceList>
-														<Reference Name="Target">
-															<ObjectRef Name="dark_magic_conjure_blast_1" ID="{CDA65F6F-8C5B-436E-AC11-40DCC939A524}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
-														</Reference>
-													</ReferenceList>
-												</Action>
-											</ChildrenList>
-										</Event>
 										<Event Name="Asmo_Guitar" ID="{57075258-9753-4B9B-8BC1-40633DA49BB5}">
 											<ChildrenList>
 												<Action Name="" ID="{BE2DB5FD-3663-421C-8702-B9372713F121}" ShortID="532132547">
@@ -746,6 +724,178 @@
 												</Action>
 											</ChildrenList>
 										</Event>
+										<Folder Name="VolumeUP!!" ID="{3D9D507F-0BA2-4A93-BD19-89C33BCE7A3A}" ShortID="813593041">
+											<ChildrenList>
+												<Event Name="VolumeUP_Start" ID="{499FFF61-2496-4652-A9D9-64267B3BAAC1}">
+													<ChildrenList>
+														<Action Name="" ID="{0D84F21D-B0C4-4975-9B8B-91E0972D4B00}" ShortID="520794600">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Click" ID="{12E37EE5-4241-4118-AFA0-3F10D9DE84B7}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="VolumeUP_Shot" ID="{3BAFB874-6155-4F45-B7F2-640B264381AC}">
+													<ChildrenList>
+														<Action Name="" ID="{85F5DD7B-4686-4CBF-8805-E167CC89C808}" ShortID="20140990">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Shot4" ID="{F9DC9C41-C100-449F-86F4-A9349D39062D}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="VolumeUP_roopStop" ID="{A965FB72-E411-4EC7-BDF5-75722A7A4642}">
+													<ChildrenList>
+														<Action Name="" ID="{3F901635-CEE1-4954-849A-920841F553CD}" ShortID="234405864">
+															<PropertyList>
+																<Property Name="ActionType" Type="int16" Value="2"/>
+															</PropertyList>
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Click" ID="{12E37EE5-4241-4118-AFA0-3F10D9DE84B7}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+											</ChildrenList>
+										</Folder>
+										<Folder Name="LoveRain" ID="{B78FAB01-F2BD-4F04-B9FD-BBE56AEA9F17}" ShortID="790571353">
+											<ChildrenList>
+												<Event Name="LoveRain_Shot" ID="{B3420B06-1285-4579-9C72-8B78E2E5AE1F}">
+													<ChildrenList>
+														<Action Name="" ID="{33C00A1D-85E1-4F8D-8587-724B6A44DE68}" ShortID="48812378">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Shot" ID="{FABF92E5-328C-4447-AA7E-27E2A3D20B88}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="LoveRain_Spawn" ID="{0293A39A-6E67-472E-9CD8-6A2EDBEEBD91}">
+													<ChildrenList>
+														<Action Name="" ID="{76C992F2-9BE6-40D0-A32F-FB2A8C170FE4}" ShortID="605051648">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Shot2" ID="{69279864-E48B-4D59-9F88-EA186337AF17}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+											</ChildrenList>
+										</Folder>
+										<Folder Name="FanService" ID="{50BDA7E7-06F9-45E7-8244-F6E76771F2EC}" ShortID="31201226">
+											<ChildrenList>
+												<Event Name="FanService_Spawn" ID="{D76FD9C9-E43C-46AD-8787-00D69072189E}">
+													<ChildrenList>
+														<Action Name="" ID="{EC98ECAF-4316-4598-83B8-0D3344AD8DD8}" ShortID="336222184">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="retro_ui_menu_popup_11" ID="{9B4783AE-F8D3-4EC0-AD0A-64399344DAF4}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="FanService_Start" ID="{CA14AB5F-36D5-4834-9AB3-E90185EA703B}">
+													<ChildrenList>
+														<Action Name="" ID="{5E3997A1-6CBF-4D91-B516-C88223B42F57}" ShortID="504781728">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Luxuria_Pattern01" ID="{D8330EFC-6E9E-4B81-BE51-0495445D7EDA}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="FanService_Spawn_stop" ID="{F7833949-0F2C-4475-94AB-28A4091768E1}">
+													<ChildrenList>
+														<Action Name="" ID="{639B8C42-3601-43F8-BF58-8712A62F3276}" ShortID="445847102">
+															<PropertyList>
+																<Property Name="ActionType" Type="int16" Value="2"/>
+															</PropertyList>
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="retro_ui_menu_popup_11" ID="{9B4783AE-F8D3-4EC0-AD0A-64399344DAF4}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="FanService_SHoot" ID="{4AA78D28-5E0A-4A8C-9BDD-C5D25DE9861A}">
+													<ChildrenList>
+														<Action Name="" ID="{DF39D789-E667-4D71-BC8F-809A2C15AAA5}" ShortID="140726132">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="ui_stamp_01" ID="{5FABD715-1A81-43BC-91C6-0D56DE0E4907}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+											</ChildrenList>
+										</Folder>
+										<Folder Name="Wave" ID="{0BC041B9-084F-4541-8B41-60AC9A7403C8}" ShortID="762605170">
+											<ChildrenList>
+												<Event Name="Wave_Start" ID="{D17B3A4F-D2D3-497B-AB02-44B702E44B64}">
+													<ChildrenList>
+														<Action Name="" ID="{5018ADC4-A42B-43D5-9C1E-C40C75F02829}" ShortID="1039806543">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="dark_magic_conjure_blast_1" ID="{CDA65F6F-8C5B-436E-AC11-40DCC939A524}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+											</ChildrenList>
+										</Folder>
+										<Folder Name="CheerTime" ID="{8EE61597-2105-453E-828E-327AE6F68C8F}" ShortID="39753663">
+											<ChildrenList>
+												<Event Name="CheerTime_Shot" ID="{31E9787C-B1C6-49BE-BC63-28B1B7105A7E}">
+													<ChildrenList>
+														<Action Name="" ID="{2E9537DB-3C3C-451D-90F9-8AFE47FB6743}" ShortID="605574031">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Shot4" ID="{F9DC9C41-C100-449F-86F4-A9349D39062D}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="CheerTime_roop" ID="{413CABCF-2904-41A0-8BB7-A54874BE2749}">
+													<ChildrenList>
+														<Action Name="" ID="{EA9FED57-1F1D-4D9C-A2E9-1A2D3E8B0D9E}" ShortID="982473014">
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Click" ID="{12E37EE5-4241-4118-AFA0-3F10D9DE84B7}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+												<Event Name="CheerTime_roopSTop" ID="{4C5A435D-C8B9-4784-AC81-BDB5312CD9F9}">
+													<ChildrenList>
+														<Action Name="" ID="{46F665D5-69D1-4610-9328-C78F463493AB}" ShortID="976570356">
+															<PropertyList>
+																<Property Name="ActionType" Type="int16" Value="2"/>
+															</PropertyList>
+															<ReferenceList>
+																<Reference Name="Target">
+																	<ObjectRef Name="Click" ID="{12E37EE5-4241-4118-AFA0-3F10D9DE84B7}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+																</Reference>
+															</ReferenceList>
+														</Action>
+													</ChildrenList>
+												</Event>
+											</ChildrenList>
+										</Folder>
 									</ChildrenList>
 								</Folder>
 							</ChildrenList>

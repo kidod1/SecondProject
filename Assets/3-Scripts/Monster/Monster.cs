@@ -206,6 +206,8 @@ public abstract class Monster : MonoBehaviour
     /// <param name="duration">기절 지속 시간(초)</param>
     public virtual void Stun(float duration)
     {
+        if (isElite) return;
+
         if (!isStunned)
         {
             isStunned = true;

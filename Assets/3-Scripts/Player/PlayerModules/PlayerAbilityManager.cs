@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; // TextMeshPro를 사용하기 위해 추가
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerAbilityManager : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class PlayerAbilityManager : MonoBehaviour
     // 시너지 관련 변수들
     private Dictionary<string, bool> synergyAbilityAcquired = new Dictionary<string, bool>();
     public Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
+
+    // 시너지 능력 관리
+    public SynergyAbility currentSynergyAbility; // 현재 획득한 시너지 능력
 
     // 추가된 부분: 시너지 획득 여부를 추적하는 변수
     private bool hasAcquiredSynergy = false;
@@ -32,6 +36,16 @@ public class PlayerAbilityManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI[] levelTexts; // 인스펙터에서 할당된 레벨 텍스트 배열
 
+    [Header("Synergy Ability UI")]
+    [Tooltip("시너지 능력 아이콘 이미지")]
+    public GameObject synergyAbilityIcon; // 시너지 능력 아이콘 이미지
+
+    [Tooltip("시너지 능력 쿨타임 오버레이 패널")]
+    public GameObject synergyCooldownOverlayPanel; // 시너지 능력 쿨타임 오버레이 패널
+
+    [Tooltip("시너지 능력 쿨타임 텍스트")]
+    public TextMeshProUGUI synergyCooldownText; // 시너지 능력 쿨타임 텍스트
+
     [Header("Synergy Button Resources")]
     [Tooltip("각 시너지 카테고리에 대응하는 버튼 스프라이트 배열.")]
     [SerializeField]
@@ -45,9 +59,16 @@ public class PlayerAbilityManager : MonoBehaviour
 
     // Ability 이름과 이미지 인덱스를 매핑하기 위한 딕셔너리
     private Dictionary<string, int> abilityToImageIndex = new Dictionary<string, int>();
+
     public List<PlayerAbility> GetPlayerAbilities()
     {
         return abilities;
+    }
+
+    private void Update()
+    {
+        // 시너지 능력 쿨타임 UI 업데이트
+        UpdateSynergyCooldownUI();
     }
 
     public void Initialize(Player player)
@@ -64,7 +85,7 @@ public class PlayerAbilityManager : MonoBehaviour
 
         InitializeSynergyCategoryToSprite();
 
-        // 저장된 능력 데이터 로드 및 적용
+        // PlayerDataManager로부터 저장된 능력 데이터 가져오기
         PlayerDataManager dataManager = PlayerDataManager.Instance;
         if (dataManager != null)
         {
@@ -73,27 +94,9 @@ public class PlayerAbilityManager : MonoBehaviour
             {
                 ApplySavedAbilities(savedAbilitiesData);
             }
-        }
-    }
 
-    private void InitializeSynergyCategoryToSprite()
-    {
-        if (synergyCategories.Length != synergyButtonSprites.Length)
-        {
-            Debug.LogError("synergyCategories와 synergyButtonSprites 배열의 길이가 일치하지 않습니다.");
-            return;
-        }
-
-        for (int i = 0; i < synergyCategories.Length; i++)
-        {
-            if (!synergyCategoryToSprite.ContainsKey(synergyCategories[i]))
-            {
-                synergyCategoryToSprite.Add(synergyCategories[i], synergyButtonSprites[i]);
-            }
-            else
-            {
-                Debug.LogWarning($"중복된 시너지 카테고리가 감지되었습니다: {synergyCategories[i]}");
-            }
+            // 시너지 레벨 로드
+            synergyLevels = dataManager.GetSynergyLevels();
         }
     }
 
@@ -103,6 +106,7 @@ public class PlayerAbilityManager : MonoBehaviour
         Ability[] loadedAbilities = Resources.LoadAll<Ability>("Abilities");
         availableAbilities.AddRange(loadedAbilities);
     }
+
     public List<Ability> GetAvailableAbilities()
     {
         return availableAbilities;
@@ -149,7 +153,6 @@ public class PlayerAbilityManager : MonoBehaviour
         OnAbilitiesChanged?.Invoke();
     }
 
-
     /// <summary>
     /// 새로운 능력을 선택하거나 기존 능력을 업그레이드합니다.
     /// </summary>
@@ -193,6 +196,9 @@ public class PlayerAbilityManager : MonoBehaviour
 
         CheckForSynergy(abilityTemplate.category);
 
+        // 능력이 변경되었으므로 PlayerDataManager에 업데이트
+        UpdateAbilitiesData();
+
         OnAbilitiesChanged?.Invoke();
     }
 
@@ -233,12 +239,6 @@ public class PlayerAbilityManager : MonoBehaviour
                     {
                         Debug.LogWarning("levelTexts 배열이 비어있거나 인덱스가 초과되었습니다.");
                     }
-
-                    // 시너지 어빌리티인 경우 버튼 리소스 설정
-                    if (playerAbility.ability is SynergyAbility synergyAbility)
-                    {
-                        SetSynergyButtonResource(synergyAbility);
-                    }
                 }
                 else
                 {
@@ -257,33 +257,63 @@ public class PlayerAbilityManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 시너지 어빌리티의 버튼 리소스를 설정합니다.
+    /// 시너지 능력 UI를 업데이트합니다.
     /// </summary>
-    private void SetSynergyButtonResource(SynergyAbility synergyAbility)
+    private void UpdateSynergyAbilityUI()
     {
-        string category = synergyAbility.category;
-
-        if (synergyCategoryToSprite.ContainsKey(category))
+        if (synergyAbilityIcon != null && currentSynergyAbility != null)
         {
-            Sprite buttonSprite = synergyCategoryToSprite[category];
-
-            // AbilityManager에 버튼 스프라이트를 전달하여 UI를 업데이트
-            AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
-            if (abilityManager != null)
+            // 아이콘 이미지 설정
+            Image iconImage = synergyAbilityIcon.GetComponent<Image>();
+            if (iconImage != null)
             {
-                abilityManager.TriggerShowSynergyAbility(synergyAbility, buttonSprite);
-                Debug.Log($"AbilityManager에게 시너지 어빌리티 '{synergyAbility.abilityName}'과 스프라이트 '{buttonSprite.name}' 전달됨.");
-
-                StartCoroutine(abilityManager.DelayedShowSynergyAbility(synergyAbility));
+                iconImage.sprite = currentSynergyAbility.abilityIcon;
             }
-            else
+
+            // 쿨타임 오버레이 패널 초기화
+            if (synergyCooldownOverlayPanel != null)
             {
-                Debug.LogError("AbilityManager가 존재하지 않습니다. 시너지 어빌리티 UI를 업데이트할 수 없습니다.");
+                synergyCooldownOverlayPanel.SetActive(false);
             }
         }
         else
         {
-            Debug.LogWarning($"카테고리 '{category}'에 대한 버튼 스프라이트 매핑이 존재하지 않습니다.");
+            Debug.LogWarning("synergyAbilityIcon 또는 currentSynergyAbility가 할당되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 시너지 능력의 쿨타임 UI를 업데이트합니다.
+    /// </summary>
+    private void UpdateSynergyCooldownUI()
+    {
+        if (currentSynergyAbility != null)
+        {
+            if (currentSynergyAbility.IsReady)
+            {
+                // 쿨타임 완료 - 오버레이 패널 비활성화
+                if (synergyCooldownOverlayPanel != null)
+                {
+                    synergyCooldownText.gameObject.SetActive(false);
+                    synergyCooldownOverlayPanel.SetActive(false);
+                }
+            }
+            else
+            {
+                // 쿨타임 진행 중 - 오버레이 패널 활성화 및 남은 시간 표시
+                if (synergyCooldownOverlayPanel != null)
+                {
+                    synergyCooldownText.gameObject.SetActive(true);
+                    synergyCooldownOverlayPanel.SetActive(true);
+
+                    if (synergyCooldownText != null)
+                    {
+                        float remainingCooldown = currentSynergyAbility.cooldownDuration - (Time.time - currentSynergyAbility.lastUsedTime);
+                        remainingCooldown = Mathf.Max(0, remainingCooldown); // 남은 시간이 0보다 작아지지 않도록 보정
+                        synergyCooldownText.text = Mathf.Ceil(remainingCooldown).ToString();
+                    }
+                }
+            }
         }
     }
 
@@ -332,6 +362,9 @@ public class PlayerAbilityManager : MonoBehaviour
 
         // 추가된 부분: 시너지 획득 여부를 초기화
         hasAcquiredSynergy = false;
+
+        // 시너지 능력 초기화
+        currentSynergyAbility = null;
 
         OnAbilitiesChanged?.Invoke();
     }
@@ -387,6 +420,23 @@ public class PlayerAbilityManager : MonoBehaviour
             dataList.Add(data);
         }
         return dataList;
+    }
+
+    /// <summary>
+    /// 능력이 변경되었을 때 PlayerDataManager에 데이터를 업데이트합니다.
+    /// </summary>
+    private void UpdateAbilitiesData()
+    {
+        // abilitiesData 업데이트
+        List<AbilityData> updatedAbilitiesData = GetAbilitiesData();
+
+        // PlayerDataManager에 저장
+        PlayerDataManager dataManager = PlayerDataManager.Instance;
+        if (dataManager != null)
+        {
+            dataManager.SetAbilitiesData(updatedAbilitiesData);
+            dataManager.SetSynergyLevels(synergyLevels);
+        }
     }
 
     public void ActivateAbilitiesOnHit(Collider2D enemy)
@@ -468,6 +518,27 @@ public class PlayerAbilityManager : MonoBehaviour
         };
     }
 
+    private void InitializeSynergyCategoryToSprite()
+    {
+        if (synergyCategories.Length != synergyButtonSprites.Length)
+        {
+            Debug.LogError("synergyCategories와 synergyButtonSprites 배열의 길이가 일치하지 않습니다.");
+            return;
+        }
+
+        for (int i = 0; i < synergyCategories.Length; i++)
+        {
+            if (!synergyCategoryToSprite.ContainsKey(synergyCategories[i]))
+            {
+                synergyCategoryToSprite.Add(synergyCategories[i], synergyButtonSprites[i]);
+            }
+            else
+            {
+                Debug.LogWarning($"중복된 시너지 카테고리가 감지되었습니다: {synergyCategories[i]}");
+            }
+        }
+    }
+
     public void CheckForSynergy(string category)
     {
         // 추가된 부분: 이미 시너지를 획득한 경우 메서드 종료
@@ -514,8 +585,10 @@ public class PlayerAbilityManager : MonoBehaviour
             AssignSynergyAbility(category, 5);
             synergyLevels[category] = 5;
         }
-    }
 
+        // 시너지 레벨이 변경되었으므로 PlayerDataManager에 업데이트
+        UpdateAbilitiesData();
+    }
 
     private void AssignSynergyAbility(string category, int level)
     {
@@ -525,9 +598,16 @@ public class PlayerAbilityManager : MonoBehaviour
         {
             Debug.Log($"Synergy ability acquired: {synergyAbilityName}");
 
+            // 시너지 능력 저장
+            currentSynergyAbility = synergyAbility;
+
+            // 시너지 능력 UI 업데이트
+            UpdateSynergyAbilityUI();
+
             // 추가된 부분: 시너지 획득 여부를 true로 설정
             hasAcquiredSynergy = true;
 
+            // AbilityManager에 버튼 스프라이트를 전달하여 UI를 업데이트
             AbilityManager abilityManager = FindObjectOfType<AbilityManager>();
             if (abilityManager != null)
             {
@@ -553,6 +633,7 @@ public class PlayerAbilityManager : MonoBehaviour
             Debug.LogError($"Failed to load Synergy Ability: {synergyAbilityName}");
         }
     }
+
     public int GetCurrentLevel(string abilityName)
     {
         if (abilityNameToPlayerAbility.TryGetValue(abilityName, out PlayerAbility playerAbility))
@@ -564,6 +645,7 @@ public class PlayerAbilityManager : MonoBehaviour
             return 0; // 플레이어가 해당 능력을 가지고 있지 않음
         }
     }
+
     public void ApplySynergyAbility(SynergyAbility synergyAbility)
     {
         if (synergyAbility != null)
@@ -586,5 +668,30 @@ public class PlayerAbilityManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    /// <summary>
+    /// 시너지 능력을 활성화합니다.
+    /// </summary>
+    public void ActivateSynergyAbility()
+    {
+        if (currentSynergyAbility != null)
+        {
+            if (currentSynergyAbility.IsReady)
+            {
+                currentSynergyAbility.Activate(player);
+
+                // 쿨타임 UI 업데이트
+                UpdateSynergyCooldownUI();
+            }
+            else
+            {
+                Debug.Log("시너지 능력이 아직 쿨타임입니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("현재 시너지 능력이 없습니다.");
+        }
     }
 }

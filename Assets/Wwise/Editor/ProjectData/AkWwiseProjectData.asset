@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584698541490467732
+    m_lastTime: -8584696314793772762
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584698541490081566
+    m_lastTime: -8584696314793483522
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584698541473455752
+    m_lastTime: -8584696314924036347
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584698541492351444
+    m_lastTime: -8584696314795265936
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584698506373510595
+    m_lastTime: -8584696314780785644
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -751,8 +751,8 @@ MonoBehaviour:
         guid: c659d0dc84f85242ade8d4dcdfb88dfb
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.5560865
+      minDuration: 1.2350667
     - name: Ablilty_Greed_Joker
       guid: 37b3d5577f7ebb4f833b41cc1d5a14f5
       id: 1545538756
@@ -1319,8 +1319,8 @@ MonoBehaviour:
         guid: 5852075753979b4b8bc140633da49bb5
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Asmo_Guitar
       maxAttenuation: 0
-      maxDuration: 1.5626241
-      minDuration: 1.2402555
+      maxDuration: -1
+      minDuration: -1
     - name: Asmo_Guitar2
       guid: 44aaa23f973e5741bfd9970f89883689
       id: 3173416568
@@ -1345,8 +1345,8 @@ MonoBehaviour:
         guid: 44aaa23f973e5741bfd9970f89883689
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Asmo_Guitar2
       maxAttenuation: 0
-      maxDuration: 1.8168472
-      minDuration: 1.4420326
+      maxDuration: -1
+      minDuration: -1
     - name: Bee_sfx
       guid: a1f1dc5deefee6429b49449ed0fd4721
       id: 230523991
@@ -1436,6 +1436,119 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0
       minDuration: 0
+    - name: CheerTime
+      guid: 9715e68e05213e45828e327ae6f68c8f
+      id: 1140013763
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: CheerTime
+        ObjectType: 4
+        guid: 9715e68e05213e45828e327ae6f68c8f
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\CheerTime
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: CheerTime_roop
+      guid: cfab3c410429a0418bb7a54874be2749
+      id: 3851889286
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: CheerTime
+        ObjectType: 4
+        guid: 9715e68e05213e45828e327ae6f68c8f
+      - ElementName: CheerTime_roop
+        ObjectType: 3
+        guid: cfab3c410429a0418bb7a54874be2749
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\CheerTime\CheerTime_roop
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: CheerTime_roopSTop
+      guid: 5d435a4cb9c88447ac81bdb5312cd9f9
+      id: 2072251662
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: CheerTime
+        ObjectType: 4
+        guid: 9715e68e05213e45828e327ae6f68c8f
+      - ElementName: CheerTime_roopSTop
+        ObjectType: 3
+        guid: 5d435a4cb9c88447ac81bdb5312cd9f9
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\CheerTime\CheerTime_roopSTop
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: CheerTime_Shot
+      guid: 7c78e931c6b1be49bc6328b1b7105a7e
+      id: 845982558
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: CheerTime
+        ObjectType: 4
+        guid: 9715e68e05213e45828e327ae6f68c8f
+      - ElementName: CheerTime_Shot
+        ObjectType: 3
+        guid: 7c78e931c6b1be49bc6328b1b7105a7e
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\CheerTime\CheerTime_Shot
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Credit
       guid: f50dcdcc88bc2244acc862ea4c1b4db5
       id: 4072209002
@@ -1477,8 +1590,8 @@ MonoBehaviour:
         guid: ead217bcf100ba4b89277dd14d5055d4
       Path: Events\Default Work Unit\UI\Loading_Door\Door_close
       maxAttenuation: 0
-      maxDuration: 2.1869166
-      minDuration: 2.1869166
+      maxDuration: -1
+      minDuration: -1
     - name: Door_open
       guid: 6276690aa037b64494a2656f4acf1217
       id: 535830432
@@ -1500,8 +1613,8 @@ MonoBehaviour:
         guid: 6276690aa037b64494a2656f4acf1217
       Path: Events\Default Work Unit\UI\Loading_Door\Door_open
       maxAttenuation: 0
-      maxDuration: 2.3336458
-      minDuration: 2.3336458
+      maxDuration: -1
+      minDuration: -1
     - name: Enemy
       guid: 020651b4141cda40b05b13c30e679370
       id: 2299321487
@@ -1568,6 +1681,148 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 1.2183826
       minDuration: 0.9670309
+    - name: FanService
+      guid: e7a7bd50f906e7458244f6e76771f2ec
+      id: 3629163777
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: FanService
+        ObjectType: 4
+        guid: e7a7bd50f906e7458244f6e76771f2ec
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: FanService_SHoot
+      guid: 288da74a0a5e8c4a9bddc5d25de9861a
+      id: 3574395361
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: FanService
+        ObjectType: 4
+        guid: e7a7bd50f906e7458244f6e76771f2ec
+      - ElementName: FanService_SHoot
+        ObjectType: 3
+        guid: 288da74a0a5e8c4a9bddc5d25de9861a
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_SHoot
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: FanService_Spawn
+      guid: c9d96fd73ce4ad46878700d69072189e
+      id: 2529774201
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: FanService
+        ObjectType: 4
+        guid: e7a7bd50f906e7458244f6e76771f2ec
+      - ElementName: FanService_Spawn
+        ObjectType: 3
+        guid: c9d96fd73ce4ad46878700d69072189e
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_Spawn
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: FanService_Spawn_stop
+      guid: 493983f72c0f754494ab28a4091768e1
+      id: 1155634188
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: FanService
+        ObjectType: 4
+        guid: e7a7bd50f906e7458244f6e76771f2ec
+      - ElementName: FanService_Spawn_stop
+        ObjectType: 3
+        guid: 493983f72c0f754494ab28a4091768e1
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_Spawn_stop
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: FanService_Start
+      guid: 5fab14cad53634489ab3e90185ea703b
+      id: 3614079800
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: FanService
+        ObjectType: 4
+        guid: e7a7bd50f906e7458244f6e76771f2ec
+      - ElementName: FanService_Start
+        ObjectType: 3
+        guid: 5fab14cad53634489ab3e90185ea703b
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_Start
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Foots
       guid: 4bbaafb48e65b746a08c4e9c76d4b3f2
       id: 264776788
@@ -1867,6 +2122,90 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: LoveRain
+      guid: 01ab8fb7bdf2044fb9fdbbe56aea9f17
+      id: 3573011147
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: LoveRain
+        ObjectType: 4
+        guid: 01ab8fb7bdf2044fb9fdbbe56aea9f17
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\LoveRain
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: LoveRain_Shot
+      guid: 060b42b3851279459c728b78e2e5ae1f
+      id: 2468193350
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: LoveRain
+        ObjectType: 4
+        guid: 01ab8fb7bdf2044fb9fdbbe56aea9f17
+      - ElementName: LoveRain_Shot
+        ObjectType: 3
+        guid: 060b42b3851279459c728b78e2e5ae1f
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\LoveRain\LoveRain_Shot
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: LoveRain_Spawn
+      guid: 9aa39302676e2e479cd86a2edbeebd91
+      id: 1981230731
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: LoveRain
+        ObjectType: 4
+        guid: 01ab8fb7bdf2044fb9fdbbe56aea9f17
+      - ElementName: LoveRain_Spawn
+        ObjectType: 3
+        guid: 9aa39302676e2e479cd86a2edbeebd91
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\LoveRain\LoveRain_Spawn
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Low_HP
       guid: abaa684ec7f9984887425c0784a76519
       id: 3226347240
@@ -1934,29 +2273,6 @@ MonoBehaviour:
       maxDuration: -1
       minDuration: -1
     - name: Luxuria_Boss
-      guid: 61d36f77ab5d9d44bbbc677c60073889
-      id: 3507238269
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: SFX
-        ObjectType: 4
-        guid: 1c17e268c566f4429fd40262795ed549
-      - ElementName: Enemy
-        ObjectType: 4
-        guid: 020651b4141cda40b05b13c30e679370
-      - ElementName: Luxuria_Boss
-        ObjectType: 4
-        guid: 61d36f77ab5d9d44bbbc677c60073889
-      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
-    - name: Luxuria_Boss
       guid: cdd72e20020fb84b9b0971a055068f2c
       id: 3507238269
       PathAndIcons:
@@ -1979,9 +2295,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Luxuria_Boss_Pattern01
-      guid: 5fab14cad53634489ab3e90185ea703b
-      id: 2455294023
+    - name: Luxuria_Boss
+      guid: 61d36f77ab5d9d44bbbc677c60073889
+      id: 3507238269
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -1998,39 +2314,10 @@ MonoBehaviour:
       - ElementName: Luxuria_Boss
         ObjectType: 4
         guid: 61d36f77ab5d9d44bbbc677c60073889
-      - ElementName: Luxuria_Boss_Pattern01
-        ObjectType: 3
-        guid: 5fab14cad53634489ab3e90185ea703b
-      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Luxuria_Boss_Pattern01
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss
       maxAttenuation: 0
-      maxDuration: 2.6013792
-      minDuration: 1.5977032
-    - name: Luxuria_Boss_Pattern02
-      guid: 363aac8d758a6543a71855636576aedc
-      id: 2455294020
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: SFX
-        ObjectType: 4
-        guid: 1c17e268c566f4429fd40262795ed549
-      - ElementName: Enemy
-        ObjectType: 4
-        guid: 020651b4141cda40b05b13c30e679370
-      - ElementName: Luxuria_Boss
-        ObjectType: 4
-        guid: 61d36f77ab5d9d44bbbc677c60073889
-      - ElementName: Luxuria_Boss_Pattern02
-        ObjectType: 3
-        guid: 363aac8d758a6543a71855636576aedc
-      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Luxuria_Boss_Pattern02
-      maxAttenuation: 0
-      maxDuration: 4.5803237
-      minDuration: 3.6354053
+      maxDuration: -1
+      minDuration: -1
     - name: Luxuria_Enemy
       guid: 8c8d2b633b010748a22bda827dd046a8
       id: 3028610990
@@ -2193,8 +2480,8 @@ MonoBehaviour:
         guid: 2a5f1c3562922543be5ac0186f3d075f
       Path: Events\Default Work Unit\SFX\Ablilty\Gula\myChild\MyChild_Attack
       maxAttenuation: 0
-      maxDuration: 0.68516755
-      minDuration: 0.5438178
+      maxDuration: -1
+      minDuration: -1
     - name: MyChild_Start
       guid: 5e34ea1b6a1f8049ac16ed98648e7990
       id: 2532991578
@@ -2222,8 +2509,8 @@ MonoBehaviour:
         guid: 5e34ea1b6a1f8049ac16ed98648e7990
       Path: Events\Default Work Unit\SFX\Ablilty\Gula\myChild\MyChild_Start
       maxAttenuation: 0
-      maxDuration: 5.3788056
-      minDuration: 4.2691607
+      maxDuration: -1
+      minDuration: -1
     - name: Nomal_atk1
       guid: 46679c82dfd4db428acebc891d52436f
       id: 2978102398
@@ -2248,8 +2535,8 @@ MonoBehaviour:
         guid: 46679c82dfd4db428acebc891d52436f
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Enemy\Nomal_atk1
       maxAttenuation: 0
-      maxDuration: 1.3243289
-      minDuration: 1.0511205
+      maxDuration: -1
+      minDuration: -1
     - name: Object_Broken
       guid: b489c392547a764ca6695ba0ed9f289e
       id: 2434695444
@@ -2331,8 +2618,8 @@ MonoBehaviour:
         guid: 824ceaa5b88fda4c9ed0693975d75543
       Path: Events\Default Work Unit\UI\Player_Death
       maxAttenuation: 0
-      maxDuration: 2.17378
-      minDuration: 2.17378
+      maxDuration: 2.875
+      minDuration: 2.875
     - name: Player_Hit
       guid: 9d484f7495c7bd4f8760493f79a1fe6b
       id: 871813740
@@ -2354,8 +2641,8 @@ MonoBehaviour:
         guid: 9d484f7495c7bd4f8760493f79a1fe6b
       Path: Events\Default Work Unit\SFX\Player\Player_Hit
       maxAttenuation: 0
-      maxDuration: 0.45189345
-      minDuration: 0.17626409
+      maxDuration: 0.19598867
+      minDuration: 0.07497517
     - name: Player_take_Gun
       guid: 754bb26778cb3f45ba90a247ce8e4108
       id: 3379829983
@@ -2533,8 +2820,8 @@ MonoBehaviour:
         guid: 1c716cad5c411244b332c97c11d51c24
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain\SFX_Player_Ablilty_Greed_CoinRain_DropLoopStop
       maxAttenuation: 0
-      maxDuration: 0
-      minDuration: 0
+      maxDuration: -1
+      minDuration: -1
     - name: SFX_Player_Ablilty_Greed_CoinRain_Land
       guid: 47b07d158f8a284d8e38554d9a230e5c
       id: 718516402
@@ -2562,8 +2849,8 @@ MonoBehaviour:
         guid: 47b07d158f8a284d8e38554d9a230e5c
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain\SFX_Player_Ablilty_Greed_CoinRain_Land
       maxAttenuation: 0
-      maxDuration: 1.0712056
-      minDuration: 0.8502164
+      maxDuration: -1
+      minDuration: -1
     - name: SFX_Player_Ablilty_Greed_CoinRain_Start
       guid: fa317f9548797c4e859a23a8bfd231c3
       id: 3307520067
@@ -2591,8 +2878,8 @@ MonoBehaviour:
         guid: fa317f9548797c4e859a23a8bfd231c3
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain\SFX_Player_Ablilty_Greed_CoinRain_Start
       maxAttenuation: 0
-      maxDuration: 0.7312503
-      minDuration: 0.58039373
+      maxDuration: -1
+      minDuration: -1
     - name: SFX_Player_Ablilty_Jealousy_WanderingWave
       guid: b8af7ea0e76f0541ba8621fd28e82912
       id: 743609202
@@ -2872,6 +3159,26 @@ MonoBehaviour:
       maxDuration: 0.8108138
       minDuration: 0.63678634
     - name: Siren
+      guid: bbc5c6a6430f9649bd3550737739815b
+      id: 734002816
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Siren
+        ObjectType: 4
+        guid: bbc5c6a6430f9649bd3550737739815b
+      Path: Events\Default Work Unit\UI\Siren
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Siren
       guid: 83ce62898f313e428d9b7bb57f762cd0
       id: 734002816
       PathAndIcons:
@@ -2891,26 +3198,6 @@ MonoBehaviour:
         ObjectType: 3
         guid: 83ce62898f313e428d9b7bb57f762cd0
       Path: Events\Default Work Unit\UI\Siren\Siren
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
-    - name: Siren
-      guid: bbc5c6a6430f9649bd3550737739815b
-      id: 734002816
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: UI
-        ObjectType: 4
-        guid: 72d7b5b9403672468492aae9c074cd97
-      - ElementName: Siren
-        ObjectType: 4
-        guid: bbc5c6a6430f9649bd3550737739815b
-      Path: Events\Default Work Unit\UI\Siren
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -2935,8 +3222,8 @@ MonoBehaviour:
         guid: c27c189dab8e884a989b874a7ab93e55
       Path: Events\Default Work Unit\UI\Siren\Siren_stop
       maxAttenuation: 0
-      maxDuration: 0
-      minDuration: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Sloth
       guid: 0b5763a6b1003f4e993f4c237dc3a81a
       id: 3888770555
@@ -3004,8 +3291,8 @@ MonoBehaviour:
         guid: 793c44c99a8cc5409bdcaf348a22b941
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_B_Attack1
       maxAttenuation: 0
-      maxDuration: 0.91183496
-      minDuration: 0.7237239
+      maxDuration: -1
+      minDuration: -1
     - name: Sloth_boss
       guid: 9ba90e487403834da7f8f6b641146d58
       id: 3242833905
@@ -3076,8 +3363,8 @@ MonoBehaviour:
         guid: 368b3e29bfa5e54eaa7986dd01c9784d
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Pattern01
       maxAttenuation: 0
-      maxDuration: 1.0524962
-      minDuration: 0.6428758
+      maxDuration: -1
+      minDuration: -1
     - name: Sloth_Boss_Pattern02
       guid: dcae7489ab36f74ca312d9cf087af3d8
       id: 437125040
@@ -3102,8 +3389,8 @@ MonoBehaviour:
         guid: dcae7489ab36f74ca312d9cf087af3d8
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Pattern02
       maxAttenuation: 0
-      maxDuration: 1.0545622
-      minDuration: 0.6389288
+      maxDuration: -1
+      minDuration: -1
     - name: Sloth_E_Fire
       guid: 61e4ceafcdbc384b98197d0402615989
       id: 4241994286
@@ -3372,8 +3659,8 @@ MonoBehaviour:
         guid: 6b8031e41f48e34fb9b42f687758625d
       Path: Events\Default Work Unit\UI\TeamLogoSFX
       maxAttenuation: 0
-      maxDuration: 0.90986395
-      minDuration: 0.90986395
+      maxDuration: -1
+      minDuration: -1
     - name: Text
       guid: 1e9ceebb8e83364fa9a07d1f3214d442
       id: 2972449336
@@ -3560,6 +3847,174 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 1.25
       minDuration: 1.25
+    - name: VolumeUP!!
+      guid: 7f509d3da20b934abd1989c33bce7a3a
+      id: 473978566
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: VolumeUP!!
+        ObjectType: 4
+        guid: 7f509d3da20b934abd1989c33bce7a3a
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\VolumeUP!!
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: VolumeUP_roopStop
+      guid: 72fb65a911e4c74ebdf575722a7a4642
+      id: 829024783
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: VolumeUP!!
+        ObjectType: 4
+        guid: 7f509d3da20b934abd1989c33bce7a3a
+      - ElementName: VolumeUP_roopStop
+        ObjectType: 3
+        guid: 72fb65a911e4c74ebdf575722a7a4642
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\VolumeUP!!\VolumeUP_roopStop
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: VolumeUP_Shot
+      guid: 74b8af3b5561454fb7f2640b264381ac
+      id: 2159866851
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: VolumeUP!!
+        ObjectType: 4
+        guid: 7f509d3da20b934abd1989c33bce7a3a
+      - ElementName: VolumeUP_Shot
+        ObjectType: 3
+        guid: 74b8af3b5561454fb7f2640b264381ac
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\VolumeUP!!\VolumeUP_Shot
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: VolumeUP_Start
+      guid: 61ff9f4996245246a9d964267b3baac1
+      id: 2206846009
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: VolumeUP!!
+        ObjectType: 4
+        guid: 7f509d3da20b934abd1989c33bce7a3a
+      - ElementName: VolumeUP_Start
+        ObjectType: 3
+        guid: 61ff9f4996245246a9d964267b3baac1
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\VolumeUP!!\VolumeUP_Start
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Wave
+      guid: b941c00b4f0841458b4160ac9a7403c8
+      id: 1941003890
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: Wave
+        ObjectType: 4
+        guid: b941c00b4f0841458b4160ac9a7403c8
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Wave
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Wave_Start
+      guid: 4f3a7bd1d3d27b49ab0244b702e44b64
+      id: 142118675
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Boss
+        ObjectType: 4
+        guid: 61d36f77ab5d9d44bbbc677c60073889
+      - ElementName: Wave
+        ObjectType: 4
+        guid: b941c00b4f0841458b4160ac9a7403c8
+      - ElementName: Wave_Start
+        ObjectType: 3
+        guid: 4f3a7bd1d3d27b49ab0244b702e44b64
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Wave\Wave_Start
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Weapon
       guid: 0a0d25fc23e0be4c9d5d8f5622492cd3
       id: 3893417221
@@ -3592,7 +4047,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584696431369040630
+    m_lastTime: -8584696314925126430
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -3745,7 +4200,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584698541474184204
+    m_lastTime: -8584696314924764402
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -3899,7 +4354,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584698541491596460
+    m_lastTime: -8584696314794666052
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -3913,7 +4368,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584698541491208064
+    m_lastTime: -8584696314794369262
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -4012,9 +4467,9 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584698541490844004
+    m_lastTime: -8584696314794063239
     List: []
-  ExpandedFileSystemItemIds: 
+  ExpandedFileSystemItemIds: bf000000c0000000c1000000c2000000
   ExpandedWaapiItemIds: 
   AutoSyncSelection: 0
   autoPopulateEnabled: 1

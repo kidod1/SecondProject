@@ -14,6 +14,7 @@ public class TestPortal : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             skeleton.PlayCloseAnimation(nextMap);
+            PlayerDataManager.Instance.SavePlayerData();
         }
     }
 }
