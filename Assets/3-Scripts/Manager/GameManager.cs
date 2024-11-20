@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour
 
     private int totalScore;
 
+    public AK.Wwise.Event pauseSound;
+
     private void Start()
     {
         skeletonAnimations = FindObjectsOfType<SkeletonAnimation>();
@@ -140,15 +142,17 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseGameByEscape();
+            if (!PlayManager.I.isPause)
+            {
+                PauseGameByEscape();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.T))
         {
             abilityUIManager.ShowAbilitySelection(); // T 키를 누르면 능력 선택 창을 띄운다
         }
 
-        // Time.timeScale에 따른 pauseRTPC 설정 (ESC로 인한 일시정지가 아닐 때만)
-        if (Time.timeScale == 0 && !isPausedByEscape)
+        if (Time.timeScale == 0)
         {
             pauseRTPC.SetGlobalValue(1);
         }
@@ -160,19 +164,18 @@ public class GameManager : MonoBehaviour
 
     private void PauseGameByEscape()
     {
+        pauseSound.Post(gameObject);
         if (!isPausedByEscape)
         {
             isPausedByEscape = true;
             pauseCanvas.SetActive(true);
             Time.timeScale = 0f;
-            PauseAnimations();
         }
         else
         {
             isPausedByEscape = false;
             pauseCanvas.SetActive(false);
             Time.timeScale = 1f;
-            ResumeAnimations();
         }
     }
 

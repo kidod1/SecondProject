@@ -234,12 +234,11 @@ public void ShowAbilitySelection()
         Debug.LogError("AbilityManager: PlayerAbilityManager가 초기화되지 않았습니다.");
         return;
     }
-
     if (uiManager != null)
     {
         uiManager.EnableDepthOfField();
     }
-
+        PlayManager.I.IsPause();
     Time.timeScale = 0f;
     isAbilitySelectionActive = true;
     isSynergyAbilityActive = false; // 일반 능력 선택 시 시너지 비활성화
@@ -712,8 +711,8 @@ public void ShowAbilitySelection()
                 Debug.LogError("AbilityManager: SynergyAbility가 null입니다.");
                 return;
             }
-
-            Time.timeScale = 0f;
+        PlayManager.I.IsPause();
+        Time.timeScale = 0f;
             isAbilitySelectionActive = true;
             isSynergyAbilityActive = true; // 시너지 능력 활성화
 
@@ -785,7 +784,8 @@ public void ShowAbilitySelection()
             }
 
             Time.timeScale = 1f;
-            isAbilitySelectionActive = false;
+        PlayManager.I.NotPause();
+        isAbilitySelectionActive = false;
             isSynergyAbilityActive = false; // 시너지 능력 비활성화
         }
 
@@ -919,6 +919,7 @@ public void ShowAbilitySelection()
             }
 
             Time.timeScale = 1f;
+         PlayManager.I.NotPause();
             isAbilitySelectionActive = false;
             isSynergyAbilityActive = false; // 선택 완료 후 시너지 비활성화
         }

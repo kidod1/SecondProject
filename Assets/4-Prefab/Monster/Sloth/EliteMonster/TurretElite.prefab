@@ -120,7 +120,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -508134431
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &3715360063181050566
@@ -173,16 +173,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBaseStat: {fileID: 11400000, guid: 625eaafb44e405e4293ae5da3ce2f196, type: 2}
-  invincibilityDuration: 0
+  minKnockbackForce: 5
+  maxKnockbackForce: 15
   blinkInterval: 0.1
+  blinkDuration: 0.5
   monsterDeathEffectPrefab: {fileID: 1680038685634124950, guid: 9a981b63fbed14c49b5e410c04ab5880, type: 3}
   deathEffectDuration: 0.4
+  abilityDeathEffectDuration: 1
+  monsterInstantKillEffectPrefab: {fileID: 0}
   isElite: 1
   isInCooldown: 0
   isInfected: 0
   damageArea: {fileID: 7698582841258142112}
   areaDamage: 10
   damageInterval: 1
+  stunEffectPrefab: {fileID: 0}
+  isInstantKilled: 0
+  hitSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 63d69bb7fdf848f4fa60b2286c6b91db, type: 2}
+  deathSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
   bulletPrefab: {fileID: 1927569836658033460, guid: 1aae585b12845a042872201dad2f9a53, type: 3}
   stat: {fileID: 11400000, guid: 625eaafb44e405e4293ae5da3ce2f196, type: 2}
   summonAnimation: summon
@@ -197,6 +211,10 @@ MonoBehaviour:
   - {fileID: 814760329991142954}
   bulietQuantity: 4
   isAttacking: 0
+  attackSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: c04dd99554c17de41959169629bdca1a, type: 2}
 --- !u!61 &4457303775279968565
 BoxCollider2D:
   m_ObjectHideFlags: 0

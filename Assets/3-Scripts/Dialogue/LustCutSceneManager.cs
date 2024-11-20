@@ -65,7 +65,7 @@ public class LustCutSceneManager : MonoBehaviour
     private bool isAnimating = false; // 텍스트 애니메이션 중인지 확인하는 플래그
     private bool cutsceneEnded = false;
     private string currentSentence = ""; // 현재 대사 저장
-
+    private bool isFirstTalk = true;
     [SerializeField]
     private SceneChangeSkeleton sceneChangeSkeleton;
     [SerializeField]
@@ -109,7 +109,6 @@ public class LustCutSceneManager : MonoBehaviour
 
         StartCutscene();
     }
-
     private void OnEnable()
     {
         OnCutsceneStarted?.Invoke();
@@ -122,12 +121,10 @@ public class LustCutSceneManager : MonoBehaviour
     public void StartCutscene()
     {
         dialogueQueue.Clear();
-
         foreach (DialogueLine line in cutsceneDialogue.dialogueLines)
         {
             dialogueQueue.Enqueue(line);
         }
-
         DisplayNextSentence();
     }
 
@@ -158,8 +155,15 @@ public class LustCutSceneManager : MonoBehaviour
         currentSentenceIndex++;
         currentSentence = currentLine.sentence;
 
-        // 대화창 선택
-        if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
+            if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
+            {
+
+                currentDialogueBox = dialogueBoxes[currentLine.dialogueBoxIndex];
+                currentDialogueBox.dialogueBoxObject.SetActive(true);
+            }
+
+            // 대화창 선택
+            if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
         {
             currentDialogueBox = dialogueBoxes[currentLine.dialogueBoxIndex];
             currentDialogueBox.dialogueBoxObject.SetActive(true);

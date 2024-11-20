@@ -650,7 +650,7 @@
 								</Folder>
 								<Folder Name="Sloth_Boss" ID="{9A9A3561-EF97-4975-8041-6F1E1EE5B81C}" ShortID="238123603">
 									<ChildrenList>
-										<Event Name="Sloth_B_Attack1" ID="{C9443C79-8C9A-40C5-9BDC-AF348A22B941}">
+										<Event Name="Sloth_B_Attack1_shot" ID="{C9443C79-8C9A-40C5-9BDC-AF348A22B941}">
 											<ChildrenList>
 												<Action Name="" ID="{BE74214A-8F64-4CB1-989F-7D486FA96307}" ShortID="550809211">
 													<ReferenceList>
@@ -661,23 +661,23 @@
 												</Action>
 											</ChildrenList>
 										</Event>
-										<Event Name="Sloth_Boss_Pattern01" ID="{293E8B36-A5BF-4EE5-AA79-86DD01C9784D}">
+										<Event Name="Sloth_Boss_CRASH" ID="{293E8B36-A5BF-4EE5-AA79-86DD01C9784D}">
 											<ChildrenList>
-												<Action Name="" ID="{3E355AB9-5C84-4EDB-9269-1036A3D08C54}" ShortID="29962891">
+												<Action Name="" ID="{65A737C1-537E-4CBA-800B-DDC2F5BCECDC}" ShortID="987060003">
 													<ReferenceList>
 														<Reference Name="Target">
-															<ObjectRef Name="Sloth_Pattern01" ID="{54E788D7-6B4B-4D3F-870C-9A92FB4FD053}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+															<ObjectRef Name="Crash_BodyHitLargeMetal" ID="{58DE1B49-C72F-4FAE-9D29-ABD830F7BD43}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
 											</ChildrenList>
 										</Event>
-										<Event Name="Sloth_Boss_Pattern02" ID="{8974AEDC-36AB-4CF7-A312-D9CF087AF3D8}">
+										<Event Name="Sloth_Boss_Lightning" ID="{A625E560-E4E9-4566-B948-F1DAE8B7F213}">
 											<ChildrenList>
-												<Action Name="" ID="{86992BAA-9231-4F1B-9DBB-F7CF41F43D3C}" ShortID="911299409">
+												<Action Name="" ID="{331EFEA3-151C-463F-A280-7CED94AB35CE}" ShortID="1059847478">
 													<ReferenceList>
 														<Reference Name="Target">
-															<ObjectRef Name="Sloth_Pattern02" ID="{0589B183-7E77-45B2-B829-62741E06079D}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+															<ObjectRef Name="ElecEnergy_ImpactSpark02" ID="{7A1FE59C-D177-47B3-BAE4-35908E570CFF}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -693,6 +693,17 @@
 													<ReferenceList>
 														<Reference Name="Target">
 															<ObjectRef Name="gee" ID="{FC28F078-964A-4C95-950F-D2621F8015E5}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="nomal_atk2" ID="{ECF72E58-FF5B-4AAE-86B4-157B61059D7B}">
+											<ChildrenList>
+												<Action Name="" ID="{8060AAA2-9376-45C7-A8F7-C323D494B8F0}" ShortID="311904354">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Buff 13" ID="{A78CC3B5-8B22-4F46-8A55-C6C1F8D3C943}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -944,28 +955,47 @@
 								</Action>
 							</ChildrenList>
 						</Event>
-						<Event Name="AMB_CityScape" ID="{651F3C7E-8D9B-4B4E-BAC4-5D102909D82A}">
+						<Folder Name="Sloth_cityscapeAMB" ID="{F1102293-311B-4D87-B197-AB6DE3B5DA0E}" ShortID="320260196">
 							<ChildrenList>
-								<Action Name="" ID="{CE5228F2-ADF3-4845-B49A-605190928528}" ShortID="455271851">
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="Amb_NightCityTrafficLoop" ID="{422DDA5E-7763-4008-9CAB-C5D03A86F6C1}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
+								<Event Name="AMB_CityScape" ID="{651F3C7E-8D9B-4B4E-BAC4-5D102909D82A}">
+									<ChildrenList>
+										<Action Name="" ID="{CE5228F2-ADF3-4845-B49A-605190928528}" ShortID="455271851">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Amb_NightCityTrafficLoop" ID="{422DDA5E-7763-4008-9CAB-C5D03A86F6C1}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="AMB_Cloak" ID="{24E930FE-AFCC-4AB3-945C-72E702E01F62}">
+									<ChildrenList>
+										<Action Name="" ID="{EBD0E630-1522-4F4B-B62A-4BE3D1F335BC}" ShortID="931783949">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="fiv" ID="{D687B978-5695-4E99-BBA9-255FBDAA0451}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
-						</Event>
-						<Event Name="AMB_Clock" ID="{24E930FE-AFCC-4AB3-945C-72E702E01F62}">
+						</Folder>
+						<Folder Name="Luxuria_cityscapeAMB" ID="{E0770277-9377-4018-98FE-B81EF8485BE8}" ShortID="477549001">
 							<ChildrenList>
-								<Action Name="" ID="{EBD0E630-1522-4F4B-B62A-4BE3D1F335BC}" ShortID="931783949">
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="fiv" ID="{D687B978-5695-4E99-BBA9-255FBDAA0451}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
+								<Event Name="amb_Lux_cityscape" ID="{D26D46DF-2277-41D3-9CB5-8037248333B9}">
+									<ChildrenList>
+										<Action Name="" ID="{62D4695D-4653-4127-BF8F-8DD5C6304AD8}" ShortID="1071309582">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Luxamb" ID="{9C8351BB-A309-4B8A-A35A-C5689F078EDF}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
-						</Event>
+						</Folder>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="UI" ID="{B9B5D772-3640-4672-8492-AAE9C074CD97}" ShortID="1009613585">
@@ -1194,6 +1224,17 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="Team_Logo" ID="{747FBA7E-122D-46EF-985D-39EA8885701B}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Sloth_cutscene_punch" ID="{0D5D61A0-8558-491C-A8CF-6D053BD43856}">
+							<ChildrenList>
+								<Action Name="" ID="{0EC131B0-9283-4940-8C8C-EF829E01D30A}" ShortID="88232277">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Heavy Game Punch 10" ID="{63C5AA99-FDB3-415A-9247-3ADBE96A325E}" WorkUnitID="{655807B1-6A04-4ABC-8321-136DA15435CE}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>

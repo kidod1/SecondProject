@@ -207,6 +207,7 @@ public class SceneChangeSkeleton : MonoBehaviour
         // 현재 애니메이션이 재생 중이 아니고 Open 애니메이션 이름이 설정되어 있을 때만 실행
         if (!isAnimating && !string.IsNullOrEmpty(openAnimationName))
         {
+            PlayManager.I.StopAllSounds();
             PlayOpenAnimation();
         }
     }

@@ -108,6 +108,14 @@ public abstract class Monster : MonoBehaviour
 
     private static Transform experienceItemsParent;
 
+    [Header("WWISE Sound Settings")]
+    [SerializeField, Tooltip("피격 시 재생할 WWISE 사운드 이벤트")]
+    private AK.Wwise.Event hitSoundEvent; // 피격 사운드 이벤트 변수 추가
+
+    [Tooltip("몬스터의 사망 시 재생할 WWISE 사운드 이벤트")]
+    [SerializeField]
+    private AK.Wwise.Event deathSoundEvent; // 사망 시 사운드 이벤트 (추가적으로 사용할 수 있음)
+
     /// <summary>
     /// 몬스터의 컴포넌트를 초기화하고 초기 상태를 설정합니다.
     /// </summary>
@@ -193,7 +201,6 @@ public abstract class Monster : MonoBehaviour
             player.OnPlayerDeath.RemoveListener(OnPlayerDeathHandler);
         }
     }
-
 
     /// <summary>
     /// 몬스터의 상태를 초기화합니다. 서브클래스에서 구현해야 합니다.
@@ -336,6 +343,17 @@ public abstract class Monster : MonoBehaviour
 
         ShowDamageText(damage);
         ApplyKnockback(damageSourcePosition);
+
+        // **피격 시 사운드 이벤트 재생**
+        if (hitSoundEvent != null)
+        {
+            hitSoundEvent.Post(gameObject);
+            Debug.Log("피격사운드재생");
+        }
+        else
+        {
+            Debug.LogWarning("Monster: hitSoundEvent가 할당되지 않았습니다.");
+        }
 
         if (isInstantKilled)
         {
@@ -528,6 +546,16 @@ public abstract class Monster : MonoBehaviour
             SpawnParasite();
         }
 
+        // **사망 시 사운드 이벤트 재생**
+        if (deathSoundEvent != null)
+        {
+            deathSoundEvent.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Monster: deathSoundEvent가 할당되지 않았습니다.");
+        }
+
         if (monsterDeathEffectPrefab != null)
         {
             GameObject deathEffect = Instantiate(monsterDeathEffectPrefab, transform.position, Quaternion.identity);
@@ -674,7 +702,6 @@ public abstract class Monster : MonoBehaviour
             }
         }
     }
-
 
     /// <summary>
     /// 몬스터가 다른 콜라이더와 충돌할 때 호출됩니다.

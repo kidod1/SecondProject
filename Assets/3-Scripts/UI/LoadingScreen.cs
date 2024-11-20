@@ -1,11 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 using Spine.Unity;
 using Spine;
 using Cinemachine;
 using AK.Wwise; // WWISE 네임스페이스 추가
+using UnityEngine.Events; // UnityEvent 네임스페이스 추가
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -58,6 +61,9 @@ public class LoadingScreen : MonoBehaviour
     [Header("WWISE Events")]
     [SerializeField]
     private AK.Wwise.Event loadSceneEvent; // WWISE 이벤트 변수 추가
+
+    [Header("Unity Events")]
+    public UnityEvent beforeSceneLoadEvent; // 씬 전환 전에 호출될 이벤트
 
     private bool isLoadingComplete = false;
     private bool hasFadeOutStarted = false;
@@ -202,6 +208,13 @@ public class LoadingScreen : MonoBehaviour
         while (!Input.GetKeyDown(KeyCode.Space))
         {
             yield return null;
+        }
+
+        // **씬 전환 전에 UnityEvent 호출**
+        if (beforeSceneLoadEvent != null)
+        {
+            beforeSceneLoadEvent.Invoke();
+            Debug.Log("beforeSceneLoadEvent가 호출되었습니다.");
         }
 
         // WWISE 이벤트 실행

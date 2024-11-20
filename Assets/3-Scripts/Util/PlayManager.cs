@@ -8,7 +8,7 @@ public class PlayManager : MonoBehaviour
 
     private Player player;
     public bool isPlayerDied = false;
-
+    public bool isPause = false;
     private void Awake()
     {
         if (I == null)
@@ -76,6 +76,14 @@ public class PlayManager : MonoBehaviour
         }
     }
 
+    public void IsPause()
+    {
+        isPause = true;
+    }
+    public void NotPause()
+    {
+        isPause = false;
+    }
     public void isPlayerDie()
     {
         isPlayerDied = true;

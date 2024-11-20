@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584696314793772762
+    m_lastTime: -8584695216328309298
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584696314793483522
+    m_lastTime: -8584695216327957507
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584696314924036347
+    m_lastTime: -8584695216461975348
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584696314795265936
+    m_lastTime: -8584695216330188124
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584696314780785644
+    m_lastTime: -8584695216463784672
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -1248,16 +1248,19 @@ MonoBehaviour:
       - ElementName: AMB
         ObjectType: 4
         guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: Sloth_cityscapeAMB
+        ObjectType: 4
+        guid: 932210f11b31874db197ab6de3b5da0e
       - ElementName: AMB_CityScape
         ObjectType: 3
         guid: 7e3c1f659b8d4e4bbac45d102909d82a
-      Path: Events\Default Work Unit\AMB\AMB_CityScape
+      Path: Events\Default Work Unit\AMB\Sloth_cityscapeAMB\AMB_CityScape
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: AMB_Clock
+    - name: AMB_Cloak
       guid: fe30e924ccafb34a945c72e702e01f62
-      id: 3582440336
+      id: 3615995722
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -1268,10 +1271,36 @@ MonoBehaviour:
       - ElementName: AMB
         ObjectType: 4
         guid: 47b25139875a794580cf94731ad26af8
-      - ElementName: AMB_Clock
+      - ElementName: Sloth_cityscapeAMB
+        ObjectType: 4
+        guid: 932210f11b31874db197ab6de3b5da0e
+      - ElementName: AMB_Cloak
         ObjectType: 3
         guid: fe30e924ccafb34a945c72e702e01f62
-      Path: Events\Default Work Unit\AMB\AMB_Clock
+      Path: Events\Default Work Unit\AMB\Sloth_cityscapeAMB\AMB_Cloak
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: amb_Lux_cityscape
+      guid: df466dd27722d3419cb58037248333b9
+      id: 1989891045
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: AMB
+        ObjectType: 4
+        guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: Luxuria_cityscapeAMB
+        ObjectType: 4
+        guid: 770277e07793184098feb81ef8485be8
+      - ElementName: amb_Lux_cityscape
+        ObjectType: 3
+        guid: df466dd27722d3419cb58037248333b9
+      Path: Events\Default Work Unit\AMB\Luxuria_cityscapeAMB\amb_Lux_cityscape
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -2318,6 +2347,26 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Luxuria_cityscapeAMB
+      guid: 770277e07793184098feb81ef8485be8
+      id: 3758759061
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: AMB
+        ObjectType: 4
+        guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: Luxuria_cityscapeAMB
+        ObjectType: 4
+        guid: 770277e07793184098feb81ef8485be8
+      Path: Events\Default Work Unit\AMB\Luxuria_cityscapeAMB
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Luxuria_Enemy
       guid: 8c8d2b633b010748a22bda827dd046a8
       id: 3028610990
@@ -2534,6 +2583,32 @@ MonoBehaviour:
         ObjectType: 3
         guid: 46679c82dfd4db428acebc891d52436f
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Enemy\Nomal_atk1
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: nomal_atk2
+      guid: 582ef7ec5bffae4a86b4157b61059d7b
+      id: 2978102397
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Enemy
+        ObjectType: 4
+        guid: 020651b4141cda40b05b13c30e679370
+      - ElementName: Luxuria_Enemy
+        ObjectType: 4
+        guid: 8c8d2b633b010748a22bda827dd046a8
+      - ElementName: nomal_atk2
+        ObjectType: 3
+        guid: 582ef7ec5bffae4a86b4157b61059d7b
+      Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Enemy\nomal_atk2
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -3159,26 +3234,6 @@ MonoBehaviour:
       maxDuration: 0.8108138
       minDuration: 0.63678634
     - name: Siren
-      guid: bbc5c6a6430f9649bd3550737739815b
-      id: 734002816
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: UI
-        ObjectType: 4
-        guid: 72d7b5b9403672468492aae9c074cd97
-      - ElementName: Siren
-        ObjectType: 4
-        guid: bbc5c6a6430f9649bd3550737739815b
-      Path: Events\Default Work Unit\UI\Siren
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
-    - name: Siren
       guid: 83ce62898f313e428d9b7bb57f762cd0
       id: 734002816
       PathAndIcons:
@@ -3198,6 +3253,26 @@ MonoBehaviour:
         ObjectType: 3
         guid: 83ce62898f313e428d9b7bb57f762cd0
       Path: Events\Default Work Unit\UI\Siren\Siren
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Siren
+      guid: bbc5c6a6430f9649bd3550737739815b
+      id: 734002816
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Siren
+        ObjectType: 4
+        guid: bbc5c6a6430f9649bd3550737739815b
+      Path: Events\Default Work Unit\UI\Siren
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -3267,9 +3342,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Sloth_B_Attack1
+    - name: Sloth_B_Attack1_shot
       guid: 793c44c99a8cc5409bdcaf348a22b941
-      id: 4114013180
+      id: 671951435
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -3286,10 +3361,10 @@ MonoBehaviour:
       - ElementName: Sloth_Boss
         ObjectType: 4
         guid: 61359a9a97ef754980416f1e1ee5b81c
-      - ElementName: Sloth_B_Attack1
+      - ElementName: Sloth_B_Attack1_shot
         ObjectType: 3
         guid: 793c44c99a8cc5409bdcaf348a22b941
-      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_B_Attack1
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_B_Attack1_shot
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -3339,9 +3414,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Sloth_Boss_Pattern01
+    - name: Sloth_Boss_CRASH
       guid: 368b3e29bfa5e54eaa7986dd01c9784d
-      id: 437125043
+      id: 1166720229
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -3358,16 +3433,16 @@ MonoBehaviour:
       - ElementName: Sloth_Boss
         ObjectType: 4
         guid: 61359a9a97ef754980416f1e1ee5b81c
-      - ElementName: Sloth_Boss_Pattern01
+      - ElementName: Sloth_Boss_CRASH
         ObjectType: 3
         guid: 368b3e29bfa5e54eaa7986dd01c9784d
-      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Pattern01
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_CRASH
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Sloth_Boss_Pattern02
-      guid: dcae7489ab36f74ca312d9cf087af3d8
-      id: 437125040
+    - name: Sloth_Boss_Lightning
+      guid: 60e525a6e9e46645b948f1dae8b7f213
+      id: 2509172074
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -3384,10 +3459,50 @@ MonoBehaviour:
       - ElementName: Sloth_Boss
         ObjectType: 4
         guid: 61359a9a97ef754980416f1e1ee5b81c
-      - ElementName: Sloth_Boss_Pattern02
+      - ElementName: Sloth_Boss_Lightning
         ObjectType: 3
-        guid: dcae7489ab36f74ca312d9cf087af3d8
-      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Pattern02
+        guid: 60e525a6e9e46645b948f1dae8b7f213
+      Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Lightning
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Sloth_cityscapeAMB
+      guid: 932210f11b31874db197ab6de3b5da0e
+      id: 3389345993
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: AMB
+        ObjectType: 4
+        guid: 47b25139875a794580cf94731ad26af8
+      - ElementName: Sloth_cityscapeAMB
+        ObjectType: 4
+        guid: 932210f11b31874db197ab6de3b5da0e
+      Path: Events\Default Work Unit\AMB\Sloth_cityscapeAMB
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Sloth_cutscene_punch
+      guid: a0615d0d58851c49a8cf6d053bd43856
+      id: 220035339
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Sloth_cutscene_punch
+        ObjectType: 3
+        guid: a0615d0d58851c49a8cf6d053bd43856
+      Path: Events\Default Work Unit\UI\Sloth_cutscene_punch
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -4047,7 +4162,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584696314925126430
+    m_lastTime: -8584695216463360875
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -4200,7 +4315,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584696314924764402
+    m_lastTime: -8584695216462999328
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -4354,7 +4469,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584696314794666052
+    m_lastTime: -8584695216329435720
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -4368,7 +4483,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584696314794369262
+    m_lastTime: -8584695216329053145
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -4467,9 +4582,9 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584696314794063239
+    m_lastTime: -8584695216328681838
     List: []
-  ExpandedFileSystemItemIds: bf000000c0000000c1000000c2000000
+  ExpandedFileSystemItemIds: 0200000003000000040000002d0000003400000037000000520000007300000076000000830000009d0000009e000000bf000000c0000000c1000000c2000000
   ExpandedWaapiItemIds: 
   AutoSyncSelection: 0
   autoPopulateEnabled: 1

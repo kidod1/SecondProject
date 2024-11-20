@@ -155,11 +155,23 @@ MonoBehaviour:
   damageInterval: 1
   stunEffectPrefab: {fileID: 2120295938245694077, guid: 75e8986776f519e4abcca0a122a94e3d, type: 3}
   isInstantKilled: 0
+  hitSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 63d69bb7fdf848f4fa60b2286c6b91db, type: 2}
+  deathSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
   stat: {fileID: 11400000, guid: b10504d69d2bb654cb395645083412b7, type: 2}
   idleAnimation: idle
   boomAnimation: trigger
   boomAfterAnimation: boom
   explosionEffectPrefab: {fileID: 8532560464495141639, guid: 9807de4300dded34d96605b87fba1aa1, type: 3}
+  explosionSoundEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: ecc90c4d5917ef34480db9b9c6602e50, type: 2}
 --- !u!50 &5455419880118288999
 Rigidbody2D:
   serializedVersion: 4

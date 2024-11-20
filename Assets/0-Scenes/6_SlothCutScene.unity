@@ -484,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   surprisedAnimation: mod/dark
   idleAnimation: idle
-  surprisedFaceAnimation: 
+  surprisedFaceAnimation: surprised
 --- !u!1 &275401240
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +767,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 100}
+  m_AnchoredPosition: {x: -488, y: 100}
   m_SizeDelta: {x: 27, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &300900858
@@ -780,7 +780,7 @@ Animator:
   m_GameObject: {fileID: 300900856}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6090f79caee6aaf4cb81647f259054cc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 988c933d4e2c22741a2a21f9f0b749b1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

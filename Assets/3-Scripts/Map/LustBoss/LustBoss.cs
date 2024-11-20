@@ -5,6 +5,10 @@ using System.Linq;
 
 public class LustBoss : Monster
 {
+    // 피격 시 색상 변경을 위한 필드 추가
+    private MeshRenderer redMeshRenderer;
+    private Color bossOriginalColor;
+
     [Header("Lust Boss Pattern Data")]
     [SerializeField]
     private LustBossPatternData lustPatternData;
@@ -31,6 +35,34 @@ public class LustBoss : Monster
     [SerializeField, Tooltip("스폰 후 폭발 패턴의 발사 지점들")]
     private Transform[] spawnExplosionSpawnPoints;
 
+    [Header("Specified Direction Pattern Settings")]
+    [SerializeField, Tooltip("지정된 방향 패턴의 발사 지점들")]
+    private Transform[] specifiedPatternSpawnPoints;
+
+    [SerializeField, Tooltip("지정된 방향 패턴의 목표 지점들")]
+    private Transform[] specifiedPatternTargetPoints;
+
+    [Header("Specified Direction Pattern Sound Settings")]
+    [SerializeField, Tooltip("지정된 방향 패턴의 사운드 이벤트")]
+    private AK.Wwise.Event specifiedDirectionPatternSound;
+
+    [Header("Circle Bullet Pattern Sound Settings")]
+    [SerializeField, Tooltip("원형 탄환 패턴의 사운드 이벤트")]
+    private AK.Wwise.Event circleBulletPatternSound;
+
+    [Header("Heart Bullet Pattern Sound Settings")]
+    [SerializeField, Tooltip("하트 탄환 패턴의 사운드 이벤트")]
+    private AK.Wwise.Event heartBulletPatternSound;
+
+    [Header("Angle Bullet Pattern Sound Settings")]
+    [SerializeField, Tooltip("각도 탄환 패턴의 사운드 이벤트")]
+    private AK.Wwise.Event angleBulletPatternSound;
+
+    [Header("Spawn Explosion Pattern Sound Settings")]
+    [SerializeField, Tooltip("스폰 후 폭발 패턴의 사운드 이벤트")]
+    private AK.Wwise.Event spawnExplosionPatternSound;
+
+
     // 추가: PlayerUIManager 참조
     [Header("UI Manager")]
     [SerializeField, Tooltip("PlayerUIManager")]
@@ -41,6 +73,8 @@ public class LustBoss : Monster
 
     // 소환된 탄환들을 관리하기 위한 리스트
     private List<GameObject> spawnedCircleBullets = new List<GameObject>();
+    private List<GameObject> spawnedHeartBullets = new List<GameObject>();
+    private List<GameObject> spawnedExplosionBullets = new List<GameObject>();
 
     // AngleBulletSpawnData 클래스 정의
     [System.Serializable]
@@ -91,7 +125,18 @@ public class LustBoss : Monster
         {
             Debug.LogError("LustBoss: PlayerUIManager가 할당되지 않았습니다.");
         }
-
+        // MeshRenderer와 원래 색상 저장
+        redMeshRenderer = GetComponent<MeshRenderer>();
+        if (redMeshRenderer != null)
+        {
+            // 메테리얼 인스턴스화
+            redMeshRenderer.material = new Material(redMeshRenderer.material);
+            bossOriginalColor = redMeshRenderer.material.color;
+        }
+        else
+        {
+            Debug.LogWarning("MeshRenderer를 찾을 수 없습니다.");
+        }
         // 패턴 실행을 시작합니다.
         SetAttackable(true);
     }
@@ -114,7 +159,7 @@ public class LustBoss : Monster
         }
         else
         {
-            // 필요한 경우 피격 시 효과 추가
+            StartCoroutine(FlashRedCoroutine());
         }
 
         Debug.Log($"LustBoss가 데미지를 입었습니다! 남은 체력: {currentHP}/{monsterBaseStat.maxHP}");
@@ -146,6 +191,32 @@ public class LustBoss : Monster
         Destroy(gameObject); // 예시로 보스 오브젝트를 삭제합니다.
     }
 
+    /// <summary>
+    /// 몬스터가 데미지를 받을 때 붉게 깜빡이는 효과를 처리하는 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴용 IEnumerator</returns>
+    private IEnumerator FlashRedCoroutine()
+    {
+        float elapsed = 0f;
+        bool isRed = false;
+
+        while (elapsed < 0.5f)
+        {
+            if (meshRenderer != null && meshRenderer.material != null)
+            {
+                meshRenderer.material.color = isRed ? bossOriginalColor : Color.red;
+                isRed = !isRed;
+            }
+
+            yield return new WaitForSeconds(0.1f);
+            elapsed += 0.1f;
+        }
+
+        if (meshRenderer != null && meshRenderer.material != null)
+        {
+            meshRenderer.material.color = bossOriginalColor;
+        }
+    }
     /// <summary>
     /// 몬스터의 상태를 초기화합니다. LustBoss는 상태 시스템을 사용하지 않으므로 빈 구현.
     /// </summary>
@@ -195,6 +266,10 @@ public class LustBoss : Monster
             {
                 yield return StartCoroutine(SpawnExplosionPattern());
             }
+            else if (randomValue < (cumulativeProbability += lustPatternData.specifiedPatternProbability))
+            {
+                yield return StartCoroutine(SpecifiedDirectionPattern());
+            }
             else
             {
                 Debug.LogWarning("알 수 없는 패턴 인덱스입니다.");
@@ -204,7 +279,7 @@ public class LustBoss : Monster
         }
     }
 
-    // 1번 패턴: 원형 탄환 패턴 수정
+    // 1번 패턴: 원형 탄환 패턴
     private IEnumerator CircleBulletPattern()
     {
         Debug.Log("원형 탄환 패턴 시작");
@@ -213,12 +288,13 @@ public class LustBoss : Monster
 
         for (int i = 0; i < repeatCount; i++)
         {
+            circleBulletPatternSound?.Post(gameObject);
             foreach (Transform spawnPoint in circleBulletSpawnPoints)
             {
                 // 탄환 소환
                 SpawnCircleBullets(spawnPoint);
 
-                // 0.5초 대기
+                // 0.1초 대기
                 yield return new WaitForSeconds(0.1f);
 
                 // 탄환 발사
@@ -288,14 +364,12 @@ public class LustBoss : Monster
             }
 
             yield return new WaitForSeconds(2f); // 모든 탄환이 소환된 후 대기 시간
-
+            heartBulletPatternSound?.Post(gameObject);
             ActivateHeartBullets();
 
             yield return new WaitForSeconds(0.5f); // 다음 반복 전 대기 시간
         }
     }
-
-    private List<GameObject> spawnedHeartBullets = new List<GameObject>();
 
     private void SpawnHeartBullets(Transform spawnPoint)
     {
@@ -332,12 +406,11 @@ public class LustBoss : Monster
     // 3번 패턴: 각도 탄환 패턴
     private IEnumerator AngleBulletPattern()
     {
-        Debug.Log("각도 탄환 패턴 시작");
-
         int repeatCount = lustPatternData.anglePatternRepeatCount;
 
         for (int i = 0; i < repeatCount; i++)
         {
+            angleBulletPatternSound?.Post(gameObject);
             foreach (AngleBulletSpawnData spawnData in angleBulletSpawnData)
             {
                 FireAngleBullets(spawnData.spawnPoint);
@@ -355,7 +428,7 @@ public class LustBoss : Monster
         float baseAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
 
         int bulletCount = lustPatternData.angleBulletCount;
-        float angleOffset = 10f; // 각 탄환 간 각도 차이
+        float angleOffset = 15f; // 각 탄환 간 각도 차이
 
         for (int j = 0; j < bulletCount; j++)
         {
@@ -383,8 +456,6 @@ public class LustBoss : Monster
     // 4번 패턴: 스폰 후 폭발 패턴
     private IEnumerator SpawnExplosionPattern()
     {
-        Debug.Log("스폰 후 폭발 패턴 시작");
-
         int repeatCount = lustPatternData.spawnExplosionPatternRepeatCount;
 
         for (int i = 0; i < repeatCount; i++)
@@ -395,14 +466,12 @@ public class LustBoss : Monster
             }
 
             yield return new WaitForSeconds(1f); // 모든 탄환이 소환된 후 대기 시간
-
+            spawnExplosionPatternSound?.Post(gameObject);
             ActivateExplosionBullets();
 
             yield return new WaitForSeconds(0.5f); // 다음 반복 전 대기 시간
         }
     }
-
-    private List<GameObject> spawnedExplosionBullets = new List<GameObject>();
 
     private void SpawnExplosionBullets(Transform spawnPoint)
     {
@@ -441,6 +510,76 @@ public class LustBoss : Monster
 
         // 리스트를 초기화합니다.
         spawnedExplosionBullets.Clear();
+    }
+
+    // 5번 패턴: 지정된 방향 패턴
+    private IEnumerator SpecifiedDirectionPattern()
+    {
+        Debug.Log("지정된 방향 패턴 시작");
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < lustPatternData.specifiedPatternDuration)
+        {
+            if (isDead)
+            {
+                yield break;
+            }
+            specifiedDirectionPatternSound?.Post(gameObject);
+            FireSpecifiedBullets();
+
+            yield return new WaitForSeconds(lustPatternData.specifiedPatternFireInterval);
+
+            elapsedTime += lustPatternData.specifiedPatternFireInterval;
+        }
+
+        Debug.Log("지정된 방향 패턴 종료");
+    }
+
+    private void FireSpecifiedBullets()
+    {
+        if (specifiedPatternSpawnPoints == null || specifiedPatternTargetPoints == null)
+        {
+            Debug.LogWarning("발사 지점 또는 목표 지점들이 설정되지 않았습니다.");
+            return;
+        }
+
+        if (specifiedPatternSpawnPoints.Length != specifiedPatternTargetPoints.Length)
+        {
+            Debug.LogWarning("발사 지점과 목표 지점의 개수가 일치하지 않습니다.");
+            return;
+        }
+
+        for (int i = 0; i < specifiedPatternSpawnPoints.Length; i++)
+        {
+            Transform spawnPoint = specifiedPatternSpawnPoints[i];
+            Transform targetPoint = specifiedPatternTargetPoints[i];
+
+            if (spawnPoint == null || targetPoint == null)
+            {
+                Debug.LogWarning($"인덱스 {i}의 발사 지점 또는 목표 지점이 null입니다.");
+                continue;
+            }
+
+            // 탄환 생성
+            GameObject bullet = Instantiate(lustPatternData.specifiedPatternBulletPrefab, spawnPoint.position, Quaternion.identity, patternParent);
+
+            // 방향 설정
+            Vector2 direction = (targetPoint.position - spawnPoint.position).normalized;
+
+            // 탄환에 속도 적용
+            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+            if (bulletRb != null)
+            {
+                bulletRb.velocity = direction * lustPatternData.specifiedPatternBulletSpeed;
+            }
+            else
+            {
+                Debug.LogError("지정된 패턴 탄환에 Rigidbody2D가 없습니다.");
+            }
+
+            bullet.SetActive(true);
+        }
     }
 
     /// <summary>

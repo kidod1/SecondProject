@@ -40,6 +40,16 @@ public class MonsterSpawner : MonoBehaviour
     [Header("Experience Items")]
     public Transform experienceItemsParent; // 경험치 아이템의 공통 부모
 
+    [Header("Boss Activation Cutscene")]
+    [SerializeField, Tooltip("보스 활성화 전에 재생할 경고 WWISE 사운드 이벤트")]
+    private AK.Wwise.Event warningSoundEvent; // WWISE 사운드 이벤트 변수 추가
+
+    [SerializeField, Tooltip("맵 전체를 가리는 패널의 CanvasGroup")]
+    private CanvasGroup mapCoverPanel; // CanvasGroup 변수 추가
+
+    [SerializeField, Tooltip("보스 활성화 연출의 총 지속 시간 (초)")]
+    private float cutsceneDuration = 5f;
+
     private void Start()
     {
         if (waves.Count > 0)
@@ -85,6 +95,11 @@ public class MonsterSpawner : MonoBehaviour
                 Debug.LogWarning("waveNumberText에 Animator 컴포넌트가 없습니다. 애니메이션 기능이 비활성화됩니다.");
             }
         }
+    }
+    private void Update()
+    {
+        // 활성화된 몬스터 리스트를 업데이트하여 죽은 몬스터를 제거
+        spawnedMonsters.RemoveAll(monster => monster == null || !monster.activeInHierarchy);
     }
 
     /// <summary>
@@ -133,7 +148,6 @@ public class MonsterSpawner : MonoBehaviour
             {
                 Debug.LogWarning("MonsterSpawner: waveNumberText가 할당되지 않았습니다.");
             }
-            // *** 웨이브 시작 메시지 표시 끝 ***
 
             // 메시지 표시 시간만큼 대기
             yield return new WaitForSeconds(messageDisplayDuration);
@@ -160,6 +174,9 @@ public class MonsterSpawner : MonoBehaviour
             currentWaveIndex++;
         }
 
+        // 모든 웨이브가 완료된 후 보스 활성화 전에 연출 실행
+        yield return StartCoroutine(BossActivationCutscene());
+
         // 모든 웨이브가 완료된 후 보스 활성화
         SpawnMidBoss();
 
@@ -171,11 +188,10 @@ public class MonsterSpawner : MonoBehaviour
             }
             else if (bossInstance is LustBoss lustBoss)
             {
-                lustBoss.SetAttackable(true); // 슬로스 지역일 경우 LustBoss 공격 가능 상태로 설정
+                lustBoss.SetAttackable(true); // 러스트 지역일 경우 LustBoss 공격 가능 상태로 설정
             }
         }
     }
-
     /// <summary>
     /// 씬에 미리 배치된 보스 오브젝트를 활성화합니다.
     /// </summary>
@@ -225,12 +241,6 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // 활성화된 몬스터 리스트를 업데이트하여 죽은 몬스터를 제거
-        spawnedMonsters.RemoveAll(monster => monster == null || !monster.activeInHierarchy);
-    }
-
     /// <summary>
     /// 현재 활성화된 모든 몬스터가 처치되었는지 확인합니다.
     /// </summary>
@@ -240,6 +250,58 @@ public class MonsterSpawner : MonoBehaviour
         return spawnedMonsters.Count == 0;
     }
 
+
+    private IEnumerator BossActivationCutscene()
+    {
+        Debug.Log("BossActivationCutscene 시작");
+
+        // 1. 경고 WWISE 사운드 재생
+        if (warningSoundEvent != null)
+        {
+            warningSoundEvent.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("MonsterSpawner: warningSoundEvent가 할당되지 않았습니다.");
+        }
+
+        // 2. 맵 전체를 가리는 패널 활성화 및 오퍼시티 조절
+        if (mapCoverPanel != null)
+        {
+            mapCoverPanel.gameObject.SetActive(true);
+            float elapsedTime = 0f;
+            float oscillationSpeed = 2f; // 오퍼시티 변화 속도
+            float minAlpha = 0.3f;
+            float maxAlpha = 0.8f;
+
+            while (elapsedTime < cutsceneDuration)
+            {
+                // 오퍼시티를 sin 함수를 이용해 최대과 최소 사이로 변화
+                mapCoverPanel.alpha = Mathf.Lerp(minAlpha, maxAlpha, (Mathf.Sin(Time.time * oscillationSpeed) + 1f) / 2f);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // 연출 종료 후 패널을 완전히 투명하게 하고 비활성화
+            mapCoverPanel.alpha = 0f;
+            mapCoverPanel.gameObject.SetActive(false);
+            if (warningSoundEvent != null)
+            {
+                warningSoundEvent.Stop(gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("MonsterSpawner: warningSoundEvent가 할당되지 않았습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("MonsterSpawner: mapCoverPanel이 할당되지 않았습니다.");
+        }
+
+        Debug.Log("BossActivationCutscene 종료");
+    }
     /// <summary>
     /// 웨이브 클리어 UI를 표시하고 서서히 페이드 아웃합니다.
     /// </summary>

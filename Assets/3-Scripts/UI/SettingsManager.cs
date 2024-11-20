@@ -172,4 +172,12 @@ public class SettingsManager : MonoBehaviour
     {
         // 마우스 감도 설정 로직을 구현하세요.
     }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }

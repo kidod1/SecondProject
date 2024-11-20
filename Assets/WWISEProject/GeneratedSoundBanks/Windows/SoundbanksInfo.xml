@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="393239870" Type="User" Language="SFX" Hash="{54853AA1-9E69-536C-E8B9-50ED024B76DE}">
+		<SoundBank Id="393239870" Type="User" Language="SFX" Hash="{B882CD0F-8686-211C-DE1D-124B7728715E}">
 			<ShortName>SFX</ShortName>
 			<Path>SFX.bnk</Path>
 			<Media>
@@ -44,6 +44,10 @@
 				<File Id="71992266" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>ui_button_simple_click_07.wav</ShortName>
 					<CachePath>SFX/ui_button_simple_click_07_818F3B66.wem</CachePath>
+				</File>
+				<File Id="73277800" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Heavy Game Punch 10.wav</ShortName>
+					<CachePath>SFX/Heavy Game Punch 10_818F3B66.wem</CachePath>
 				</File>
 				<File Id="83031587" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>ElecEnergy_ImpactSpark02.wav</ShortName>
@@ -141,10 +145,6 @@
 					<ShortName>SFX_Player_Ablilty_Greed_shuffle02.wav</ShortName>
 					<CachePath>SFX/SFX_Player_Ablilty_Greed_shuffle02_818F3B66.wem</CachePath>
 				</File>
-				<File Id="389971002" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>Hit_ElectricPowerBoxSpark1.wav</ShortName>
-					<CachePath>SFX/Hit_ElectricPowerBoxSpark1_818F3B66.wem</CachePath>
-				</File>
 				<File Id="401221416" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Football_Crowd_AmbLoop.wav</ShortName>
 					<CachePath>SFX/Football_Crowd_AmbLoop_FBC78EF0.wem</CachePath>
@@ -168,6 +168,10 @@
 				<File Id="441935713" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Head 2.wav</ShortName>
 					<CachePath>SFX/Head 2_818F3B66.wem</CachePath>
+				</File>
+				<File Id="472630872" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Luxamb.wav</ShortName>
+					<CachePath>SFX/Luxamb_FBC78EF0.wem</CachePath>
 				</File>
 				<File Id="473718757" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Ablilty_Greed_Joker(insta-kill).wav</ShortName>
@@ -200,10 +204,6 @@
 				<File Id="557308535" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX_Player_Ablilty_Greed_CoinBetting03.wav</ShortName>
 					<CachePath>SFX/SFX_Player_Ablilty_Greed_CoinBetting03_818F3B66.wem</CachePath>
-				</File>
-				<File Id="569057299" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>LaserRifle_Switch_Select3.wav</ShortName>
-					<CachePath>SFX/LaserRifle_Switch_Select3_818F3B66.wem</CachePath>
 				</File>
 				<File Id="573794236" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Door close.wav</ShortName>
@@ -312,6 +312,10 @@
 				<File Id="845954351" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>synopsss2.wav</ShortName>
 					<CachePath>SFX/synopsss2_A71FA592.wem</CachePath>
+				</File>
+				<File Id="870625417" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Buff 13.wav</ShortName>
+					<CachePath>SFX/Buff 13_818F3B66.wem</CachePath>
 				</File>
 				<File Id="873602043" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX_Player_Ablilty_Jealousy_Ouroboros2.wav</ShortName>
@@ -503,9 +507,14 @@
 						<MediaRef Id="819973220"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="3582440336" Name="AMB_Clock">
+				<Event Id="3615995722" Name="AMB_Cloak">
 					<MediaRefs>
 						<MediaRef Id="362325445"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1989891045" Name="amb_Lux_cityscape">
+					<MediaRefs>
+						<MediaRef Id="472630872"/>
 					</MediaRefs>
 				</Event>
 				<Event Id="729984210" Name="AMB_stop"/>
@@ -632,6 +641,11 @@
 						<MediaRef Id="936067348"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="2978102397" Name="nomal_atk2">
+					<MediaRefs>
+						<MediaRef Id="870625417"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="2434695444" Name="Object_Broken">
 					<MediaRefs>
 						<MediaRef Id="70255767"/>
@@ -752,21 +766,24 @@
 					</MediaRefs>
 				</Event>
 				<Event Id="791100847" Name="Siren_stop"/>
-				<Event Id="4114013180" Name="Sloth_B_Attack1">
+				<Event Id="671951435" Name="Sloth_B_Attack1_shot">
 					<MediaRefs>
 						<MediaRef Id="650745981"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="437125043" Name="Sloth_Boss_Pattern01">
+				<Event Id="1166720229" Name="Sloth_Boss_CRASH">
 					<MediaRefs>
-						<MediaRef Id="569057299"/>
 						<MediaRef Id="653049683"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="437125040" Name="Sloth_Boss_Pattern02">
+				<Event Id="2509172074" Name="Sloth_Boss_Lightning">
 					<MediaRefs>
 						<MediaRef Id="83031587"/>
-						<MediaRef Id="389971002"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="220035339" Name="Sloth_cutscene_punch">
+					<MediaRefs>
+						<MediaRef Id="73277800"/>
 					</MediaRefs>
 				</Event>
 				<Event Id="4241994286" Name="Sloth_E_Fire">
@@ -1198,5 +1215,5 @@
 			</GameParameters>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{408DEF04-A647-B606-A705-6A3368F2A511}</FileHash>
+	<FileHash>{B0EDEC38-841B-268C-C4AD-FDEB447852DC}</FileHash>
 </SoundBanksInfo>

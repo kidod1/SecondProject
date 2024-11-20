@@ -18,6 +18,10 @@ public class BoomImp : Monster
     [SerializeField]
     private GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹 추가
 
+    [Header("WWISE Sound Settings")]
+    [SerializeField, Tooltip("폭발 시 재생할 WWISE 사운드 이벤트")]
+    private AK.Wwise.Event explosionSoundEvent; // 폭발 사운드 이벤트 변수 추가
+
     protected override void Start()
     {
         base.Start();
@@ -68,6 +72,16 @@ public class BoomImp : Monster
         if (hasExploded) return;
 
         hasExploded = true;
+
+        // **폭발 사운드 이벤트 재생**
+        if (explosionSoundEvent != null)
+        {
+            explosionSoundEvent.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("BoomImp: explosionSoundEvent가 할당되지 않았습니다.");
+        }
 
         // 폭발 이펙트 생성
         if (explosionEffectPrefab != null)
@@ -149,6 +163,7 @@ public class BoomImpIdleState : MonsterState
 
     public override void ExitState() { }
 }
+
 public class BoomImpChaseState : MonsterState
 {
     public BoomImpChaseState(Monster monster) : base(monster) { }
@@ -169,6 +184,7 @@ public class BoomImpChaseState : MonsterState
 
     public override void ExitState() { }
 }
+
 public class BoomImpAttackState : MonsterState
 {
     public BoomImpAttackState(Monster monster) : base(monster) { }

@@ -92,7 +92,7 @@ public class Breath : Ability
             int nextLevelDamageIncrease = (currentLevel < damageIncrements.Length) ? damageIncrements[currentLevel] : damageIncrements[damageIncrements.Length - 1];
 
             return $"{baseDescription}\n" +
-                   $"Lv {currentLevel}:\n" +
+                   $"Lv {currentLevel + 1}:\n" +
                    $"브레스 공격 데미지 증가: +{nextLevelDamageIncrease}\n" +
                    $"브레스 지속 시간: {breathDuration}초\n" +
                    $"브레스 쿨타임: {cooldownTime}초";
@@ -102,7 +102,7 @@ public class Breath : Ability
             // 최대 레벨 설명
             int finalDamageIncrease = (currentLevel < damageIncrements.Length) ? damageIncrements[currentLevel - 1] : damageIncrements[damageIncrements.Length - 1];
             return $"{baseDescription}\n" +
-                   $"Max Level: {currentLevel}\n" +
+                   $"Max Level: {currentLevel + 1}\n" +
                    $"브레스 공격 데미지 증가: +{finalDamageIncrease}\n" +
                    $"브레스 공격 범위: {breathRange}m\n" +
                    $"브레스 공격 각도: {breathAngle}도\n" +

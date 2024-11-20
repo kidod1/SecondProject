@@ -61,6 +61,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < maxLevel - 1)
         {
+            currentLevel++; // 레벨 증가
             RemoveCurrentBuff();
             ApplyCurrentBuff();
         }
@@ -178,7 +179,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < attackDamageBuffs.Length)
         {
-            return attackDamageBuffs[currentLevel];
+            return attackDamageBuffs[currentLevel - 1];
         }
         return attackDamageBuffs[attackDamageBuffs.Length - 1];
     }
@@ -187,7 +188,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < attackSpeedBuffs.Length)
         {
-            return attackSpeedBuffs[currentLevel];
+            return attackSpeedBuffs[currentLevel - 1];
         }
         return attackSpeedBuffs[attackSpeedBuffs.Length - 1];
     }
@@ -196,7 +197,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < movementSpeedBuffs.Length)
         {
-            return movementSpeedBuffs[currentLevel];
+            return movementSpeedBuffs[currentLevel - 1];
         }
         return movementSpeedBuffs[movementSpeedBuffs.Length - 1];
     }
@@ -224,21 +225,43 @@ public class EnchantingMelody : Ability
 
         description += $"버프는 {buffChangeInterval}초마다 순환합니다.\n";
         description += $"Lv {currentLevel + 1}:\n";
-        description += $"공격력 버프: +{GetAttackDamageBuff()}\n";
-        description += $"공격 속도 버프: +{GetAttackSpeedBuff()} 초당 공격 횟수 증가\n";
-        description += $"이동 속도 버프: +{GetMovementSpeedBuff()}\n";
+        description += $"공격력 버프: +{attackDamageBuffs[currentLevel]}\n";
+        description += $"공격 속도 버프: +{attackSpeedBuffs[currentLevel]} 초당 공격 횟수 증가\n";
+        description += $"이동 속도 버프: +{movementSpeedBuffs[currentLevel]}\n";
 
         return description;
     }
 
     protected override int GetNextLevelIncrease()
     {
-        if (currentLevel + 1 < maxLevel)
+        if (currentLevel + 1 < maxLevel && (currentLevel + 1) < attackDamageBuffs.Length)
         {
             // 다음 레벨에서 증가하는 공격력 버프 값을 반환 (예시로 공격력 버프 증가량 사용)
             int nextAttackDamageBuff = attackDamageBuffs[currentLevel + 1] - attackDamageBuffs[currentLevel];
             return nextAttackDamageBuff;
         }
         return 0;
+    }
+
+    // 추가: 레벨과 배열 길이를 일치시키기 위한 유효성 검사
+    private void OnValidate()
+    {
+        if (attackDamageBuffs.Length != maxLevel)
+        {
+            Debug.LogWarning($"EnchantingMelody: attackDamageBuffs 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref attackDamageBuffs, maxLevel);
+        }
+
+        if (attackSpeedBuffs.Length != maxLevel)
+        {
+            Debug.LogWarning($"EnchantingMelody: attackSpeedBuffs 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref attackSpeedBuffs, maxLevel);
+        }
+
+        if (movementSpeedBuffs.Length != maxLevel)
+        {
+            Debug.LogWarning($"EnchantingMelody: movementSpeedBuffs 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
+            System.Array.Resize(ref movementSpeedBuffs, maxLevel);
+        }
     }
 }

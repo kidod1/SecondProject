@@ -78,7 +78,7 @@ public class IncreaseAttack : Ability
 
         if (currentLevel < attackIncreases.Length)
         {
-            int nextIncrease = attackIncreases[currentLevel + 1];
+            int nextIncrease = attackIncreases[currentLevel];
             return $"{baseDescription}\nLv {currentLevel + 1}:\n총 공격력 +{totalIncrease}\n다음 레벨: 공격력 +{nextIncrease}";
         }
         else

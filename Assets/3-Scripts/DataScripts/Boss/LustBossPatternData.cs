@@ -29,4 +29,21 @@ public class LustBossPatternData : ScriptableObject
     public int spawnExplosionBulletCount = 10;
     public float spawnExplosionBulletSpeed = 7f;
     public float spawnExplosionPatternProbability = 0.25f; // 스폰 후 폭발 패턴 확률 (25%)
+
+    [Header("Specified Direction Pattern Settings")]
+
+    [SerializeField, Tooltip("지정된 방향 패턴의 탄환 프리팹")]
+    public GameObject specifiedPatternBulletPrefab;
+
+    [SerializeField, Tooltip("지정된 방향 패턴의 탄환 속도")]
+    public float specifiedPatternBulletSpeed = 5f;
+
+    [SerializeField, Tooltip("지정된 방향 패턴의 발사 간격")]
+    public float specifiedPatternFireInterval = 0.35f;
+
+    [SerializeField, Tooltip("지정된 방향 패턴의 실행 시간")]
+    public float specifiedPatternDuration = 5f;
+
+
+    public float specifiedPatternProbability = 0.25f; // 지정된 방향 패턴 확률 (예: 25%)
 }

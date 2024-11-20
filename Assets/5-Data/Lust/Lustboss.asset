@@ -13,21 +13,26 @@ MonoBehaviour:
   m_Name: Lustboss
   m_EditorClassIdentifier: 
   circlePatternRepeatCount: 4
-  circleBulletPrefab: {fileID: 1927569836658033460, guid: 33556e61e4658974ca8d3daddab1a525, type: 3}
+  circleBulletPrefab: {fileID: 1927569836658033460, guid: c3ce6765bfb9bae4594dee1bc17dfb15, type: 3}
   circleBulletCount: 20
   circleBulletSpeed: 8
-  circlePatternProbability: 0
+  circlePatternProbability: 0.25
   heartPatternRepeatCount: 3
-  heartBulletPrefab: {fileID: 1217100799632886903, guid: d07d4a5ba66b38441be045c35d04a664, type: 3}
+  heartBulletPrefab: {fileID: 2055256831491026290, guid: bc287f1e632045e45bae0158133143b5, type: 3}
   heartBulletSpeed: 3
-  heartPatternProbability: 1
-  anglePatternRepeatCount: 3
-  angleBulletPrefab: {fileID: 1927569836658033460, guid: 33556e61e4658974ca8d3daddab1a525, type: 3}
-  angleBulletCount: 5
-  angleBulletSpeed: 6
-  anglePatternProbability: 0
+  heartPatternProbability: 0.25
+  anglePatternRepeatCount: 2
+  angleBulletPrefab: {fileID: 1927569836658033460, guid: c3ce6765bfb9bae4594dee1bc17dfb15, type: 3}
+  angleBulletCount: 20
+  angleBulletSpeed: 4
+  anglePatternProbability: 0.25
   spawnExplosionPatternRepeatCount: 3
-  spawnExplosionPrefab: {fileID: 0}
+  spawnExplosionPrefab: {fileID: 1927569836658033460, guid: c3ce6765bfb9bae4594dee1bc17dfb15, type: 3}
   spawnExplosionBulletCount: 10
-  spawnExplosionBulletSpeed: 7
-  spawnExplosionPatternProbability: 0
+  spawnExplosionBulletSpeed: 8
+  spawnExplosionPatternProbability: 0.25
+  specifiedPatternBulletPrefab: {fileID: 6142557266322576244, guid: 385624244711a6c48bcac1363b96d938, type: 3}
+  specifiedPatternBulletSpeed: 5
+  specifiedPatternFireInterval: 0.5
+  specifiedPatternDuration: 3
+  specifiedPatternProbability: 0

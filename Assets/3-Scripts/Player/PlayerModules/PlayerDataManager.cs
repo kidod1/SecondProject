@@ -63,7 +63,6 @@ public class PlayerDataManager : MonoBehaviour
         if (scene.name == "11_LustMap")
         {
             LoadPlayerData();
-            // 필요한 경우 추가적인 초기화 작업 수행
         }
     }
 
@@ -116,6 +115,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public void LoadPlayerData()
     {
+        playerData.InitializeStats();
         if (File.Exists(saveFilePath))
         {
             using (FileStream fs = new FileStream(saveFilePath, FileMode.Open))
@@ -199,6 +199,7 @@ public class PlayerDataManager : MonoBehaviour
     public void ResetPlayerData()
     {
         // 플레이어 진행 상황 초기화
+        playerData.InitializeStats();
         playerData.currentExperience = 0;
         playerData.currentCurrency = 0;
         playerData.currentLevel = 1;

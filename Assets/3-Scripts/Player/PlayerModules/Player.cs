@@ -9,6 +9,7 @@ using Cinemachine;
 using System.Collections.Generic;
 using AK.Wwise;
 using UnityEditor.Rendering;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
     public RTPC playerHealthRTPC;
     public RTPC playerHealthLow;
     public RTPC playerAttackSpeedRTPC;
+
+    public AK.Wwise.Event playerTakeDamageSound;
     [Tooltip("플레이어의 스탯 데이터")]
     public PlayerData stat;
 
@@ -235,10 +238,9 @@ public class Player : MonoBehaviour
         {
             Debug.LogWarning("PlayerUIManager를 찾을 수 없습니다.");
         }
-        UpdateUI();
         InitializePlayer();
+        UpdateUI();
     }
-
     /// <summary>
     /// 랜덤한 게임 시작 애니메이션을 재생합니다.
     /// </summary>
@@ -794,6 +796,7 @@ public class Player : MonoBehaviour
         {
             stat.TakeDamage(damage);
             UpdatePlayerHealthRTPC();
+            playerTakeDamageSound?.Post(gameObject);
             OnTakeDamage.Invoke();
 
             float healthPercentage = (float)stat.currentHP / stat.currentMaxHP;
@@ -856,6 +859,7 @@ public class Player : MonoBehaviour
     private void Die()
     {
         PlayManager.I.StopAllSounds();
+        PlayManager.I.IsPause();
         PlayerDataManager.Instance.ResetPlayerData();
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
@@ -952,7 +956,6 @@ public class Player : MonoBehaviour
     /// </summary>
     private void InitializePlayer()
     {
-        stat.InitializeStats();
         UpdatePlayerHealthRTPC();
         OnPlayerInitialized.Invoke(); // 플레이어 초기화 이벤트 호출
     }
