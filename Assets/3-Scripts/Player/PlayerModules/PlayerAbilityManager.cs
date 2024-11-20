@@ -76,7 +76,7 @@ public class PlayerAbilityManager : MonoBehaviour
         this.player = player;
 
         LoadAvailableAbilities();
-        InitializeSynergyDictionaries();
+        InitializeSynergyDictionaries(); // 딕셔너리 초기화 메서드 호출
         ResetAllAbilities();
 
         // 플레이어 이벤트 리스너 설정
@@ -99,6 +99,7 @@ public class PlayerAbilityManager : MonoBehaviour
             synergyLevels = dataManager.GetSynergyLevels();
         }
     }
+
 
     private void LoadAvailableAbilities()
     {
@@ -493,29 +494,29 @@ public class PlayerAbilityManager : MonoBehaviour
 
     private void InitializeSynergyDictionaries()
     {
-        synergyAbilityAcquired = new Dictionary<string, bool>
-        {
-            { "Lust", false },
-            { "Envy", false },
-            { "Sloth", false },
-            { "Gluttony", false },
-            { "Greed", false },
-            { "Wrath", false },
-            { "Pride", false },
-            { "Null", false }
-        };
+        synergyAbilityAcquired = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "Lust", false },
+        { "Envy", false },
+        { "Sloth", false },
+        { "Gluttony", false },
+        { "Greed", false },
+        { "Wrath", false },
+        { "Pride", false },
+        { "Null", false }
+    };
 
-        synergyLevels = new Dictionary<string, int>
-        {
-            { "Lust", 0 },
-            { "Envy", 0 },
-            { "Sloth", 0 },
-            { "Gluttony", 0 },
-            { "Greed", 0 },
-            { "Wrath", 0 },
-            { "Pride", 0 },
-            { "Null", 0 }
-        };
+        synergyLevels = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "Lust", 0 },
+        { "Envy", 0 },
+        { "Sloth", 0 },
+        { "Gluttony", 0 },
+        { "Greed", 0 },
+        { "Wrath", 0 },
+        { "Pride", 0 },
+        { "Null", 0 }
+    };
     }
 
     private void InitializeSynergyCategoryToSprite()
@@ -541,9 +542,32 @@ public class PlayerAbilityManager : MonoBehaviour
 
     public void CheckForSynergy(string category)
     {
-        // 추가된 부분: 이미 시너지를 획득한 경우 메서드 종료
+        Debug.Log($"CheckForSynergy 호출됨. 카테고리: {category}");
+
+        // 현재 synergyAbilityAcquired 딕셔너리의 키들을 로그로 출력
+        if (synergyAbilityAcquired != null)
+        {
+            Debug.Log("synergyAbilityAcquired keys: " + string.Join(", ", synergyAbilityAcquired.Keys));
+        }
+        else
+        {
+            Debug.LogError("synergyAbilityAcquired 딕셔너리가 null입니다.");
+        }
+
+        // 현재 synergyLevels 딕셔너리의 키들을 로그로 출력
+        if (synergyLevels != null)
+        {
+            Debug.Log("synergyLevels keys: " + string.Join(", ", synergyLevels.Keys));
+        }
+        else
+        {
+            Debug.LogError("synergyLevels 딕셔너리가 null입니다.");
+        }
+
+        // 시너지 획득 여부를 확인
         if (hasAcquiredSynergy)
         {
+            Debug.Log("이미 시너지를 획득했습니다. 메서드를 종료합니다.");
             return;
         }
 
@@ -556,13 +580,27 @@ public class PlayerAbilityManager : MonoBehaviour
         if (!synergyAbilityAcquired.ContainsKey(category) || !synergyLevels.ContainsKey(category))
         {
             Debug.LogError($"카테고리 '{category}'가 synergyAbilityAcquired 또는 synergyLevels 딕셔너리에 존재하지 않습니다.");
+
+            // 추가: 현재 딕셔너리에 없는 카테고리의 경우 기본값을 추가하여 오류를 방지
+            if (!synergyAbilityAcquired.ContainsKey(category))
+            {
+                synergyAbilityAcquired[category] = false;
+                Debug.Log($"synergyAbilityAcquired 딕셔너리에 카테고리 '{category}'를 기본값으로 추가했습니다.");
+            }
+
+            if (!synergyLevels.ContainsKey(category))
+            {
+                synergyLevels[category] = 0;
+                Debug.Log($"synergyLevels 딕셔너리에 카테고리 '{category}'를 기본값으로 추가했습니다.");
+            }
+
             return;
         }
 
         int totalLevel = 0;
         foreach (var playerAbility in abilities)
         {
-            if (playerAbility.ability.category == category)
+            if (playerAbility.ability.category.Equals(category, StringComparison.OrdinalIgnoreCase))
             {
                 totalLevel += playerAbility.currentLevel;
             }
@@ -589,6 +627,8 @@ public class PlayerAbilityManager : MonoBehaviour
         // 시너지 레벨이 변경되었으므로 PlayerDataManager에 업데이트
         UpdateAbilitiesData();
     }
+
+
 
     private void AssignSynergyAbility(string category, int level)
     {

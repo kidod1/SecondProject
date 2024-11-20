@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
         // 능력 매니저 초기화
         abilityManager.Initialize(player);
         abilityUIManager.Initialize(abilityManager); // AbilityManager 초기화
+        Debug.Log("초기화");
 
         // 플레이어 사망 시 GameOver 호출
         player.OnPlayerDeath.AddListener(GameOver);

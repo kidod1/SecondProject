@@ -14,6 +14,8 @@ public class BackDancer : Monster
     [SpineAnimation] public string idleDanceAnimation;
     [SpineAnimation] public string danceAttackAnimation;
 
+    [SerializeField]
+    private AK.Wwise.Event AttackSound;
     private SkeletonAnimation skeletonAnimation;
 
     [SerializeField] private Transform danceFirePoint; // 새로운 발사 지점
@@ -86,7 +88,7 @@ public class BackDancer : Monster
         PlayAnimation(danceAttackAnimation, false);
         yield return new WaitForSeconds(0.33f);
         FireDanceBulletWithParticle();
-
+        AttackSound.Post(gameObject);
         yield return new WaitForSpineAnimationComplete(skeletonAnimation);
         TransitionToState(cooldownState);
     }

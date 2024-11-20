@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584695216328309298
+    m_lastTime: -8584695118309276835
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584695216327957507
+    m_lastTime: -8584695118308910257
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584695216461975348
+    m_lastTime: -8584695118439024438
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584695216330188124
+    m_lastTime: -8584695118311035705
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584695216463784672
+    m_lastTime: -8584695118440583130
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -1348,8 +1348,8 @@ MonoBehaviour:
         guid: 5852075753979b4b8bc140633da49bb5
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Asmo_Guitar
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.5626241
+      minDuration: 1.2402555
     - name: Asmo_Guitar2
       guid: 44aaa23f973e5741bfd9970f89883689
       id: 3173416568
@@ -1374,8 +1374,8 @@ MonoBehaviour:
         guid: 44aaa23f973e5741bfd9970f89883689
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Asmo_Guitar2
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.8168472
+      minDuration: 1.4420326
     - name: Bee_sfx
       guid: a1f1dc5deefee6429b49449ed0fd4721
       id: 230523991
@@ -1547,8 +1547,8 @@ MonoBehaviour:
         guid: 5d435a4cb9c88447ac81bdb5312cd9f9
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\CheerTime\CheerTime_roopSTop
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0
+      minDuration: 0
     - name: CheerTime_Shot
       guid: 7c78e931c6b1be49bc6328b1b7105a7e
       id: 845982558
@@ -1576,8 +1576,8 @@ MonoBehaviour:
         guid: 7c78e931c6b1be49bc6328b1b7105a7e
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\CheerTime\CheerTime_Shot
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.0602357
+      minDuration: 0.84150964
     - name: Credit
       guid: f50dcdcc88bc2244acc862ea4c1b4db5
       id: 4072209002
@@ -1619,8 +1619,8 @@ MonoBehaviour:
         guid: ead217bcf100ba4b89277dd14d5055d4
       Path: Events\Default Work Unit\UI\Loading_Door\Door_close
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 2.1869166
+      minDuration: 2.1869166
     - name: Door_open
       guid: 6276690aa037b64494a2656f4acf1217
       id: 535830432
@@ -1642,8 +1642,8 @@ MonoBehaviour:
         guid: 6276690aa037b64494a2656f4acf1217
       Path: Events\Default Work Unit\UI\Loading_Door\Door_open
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 2.3336458
+      minDuration: 2.3336458
     - name: Enemy
       guid: 020651b4141cda40b05b13c30e679370
       id: 2299321487
@@ -1763,8 +1763,8 @@ MonoBehaviour:
         guid: 288da74a0a5e8c4a9bddc5d25de9861a
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_SHoot
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.32876468
+      minDuration: 0.26094067
     - name: FanService_Spawn
       guid: c9d96fd73ce4ad46878700d69072189e
       id: 2529774201
@@ -1821,8 +1821,8 @@ MonoBehaviour:
         guid: 493983f72c0f754494ab28a4091768e1
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_Spawn_stop
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0
+      minDuration: 0
     - name: FanService_Start
       guid: 5fab14cad53634489ab3e90185ea703b
       id: 3614079800
@@ -1850,8 +1850,8 @@ MonoBehaviour:
         guid: 5fab14cad53634489ab3e90185ea703b
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\FanService\FanService_Start
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 2.6013792
+      minDuration: 1.5977032
     - name: Foots
       guid: 4bbaafb48e65b746a08c4e9c76d4b3f2
       id: 264776788
@@ -2204,8 +2204,8 @@ MonoBehaviour:
         guid: 060b42b3851279459c728b78e2e5ae1f
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\LoveRain\LoveRain_Shot
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.1091255
+      minDuration: 0.88031346
     - name: LoveRain_Spawn
       guid: 9aa39302676e2e479cd86a2edbeebd91
       id: 1981230731
@@ -2233,8 +2233,8 @@ MonoBehaviour:
         guid: 9aa39302676e2e479cd86a2edbeebd91
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\LoveRain\LoveRain_Spawn
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.42259336
+      minDuration: 0.33541256
     - name: Low_HP
       guid: abaa684ec7f9984887425c0784a76519
       id: 3226347240
@@ -2529,8 +2529,8 @@ MonoBehaviour:
         guid: 2a5f1c3562922543be5ac0186f3d075f
       Path: Events\Default Work Unit\SFX\Ablilty\Gula\myChild\MyChild_Attack
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.68516755
+      minDuration: 0.5438178
     - name: MyChild_Start
       guid: 5e34ea1b6a1f8049ac16ed98648e7990
       id: 2532991578
@@ -2558,8 +2558,8 @@ MonoBehaviour:
         guid: 5e34ea1b6a1f8049ac16ed98648e7990
       Path: Events\Default Work Unit\SFX\Ablilty\Gula\myChild\MyChild_Start
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 5.3788056
+      minDuration: 4.2691607
     - name: Nomal_atk1
       guid: 46679c82dfd4db428acebc891d52436f
       id: 2978102398
@@ -2584,8 +2584,8 @@ MonoBehaviour:
         guid: 46679c82dfd4db428acebc891d52436f
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Enemy\Nomal_atk1
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.3243289
+      minDuration: 1.0511205
     - name: nomal_atk2
       guid: 582ef7ec5bffae4a86b4157b61059d7b
       id: 2978102397
@@ -2610,8 +2610,8 @@ MonoBehaviour:
         guid: 582ef7ec5bffae4a86b4157b61059d7b
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Enemy\nomal_atk2
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.9559227
+      minDuration: 1.5524169
     - name: Object_Broken
       guid: b489c392547a764ca6695ba0ed9f289e
       id: 2434695444
@@ -2693,8 +2693,8 @@ MonoBehaviour:
         guid: 824ceaa5b88fda4c9ed0693975d75543
       Path: Events\Default Work Unit\UI\Player_Death
       maxAttenuation: 0
-      maxDuration: 2.875
-      minDuration: 2.875
+      maxDuration: 2.17378
+      minDuration: 2.17378
     - name: Player_Hit
       guid: 9d484f7495c7bd4f8760493f79a1fe6b
       id: 871813740
@@ -2716,8 +2716,8 @@ MonoBehaviour:
         guid: 9d484f7495c7bd4f8760493f79a1fe6b
       Path: Events\Default Work Unit\SFX\Player\Player_Hit
       maxAttenuation: 0
-      maxDuration: 0.19598867
-      minDuration: 0.07497517
+      maxDuration: 0.45189345
+      minDuration: 0.17626409
     - name: Player_take_Gun
       guid: 754bb26778cb3f45ba90a247ce8e4108
       id: 3379829983
@@ -2895,8 +2895,8 @@ MonoBehaviour:
         guid: 1c716cad5c411244b332c97c11d51c24
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain\SFX_Player_Ablilty_Greed_CoinRain_DropLoopStop
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0
+      minDuration: 0
     - name: SFX_Player_Ablilty_Greed_CoinRain_Land
       guid: 47b07d158f8a284d8e38554d9a230e5c
       id: 718516402
@@ -2924,8 +2924,8 @@ MonoBehaviour:
         guid: 47b07d158f8a284d8e38554d9a230e5c
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain\SFX_Player_Ablilty_Greed_CoinRain_Land
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.0712056
+      minDuration: 0.8502164
     - name: SFX_Player_Ablilty_Greed_CoinRain_Start
       guid: fa317f9548797c4e859a23a8bfd231c3
       id: 3307520067
@@ -2953,8 +2953,8 @@ MonoBehaviour:
         guid: fa317f9548797c4e859a23a8bfd231c3
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain\SFX_Player_Ablilty_Greed_CoinRain_Start
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.7312503
+      minDuration: 0.58039373
     - name: SFX_Player_Ablilty_Jealousy_WanderingWave
       guid: b8af7ea0e76f0541ba8621fd28e82912
       id: 743609202
@@ -3297,8 +3297,8 @@ MonoBehaviour:
         guid: c27c189dab8e884a989b874a7ab93e55
       Path: Events\Default Work Unit\UI\Siren\Siren_stop
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0
+      minDuration: 0
     - name: Sloth
       guid: 0b5763a6b1003f4e993f4c237dc3a81a
       id: 3888770555
@@ -3366,8 +3366,8 @@ MonoBehaviour:
         guid: 793c44c99a8cc5409bdcaf348a22b941
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_B_Attack1_shot
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.91183496
+      minDuration: 0.7237239
     - name: Sloth_boss
       guid: 9ba90e487403834da7f8f6b641146d58
       id: 3242833905
@@ -3438,8 +3438,8 @@ MonoBehaviour:
         guid: 368b3e29bfa5e54eaa7986dd01c9784d
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_CRASH
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.0524962
+      minDuration: 0.8353667
     - name: Sloth_Boss_Lightning
       guid: 60e525a6e9e46645b948f1dae8b7f213
       id: 2509172074
@@ -3464,8 +3464,8 @@ MonoBehaviour:
         guid: 60e525a6e9e46645b948f1dae8b7f213
       Path: Events\Default Work Unit\SFX\Enemy\Sloth_Boss\Sloth_Boss_Lightning
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.8049998
+      minDuration: 0.6389288
     - name: Sloth_cityscapeAMB
       guid: 932210f11b31874db197ab6de3b5da0e
       id: 3389345993
@@ -3504,8 +3504,8 @@ MonoBehaviour:
         guid: a0615d0d58851c49a8cf6d053bd43856
       Path: Events\Default Work Unit\UI\Sloth_cutscene_punch
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.4053515
+      minDuration: 1.4053515
     - name: Sloth_E_Fire
       guid: 61e4ceafcdbc384b98197d0402615989
       id: 4241994286
@@ -3774,8 +3774,8 @@ MonoBehaviour:
         guid: 6b8031e41f48e34fb9b42f687758625d
       Path: Events\Default Work Unit\UI\TeamLogoSFX
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0.90986395
+      minDuration: 0.90986395
     - name: Text
       guid: 1e9ceebb8e83364fa9a07d1f3214d442
       id: 2972449336
@@ -4015,8 +4015,8 @@ MonoBehaviour:
         guid: 72fb65a911e4c74ebdf575722a7a4642
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\VolumeUP!!\VolumeUP_roopStop
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 0
+      minDuration: 0
     - name: VolumeUP_Shot
       guid: 74b8af3b5561454fb7f2640b264381ac
       id: 2159866851
@@ -4044,8 +4044,8 @@ MonoBehaviour:
         guid: 74b8af3b5561454fb7f2640b264381ac
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\VolumeUP!!\VolumeUP_Shot
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.0602357
+      minDuration: 0.84150964
     - name: VolumeUP_Start
       guid: 61ff9f4996245246a9d964267b3baac1
       id: 2206846009
@@ -4128,8 +4128,8 @@ MonoBehaviour:
         guid: 4f3a7bd1d3d27b49ab0244b702e44b64
       Path: Events\Default Work Unit\SFX\Enemy\Luxuria_Boss\Wave\Wave_Start
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 4.5803237
+      minDuration: 3.6354053
     - name: Weapon
       guid: 0a0d25fc23e0be4c9d5d8f5622492cd3
       id: 3893417221
@@ -4162,7 +4162,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584695216463360875
+    m_lastTime: -8584695118440202049
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -4315,7 +4315,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584695216462999328
+    m_lastTime: -8584695118439840503
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -4469,7 +4469,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584695216329435720
+    m_lastTime: -8584695118310293078
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -4483,7 +4483,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584695216329053145
+    m_lastTime: -8584695118309960847
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -4582,9 +4582,9 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584695216328681838
+    m_lastTime: -8584695118309589530
     List: []
-  ExpandedFileSystemItemIds: 0200000003000000040000002d0000003400000037000000520000007300000076000000830000009d0000009e000000bf000000c0000000c1000000c2000000
+  ExpandedFileSystemItemIds: 02000000030000000400000008000000090000000c00000015000000280000002d000000520000005700000073000000760000007a000000830000009d0000009e000000a2000000a3000000bf000000c0000000c1000000c2000000
   ExpandedWaapiItemIds: 
   AutoSyncSelection: 0
   autoPopulateEnabled: 1

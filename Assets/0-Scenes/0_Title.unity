@@ -2289,6 +2289,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5588551578781499112, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
+      propertyPath: isPlayerDied
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5998806062855414832, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
       propertyPath: m_Name
       value: PlayManager
@@ -2582,6 +2586,18 @@ MonoBehaviour:
       - m_Target: {fileID: 807422366}
         m_TargetAssemblyTypeName: TitleSoundManager, Assembly-CSharp
         m_MethodName: StopTitleSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1237334104}
+        m_TargetAssemblyTypeName: PlayerDataManager, Assembly-CSharp
+        m_MethodName: ResetPlayerData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

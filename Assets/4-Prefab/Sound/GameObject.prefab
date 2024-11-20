@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 7978854596513576947}
   - component: {fileID: 9093004729855188117}
   - component: {fileID: 5032873592357059642}
+  - component: {fileID: 7014773317358680095}
   - component: {fileID: 1699618985307465637}
   m_Layer: 0
   m_Name: GameObject
@@ -328,6 +329,31 @@ MonoBehaviour:
   attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
   LargeModePositions: []
   multiPositionArray: []
+--- !u!114 &7014773317358680095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444412663132477384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b7b197524d86e47bf3213f21f7809e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 603fffff5abbb654d92c43edf4c49f44, type: 2}
+  decodeBank: 0
+  overrideLoadSetting: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
 --- !u!114 &1699618985307465637
 MonoBehaviour:
   m_ObjectHideFlags: 0

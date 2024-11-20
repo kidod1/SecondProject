@@ -2772,7 +2772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1934801322940994144, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1952123588393209503, guid: db836768a32714345b34f5d7753ccf0d, type: 3}
       propertyPath: bossPrefab
@@ -7514,17 +7514,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-      insertIndex: -1
+      insertIndex: 4
       addedObject: {fileID: 1197328540}
     - targetCorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 1197328547}
     - targetCorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-      insertIndex: -1
+      insertIndex: 6
       addedObject: {fileID: 1197328545}
     - targetCorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
-      insertIndex: -1
+      insertIndex: 7
       addedObject: {fileID: 1197328544}
+    - targetCorrespondingSourceObject: {fileID: 1444412663132477384, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3333183704863097401}
     - targetCorrespondingSourceObject: {fileID: 5736728840196205075, guid: f7ebd0f1522442f4fb0faccd59936a7f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1225389978}
@@ -7582,6 +7585,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4cf356de0122543b1f0d679a7f60f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3333183704863097401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197328536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b7b197524d86e47bf3213f21f7809e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 25b01c174f51a3f4f9b972d7d1a5c3f4, type: 2}
+  decodeBank: 0
+  overrideLoadSetting: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
 --- !u!1001 &4376394533437579935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8311,6 +8339,10 @@ PrefabInstance:
       propertyPath: currentSynergyAbility
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
+      propertyPath: playerGameOverSound.WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: 877c1b2080cb2ca438ee059963eda775, type: 2}
     - target: {fileID: 6105631997308486592, guid: c2c2c51723bfee84393b6faba5622e52, type: 3}
       propertyPath: OnPlayerDeath.m_PersistentCalls.m_Calls.Array.size
       value: 5

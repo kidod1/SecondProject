@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public RTPC playerAttackSpeedRTPC;
 
     public AK.Wwise.Event playerTakeDamageSound;
+    public AK.Wwise.Event playerGameOverSound;
     [Tooltip("플레이어의 스탯 데이터")]
     public PlayerData stat;
 
@@ -864,6 +865,7 @@ public class Player : MonoBehaviour
         OnPlayerDeath.Invoke();
         PlayManager.I.isPlayerDie();
         StartCoroutine(InvokeDeathCompleteEventAfterDelay(1.5f));
+        playerGameOverSound.Post(gameObject);
     }
 
     /// <summary>

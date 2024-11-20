@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using AK.Wwise;
 [CreateAssetMenu(menuName = "ActiveAbilities/SynergyAbility")]
 public class SynergyAbility : Ability
 {
     public float cooldownDuration;
     public float lastUsedTime = 0;
 
+    public AK.Wwise.Event ActiveSound;
     public bool IsReady => Time.time >= lastUsedTime + cooldownDuration;
 
     public UnityEvent OnCooldownComplete; // 쿨타임 완료 이벤트
@@ -18,6 +20,7 @@ public class SynergyAbility : Ability
             lastUsedTime = Time.time;
             Apply(player);
             player.StartCoroutine(HandleCooldown());
+            ActiveSound.Post(PlayManager.I.GetPlayer().gameObject);
         }
         else
         {
