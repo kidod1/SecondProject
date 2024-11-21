@@ -271,8 +271,8 @@ public class MonsterSpawner : MonoBehaviour
             mapCoverPanel.gameObject.SetActive(true);
             float elapsedTime = 0f;
             float oscillationSpeed = 2f; // 오퍼시티 변화 속도
-            float minAlpha = 0.3f;
-            float maxAlpha = 0.8f;
+            float minAlpha = 0.2f;
+            float maxAlpha = 1f;
 
             while (elapsedTime < cutsceneDuration)
             {
