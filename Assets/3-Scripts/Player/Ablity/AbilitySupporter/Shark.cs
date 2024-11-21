@@ -11,7 +11,9 @@ public class Shark : MonoBehaviour
 
     private SpriteRenderer spriteRenderer; // SpriteRenderer 참조 추가
     private bool hasSetRotation = false; // 회전 설정 여부를 추적하는 변수
-
+    [Header("WWISE Sound Events")]
+    [Tooltip("SharkStrike 능력 발동 시 재생될 WWISE 이벤트")]
+    public AK.Wwise.Event activateSound; // 추가된 사운드 이벤트 필드
     /// <summary>
     /// 상어를 초기화합니다.
     /// </summary>
@@ -112,6 +114,7 @@ public class Shark : MonoBehaviour
         // 적에게 도착했을 때 데미지 적용
         if (target != null && !target.IsDead)
         {
+            activateSound?.Post(target.gameObject);
             target.TakeDamage(damage, transform.position);
         }
 

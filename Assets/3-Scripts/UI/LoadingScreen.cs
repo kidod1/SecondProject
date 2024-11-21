@@ -64,6 +64,8 @@ public class LoadingScreen : MonoBehaviour
 
     [Header("Unity Events")]
     public UnityEvent beforeSceneLoadEvent; // 씬 전환 전에 호출될 이벤트
+    public UnityEvent onFadeOutComplete;    // 페이드 아웃 완료 시 호출될 이벤트
+    public UnityEvent onFadeInStart;        // 페이드 인 시작 시 호출될 이벤트
 
     private bool isLoadingComplete = false;
     private bool hasFadeOutStarted = false;
@@ -239,12 +241,15 @@ public class LoadingScreen : MonoBehaviour
             yield return new WaitForSeconds(1f); // 페이드 아웃 완료 후 1초 대기
         }
 
-        // 다음 씬으로 전환
         SceneManager.LoadScene(nextSceneIndex);
+        PlayManager.I.StopAllSounds();
     }
 
     private IEnumerator FadeIn()
     {
+        // 페이드 인 시작 시 이벤트 호출
+        onFadeInStart?.Invoke();
+
         float elapsedTime = 0f;
         Color c = fadeImage.color;
 
@@ -275,6 +280,9 @@ public class LoadingScreen : MonoBehaviour
 
         c.a = 1f;
         fadeImage.color = c;
+
+        // 페이드 아웃 완료 후 이벤트 호출
+        onFadeOutComplete?.Invoke();
     }
 
     /// <summary>

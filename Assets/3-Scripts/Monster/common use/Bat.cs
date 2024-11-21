@@ -82,7 +82,6 @@ public class Bat : Monster
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("닿았음");
         GameObject collidedObject = collision.gameObject;
 
         // 충돌한 오브젝트에 Player 컴포넌트가 있는지 확인

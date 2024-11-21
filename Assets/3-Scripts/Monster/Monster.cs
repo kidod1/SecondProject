@@ -348,7 +348,6 @@ public abstract class Monster : MonoBehaviour
         if (hitSoundEvent != null)
         {
             hitSoundEvent.Post(gameObject);
-            Debug.Log("피격사운드재생");
         }
         else
         {

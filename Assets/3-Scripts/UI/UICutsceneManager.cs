@@ -30,6 +30,10 @@ public class UICutsceneManager : MonoBehaviour
     [SerializeField]
     private SceneChangeSkeleton sceneChangeSkeleton; // SceneChangeSkeleton 참조 (인스펙터에서 할당)
 
+    [Header("Transition Options")]
+    [SerializeField]
+    private bool usePlayCloseAnimation = true; // true: PlayCloseAnimation 사용, false: SceneManager.LoadScene 사용
+
     private int currentPageIndex = 0;       // 현재 페이지 인덱스
     private int currentFrameIndex = 0;      // 현재 프레임 인덱스
     private bool isTransitioning = false;   // 현재 전환 중인지 여부
@@ -86,14 +90,7 @@ public class UICutsceneManager : MonoBehaviour
         if (currentPageIndex >= cutscenePages.Length)
         {
             // 모든 페이지가 끝나면 씬 전환
-            if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
-            {
-                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
-            }
-            else
-            {
-                Debug.LogError("SceneChangeSkeleton이 할당되지 않았거나 loadSceneName이 설정되지 않았습니다.");
-            }
+            TransitionToScene();
             return;
         }
 
@@ -181,14 +178,7 @@ public class UICutsceneManager : MonoBehaviour
         else
         {
             // 모든 페이지가 끝나면 씬 전환
-            if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
-            {
-                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
-            }
-            else
-            {
-                Debug.LogError("SceneChangeSkeleton이 할당되지 않았거나 loadSceneName이 설정되지 않았습니다.");
-            }
+            TransitionToScene();
         }
 
         isTransitioning = false;
@@ -212,5 +202,24 @@ public class UICutsceneManager : MonoBehaviour
 
         color.a = 0f;
         frame.image.color = color;
+    }
+
+    private void TransitionToScene()
+    {
+        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        {
+            if (usePlayCloseAnimation)
+            {
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(loadSceneName);
+            }
+        }
+        else
+        {
+            Debug.LogError("SceneChangeSkeleton이 할당되지 않았거나 loadSceneName이 설정되지 않았습니다.");
+        }
     }
 }

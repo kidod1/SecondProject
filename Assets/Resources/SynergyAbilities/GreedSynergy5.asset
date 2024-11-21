@@ -19,12 +19,12 @@ MonoBehaviour:
   maxLevel: 5
   currentLevel: 0
   abilityIcon: {fileID: 21300000, guid: ea0672dca94f6ea4da6d5d31b6c92f29, type: 3}
-  cooldownDuration: 15
-  lastUsedTime: 0
+  cooldownDuration: 0
+  lastUsedTime: 14.205525
   ActiveSound:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 4631c5d68bd03a941a6d9605d92e8958, type: 2}
+    WwiseObjectReference: {fileID: 11400000, guid: 0aa151ac8de8bb74aa1b704bcda29df0, type: 2}
   OnCooldownComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -32,3 +32,11 @@ MonoBehaviour:
   coinRainDuration: 3
   damageInterval: 0.3
   damageAmount: 30
+  coinRainStartSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 4631c5d68bd03a941a6d9605d92e8958, type: 2}
+  coinRainEndSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: bc515924fd6dc9c419d4256ba12f7c54, type: 2}

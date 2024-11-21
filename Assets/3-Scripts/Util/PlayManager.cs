@@ -96,6 +96,5 @@ public class PlayManager : MonoBehaviour
     {
         // WWISE의 모든 사운드를 중지합니다.
         AkSoundEngine.StopAll();
-        Debug.Log("모든 WWISE 사운드가 중지되었습니다.");
     }
 }

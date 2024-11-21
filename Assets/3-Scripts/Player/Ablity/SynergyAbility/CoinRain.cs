@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using AK.Wwise; // Wwise 네임스페이스 추가
 
 [CreateAssetMenu(menuName = "ActiveAbilities/CoinRain")]
 public class CoinRain : SynergyAbility
@@ -22,6 +23,17 @@ public class CoinRain : SynergyAbility
     private Camera mainCamera;
     private ParticleSystem particleSystem;
 
+    [Header("Sound Settings")]
+    [Tooltip("코인 레인 시작 시 재생할 Wwise 사운드 이벤트")]
+    public AK.Wwise.Event coinRainStartSound; // 코인 레인 시작 사운드 이벤트
+
+    [Tooltip("코인 레인 종료 시 재생할 Wwise 사운드 이벤트 (선택사항)")]
+    public AK.Wwise.Event coinRainEndSound; // 코인 레인 종료 사운드 이벤트 (선택사항)
+
+    private uint coinRainSoundPlayingID = 0; // 사운드 재생 ID
+
+    // 기존 필드들...
+    // (이하 생략)
 
     public override void Apply(Player player)
     {
@@ -38,6 +50,12 @@ public class CoinRain : SynergyAbility
             if (particleSystem != null)
             {
                 particleSystem.Play();
+            }
+
+            // 코인 레인 시작 시 사운드 재생
+            if (coinRainStartSound != null)
+            {
+                coinRainSoundPlayingID = coinRainStartSound.Post(activeCoinRain);
             }
 
             playerInstance.StartCoroutine(DamageMonstersInCamera());
@@ -93,6 +111,19 @@ public class CoinRain : SynergyAbility
 
             Destroy(activeCoinRain);
             activeCoinRain = null;
+        }
+
+        // 코인 레인 종료 시 사운드 중지
+        if (coinRainStartSound != null && coinRainSoundPlayingID != 0)
+        {
+            AkSoundEngine.StopPlayingID(coinRainSoundPlayingID);
+            coinRainSoundPlayingID = 0;
+        }
+
+        // (선택사항) 종료 사운드 재생
+        if (coinRainEndSound != null)
+        {
+            coinRainEndSound.Post(playerInstance.gameObject);
         }
     }
 

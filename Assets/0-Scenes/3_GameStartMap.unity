@@ -587,6 +587,8 @@ MonoBehaviour:
           m_StringArgument: Conditions
           m_BoolArgument: 0
         m_CallState: 2
+  useCloseAnimation: 0
+  targetSceneName: 4_SlothToonCutScene
 --- !u!4 &139155200
 Transform:
   m_ObjectHideFlags: 0
@@ -862,6 +864,8 @@ MonoBehaviour:
           m_StringArgument: Conditions
           m_BoolArgument: 0
         m_CallState: 2
+  useCloseAnimation: 1
+  targetSceneName: NextScene
 --- !u!4 &246182643
 Transform:
   m_ObjectHideFlags: 0
@@ -3670,63 +3674,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 139155200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &838843092
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5998806062855414832, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_Name
-      value: PlayManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 688.97595
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 688.0311
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.6191268
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7545776067304172858, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2e7da63c47053fb48b5e4ec6fd8a626c, type: 3}
 --- !u!1 &874465324
 GameObject:
   m_ObjectHideFlags: 0
@@ -22731,6 +22678,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6912638138824758334, guid: 3fa11347f288103419a506efe401cd13, type: 3}
+      propertyPath: targetSceneName
+      value: 4_SlothToonCutScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912638138824758334, guid: 3fa11347f288103419a506efe401cd13, type: 3}
       propertyPath: sceneChangeDelay
       value: 1
       objectReference: {fileID: 0}
@@ -23036,7 +22987,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1569633841302450636, guid: ed924d02a1f3ff84d8e2d0b5f5adb010, type: 3}
       propertyPath: targetSceneName
-      value: 5_SlothMapCutScene
+      value: 4_SlothMapCutScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 1569633841302450636, guid: ed924d02a1f3ff84d8e2d0b5f5adb010, type: 3}
+      propertyPath: useCloseAnimation
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1569633841302450636, guid: ed924d02a1f3ff84d8e2d0b5f5adb010, type: 3}
       propertyPath: sceneChangeSkeleton
@@ -23168,4 +23123,3 @@ SceneRoots:
   - {fileID: 534621421}
   - {fileID: 588508870}
   - {fileID: 1581886335}
-  - {fileID: 838843092}

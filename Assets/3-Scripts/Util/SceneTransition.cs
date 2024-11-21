@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class SceneTransition : MonoBehaviour
     [Header("Portal Events")]
     [Tooltip("플레이어가 포탈을 통과할 때 호출되는 이벤트")]
     public UnityEvent OnPortalEntered;
+
+    // 추가된 부분: 씬 전환 방식 선택을 위한 변수
+    [Header("Transition Method Settings")]
+    [SerializeField]
+    private bool useCloseAnimation = true; // CloseAnimation을 사용할지 여부
 
     private void Start()
     {
@@ -37,17 +43,42 @@ public class SceneTransition : MonoBehaviour
             // 포탈 통과 시 이벤트 호출
             OnPortalEntered?.Invoke();
 
-            if (sceneChangeSkeleton != null)
+            if (useCloseAnimation)
             {
-                sceneChangeSkeleton.gameObject.SetActive(true);
-                // SceneChangeSkeleton을 통해 씬 전환 애니메이션 재생
-                sceneChangeSkeleton.PlayCloseAnimation(targetSceneName);
+                // CloseAnimation을 사용하는 경우
+                if (sceneChangeSkeleton != null)
+                {
+                    sceneChangeSkeleton.gameObject.SetActive(true);
+                    // SceneChangeSkeleton을 통해 씬 전환 애니메이션 재생
+                    sceneChangeSkeleton.PlayCloseAnimation(targetSceneName);
+                }
+                else
+                {
+                    Debug.LogWarning("SceneChangeSkeleton이 할당되지 않았습니다. 바로 씬을 로드합니다.");
+                    // SceneChangeSkeleton이 없을 경우 바로 씬 로드
+                    LoadNextScene();
+                }
             }
             else
             {
-                // SceneChangeSkeleton이 없을 경우 바로 씬 로드
-                UnityEngine.SceneManagement.SceneManager.LoadScene(targetSceneName);
+                // SceneManager.LoadScene을 사용하는 경우
+                LoadNextScene();
             }
         }
+    }
+
+    /// <summary>
+    /// 다음 씬을 로드하는 메서드
+    /// </summary>
+    private void LoadNextScene()
+    {
+        if (string.IsNullOrEmpty(targetSceneName))
+        {
+            Debug.LogError("Target Scene Name이 설정되지 않았습니다.");
+            return;
+        }
+
+        // 씬 로드
+        SceneManager.LoadScene(targetSceneName);
     }
 }

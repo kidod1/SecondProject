@@ -162,6 +162,14 @@ public class GameManager : MonoBehaviour
             pauseRTPC.SetGlobalValue(2);
         }
     }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 
     private void PauseGameByEscape()
     {

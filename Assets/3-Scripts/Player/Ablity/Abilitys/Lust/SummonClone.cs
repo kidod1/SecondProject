@@ -13,7 +13,7 @@ public class SummonClone : Ability
 
     public override void Apply(Player player)
     {
-        if (currentLevel < damageMultipliers.Length && currentLevel == 0)
+        if (currentLevel < damageMultipliers.Length)
         {
             if (cloneInstance == null)
             {
@@ -39,6 +39,7 @@ public class SummonClone : Ability
             }
         }
     }
+
 
 
     private void CloneShoot(Vector2 direction, int prefabIndex, GameObject originalProjectile)

@@ -190,7 +190,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b09766c13bc808e4e994370f7c881f64, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6b252ef5802e4a4418ff61edaf177357, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -233,9 +233,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b426f2350916b7443b01bf71276c5931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: 9_LustMapCutScene 1
+  nextSceneName: 9_2SlothToonLustToonCut
   fadeOutImage: {fileID: 616385690}
   fadeDuration: 3
+  onFadeInCompleteEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: a2f93e8b2960f15478db53737c201137, type: 2}
 --- !u!1 &197730327
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +863,7 @@ MonoBehaviour:
   closeAnimationName: close
   openAnimationName: open
   sceneChangeDelay: 1
-  targetSceneName: 10_LustCutScene
+  targetSceneName: 9_1SlothToonLustToonCut
   OnCloseAnimationComplete:
     m_PersistentCalls:
       m_Calls:
@@ -1859,7 +1863,7 @@ MonoBehaviour:
   nameText: {fileID: 197730331}
   dialogueText: {fileID: 1419254525}
   animationImage: {fileID: 300900859}
-  nextSceneName: 9_LustMapCutScene 1
+  nextSceneName: 9_2SlothToonLustToonCut
   textAnimationSpeed: 0.05
   speechBubble: {fileID: 900040802}
   speechBubble2: {fileID: 900040802}
@@ -1886,18 +1890,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AkEvent, AK.Wwise.Unity.MonoBehaviour
         m_MethodName: Stop
         m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 513313420}
-        m_TargetAssemblyTypeName: PlayerSoundController, Assembly-CSharp
-        m_MethodName: PlayCustomSound
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

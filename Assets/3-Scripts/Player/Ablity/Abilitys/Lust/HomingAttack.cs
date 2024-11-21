@@ -30,8 +30,6 @@ public class HomingAttack : Ability
             Debug.LogError("HomingAttack Apply: player 인스턴스가 null입니다.");
             return;
         }
-        if (currentLevel == 0)
-        {
             // 기존 플레이어 인스턴스에 리스너가 등록되어 있으면 제거
             if (playerInstance != null)
             {
@@ -43,7 +41,6 @@ public class HomingAttack : Ability
             // 리스너 중복 등록 방지
             playerInstance.OnShoot.RemoveListener(OnShootHandler);
             playerInstance.OnShoot.AddListener(OnShootHandler);
-        }
     }
 
     public override void Upgrade()

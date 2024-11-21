@@ -2,12 +2,24 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Spine.Unity;
+using UnityEngine.UI; // Import Spine Unity namespace
 
 public class LustBoss : Monster
 {
     // 피격 시 색상 변경을 위한 필드 추가
     private MeshRenderer redMeshRenderer;
     private Color bossOriginalColor;
+
+    [Header("Animation Settings")]
+    [SerializeField, SpineAnimation]
+    private string idleAnimationName;
+
+    [SerializeField, SpineAnimation]
+    private string attackAnimationName;
+
+    [SerializeField, Tooltip("Spine SkeletonAnimation component")]
+    private SkeletonAnimation skeletonAnimation; // SkeletonAnimation 참조 추가
 
     [Header("Lust Boss Pattern Data")]
     [SerializeField]
@@ -61,6 +73,16 @@ public class LustBoss : Monster
     [Header("Spawn Explosion Pattern Sound Settings")]
     [SerializeField, Tooltip("스폰 후 폭발 패턴의 사운드 이벤트")]
     private AK.Wwise.Event spawnExplosionPatternSound;
+
+    [Header("Death Transition Settings")]
+    [SerializeField, Tooltip("페이드 인에 사용할 UI Image")]
+    private Image fadeInImage; // 페이드 인을 위한 UI Image
+
+    [SerializeField, Tooltip("보스 사망 시 재생할 Wwise 사운드 이벤트")]
+    private AK.Wwise.Event bossDeathSound; // 보스 사망 사운드 이벤트
+
+    [SerializeField, Tooltip("보스 사망 후 전환할 씬의 이름")]
+    private string deathTransitionSceneName; // 보스 사망 후 전환할 씬 이름
 
 
     // 추가: PlayerUIManager 참조
@@ -125,6 +147,7 @@ public class LustBoss : Monster
         {
             Debug.LogError("LustBoss: PlayerUIManager가 할당되지 않았습니다.");
         }
+
         // MeshRenderer와 원래 색상 저장
         redMeshRenderer = GetComponent<MeshRenderer>();
         if (redMeshRenderer != null)
@@ -137,6 +160,31 @@ public class LustBoss : Monster
         {
             Debug.LogWarning("MeshRenderer를 찾을 수 없습니다.");
         }
+
+        // Initialize SkeletonAnimation
+        if (skeletonAnimation == null)
+        {
+            skeletonAnimation = GetComponent<SkeletonAnimation>();
+            if (skeletonAnimation == null)
+            {
+                Debug.LogError("LustBoss: SkeletonAnimation component is not assigned and not found on the GameObject.");
+            }
+        }
+        if (fadeInImage != null)
+        {
+            Color tempColor = fadeInImage.color;
+            tempColor.a = 0f; // 완전히 투명하게 설정
+            fadeInImage.color = tempColor;
+            fadeInImage.gameObject.SetActive(false); // 시작 시 비활성화
+        }
+        else
+        {
+            Debug.LogWarning("LustBoss: FadeInImage가 할당되지 않았습니다.");
+        }
+
+        // Play Idle animation initially
+        PlayIdleAnimation();
+
         // 패턴 실행을 시작합니다.
         SetAttackable(true);
     }
@@ -187,10 +235,70 @@ public class LustBoss : Monster
             playerUIManager.HideBossHealthUI(); // 보스 체력 UI 패널 비활성화
         }
 
-        // 추가적으로 필요한 사망 처리 로직이 있다면 여기에 추가합니다.
-        Destroy(gameObject); // 예시로 보스 오브젝트를 삭제합니다.
+        // 보스 사망 시 페이드 인 및 씬 전환 코루틴 시작
+        if (fadeInImage != null && bossDeathSound != null && !string.IsNullOrEmpty(deathTransitionSceneName))
+        {
+            StartCoroutine(FadeInAndTransition());
+        }
+        else
+        {
+            Debug.LogWarning("LustBoss: 페이드 인이나 씬 전환에 필요한 설정이 누락되었습니다.");
+            // 필요한 설정이 없을 경우 즉시 씬 전환
+            LoadDeathScene();
+        }
+    }
+    /// <summary>
+    /// 페이드 인 효과를 수행하고 사운드를 재생한 후 씬을 전환하는 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴용 IEnumerator</returns>
+    private IEnumerator FadeInAndTransition()
+    {
+        // 페이드 인 이미지 활성화
+        fadeInImage.gameObject.SetActive(true);
+
+        // 페이드 인 사운드 재생
+        bossDeathSound?.Post(gameObject);
+
+        // 페이드 인 시간 설정 (예: 2초)
+        float fadeDuration = 2f;
+        float elapsedTime = 0f;
+
+        Color color = fadeInImage.color;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
+            color.a = alpha;
+            fadeInImage.color = color;
+            yield return null;
+        }
+
+        // 완전히 페이드 인된 상태
+        color.a = 1f;
+        fadeInImage.color = color;
+
+        // 3초 대기
+        yield return new WaitForSeconds(3f);
+
+        // 씬 전환
+        LoadDeathScene();
     }
 
+    /// <summary>
+    /// 사망 후 지정된 씬을 로드하는 메서드입니다.
+    /// </summary>
+    private void LoadDeathScene()
+    {
+        if (string.IsNullOrEmpty(deathTransitionSceneName))
+        {
+            Debug.LogError("LustBoss: DeathTransitionSceneName이 설정되지 않았습니다.");
+            return;
+        }
+
+        // 씬 로드
+        UnityEngine.SceneManagement.SceneManager.LoadScene(deathTransitionSceneName);
+    }
     /// <summary>
     /// 몬스터가 데미지를 받을 때 붉게 깜빡이는 효과를 처리하는 코루틴입니다.
     /// </summary>
@@ -217,6 +325,7 @@ public class LustBoss : Monster
             meshRenderer.material.color = bossOriginalColor;
         }
     }
+
     /// <summary>
     /// 몬스터의 상태를 초기화합니다. LustBoss는 상태 시스템을 사용하지 않으므로 빈 구현.
     /// </summary>
@@ -246,6 +355,13 @@ public class LustBoss : Monster
                 yield break;
             }
 
+            // Play Attack animation
+            PlayAttackAnimation();
+
+            // Wait for the Attack animation to complete
+            // This relies on the OnAttackAnimationComplete callback to switch back to Idle
+
+            // Execute the selected pattern
             float randomValue = Random.value; // 0.0부터 1.0 사이의 랜덤 값
             float cumulativeProbability = 0f;
 
@@ -272,10 +388,11 @@ public class LustBoss : Monster
             }
             else
             {
-                Debug.LogWarning("알 수 없는 패턴 인덱스입니다.");
+                Debug.LogWarning("LustBoss: Unknown pattern index.");
             }
 
-            yield return new WaitForSeconds(1f); // 패턴 간 대기 시간
+            // Wait for 1 second between patterns
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -618,5 +735,44 @@ public class LustBoss : Monster
             return player.transform.position;
         }
         return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Plays the Idle animation.
+    /// </summary>
+    private void PlayIdleAnimation()
+    {
+        if (skeletonAnimation != null && !string.IsNullOrEmpty(idleAnimationName))
+        {
+            skeletonAnimation.AnimationState.SetAnimation(0, idleAnimationName, true);
+        }
+        else
+        {
+            Debug.LogWarning("LustBoss: Idle animation name is not set or SkeletonAnimation is missing.");
+        }
+    }
+
+    /// <summary>
+    /// Plays the Attack animation and returns to Idle after completion.
+    /// </summary>
+    private void PlayAttackAnimation()
+    {
+        if (skeletonAnimation != null && !string.IsNullOrEmpty(attackAnimationName))
+        {
+            skeletonAnimation.AnimationState.SetAnimation(0, attackAnimationName, false).Complete += OnAttackAnimationComplete;
+        }
+        else
+        {
+            Debug.LogWarning("LustBoss: Attack animation name is not set or SkeletonAnimation is missing.");
+        }
+    }
+
+    /// <summary>
+    /// Callback when Attack animation completes.
+    /// </summary>
+    /// <param name="trackEntry">The completed track entry.</param>
+    private void OnAttackAnimationComplete(Spine.TrackEntry trackEntry)
+    {
+        PlayIdleAnimation();
     }
 }

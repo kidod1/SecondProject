@@ -6,6 +6,7 @@ using System.Linq;
 using Spine.Unity;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using Spine;
 
 public class MidBoss : Monster
 {
@@ -30,18 +31,23 @@ public class MidBoss : Monster
     [SerializeField]
     private SlothMapManager slothMapManager;
 
+    [SerializeField]
+    private DeathAnimationHandler deathAnimationHandler;
+
     // ExecutePatterns 코루틴을 제어하기 위한 변수
     private Coroutine executePatternsCoroutine;
 
     // 현재 사용 중인 스폰 포인트 인덱스
     private int currentSpawnPointIndex = 0;
 
+    [SerializeField]
+    private GameObject bossFalse;
+
     [Header("탄환 스폰 포인트 설정")]
     [SerializeField, InspectorName("탄환 스폰 포인트 배열")]
     [Tooltip("탄환이 발사될 여러 위치의 Transform 배열")]
     private Transform[] bulletSpawnPoints;
 
-    // 추가된 부분: 경고 레이저 위치 배열
     [Header("경고 레이저 위치 설정")]
     [SerializeField, InspectorName("경고 레이저 위치 배열")]
     [Tooltip("경고 레이저 공격이 발생할 5개의 위치")]
@@ -50,7 +56,7 @@ public class MidBoss : Monster
     [SerializeField]
     private GameManager gameManager;
 
-    // 피격 시 색상 변경을 위한 필드 추가
+    // 피격 시 색상 변경을 위한 필드
     private MeshRenderer redMeshRenderer;
     private Color bossOriginalColor;
 
@@ -67,12 +73,39 @@ public class MidBoss : Monster
     [SerializeField]
     private AK.Wwise.Event groundSmashPatternSound;
 
-    // 추가된 부분
-    private bool isPlayerDead = false; // 플레이어의 죽음 상태를 추적하는 변수
+    // 플레이어의 죽음 상태를 추적하는 변수
+    private bool isPlayerDead = false;
+
+    [Header("Spine Animation Settings")]
+    [SerializeField]
+    private SkeletonAnimation skeletonAnimation;
+
+    [Header("Animation Names")]
+    [SerializeField, SpineAnimation]
+    private string idleAnimationName = "standard";
+
+    [SerializeField, SpineAnimation]
+    private string bulletPatternAnimationName;
+
+    [SerializeField, SpineAnimation]
+    private string warningAttackPatternAnimationName;
+
+    [SerializeField, SpineAnimation]
+    private string warningLaserPatternAnimationName;
+
+    [SerializeField, SpineAnimation]
+    private string groundSmashPatternAnimationName;
+
+    [SerializeField, SpineAnimation]
+    private string deathAnimationName;
+
+    // 애니메이션 재생이 끝났는지 확인하기 위한 이벤트
+    private bool isAnimationPlaying = false;
 
     protected override void Start()
     {
         base.Start();
+        bossFalse.gameObject.SetActive(false);
 
         // 몬스터 기본 스탯 설정
         if (monsterBaseStat != null)
@@ -82,48 +115,38 @@ public class MidBoss : Monster
         }
         else
         {
-            Debug.LogError("MidBoss: MonsterData(monsterBaseStat)가 할당되지 않았습니다.");
             currentHP = maxHealth;
         }
-
-        Debug.Log($"중간 보스 등장! 체력: {currentHP}/{maxHealth}");
 
         if (playerUIManager != null)
         {
             playerUIManager.InitializeBossHealth(maxHealth);
         }
-        else
-        {
-            Debug.LogError("MidBoss: PlayerUIManager가 할당되지 않았습니다.");
-        }
 
         patternParent = new GameObject("BossPatterns").transform;
         isAttackable = false;
 
-        if (patternData == null)
-        {
-            Debug.LogError("MidBoss: BossPatternData가 할당되지 않았습니다.");
-        }
-
         if (patternData != null && slothMapManager == null)
         {
             slothMapManager = FindObjectsOfType<SlothMapManager>().FirstOrDefault();
-            if (slothMapManager == null)
-            {
-                Debug.LogError("SlothMapManager를 찾을 수 없습니다.");
-            }
         }
 
-        // 스폰 포인트가 설정되지 않은 경우 경고 메시지 출력
+        // DeathAnimationHandler 설정
+        if (deathAnimationHandler == null && slothMapManager != null)
+        {
+            deathAnimationHandler = slothMapManager.GetComponent<DeathAnimationHandler>();
+        }
+
+        // 스폰 포인트가 설정되지 않은 경우
         if (bulletSpawnPoints == null || bulletSpawnPoints.Length == 0)
         {
-            Debug.LogWarning("MidBoss: 탄환 스폰 포인트 배열이 설정되지 않았습니다.");
+            // 스폰 포인트 배열이 비어있을 때의 처리
         }
 
-        // 경고 레이저 위치 배열이 설정되지 않은 경우 경고 메시지 출력
+        // 경고 레이저 위치 배열이 설정되지 않은 경우
         if (warningLaserPositions == null || warningLaserPositions.Length < 5)
         {
-            Debug.LogWarning("MidBoss: 경고 레이저 위치 배열이 올바르게 설정되지 않았습니다.");
+            // 경고 레이저 위치 배열이 충분하지 않을 때의 처리
         }
 
         // MeshRenderer와 원래 색상 저장
@@ -134,20 +157,31 @@ public class MidBoss : Monster
             redMeshRenderer.material = new Material(redMeshRenderer.material);
             bossOriginalColor = redMeshRenderer.material.color;
         }
-        else
-        {
-            Debug.LogWarning("MeshRenderer를 찾을 수 없습니다.");
-        }
 
         // 플레이어의 죽음 이벤트를 구독합니다.
         if (player != null)
         {
             player.OnPlayerDeath.AddListener(OnPlayerDeathHandler);
         }
-        else
+
+        // Spine 애니메이션 초기화 및 Idle 애니메이션 재생
+        if (skeletonAnimation != null)
         {
-            Debug.LogError("Player 오브젝트를 찾을 수 없습니다.");
+            PlayAnimation(idleAnimationName, loop: true);
         }
+
+        // 패턴 실행 시작
+        SetAttackable(true);
+    }
+
+    private void OnEnable()
+    {
+        // 애니메이션 이벤트 핸들러 등록 제거
+    }
+
+    private void OnDisable()
+    {
+        // 애니메이션 이벤트 핸들러 해제 제거
     }
 
     private void Update()
@@ -165,14 +199,17 @@ public class MidBoss : Monster
         // 공격 불가능 상태로 설정
         SetAttackable(false);
 
-        // 애니메이션 정지 등 추가적인 처리가 필요하면 여기에 추가
+        // 색상 초기화
         if (redMeshRenderer != null && redMeshRenderer.material != null)
         {
-            redMeshRenderer.material.color = bossOriginalColor; // 색상 초기화
+            redMeshRenderer.material.color = bossOriginalColor;
         }
+
+        // Idle 애니메이션 재생
+        PlayAnimation(idleAnimationName, loop: true);
     }
 
-    // OnDestroy에서 이벤트 구독 해제
+    // OnDestroy에서 이벤트 구독 해제 제거
     private void OnDestroy()
     {
         if (player != null)
@@ -199,7 +236,6 @@ public class MidBoss : Monster
             {
                 // ExecutePatterns 코루틴을 시작하고 참조를 저장합니다.
                 executePatternsCoroutine = StartCoroutine(ExecutePatterns());
-                Debug.Log("보스 몬스터가 공격을 시작합니다.");
             }
         }
         else
@@ -209,7 +245,6 @@ public class MidBoss : Monster
             {
                 StopCoroutine(executePatternsCoroutine);
                 executePatternsCoroutine = null;
-                Debug.Log("보스 몬스터의 공격이 중지되었습니다.");
             }
         }
     }
@@ -232,19 +267,17 @@ public class MidBoss : Monster
         }
         else
         {
-            // 피격 시 빨간색으로 깜빡이게 함
-            StartCoroutine(FlashRedCoroutine());
+            // 피격 시 색상 초기화
+            if (redMeshRenderer != null && redMeshRenderer.material != null)
+            {
+                redMeshRenderer.material.color = Color.red;
+                StartCoroutine(FlashRedCoroutine());
+            }
         }
-
-        Debug.Log($"중간 보스가 데미지를 입었습니다! 남은 체력: {currentHP}/{maxHealth}");
 
         if (playerUIManager != null)
         {
             playerUIManager.UpdateBossHealth(currentHP);
-        }
-        else
-        {
-            Debug.LogWarning("MidBoss: PlayerUIManager가 할당되지 않았습니다.");
         }
     }
 
@@ -263,8 +296,7 @@ public class MidBoss : Monster
         if (isDead) return;
         isDead = true;
 
-        GameManager gameManager = FindFirstObjectByType<GameManager>();
-        // 보스가 죽을 때 공격 패턴 코루틴을 정지합니다.
+        // 공격 패턴 코루틴 정지
         SetAttackable(false);
 
         if (playerUIManager != null)
@@ -283,11 +315,34 @@ public class MidBoss : Monster
             slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
             gameManager.AddBossKill();
             gameManager.AddFloorClear();
+
+            // 죽음 애니메이션 재생
+            PlayAnimation(deathAnimationName, loop: false);
+
+            // Death 애니메이션이 완료될 때까지 대기
+            StartCoroutine(WaitForDeathAnimation());
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator WaitForDeathAnimation()
+    {
+        // 애니메이션이 끝날 때까지 대기
+        while (isAnimationPlaying)
+        {
+            yield return null;
+        }
+
+        // Death 애니메이션이 끝난 후 처리
+        if (slothMapManager != null)
+        {
             StartCoroutine(PlayDeathAnimationsCoroutine());
         }
         else
         {
-            Debug.LogError("SlothMapManager가 할당되지 않았습니다.");
             Destroy(gameObject);
         }
     }
@@ -325,21 +380,29 @@ public class MidBoss : Monster
 
             if (randomValue < patternData.bulletPatternProbability)
             {
+                PlayAnimation(bulletPatternAnimationName, loop: false);
                 yield return StartCoroutine(BulletPattern());
             }
             else if (randomValue < patternData.bulletPatternProbability + patternData.warningAttackPatternProbability)
             {
+                PlayAnimation(warningAttackPatternAnimationName, loop: false);
                 yield return StartCoroutine(WarningAttackPattern());
             }
             else if (randomValue < patternData.bulletPatternProbability + patternData.warningAttackPatternProbability + patternData.warningLaserPatternProbability)
             {
+                PlayAnimation(warningLaserPatternAnimationName, loop: false);
                 yield return StartCoroutine(WarningLaserPattern());
             }
             else
             {
+                PlayAnimation(groundSmashPatternAnimationName, loop: false);
                 yield return StartCoroutine(GroundSmashPattern());
             }
 
+            // 패턴 실행 후 idle 애니메이션 재생
+            PlayAnimation(idleAnimationName, loop: true);
+
+            // 다음 패턴까지 대기 시간 (1초)
             yield return new WaitForSeconds(1f);
         }
     }
@@ -352,11 +415,8 @@ public class MidBoss : Monster
             yield break;
         }
 
-        Debug.Log("경고 레이저 패턴 시작");
-
         if (warningLaserPositions == null || warningLaserPositions.Length < 5)
         {
-            Debug.LogError("경고 레이저 위치가 제대로 설정되지 않았습니다.");
             yield break;
         }
 
@@ -366,12 +426,12 @@ public class MidBoss : Monster
 
         for (int i = 0; i < 4; i++)
         {
+            if (positionsList.Count == 0) break;
             int randomIndex = UnityEngine.Random.Range(0, positionsList.Count);
             selectedPositions.Add(positionsList[randomIndex]);
             positionsList.RemoveAt(randomIndex);
         }
 
-        // 선택된 위치에서 순서대로 경고 표시
         foreach (Transform position in selectedPositions)
         {
             if (isDead || isPlayerDead)
@@ -399,6 +459,7 @@ public class MidBoss : Monster
             {
                 warningLaserPatternSound.Post(gameObject);
             }
+
             // 레이저 공격 프리팹 인스턴스화
             GameObject laserAttack = Instantiate(patternData.warningLaserAttackPrefab, position.position, Quaternion.identity, patternParent);
             Destroy(laserAttack, patternData.warningLaserAttackDuration);
@@ -412,8 +473,6 @@ public class MidBoss : Monster
             // 레이저 공격 지속 시간만큼 대기
             yield return new WaitForSeconds(patternData.warningLaserAttackDuration);
         }
-
-        Debug.Log("경고 레이저 패턴 완료");
     }
 
     private IEnumerator BulletPattern()
@@ -423,7 +482,6 @@ public class MidBoss : Monster
             yield break;
         }
 
-        Debug.Log("탄막 패턴 시작");
         for (int i = 0; i < patternData.bulletPatternRepeatCount; i++)
         {
             if (isDead || isPlayerDead)
@@ -431,7 +489,15 @@ public class MidBoss : Monster
                 yield break;
             }
 
-            FireBullets();
+            try
+            {
+                FireBullets();
+            }
+            catch (System.Exception ex)
+            {
+                yield break; // 예외 발생 시 코루틴 종료
+            }
+
             yield return new WaitForSeconds(patternData.bulletFireInterval);
         }
     }
@@ -443,7 +509,6 @@ public class MidBoss : Monster
     {
         if (bulletSpawnPoints == null || bulletSpawnPoints.Length == 0)
         {
-            Debug.LogError("MidBoss: 탄환 스폰 포인트 배열이 설정되지 않았습니다.");
             return;
         }
 
@@ -474,10 +539,6 @@ public class MidBoss : Monster
                     bulletRb.velocity = bulletDirection * 5;
                 }
             }
-            else
-            {
-                Debug.LogError("Bullet prefab에 Bullet 컴포넌트가 없습니다.");
-            }
         }
 
         // 다음 스폰 포인트로 인덱스 업데이트 (순환)
@@ -500,18 +561,14 @@ public class MidBoss : Monster
 
             Vector3 targetPosition = GetPlayerPosition();
 
-            // 1. 경고 이펙트 생성
+            // 경고 이펙트 생성
             if (patternData.warningEffectPrefab != null)
             {
                 GameObject warning = Instantiate(patternData.warningEffectPrefab, targetPosition, Quaternion.identity, patternParent);
                 Destroy(warning, patternData.warningDuration);
             }
-            else
-            {
-                Debug.LogError("Warning Effect Prefab이 할당되지 않았습니다.");
-            }
 
-            // 3. 경고 이펙트 지속 시간만큼 대기
+            // 경고 이펙트 지속 시간만큼 대기
             yield return new WaitForSeconds(patternData.warningDuration);
 
             if (isDead || isPlayerDead)
@@ -519,7 +576,7 @@ public class MidBoss : Monster
                 yield break;
             }
 
-            // 4. 공격 이펙트 생성 및 데미지 적용
+            // 공격 이펙트 생성 및 데미지 적용
             if (patternData.attackEffectPrefab != null)
             {
                 if (warningAttackPatternSound != null)
@@ -535,16 +592,10 @@ public class MidBoss : Monster
                 damageArea.duration = patternData.attackEffectDuration;
                 damageArea.isContinuous = true;
             }
-            else
-            {
-                Debug.LogError("Attack Effect Prefab이 할당되지 않았습니다.");
-            }
 
-            // 5. 다음 반복까지 대기
+            // 다음 반복까지 대기
             yield return new WaitForSeconds(patternData.warningStartInterval);
         }
-
-        Debug.Log("경고 후 공격 패턴 완료");
     }
 
     private IEnumerator GroundSmashPattern()
@@ -554,11 +605,10 @@ public class MidBoss : Monster
             yield break;
         }
 
-        Debug.Log("바닥 찍기 패턴 시작");
-
         Vector3 targetPosition = GetPlayerPosition();
         GameObject warning = Instantiate(patternData.groundSmashWarningPrefab, targetPosition, Quaternion.identity, patternParent);
         Destroy(warning, patternData.groundSmashWarningDuration);
+
         yield return new WaitForSeconds(patternData.groundSmashWarningDuration);
 
         if (isDead || isPlayerDead)
@@ -568,10 +618,12 @@ public class MidBoss : Monster
 
         // 새로운 바닥 찍기 패턴 생성
         SpawnGroundSmashObjects(targetPosition);
+
         if (groundSmashPatternSound != null)
         {
             groundSmashPatternSound.Post(gameObject);
         }
+
         yield return new WaitForSeconds(patternData.groundSmashCooldown);
     }
 
@@ -595,7 +647,6 @@ public class MidBoss : Monster
             SpriteRenderer spriteRenderer = groundSmashObject.GetComponent<SpriteRenderer>();
             if (spriteRenderer == null)
             {
-                Debug.LogError("groundSmashMeteorPrefab에 SpriteRenderer가 없습니다.");
                 Destroy(groundSmashObject);
                 continue;
             }
@@ -641,6 +692,7 @@ public class MidBoss : Monster
         }
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(position, patternData.groundSmashMeteorRadius);
+
         foreach (Collider2D hit in hits)
         {
             Monster monster = hit.GetComponent<Monster>();
@@ -686,7 +738,6 @@ public class MidBoss : Monster
 
         if (patternData.groundSmashBulletPrefab == null)
         {
-            Debug.LogError("groundSmashBulletPrefab이 할당되지 않았습니다.");
             return;
         }
 
@@ -720,14 +771,6 @@ public class MidBoss : Monster
                 {
                     bulletRb.velocity = direction * bulletSpeed;
                 }
-                else
-                {
-                    Debug.LogError("groundSmashBulletPrefab에 Rigidbody2D가 없습니다.");
-                }
-            }
-            else
-            {
-                Debug.LogError("groundSmashBulletPrefab에 Bullet 컴포넌트가 없습니다.");
             }
         }
     }
@@ -789,5 +832,28 @@ public class MidBoss : Monster
     public override void Attack()
     {
         // MidBoss는 이 메서드를 사용하지 않습니다.
+    }
+
+    /// <summary>
+    /// 스파인 애니메이션을 재생합니다.
+    /// </summary>
+    /// <param name="animationName">재생할 애니메이션의 이름</param>
+    /// <param name="loop">애니메이션 반복 여부</param>
+    private void PlayAnimation(string animationName, bool loop)
+    {
+        if (skeletonAnimation == null)
+        {
+            return;
+        }
+
+        // 현재 재생 중인 애니메이션이 같다면 재생하지 않음
+        var current = skeletonAnimation.AnimationState.GetCurrent(0);
+        if (current != null && current.Animation.Name == animationName)
+        {
+            return;
+        }
+
+        skeletonAnimation.AnimationState.SetAnimation(0, animationName, loop);
+        isAnimationPlaying = !loop;
     }
 }
