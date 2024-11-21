@@ -107,13 +107,6 @@ public class TutorialDialogueManager : MonoBehaviour
     // 추가된 부분: 타이핑 사운드 재생 ID를 저장하기 위한 변수
     private uint typingSoundPlayingID = 0;
 
-    // 추가된 부분: 씬 전환 방식 선택을 위한 변수
-    [Header("씬 전환 설정")]
-    [SerializeField]
-    private bool useCloseAnimation = true; // CloseAnimation을 사용할지 여부
-    [SerializeField]
-    private string targetSceneName = "NextScene"; // 로드할 씬의 이름
-
     private void Start()
     {
         if (!PlayManager.I.isPlayerDied)
@@ -411,30 +404,22 @@ public class TutorialDialogueManager : MonoBehaviour
     {
         Debug.Log("튜토리얼 종료");
 
-        if (useCloseAnimation)
+        // Door_Open 애니메이션 실행
+        if (doorSkeletonAnimation != null)
         {
-            // CloseAnimation을 사용하는 경우
-            if (doorSkeletonAnimation != null)
-            {
-                // 애니메이션 완료 시 호출될 이벤트 핸들러 등록
-                doorSkeletonAnimation.AnimationState.Complete += OnDoorOpenAnimationComplete;
+            // 애니메이션 완료 시 호출될 이벤트 핸들러 등록
+            doorSkeletonAnimation.AnimationState.Complete += OnDoorOpenAnimationComplete;
 
-                // Door_Open 애니메이션 실행
-                doorSkeletonAnimation.AnimationState.SetAnimation(0, "open_door", false);
-            }
-            else
-            {
-                Debug.LogWarning("Door SkeletonAnimation이 할당되지 않았습니다.");
-
-                // Door 애니메이션이 없을 경우 즉시 포탈 활성화
-                PortalObject.SetActive(true);
-                OnPortalOpenedUnityEvent?.Invoke();
-            }
+            // Door_Open 애니메이션 실행
+            doorSkeletonAnimation.AnimationState.SetAnimation(0, "open_door", false);
         }
         else
         {
-            // SceneManager.LoadScene을 사용하는 경우
-            LoadNextScene();
+            Debug.LogWarning("Door SkeletonAnimation이 할당되지 않았습니다.");
+
+            // Door 애니메이션이 없을 경우 즉시 포탈 활성화
+            PortalObject.SetActive(true);
+            OnPortalOpenedUnityEvent?.Invoke();
         }
     }
 
@@ -452,9 +437,6 @@ public class TutorialDialogueManager : MonoBehaviour
 
         // 포탈 열림 이벤트 호출
         OnPortalOpenedUnityEvent?.Invoke();
-
-        // 선택적으로 다음 씬으로 전환
-        LoadNextScene();
     }
 
     /// <summary>
@@ -516,20 +498,5 @@ public class TutorialDialogueManager : MonoBehaviour
         // 새로운 대화를 즉시 표시하기 위해 현재 대화 시퀀스를 다시 시작
         StopAllCoroutines();
         StartCoroutine(DialogueSequence());
-    }
-
-    /// <summary>
-    /// 다음 씬을 로드하는 메서드
-    /// </summary>
-    private void LoadNextScene()
-    {
-        if (string.IsNullOrEmpty(targetSceneName))
-        {
-            Debug.LogError("Target Scene Name이 설정되지 않았습니다.");
-            return;
-        }
-
-        // 씬 로드
-        SceneManager.LoadScene(targetSceneName);
     }
 }

@@ -137,18 +137,6 @@ public class MidBoss : Monster
             deathAnimationHandler = slothMapManager.GetComponent<DeathAnimationHandler>();
         }
 
-        // 스폰 포인트가 설정되지 않은 경우
-        if (bulletSpawnPoints == null || bulletSpawnPoints.Length == 0)
-        {
-            // 스폰 포인트 배열이 비어있을 때의 처리
-        }
-
-        // 경고 레이저 위치 배열이 설정되지 않은 경우
-        if (warningLaserPositions == null || warningLaserPositions.Length < 5)
-        {
-            // 경고 레이저 위치 배열이 충분하지 않을 때의 처리
-        }
-
         // MeshRenderer와 원래 색상 저장
         redMeshRenderer = GetComponent<MeshRenderer>();
         if (redMeshRenderer != null)
@@ -172,17 +160,18 @@ public class MidBoss : Monster
 
         // 패턴 실행 시작
         SetAttackable(true);
-    }
 
+        // SlothMapManager의 OnDeathAnimationsCompleted 이벤트에 구독 추가
+        if (slothMapManager != null)
+        {
+            slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
+        }
+    }
     private void OnEnable()
     {
         // 애니메이션 이벤트 핸들러 등록 제거
     }
 
-    private void OnDisable()
-    {
-        // 애니메이션 이벤트 핸들러 해제 제거
-    }
 
     private void Update()
     {
@@ -209,12 +198,16 @@ public class MidBoss : Monster
         PlayAnimation(idleAnimationName, loop: true);
     }
 
-    // OnDestroy에서 이벤트 구독 해제 제거
     private void OnDestroy()
     {
         if (player != null)
         {
             player.OnPlayerDeath.RemoveListener(OnPlayerDeathHandler);
+        }
+
+        if (slothMapManager != null)
+        {
+            slothMapManager.OnDeathAnimationsCompleted -= HandleDeathAnimationsCompleted;
         }
     }
 
@@ -296,6 +289,8 @@ public class MidBoss : Monster
         if (isDead) return;
         isDead = true;
 
+        Debug.Log("MidBoss Die() 호출됨.");
+
         // 공격 패턴 코루틴 정지
         SetAttackable(false);
 
@@ -310,31 +305,32 @@ public class MidBoss : Monster
             if (!slothMapManager.gameObject.activeInHierarchy)
             {
                 slothMapManager.gameObject.SetActive(true);
+                Debug.Log("SlothMapManager 활성화됨.");
             }
 
-            slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
+            // DeathAnimationHandler의 이벤트는 SlothMapManager가 이미 구독하고 있음
             gameManager.AddBossKill();
             gameManager.AddFloorClear();
 
             // 죽음 애니메이션 재생
             PlayAnimation(deathAnimationName, loop: false);
+            Debug.Log($"죽음 애니메이션 재생됨: {deathAnimationName}");
 
             // Death 애니메이션이 완료될 때까지 대기
-            StartCoroutine(WaitForDeathAnimation());
+            WaitForDeathAnimation();
         }
         else
         {
+            Debug.LogError("MidBoss Die(): slothMapManager가 할당되지 않았습니다.");
             Destroy(gameObject);
         }
     }
 
-    private IEnumerator WaitForDeathAnimation()
+
+    private void WaitForDeathAnimation()
     {
-        // 애니메이션이 끝날 때까지 대기
-        while (isAnimationPlaying)
-        {
-            yield return null;
-        }
+
+        Debug.Log("Death 애니메이션 완료됨. Death 애니메이션 후 처리 시작.");
 
         // Death 애니메이션이 끝난 후 처리
         if (slothMapManager != null)
@@ -343,25 +339,37 @@ public class MidBoss : Monster
         }
         else
         {
+            Debug.LogError("WaitForDeathAnimation: slothMapManager가 할당되지 않았습니다.");
             Destroy(gameObject);
         }
     }
 
     private IEnumerator PlayDeathAnimationsCoroutine()
     {
+        Debug.Log("PlayDeathAnimationsCoroutine 시작.");
         yield return new WaitForEndOfFrame();
         slothMapManager.PlayDeathAnimations();
     }
 
+
     private void HandleDeathAnimationsCompleted()
     {
+        Debug.Log("HandleDeathAnimationsCompleted 호출됨. 포탈 활성화 및 보스 오브젝트 파괴.");
+
+        // isAnimationPlaying을 false로 설정하여 코루틴 종료
+        isAnimationPlaying = false;
+        Debug.Log("isAnimationPlaying을 false로 설정.");
+
         if (slothMapManager != null)
         {
             slothMapManager.OnDeathAnimationsCompleted -= HandleDeathAnimationsCompleted;
+            Debug.Log("SlothMapManager의 OnDeathAnimationsCompleted 이벤트 구독 해제됨.");
         }
 
         Destroy(gameObject);
+        Debug.Log("MidBoss 오브젝트 파괴됨.");
     }
+
 
     private IEnumerator ExecutePatterns()
     {
@@ -843,6 +851,7 @@ public class MidBoss : Monster
     {
         if (skeletonAnimation == null)
         {
+            Debug.LogError("PlayAnimation: skeletonAnimation이 할당되지 않았습니다.");
             return;
         }
 
@@ -850,10 +859,13 @@ public class MidBoss : Monster
         var current = skeletonAnimation.AnimationState.GetCurrent(0);
         if (current != null && current.Animation.Name == animationName)
         {
+            Debug.Log($"PlayAnimation: 현재 애니메이션이 '{animationName}'와 같아 재생하지 않음.");
             return;
         }
 
         skeletonAnimation.AnimationState.SetAnimation(0, animationName, loop);
         isAnimationPlaying = !loop;
+        Debug.Log($"PlayAnimation: 애니메이션 '{animationName}' 재생됨. Loop: {loop}");
     }
+
 }

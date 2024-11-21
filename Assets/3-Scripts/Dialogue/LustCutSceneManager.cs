@@ -109,10 +109,12 @@ public class LustCutSceneManager : MonoBehaviour
 
         StartCutscene();
     }
+
     private void OnEnable()
     {
         OnCutsceneStarted?.Invoke();
     }
+
     public bool IsCutsceneEnded()
     {
         return cutsceneEnded;
@@ -155,15 +157,8 @@ public class LustCutSceneManager : MonoBehaviour
         currentSentenceIndex++;
         currentSentence = currentLine.sentence;
 
-            if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
-            {
-
-                currentDialogueBox = dialogueBoxes[currentLine.dialogueBoxIndex];
-                currentDialogueBox.dialogueBoxObject.SetActive(true);
-            }
-
-            // 대화창 선택
-            if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
+        // 대화창 선택
+        if (currentLine.dialogueBoxIndex >= 0 && currentLine.dialogueBoxIndex < dialogueBoxes.Length)
         {
             currentDialogueBox = dialogueBoxes[currentLine.dialogueBoxIndex];
             currentDialogueBox.dialogueBoxObject.SetActive(true);
@@ -187,10 +182,28 @@ public class LustCutSceneManager : MonoBehaviour
             animationImage.gameObject.SetActive(true);
         }
 
-        // 텍스트 애니메이션 시작
-        textAnimationCoroutine = StartCoroutine(
-            AnimateText(currentDialogueBox.dialogueText, currentLine.sentence)
-        );
+        // 첫 번째 대화인지 확인하고 지연 처리
+        if (currentSentenceIndex == 1)
+        {
+            // 첫 번째 대화에만 지연을 추가 (예: 3.3초)
+            textAnimationCoroutine = StartCoroutine(DisplayDialogueWithDelay(currentLine));
+        }
+        else
+        {
+            // 두 번째 이후 대화는 즉시 표시
+            textAnimationCoroutine = StartCoroutine(
+                AnimateText(currentDialogueBox.dialogueText, currentLine.sentence)
+            );
+        }
+    }
+
+    private IEnumerator DisplayDialogueWithDelay(DialogueLine currentLine)
+    {
+        // 지정된 지연 시간만큼 대기 (예: 3.3초)
+        yield return new WaitForSecondsRealtime(3.3f);
+
+        // 대화를 애니메이션과 함께 표시
+        yield return StartCoroutine(AnimateText(currentDialogueBox.dialogueText, currentLine.sentence));
     }
 
     private IEnumerator AnimateText(TMP_Text dialogueText, string sentence)

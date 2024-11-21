@@ -24,8 +24,6 @@ public class FieryBloodToastAbility : Ability
             return;
         }
 
-        if (currentLevel == 0)
-        {
             playerData = player.stat; // PlayerData ÂüÁ¶
             buffIdentifier = this.name;
 
@@ -40,7 +38,6 @@ public class FieryBloodToastAbility : Ability
             {
                 activateSound.Post(player.gameObject);
             }
-        }
     }
 
     public override void Upgrade()

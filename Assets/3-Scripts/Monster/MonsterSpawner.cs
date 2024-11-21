@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events; // UnityEvent를 사용하기 위해 추가
+using UnityEngine.SceneManagement; // 씬 전환을 위해 추가
 
 public class MonsterSpawner : MonoBehaviour
 {
@@ -50,6 +52,11 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField, Tooltip("보스 활성화 연출의 총 지속 시간 (초)")]
     private float cutsceneDuration = 5f;
 
+    [Header("Boss Appearance Event")]
+    [Tooltip("보스가 등장할 때 호출되는 이벤트")]
+    [SerializeField]
+    private UnityEvent OnBossAppeared; // 보스 등장 시 호출될 UnityEvent 추가
+
     private void Start()
     {
         if (waves.Count > 0)
@@ -96,6 +103,7 @@ public class MonsterSpawner : MonoBehaviour
             }
         }
     }
+
     private void Update()
     {
         // 활성화된 몬스터 리스트를 업데이트하여 죽은 몬스터를 제거
@@ -192,6 +200,7 @@ public class MonsterSpawner : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// 씬에 미리 배치된 보스 오브젝트를 활성화합니다.
     /// </summary>
@@ -201,10 +210,29 @@ public class MonsterSpawner : MonoBehaviour
         {
             bossPrefab.SetActive(true); // 보스 활성화
             Debug.Log("MonsterSpawner: 보스가 활성화되었습니다.");
+
+            // 보스 등장 이벤트 호출
+            InvokeBossAppearedEvent();
         }
         else
         {
             Debug.LogWarning("MonsterSpawner: bossPrefab 오브젝트가 설정되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 보스 등장 시 호출되는 UnityEvent를 호출합니다.
+    /// </summary>
+    private void InvokeBossAppearedEvent()
+    {
+        if (OnBossAppeared != null)
+        {
+            OnBossAppeared.Invoke();
+            Debug.Log("MonsterSpawner: OnBossAppeared 이벤트가 호출되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("MonsterSpawner: OnBossAppeared 이벤트가 할당되지 않았습니다.");
         }
     }
 
@@ -239,6 +267,8 @@ public class MonsterSpawner : MonoBehaviour
                 effect.AddComponent<AutoDestroyEffect>();
             }
         }
+
+        Debug.Log($"MonsterSpawner: 몬스터 스폰됨. 프리팹: {monsterPrefab.name}, 위치: {spawnPoint.position}");
     }
 
     /// <summary>
@@ -250,7 +280,6 @@ public class MonsterSpawner : MonoBehaviour
         return spawnedMonsters.Count == 0;
     }
 
-
     private IEnumerator BossActivationCutscene()
     {
         Debug.Log("BossActivationCutscene 시작");
@@ -259,6 +288,7 @@ public class MonsterSpawner : MonoBehaviour
         if (warningSoundEvent != null)
         {
             warningSoundEvent.Post(gameObject);
+            Debug.Log("BossActivationCutscene: 경고 사운드 재생됨.");
         }
         else
         {
@@ -289,6 +319,7 @@ public class MonsterSpawner : MonoBehaviour
             if (warningSoundEvent != null)
             {
                 warningSoundEvent.Stop(gameObject);
+                Debug.Log("BossActivationCutscene: 경고 사운드 정지됨.");
             }
             else
             {
@@ -302,6 +333,7 @@ public class MonsterSpawner : MonoBehaviour
 
         Debug.Log("BossActivationCutscene 종료");
     }
+
     /// <summary>
     /// 웨이브 클리어 UI를 표시하고 서서히 페이드 아웃합니다.
     /// </summary>
@@ -316,10 +348,11 @@ public class MonsterSpawner : MonoBehaviour
             if (waveNumberAnimator != null)
             {
                 waveNumberAnimator.SetTrigger("Clear"); // "Clear" 트리거 설정
-                Debug.Log("Clear 트리거 발동");
+                Debug.Log("ShowWaveClearUI: 'Clear' 트리거 발동.");
             }
 
             StartCoroutine(FadeOutWaveNumber(3f)); // 3초 후에 페이드 아웃 시작
+            Debug.Log($"ShowWaveClearUI: 웨이브 {currentWaveIndex + 1} 클리어 UI 표시.");
         }
         else
         {
@@ -350,5 +383,6 @@ public class MonsterSpawner : MonoBehaviour
             yield return null;
         }
         waveNumberText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f); // 페이드 아웃이 끝나면 완전히 투명하게 설정
+        Debug.Log("FadeOutWaveNumber: 웨이브 클리어 UI 페이드 아웃 완료.");
     }
 }

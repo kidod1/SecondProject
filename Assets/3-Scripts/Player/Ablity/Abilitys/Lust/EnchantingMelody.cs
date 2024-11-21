@@ -30,15 +30,16 @@ public class EnchantingMelody : Ability
     [Tooltip("버프 적용 시 재생될 WWISE 이벤트")]
     public AK.Wwise.Event buffAppliedSound;
 
-    private float currentAttackSpeedBuffValue = 0f;
-    private int currentAttackDamageBuffValue = 0;
-    private float currentMovementSpeedBuffValue = 0f;
-
     private PlayerData playerData;
     private Player playerInstance;
 
     private BuffType currentBuffType = BuffType.AttackDamage;
     private Coroutine buffCoroutine;
+
+    // 기본 스탯 저장
+    private int baseAttackDamage;
+    private float baseAttackSpeed;
+    private float baseMovementSpeed;
 
     public override void Apply(Player player)
     {
@@ -51,8 +52,13 @@ public class EnchantingMelody : Ability
         playerInstance = player;
         playerData = player.stat; // PlayerData 참조
 
-        if (buffCoroutine == null && currentLevel >= 0)
+        // 기본 스탯 저장 (최초 Apply 시)
+        if (buffCoroutine == null)
         {
+            baseAttackDamage = playerData.currentPlayerDamage;
+            baseAttackSpeed = playerData.currentAttackSpeed;
+            baseMovementSpeed = playerData.currentPlayerSpeed;
+
             buffCoroutine = player.StartCoroutine(BuffRotationCoroutine());
         }
     }
@@ -82,7 +88,7 @@ public class EnchantingMelody : Ability
             buffCoroutine = null;
         }
         currentLevel = 0;
-        RemoveCurrentBuff();
+        RemoveAllBuffs();
         currentBuffType = BuffType.AttackDamage;
     }
 
@@ -113,20 +119,17 @@ public class EnchantingMelody : Ability
             case BuffType.AttackDamage:
                 buffValue = GetAttackDamageBuff();
                 effectPrefab = attackDamageEffectPrefab;
-                playerData.currentPlayerDamage += Mathf.RoundToInt(buffValue);
-                currentAttackDamageBuffValue = Mathf.RoundToInt(buffValue);
+                playerData.currentPlayerDamage = baseAttackDamage + Mathf.RoundToInt(buffValue);
                 break;
             case BuffType.AttackSpeed:
                 buffValue = GetAttackSpeedBuff();
                 effectPrefab = attackSpeedEffectPrefab;
-                playerData.currentAttackSpeed += buffValue;
-                currentAttackSpeedBuffValue = buffValue;
+                playerData.currentAttackSpeed = baseAttackSpeed + buffValue;
                 break;
             case BuffType.MovementSpeed:
                 buffValue = GetMovementSpeedBuff();
                 effectPrefab = movementSpeedEffectPrefab;
-                playerData.currentPlayerSpeed += buffValue;
-                currentMovementSpeedBuffValue = buffValue;
+                playerData.currentPlayerSpeed = baseMovementSpeed + buffValue;
                 break;
         }
 
@@ -141,6 +144,8 @@ public class EnchantingMelody : Ability
         {
             buffAppliedSound.Post(playerInstance.gameObject);
         }
+
+        Debug.Log($"EnchantingMelody: Applied {currentBuffType} Buff of {buffValue}");
     }
 
     private void RemoveCurrentBuff()
@@ -150,24 +155,43 @@ public class EnchantingMelody : Ability
             Debug.LogWarning("EnchantingMelody RemoveCurrentBuff: playerData가 null입니다.");
             return;
         }
+
         switch (currentBuffType)
         {
             case BuffType.AttackDamage:
-                playerData.currentPlayerDamage -= currentAttackDamageBuffValue;
-                currentAttackDamageBuffValue = 0;
+                playerData.currentPlayerDamage = baseAttackDamage;
                 break;
             case BuffType.AttackSpeed:
-                playerData.currentAttackSpeed -= currentAttackSpeedBuffValue;
-                currentAttackSpeedBuffValue = 0f;
+                playerData.currentAttackSpeed = baseAttackSpeed;
                 break;
             case BuffType.MovementSpeed:
-                playerData.currentPlayerSpeed -= currentMovementSpeedBuffValue;
-                currentMovementSpeedBuffValue = 0f;
+                playerData.currentPlayerSpeed = baseMovementSpeed;
                 break;
         }
 
         // 버프 제거
         playerData.RemoveBuff(this.name, currentBuffType);
+
+        Debug.Log($"EnchantingMelody: Removed {currentBuffType} Buff");
+    }
+
+    private void RemoveAllBuffs()
+    {
+        if (playerData == null)
+        {
+            Debug.LogWarning("EnchantingMelody RemoveAllBuffs: playerData가 null입니다.");
+            return;
+        }
+
+        // 모든 버프 타입에 대해 기본 스탯으로 복원
+        playerData.currentPlayerDamage = baseAttackDamage;
+        playerData.currentAttackSpeed = baseAttackSpeed;
+        playerData.currentPlayerSpeed = baseMovementSpeed;
+
+        // 모든 버프 제거
+        playerData.RemoveBuff(this.name, currentBuffType);
+
+        Debug.Log("EnchantingMelody: Removed all buffs and reset to base stats");
     }
 
     private void AdvanceToNextBuff()
@@ -179,7 +203,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < attackDamageBuffs.Length)
         {
-            return attackDamageBuffs[currentLevel - 1];
+            return attackDamageBuffs[currentLevel];
         }
         return attackDamageBuffs[attackDamageBuffs.Length - 1];
     }
@@ -188,7 +212,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < attackSpeedBuffs.Length)
         {
-            return attackSpeedBuffs[currentLevel - 1];
+            return attackSpeedBuffs[currentLevel];
         }
         return attackSpeedBuffs[attackSpeedBuffs.Length - 1];
     }
@@ -197,7 +221,7 @@ public class EnchantingMelody : Ability
     {
         if (currentLevel < movementSpeedBuffs.Length)
         {
-            return movementSpeedBuffs[currentLevel - 1];
+            return movementSpeedBuffs[currentLevel];
         }
         return movementSpeedBuffs[movementSpeedBuffs.Length - 1];
     }
@@ -225,9 +249,9 @@ public class EnchantingMelody : Ability
 
         description += $"버프는 {buffChangeInterval}초마다 순환합니다.\n";
         description += $"Lv {currentLevel + 1}:\n";
-        description += $"공격력 버프: +{attackDamageBuffs[currentLevel]}\n";
-        description += $"공격 속도 버프: +{attackSpeedBuffs[currentLevel]} 초당 공격 횟수 증가\n";
-        description += $"이동 속도 버프: +{movementSpeedBuffs[currentLevel]}\n";
+        description += $"공격력 버프: +{GetAttackDamageBuff()}\n";
+        description += $"공격 속도 버프: +{GetAttackSpeedBuff()} 초당 공격 횟수 증가\n";
+        description += $"이동 속도 버프: +{GetMovementSpeedBuff()}\n";
 
         return description;
     }
@@ -241,27 +265,5 @@ public class EnchantingMelody : Ability
             return nextAttackDamageBuff;
         }
         return 0;
-    }
-
-    // 추가: 레벨과 배열 길이를 일치시키기 위한 유효성 검사
-    private void OnValidate()
-    {
-        if (attackDamageBuffs.Length != maxLevel)
-        {
-            Debug.LogWarning($"EnchantingMelody: attackDamageBuffs 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            System.Array.Resize(ref attackDamageBuffs, maxLevel);
-        }
-
-        if (attackSpeedBuffs.Length != maxLevel)
-        {
-            Debug.LogWarning($"EnchantingMelody: attackSpeedBuffs 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            System.Array.Resize(ref attackSpeedBuffs, maxLevel);
-        }
-
-        if (movementSpeedBuffs.Length != maxLevel)
-        {
-            Debug.LogWarning($"EnchantingMelody: movementSpeedBuffs 배열의 길이가 maxLevel ({maxLevel})과 일치하지 않습니다. 배열 길이를 맞춥니다.");
-            System.Array.Resize(ref movementSpeedBuffs, maxLevel);
-        }
     }
 }

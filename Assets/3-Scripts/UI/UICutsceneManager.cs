@@ -2,6 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+
+// WWISE 네임스페이스 추가 (필요 시)
+using AK.Wwise;
 
 public class UICutsceneManager : MonoBehaviour
 {
@@ -10,6 +14,9 @@ public class UICutsceneManager : MonoBehaviour
     {
         public Sprite sprite; // 표시할 스프라이트
         public Image image;   // 스프라이트가 할당될 Image 컴포넌트
+
+        [Header("WWISE Events")]
+        public AK.Wwise.Event frameSound; // 프레임 표시 시 재생할 WWISE 이벤트
     }
 
     [System.Serializable]
@@ -33,6 +40,21 @@ public class UICutsceneManager : MonoBehaviour
     [Header("Transition Options")]
     [SerializeField]
     private bool usePlayCloseAnimation = true; // true: PlayCloseAnimation 사용, false: SceneManager.LoadScene 사용
+
+    // WWISE 이벤트를 인스펙터에서 할당할 수 있도록 선언
+    [Header("WWISE Events")]
+    [SerializeField]
+    private AK.Wwise.Event pageTransitionSound; // 페이지 전환 시 재생할 WWISE 이벤트
+
+    [Header("Scene Transition Events")]
+    [Tooltip("씬 전환 전에 호출되는 이벤트")]
+    [SerializeField]
+    private UnityEvent OnBeforeSceneTransition; // 씬 전환 전에 호출될 UnityEvent 추가
+
+    [Header("Scene Transition Events")]
+    [Tooltip("씬 전환 후 호출되는 이벤트")]
+    [SerializeField]
+    private UnityEvent OnAfterSceneTransition; // 씬 전환 후 호출될 UnityEvent 추가
 
     private int currentPageIndex = 0;       // 현재 페이지 인덱스
     private int currentFrameIndex = 0;      // 현재 프레임 인덱스
@@ -124,6 +146,16 @@ public class UICutsceneManager : MonoBehaviour
         color.a = 0f;
         frame.image.color = color;
 
+        // 프레임 표시 시 WWISE 효과음 재생
+        if (frame.frameSound != null)
+        {
+            frame.frameSound.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("프레임에 할당된 WWISE 효과음이 없습니다.");
+        }
+
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
@@ -161,6 +193,16 @@ public class UICutsceneManager : MonoBehaviour
             {
                 frame.image.gameObject.SetActive(false);
             }
+        }
+
+        // WWISE 효과음 재생 (페이지 전환 시)
+        if (pageTransitionSound != null)
+        {
+            pageTransitionSound.Post(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("pageTransitionSound이(가) 할당되지 않았습니다.");
         }
 
         // 추가 대기 시간 (2초)
@@ -208,6 +250,9 @@ public class UICutsceneManager : MonoBehaviour
     {
         if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
         {
+            // 씬 전환 전에 이벤트 호출
+            InvokeBeforeSceneTransitionEvent();
+
             if (usePlayCloseAnimation)
             {
                 sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
@@ -216,6 +261,155 @@ public class UICutsceneManager : MonoBehaviour
             {
                 SceneManager.LoadScene(loadSceneName);
             }
+
+            // 씬 전환 후 이벤트 호출 (씬 전환이 비동기적으로 일어나는 경우, 씬 로드 완료 후 호출하도록 수정할 수도 있습니다.)
+            InvokeAfterSceneTransitionEvent();
+        }
+        else
+        {
+            Debug.LogError("SceneChangeSkeleton이 할당되지 않았거나 loadSceneName이 설정되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 씬 전환 전에 호출되는 UnityEvent를 호출합니다.
+    /// </summary>
+    private void InvokeBeforeSceneTransitionEvent()
+    {
+        if (OnBeforeSceneTransition != null)
+        {
+            OnBeforeSceneTransition.Invoke();
+            Debug.Log("UICutsceneManager: OnBeforeSceneTransition 이벤트가 호출되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("UICutsceneManager: OnBeforeSceneTransition 이벤트가 할당되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 씬 전환 후 호출되는 UnityEvent를 호출합니다.
+    /// </summary>
+    private void InvokeAfterSceneTransitionEvent()
+    {
+        if (OnAfterSceneTransition != null)
+        {
+            OnAfterSceneTransition.Invoke();
+            Debug.Log("UICutsceneManager: OnAfterSceneTransition 이벤트가 호출되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("UICutsceneManager: OnAfterSceneTransition 이벤트가 할당되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 씬에 로드된 후 호출되는 씬 로드 완료 이벤트를 위해 사용할 수 있는 메서드
+    /// </summary>
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬이 로드된 후 AfterTransition 이벤트 호출
+        InvokeAfterSceneTransitionEvent();
+    }
+
+    /// <summary>
+    /// 씬 전환이 완료되었는지 확인하기 위해 씬 로드 완료 이벤트 사용
+    /// </summary>
+    // 기존의 InvokeAfterSceneTransitionEvent를 호출하는 부분을 OnSceneLoaded로 이동시킵니다.
+    // 이를 통해 씬이 실제로 로드된 후 이벤트가 호출됩니다.
+    private void TransitionToScene_correct()
+    {
+        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        {
+            // 씬 전환 전에 이벤트 호출
+            InvokeBeforeSceneTransitionEvent();
+
+            if (usePlayCloseAnimation)
+            {
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(loadSceneName);
+            }
+
+            // 기존의 AfterSceneTransition 이벤트 호출을 제거하고, OnSceneLoaded에서 호출하도록 합니다.
+        }
+        else
+        {
+            Debug.LogError("SceneChangeSkeleton이 할당되지 않았거나 loadSceneName이 설정되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 씬에 로드된 후 호출되는 씬 로드 완료 이벤트를 위해 사용할 수 있는 메서드
+    /// </summary>
+    private void TransitionToScene_final()
+    {
+        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        {
+            // 씬 전환 전에 이벤트 호출
+            InvokeBeforeSceneTransitionEvent();
+
+            if (usePlayCloseAnimation)
+            {
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(loadSceneName);
+            }
+
+            // OnSceneLoaded에서 AfterTransition 이벤트 호출
+        }
+        else
+        {
+            Debug.LogError("SceneChangeSkeleton이 할당되지 않았거나 loadSceneName이 설정되지 않았습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 씬 전환 후에 추가적인 동작을 수행하고 싶다면 OnSceneLoaded에서 처리할 수 있습니다.
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
+    private void OnSceneLoaded_final(Scene scene, LoadSceneMode mode)
+    {
+        // 씬이 로드된 후 AfterTransition 이벤트 호출
+        InvokeAfterSceneTransitionEvent();
+    }
+
+
+    /// <summary>
+    /// 모든 페이지가 완료된 후 씬 전환을 처리합니다.
+    /// </summary>
+    private void TransitionToScene_correct_final()
+    {
+        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        {
+            // 씬 전환 전에 이벤트 호출
+            InvokeBeforeSceneTransitionEvent();
+
+            if (usePlayCloseAnimation)
+            {
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(loadSceneName);
+            }
+
+            // AfterTransition 이벤트는 OnSceneLoaded에서 호출됩니다.
         }
         else
         {
