@@ -13,6 +13,7 @@ public class Bee : MonoBehaviour
     private Rigidbody2D rb;
     private bool isChasing = false;
 
+    public AK.Wwise.Event attackSound;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -121,6 +122,7 @@ public class Bee : MonoBehaviour
     private void Attack(Monster target)
     {
         target.TakeDamage(damage, transform.position);
+        attackSound.Post(PlayManager.I.GetPlayer().gameObject);
         Destroy(gameObject); // 공격 후 벌 제거
     }
 

@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584695118309276835
+    m_lastTime: -8584693499120703605
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584695118308910257
+    m_lastTime: -8584693499120415324
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584695118439024438
+    m_lastTime: -8584693499105526359
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584695118311035705
+    m_lastTime: -8584693499122195371
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584695118440583130
+    m_lastTime: -8584693499106802954
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -675,9 +675,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0
       minDuration: 0
-    - name: Ablilty_Fury_Meteor
-      guid: edf1c549a3a5ed41baa06a6e9056ae49
-      id: 1047829572
+    - name: Ablilty_Fury_Meteor_bomb
+      guid: 1d94d54d4b5cfa4488bd49cf4473af18
+      id: 360520055
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -694,13 +694,39 @@ MonoBehaviour:
       - ElementName: Fury
         ObjectType: 4
         guid: 72897f747f76c94fb0a9c41d2c3c21b2
-      - ElementName: Ablilty_Fury_Meteor
+      - ElementName: Ablilty_Fury_Meteor_bomb
+        ObjectType: 3
+        guid: 1d94d54d4b5cfa4488bd49cf4473af18
+      Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_Meteor_bomb
+      maxAttenuation: 0
+      maxDuration: 4.318659
+      minDuration: 3.4277217
+    - name: Ablilty_Fury_Meteor_start
+      guid: edf1c549a3a5ed41baa06a6e9056ae49
+      id: 2375738121
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: SFX
+        ObjectType: 4
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
+      - ElementName: Fury
+        ObjectType: 4
+        guid: 72897f747f76c94fb0a9c41d2c3c21b2
+      - ElementName: Ablilty_Fury_Meteor_start
         ObjectType: 3
         guid: edf1c549a3a5ed41baa06a6e9056ae49
-      Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_Meteor
+      Path: Events\Default Work Unit\SFX\Ablilty\Fury\Ablilty_Fury_Meteor_start
       maxAttenuation: 0
-      maxDuration: 9.87711
-      minDuration: 7.7363176
+      maxDuration: 3.944986
+      minDuration: 3.1311374
     - name: Ablilty_Greed_CoinBetting
       guid: 94561e9a1e2bbb45af67df89e18f8537
       id: 228122833
@@ -751,8 +777,8 @@ MonoBehaviour:
         guid: c659d0dc84f85242ade8d4dcdfb88dfb
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain
       maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
+      maxDuration: 1.5560865
+      minDuration: 1.2350667
     - name: Ablilty_Greed_Joker
       guid: 37b3d5577f7ebb4f833b41cc1d5a14f5
       id: 1545538756
@@ -1578,6 +1604,299 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 1.0602357
       minDuration: 0.84150964
+    - name: Comic_Lux_A
+      guid: 5a7c2427b8b7ad4ebdc57287533eab5d
+      id: 3650598918
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Luxuria
+        ObjectType: 4
+        guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      - ElementName: Comic_Lux_A
+        ObjectType: 3
+        guid: 5a7c2427b8b7ad4ebdc57287533eab5d
+      Path: Events\Default Work Unit\UI\ComicSFX_Luxuria\Comic_Lux_A
+      maxAttenuation: 0
+      maxDuration: 2.0896041
+      minDuration: 2.0896041
+    - name: Comic_Lux_B
+      guid: 9f7b0d3056a67a43948c6e76a7c1d3f5
+      id: 3650598917
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Luxuria
+        ObjectType: 4
+        guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      - ElementName: Comic_Lux_B
+        ObjectType: 3
+        guid: 9f7b0d3056a67a43948c6e76a7c1d3f5
+      Path: Events\Default Work Unit\UI\ComicSFX_Luxuria\Comic_Lux_B
+      maxAttenuation: 0
+      maxDuration: 2.2209792
+      minDuration: 2.2209792
+    - name: Comic_Lux_C
+      guid: a5796bbbbcb0644b8efc634cd2645ce0
+      id: 3650598916
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Luxuria
+        ObjectType: 4
+        guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      - ElementName: Comic_Lux_C
+        ObjectType: 3
+        guid: a5796bbbbcb0644b8efc634cd2645ce0
+      Path: Events\Default Work Unit\UI\ComicSFX_Luxuria\Comic_Lux_C
+      maxAttenuation: 0
+      maxDuration: 3.692313
+      minDuration: 3.692313
+    - name: Comic_Lux_D
+      guid: fddf0fad7761b64794cfed41c806bab7
+      id: 3650598915
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Luxuria
+        ObjectType: 4
+        guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      - ElementName: Comic_Lux_D
+        ObjectType: 3
+        guid: fddf0fad7761b64794cfed41c806bab7
+      Path: Events\Default Work Unit\UI\ComicSFX_Luxuria\Comic_Lux_D
+      maxAttenuation: 0
+      maxDuration: 1.4749206
+      minDuration: 1.4749206
+    - name: Comic_Lux_E
+      guid: db459a8e6e52f743badc3afa08072123
+      id: 3650598914
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Luxuria
+        ObjectType: 4
+        guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      - ElementName: Comic_Lux_E
+        ObjectType: 3
+        guid: db459a8e6e52f743badc3afa08072123
+      Path: Events\Default Work Unit\UI\ComicSFX_Luxuria\Comic_Lux_E
+      maxAttenuation: 0
+      maxDuration: 3.7379792
+      minDuration: 3.7379792
+    - name: Comic_Sloth_A
+      guid: f214d2a04b380b438f35746bef3c1520
+      id: 992097521
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      - ElementName: Comic_Sloth_A
+        ObjectType: 3
+        guid: f214d2a04b380b438f35746bef3c1520
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth\Comic_Sloth_A
+      maxAttenuation: 0
+      maxDuration: 0.43589583
+      minDuration: 0.43589583
+    - name: Comic_Sloth_B
+      guid: 9aff1008df426c4c97b32d6245711080
+      id: 992097522
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      - ElementName: Comic_Sloth_B
+        ObjectType: 3
+        guid: 9aff1008df426c4c97b32d6245711080
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth\Comic_Sloth_B
+      maxAttenuation: 0
+      maxDuration: 0.39697915
+      minDuration: 0.39697915
+    - name: Comic_Sloth_C
+      guid: f101af82c5a9fb43a3779da08611173b
+      id: 992097523
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      - ElementName: Comic_Sloth_C
+        ObjectType: 3
+        guid: f101af82c5a9fb43a3779da08611173b
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth\Comic_Sloth_C
+      maxAttenuation: 0
+      maxDuration: 0.43091667
+      minDuration: 0.43091667
+    - name: Comic_Sloth_D
+      guid: a973f4a7ed83344e92e25ed5dee9e327
+      id: 992097524
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      - ElementName: Comic_Sloth_D
+        ObjectType: 3
+        guid: a973f4a7ed83344e92e25ed5dee9e327
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth\Comic_Sloth_D
+      maxAttenuation: 0
+      maxDuration: 0.875
+      minDuration: 0.875
+    - name: Comic_Sloth_E
+      guid: 1e190e28bce85544bc51a400dbea0f9b
+      id: 992097525
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      - ElementName: Comic_Sloth_E
+        ObjectType: 3
+        guid: 1e190e28bce85544bc51a400dbea0f9b
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth\Comic_Sloth_E
+      maxAttenuation: 0
+      maxDuration: 4.724146
+      minDuration: 4.724146
+    - name: Comic_Sloth_F
+      guid: b19a5d21d810164cb53fc3bcf3afebd3
+      id: 992097526
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      - ElementName: Comic_Sloth_F
+        ObjectType: 3
+        guid: b19a5d21d810164cb53fc3bcf3afebd3
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth\Comic_Sloth_F
+      maxAttenuation: 0
+      maxDuration: 1.5249791
+      minDuration: 1.5249791
+    - name: ComicSFX_Luxuria
+      guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      id: 3751152876
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Luxuria
+        ObjectType: 4
+        guid: 147adf36928aff4bb3d0e7cfe5f8963c
+      Path: Events\Default Work Unit\UI\ComicSFX_Luxuria
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: ComicSFX_Sloth
+      guid: 7b7bc9975476e847a8961f98adde0052
+      id: 1443024648
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: ComicSFX_Sloth
+        ObjectType: 4
+        guid: 7b7bc9975476e847a8961f98adde0052
+      Path: Events\Default Work Unit\UI\ComicSFX_Sloth
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Credit
       guid: f50dcdcc88bc2244acc862ea4c1b4db5
       id: 4072209002
@@ -2259,29 +2578,6 @@ MonoBehaviour:
       maxDuration: -1
       minDuration: -1
     - name: Luxuria
-      guid: 9d573ec4101d1548a365918b2e492ab5
-      id: 1581814111
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: SFX
-        ObjectType: 4
-        guid: 1c17e268c566f4429fd40262795ed549
-      - ElementName: Ablilty
-        ObjectType: 4
-        guid: 976923fb337adc4f9a7b2c3d81715f17
-      - ElementName: Luxuria
-        ObjectType: 4
-        guid: 9d573ec4101d1548a365918b2e492ab5
-      Path: Events\Default Work Unit\SFX\Ablilty\Luxuria
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
-    - name: Luxuria
       guid: f61cd8b9c797a245b7d988ef1a74fedc
       id: 1581814111
       PathAndIcons:
@@ -2301,9 +2597,9 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Luxuria_Boss
-      guid: cdd72e20020fb84b9b0971a055068f2c
-      id: 3507238269
+    - name: Luxuria
+      guid: 9d573ec4101d1548a365918b2e492ab5
+      id: 1581814111
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -2311,16 +2607,16 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: d5cc17d81ce43c4cb1682bb4a400dd33
-      - ElementName: BGM
+      - ElementName: SFX
         ObjectType: 4
-        guid: 12a8d1aea9126f48825cac9e6046f977
+        guid: 1c17e268c566f4429fd40262795ed549
+      - ElementName: Ablilty
+        ObjectType: 4
+        guid: 976923fb337adc4f9a7b2c3d81715f17
       - ElementName: Luxuria
         ObjectType: 4
-        guid: f61cd8b9c797a245b7d988ef1a74fedc
-      - ElementName: Luxuria_Boss
-        ObjectType: 3
-        guid: cdd72e20020fb84b9b0971a055068f2c
-      Path: Events\Default Work Unit\BGM\Luxuria\Luxuria_Boss
+        guid: 9d573ec4101d1548a365918b2e492ab5
+      Path: Events\Default Work Unit\SFX\Ablilty\Luxuria
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -2347,6 +2643,29 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Luxuria_Boss
+      guid: cdd72e20020fb84b9b0971a055068f2c
+      id: 3507238269
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Luxuria
+        ObjectType: 4
+        guid: f61cd8b9c797a245b7d988ef1a74fedc
+      - ElementName: Luxuria_Boss
+        ObjectType: 3
+        guid: cdd72e20020fb84b9b0971a055068f2c
+      Path: Events\Default Work Unit\BGM\Luxuria\Luxuria_Boss
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Luxuria_cityscapeAMB
       guid: 770277e07793184098feb81ef8485be8
       id: 3758759061
@@ -2364,6 +2683,29 @@ MonoBehaviour:
         ObjectType: 4
         guid: 770277e07793184098feb81ef8485be8
       Path: Events\Default Work Unit\AMB\Luxuria_cityscapeAMB
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Luxuria_Comic
+      guid: b83272b7711b584dbedb77d40b6568a9
+      id: 2399631481
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Luxuria
+        ObjectType: 4
+        guid: f61cd8b9c797a245b7d988ef1a74fedc
+      - ElementName: Luxuria_Comic
+        ObjectType: 3
+        guid: b83272b7711b584dbedb77d40b6568a9
+      Path: Events\Default Work Unit\BGM\Luxuria\Luxuria_Comic
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -2635,6 +2977,514 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0.44074628
       minDuration: 0.34982055
+    - name: Page_next
+      guid: a96312a2da0e5c42bd370d6269677246
+      id: 1609556900
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_next
+        ObjectType: 3
+        guid: a96312a2da0e5c42bd370d6269677246
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_next
+      maxAttenuation: 0
+      maxDuration: 0.72660416
+      minDuration: 0.72660416
+    - name: Page_one
+      guid: 750b12f2a495a7418ce310277c08a7fa
+      id: 2323624681
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Page_one_A
+      guid: 33ba5d793829634c9b95b0ef96c44dba
+      id: 1853166749
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_A
+        ObjectType: 3
+        guid: 33ba5d793829634c9b95b0ef96c44dba
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_A
+      maxAttenuation: 0
+      maxDuration: 0.31918368
+      minDuration: 0.31918368
+    - name: Page_one_B
+      guid: 47a6a5ad72148949ae37c6e06b04d1fd
+      id: 1853166750
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_B
+        ObjectType: 3
+        guid: 47a6a5ad72148949ae37c6e06b04d1fd
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_B
+      maxAttenuation: 0
+      maxDuration: 0.31950113
+      minDuration: 0.31950113
+    - name: Page_one_C
+      guid: f34c24760ca7b5419c453410cf298971
+      id: 1853166751
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_C
+        ObjectType: 3
+        guid: f34c24760ca7b5419c453410cf298971
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_C
+      maxAttenuation: 0
+      maxDuration: 0.35442176
+      minDuration: 0.35442176
+    - name: Page_one_D
+      guid: 757e4944382b0348808bc81a4a53e229
+      id: 1853166744
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_D
+        ObjectType: 3
+        guid: 757e4944382b0348808bc81a4a53e229
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_D
+      maxAttenuation: 0
+      maxDuration: 0.5043991
+      minDuration: 0.5043991
+    - name: Page_one_E
+      guid: a4cf7d9d277fa34eb03ae3106ca82059
+      id: 1853166745
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_E
+        ObjectType: 3
+        guid: a4cf7d9d277fa34eb03ae3106ca82059
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_E
+      maxAttenuation: 0
+      maxDuration: 4.3637643
+      minDuration: 4.3637643
+    - name: Page_one_E_2
+      guid: 98448e614431ec4b93f50372bb731c24
+      id: 2718422014
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_E_2
+        ObjectType: 3
+        guid: 98448e614431ec4b93f50372bb731c24
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_E_2
+      maxAttenuation: 0
+      maxDuration: 0.7877098
+      minDuration: 0.7877098
+    - name: Page_one_F
+      guid: d8770ab762111445b0accfb79f14825f
+      id: 1853166746
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_one
+        ObjectType: 4
+        guid: 750b12f2a495a7418ce310277c08a7fa
+      - ElementName: Page_one_F
+        ObjectType: 3
+        guid: d8770ab762111445b0accfb79f14825f
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_one\Page_one_F
+      maxAttenuation: 0
+      maxDuration: 1.6152835
+      minDuration: 1.6152835
+    - name: Page_Three
+      guid: 54161ed584333b4e91f181acd62c78ce
+      id: 3503629237
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Three
+        ObjectType: 4
+        guid: 54161ed584333b4e91f181acd62c78ce
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Three
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Page_Three_A
+      guid: 29eeab7ee81d0e43ad08f80f1ee54749
+      id: 551126129
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Three
+        ObjectType: 4
+        guid: 54161ed584333b4e91f181acd62c78ce
+      - ElementName: Page_Three_A
+        ObjectType: 3
+        guid: 29eeab7ee81d0e43ad08f80f1ee54749
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Three\Page_Three_A
+      maxAttenuation: 0
+      maxDuration: 2.6289792
+      minDuration: 2.6289792
+    - name: Page_Three_B
+      guid: 182e7e06c57943449bc3fc29e754b18c
+      id: 551126130
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Three
+        ObjectType: 4
+        guid: 54161ed584333b4e91f181acd62c78ce
+      - ElementName: Page_Three_B
+        ObjectType: 3
+        guid: 182e7e06c57943449bc3fc29e754b18c
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Three\Page_Three_B
+      maxAttenuation: 0
+      maxDuration: 2.4561043
+      minDuration: 2.4561043
+    - name: Page_Three_C
+      guid: 32dee87f7eb21646b5aca43087189842
+      id: 551126131
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Three
+        ObjectType: 4
+        guid: 54161ed584333b4e91f181acd62c78ce
+      - ElementName: Page_Three_C
+        ObjectType: 3
+        guid: 32dee87f7eb21646b5aca43087189842
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Three\Page_Three_C
+      maxAttenuation: 0
+      maxDuration: 4.5067573
+      minDuration: 4.5067573
+    - name: Page_Three_D
+      guid: f452338d40a9bd4d8b18030637053041
+      id: 551126132
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Three
+        ObjectType: 4
+        guid: 54161ed584333b4e91f181acd62c78ce
+      - ElementName: Page_Three_D
+        ObjectType: 3
+        guid: f452338d40a9bd4d8b18030637053041
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Three\Page_Three_D
+      maxAttenuation: 0
+      maxDuration: 0.7798866
+      minDuration: 0.7798866
+    - name: Page_Two
+      guid: 8906973dfb52ff4897b1e083b74875b8
+      id: 2744197991
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Two
+        ObjectType: 4
+        guid: 8906973dfb52ff4897b1e083b74875b8
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Two
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Page_Two_A
+      guid: 102ccc6ddcd2b647bf69ac18fb23af53
+      id: 657793391
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Two
+        ObjectType: 4
+        guid: 8906973dfb52ff4897b1e083b74875b8
+      - ElementName: Page_Two_A
+        ObjectType: 3
+        guid: 102ccc6ddcd2b647bf69ac18fb23af53
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Two\Page_Two_A
+      maxAttenuation: 0
+      maxDuration: 0.859375
+      minDuration: 0.859375
+    - name: Page_Two_B
+      guid: 03632052bac9824dba397fe13f6eac74
+      id: 657793388
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Two
+        ObjectType: 4
+        guid: 8906973dfb52ff4897b1e083b74875b8
+      - ElementName: Page_Two_B
+        ObjectType: 3
+        guid: 03632052bac9824dba397fe13f6eac74
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Two\Page_Two_B
+      maxAttenuation: 0
+      maxDuration: 3.41775
+      minDuration: 3.41775
+    - name: Page_Two_C
+      guid: 91e71731b1545f48b92c3a9d0c3b9043
+      id: 657793389
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Two
+        ObjectType: 4
+        guid: 8906973dfb52ff4897b1e083b74875b8
+      - ElementName: Page_Two_C
+        ObjectType: 3
+        guid: 91e71731b1545f48b92c3a9d0c3b9043
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Two\Page_Two_C
+      maxAttenuation: 0
+      maxDuration: 0.6653595
+      minDuration: 0.6653595
+    - name: Page_Two_D
+      guid: 4113c4c7ca6d6d4f8de1a11f6948d3ba
+      id: 657793386
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Two
+        ObjectType: 4
+        guid: 8906973dfb52ff4897b1e083b74875b8
+      - ElementName: Page_Two_D
+        ObjectType: 3
+        guid: 4113c4c7ca6d6d4f8de1a11f6948d3ba
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Two\Page_Two_D
+      maxAttenuation: 0
+      maxDuration: 2.794694
+      minDuration: 2.794694
+    - name: Page_Two_E
+      guid: 461e8b6decc16c4b854dc20657d85549
+      id: 657793387
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      - ElementName: Page_Two
+        ObjectType: 4
+        guid: 8906973dfb52ff4897b1e083b74875b8
+      - ElementName: Page_Two_E
+        ObjectType: 3
+        guid: 461e8b6decc16c4b854dc20657d85549
+      Path: Events\Default Work Unit\UI\Synopsis_SFX\Page_Two\Page_Two_E
+      maxAttenuation: 0
+      maxDuration: 3.5169792
+      minDuration: 3.5169792
     - name: Pause
       guid: 98d0c548ca42db499d12c430eb994aba
       id: 3092587493
@@ -3486,6 +4336,29 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Sloth_Comic
+      guid: 1097a8a52aab3346a39a549365131617
+      id: 1596573117
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: BGM
+        ObjectType: 4
+        guid: 12a8d1aea9126f48825cac9e6046f977
+      - ElementName: Sloth
+        ObjectType: 4
+        guid: 5ec1939d15a7cf44b2b2886b7a794baf
+      - ElementName: Sloth_Comic
+        ObjectType: 3
+        guid: 1097a8a52aab3346a39a549365131617
+      Path: Events\Default Work Unit\BGM\Sloth\Sloth_Comic
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Sloth_cutscene_punch
       guid: a0615d0d58851c49a8cf6d053bd43856
       id: 220035339
@@ -3707,6 +4580,26 @@ MonoBehaviour:
         ObjectType: 3
         guid: 5c8b34d4ded1b742a01647afb1c92078
       Path: Events\Default Work Unit\BGM\Synopsis
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Synopsis_SFX
+      guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      id: 2258516763
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: d5cc17d81ce43c4cb1682bb4a400dd33
+      - ElementName: UI
+        ObjectType: 4
+        guid: 72d7b5b9403672468492aae9c074cd97
+      - ElementName: Synopsis_SFX
+        ObjectType: 4
+        guid: ec3ce4d6976dd94a843ef7c7b4a43d1d
+      Path: Events\Default Work Unit\UI\Synopsis_SFX
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -4162,7 +5055,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584695118440202049
+    m_lastTime: -8584693499106493783
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -4315,7 +5208,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584695118439840503
+    m_lastTime: -8584693499106214533
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -4469,7 +5362,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584695118310293078
+    m_lastTime: -8584693499121571916
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -4483,7 +5376,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584695118309960847
+    m_lastTime: -8584693499121274884
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -4582,11 +5475,11 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584695118309589530
+    m_lastTime: -8584693499120990938
     List: []
-  ExpandedFileSystemItemIds: 
+  ExpandedFileSystemItemIds: 0200000003000000040000000600000008000000090000000d0000000e00000029000000350000003b000000460000006b00000077000000b0000000b1000000
   ExpandedWaapiItemIds: 0500000006000000080000000d0000000e0000003b0000004200000046000000b0000000b1000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
-  currentDataSource: 0
+  currentDataSource: 1
   CurrentPluginConfig: 

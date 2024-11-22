@@ -18,6 +18,8 @@ public class Sentry : MonoBehaviour
     private PlayerData playerData;
     private Player playerInstance;
 
+    public AK.Wwise.Event attackSound;
+
     public void Initialize(int damage, float attackSpeed, float duration, PlayerData playerData, Player playerInstance)
     {
         this.damage = damage;
@@ -44,6 +46,7 @@ public class Sentry : MonoBehaviour
                 if (nearestEnemy != null)
                 {
                     // 적을 향해 발사
+                    attackSound.Post(PlayManager.I.GetPlayer().gameObject);
                     Shoot(nearestEnemy);
                     nextAttackTime = Time.time + attackSpeed;
                 }

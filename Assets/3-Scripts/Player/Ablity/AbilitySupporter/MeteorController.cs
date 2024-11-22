@@ -10,6 +10,9 @@ public class MeteorController : MonoBehaviour
 
     private bool hasLanded = false;
 
+    [SerializeField]
+    private AK.Wwise.Event Sound;
+
     [Tooltip("메테오 충돌 시 이펙트 프리팹")]
     public GameObject explosionEffectPrefab; // 메테오 충돌 시 이펙트 프리팹 (옵션)
 
@@ -51,6 +54,7 @@ public class MeteorController : MonoBehaviour
             explosionEffectInstance = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
         }
 
+        Sound.Post(PlayManager.I.GetPlayer().gameObject);
         // 충돌 범위 내의 적들에게 피해 적용
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
         foreach (Collider2D hit in hits)

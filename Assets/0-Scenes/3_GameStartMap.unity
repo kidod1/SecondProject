@@ -587,8 +587,6 @@ MonoBehaviour:
           m_StringArgument: Conditions
           m_BoolArgument: 0
         m_CallState: 2
-  useCloseAnimation: 0
-  targetSceneName: 4_SlothToonCutScene
 --- !u!4 &139155200
 Transform:
   m_ObjectHideFlags: 0
@@ -864,8 +862,6 @@ MonoBehaviour:
           m_StringArgument: Conditions
           m_BoolArgument: 0
         m_CallState: 2
-  useCloseAnimation: 1
-  targetSceneName: NextScene
 --- !u!4 &246182643
 Transform:
   m_ObjectHideFlags: 0
@@ -2136,6 +2132,22 @@ PrefabInstance:
     - target: {fileID: 2299942700281507952, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301980407637871289, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 43.318
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301980407637871289, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 43.3179
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301980407637871289, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -836.5009
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301980407637871289, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 239.00745
       objectReference: {fileID: 0}
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

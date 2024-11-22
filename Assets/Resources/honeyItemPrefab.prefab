@@ -4917,6 +4917,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b7e8c5b82581f24787ddc80d841d774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  experienceAmount: 0
+  attractionRadius: 1.5
+  attractionSpeed: 5
   itemData: {fileID: 11400000, guid: 17d26685fe8a1ce408f6eac6c3516665, type: 2}
 --- !u!1 &3170740738326791415
 GameObject:
@@ -4946,7 +4949,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1228852350401403863}
@@ -5205,7 +5208,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -6344,7 +6347,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     mode: 0
     timeMode: 0
     fps: 30
@@ -6455,8 +6458,8 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     speedRange: {x: 0, y: 1}
-    tilesX: 1
-    tilesY: 1
+    tilesX: 4
+    tilesY: 3
     animationType: 0
     rowIndex: 0
     cycles: 1

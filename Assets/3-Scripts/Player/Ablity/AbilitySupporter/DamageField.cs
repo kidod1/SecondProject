@@ -22,7 +22,8 @@ public class DamageField : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Monster"))
+        // Monster 및 FlyMonster 태그를 처리
+        if (other.CompareTag("Monster") || other.CompareTag("FlyMonster"))
         {
             Monster monster = other.GetComponent<Monster>();
             if (monster != null)
@@ -34,7 +35,8 @@ public class DamageField : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Monster"))
+        // Monster 및 FlyMonster 태그를 처리
+        if (other.CompareTag("Monster") || other.CompareTag("FlyMonster"))
         {
             Monster monster = other.GetComponent<Monster>();
             if (monster != null)

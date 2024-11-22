@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using AK.Wwise; // Wwise 네임스페이스 추가
+using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "ActiveAbilities/CoinRain")]
 public class CoinRain : SynergyAbility
@@ -30,10 +31,10 @@ public class CoinRain : SynergyAbility
     [Tooltip("코인 레인 종료 시 재생할 Wwise 사운드 이벤트 (선택사항)")]
     public AK.Wwise.Event coinRainEndSound; // 코인 레인 종료 사운드 이벤트 (선택사항)
 
+    public AK.Wwise.Event CoinLand;
+
     private uint coinRainSoundPlayingID = 0; // 사운드 재생 ID
 
-    // 기존 필드들...
-    // (이하 생략)
 
     public override void Apply(Player player)
     {
@@ -81,10 +82,20 @@ public class CoinRain : SynergyAbility
         Collider2D[] monstersInCamera = GetMonstersInCamera();
         foreach (Collider2D monsterCollider in monstersInCamera)
         {
+            // Monster 처리
             Monster monster = monsterCollider.GetComponent<Monster>();
             if (monster != null)
             {
                 monster.TakeDamage(damageAmount, PlayManager.I.GetPlayerPosition());
+                CoinLand.Post(PlayManager.I.GetPlayer().gameObject);
+            }
+
+            // FlyingMonster 처리
+            Monster flyingMonster = monsterCollider.GetComponent<Monster>();
+            if (flyingMonster != null)
+            {
+                flyingMonster.TakeDamage(damageAmount, PlayManager.I.GetPlayerPosition());
+                CoinLand.Post(PlayManager.I.GetPlayer().gameObject);
             }
         }
     }
@@ -97,7 +108,16 @@ public class CoinRain : SynergyAbility
         Vector2 cameraSize = new Vector2(cameraTopRight.x - cameraBottomLeft.x, cameraTopRight.y - cameraBottomLeft.y);
         Vector2 cameraCenter = new Vector2(mainCamera.transform.position.x, mainCamera.transform.position.y);
 
-        return Physics2D.OverlapBoxAll(cameraCenter, cameraSize, 0, LayerMask.GetMask("Monster"));
+        // Monster와 FlyingMonster 태그를 가진 오브젝트 검색
+        List<Collider2D> allMonsters = new List<Collider2D>();
+
+        Collider2D[] monsterColliders = Physics2D.OverlapBoxAll(cameraCenter, cameraSize, 0, LayerMask.GetMask("Monster"));
+        Collider2D[] flyingMonsterColliders = Physics2D.OverlapBoxAll(cameraCenter, cameraSize, 0, LayerMask.GetMask("FlyMonster"));
+
+        allMonsters.AddRange(monsterColliders);
+        allMonsters.AddRange(flyingMonsterColliders);
+
+        return allMonsters.ToArray();
     }
 
     private void DeactivateCoinRain()

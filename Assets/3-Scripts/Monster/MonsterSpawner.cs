@@ -46,8 +46,14 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField, Tooltip("보스 활성화 전에 재생할 경고 WWISE 사운드 이벤트")]
     private AK.Wwise.Event warningSoundEvent; // WWISE 사운드 이벤트 변수 추가
 
+    [SerializeField, Tooltip("보스 활성화 후에 재생할 경고 스탑 WWISE 사운드 이벤트")]
+    private AK.Wwise.Event warningStopSoundEvent; // WWISE 사운드 이벤트 변수 추가
+
     [SerializeField, Tooltip("맵 전체를 가리는 패널의 CanvasGroup")]
     private CanvasGroup mapCoverPanel; // CanvasGroup 변수 추가
+
+    [SerializeField]
+    private GameObject MapTextPanel;
 
     [SerializeField, Tooltip("보스 활성화 연출의 총 지속 시간 (초)")]
     private float cutsceneDuration = 5f;
@@ -299,8 +305,9 @@ public class MonsterSpawner : MonoBehaviour
         if (mapCoverPanel != null)
         {
             mapCoverPanel.gameObject.SetActive(true);
+            MapTextPanel.gameObject.SetActive(true);
             float elapsedTime = 0f;
-            float oscillationSpeed = 2f; // 오퍼시티 변화 속도
+            float oscillationSpeed = 5f; // 오퍼시티 변화 속도
             float minAlpha = 0.2f;
             float maxAlpha = 1f;
 
@@ -316,9 +323,10 @@ public class MonsterSpawner : MonoBehaviour
             // 연출 종료 후 패널을 완전히 투명하게 하고 비활성화
             mapCoverPanel.alpha = 0f;
             mapCoverPanel.gameObject.SetActive(false);
-            if (warningSoundEvent != null)
+            MapTextPanel.gameObject.SetActive(false);
+            if (warningStopSoundEvent != null)
             {
-                warningSoundEvent.Stop(gameObject);
+                warningStopSoundEvent.Post(gameObject);
                 Debug.Log("BossActivationCutscene: 경고 사운드 정지됨.");
             }
             else
