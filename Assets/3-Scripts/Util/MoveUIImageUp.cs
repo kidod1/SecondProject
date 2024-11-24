@@ -1,7 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events; // UnityEvent를 사용하기 위해 추가
-using UnityEngine.SceneManagement; // 씬 전환을 위해 추가
 using System.Collections;
+using System.Diagnostics; // 프로세스 관리를 위해 추가
+using Debug = UnityEngine.Debug;
+
+#if UNITY_EDITOR
+using UnityEditor; // 에디터 관련 기능을 위해 추가
+#endif
 
 [RequireComponent(typeof(RectTransform))]
 public class MoveUIImageUp : MonoBehaviour
@@ -28,11 +33,6 @@ public class MoveUIImageUp : MonoBehaviour
     [Tooltip("이미지가 목표 지점에 도달했을 때 호출되는 이벤트")]
     [SerializeField]
     private UnityEvent OnReachedMaxY;
-
-    [Header("씬 전환 설정")]
-    [Tooltip("목표 지점에 도달한 후 전환할 다음 씬의 이름")]
-    [SerializeField]
-    private string nextSceneName = "NextScene"; // Inspector에서 설정 가능
 
     private RectTransform rectTransform;
     private bool hasReachedMaxY = false;
@@ -88,27 +88,71 @@ public class MoveUIImageUp : MonoBehaviour
             Debug.LogWarning("MoveUIImageUp: OnReachedMaxY 이벤트가 할당되지 않았습니다.");
         }
 
-        // 10초 후에 다음 씬으로 전환하는 코루틴 시작
-        StartCoroutine(TransitionToNextScene());
+        // 10초 후에 게임을 다시 시작하는 코루틴 시작
+        StartCoroutine(RestartGameCoroutine());
     }
 
     /// <summary>
-    /// 10초 대기 후 다음 씬으로 전환합니다.
+    /// 10초 대기 후 게임을 다시 시작합니다.
     /// </summary>
-    private IEnumerator TransitionToNextScene()
+    private IEnumerator RestartGameCoroutine()
     {
-        Debug.Log("MoveUIImageUp: 10초 후에 다음 씬으로 전환됩니다.");
+        Debug.Log("MoveUIImageUp: 10초 후에 게임을 다시 시작합니다.");
         yield return new WaitForSeconds(10f);
-        Debug.Log($"MoveUIImageUp: 씬 '{nextSceneName}'으로 전환합니다.");
+        Debug.Log("MoveUIImageUp: 게임을 다시 시작합니다.");
 
-        // 씬 전환 시 해당 씬이 빌드 설정에 포함되어 있는지 확인하세요.
-        if (string.IsNullOrEmpty(nextSceneName))
+#if UNITY_EDITOR
+        // 에디터에서는 플레이 모드를 종료
+        EditorApplication.isPlaying = false;
+#else
+        // 빌드된 애플리케이션에서는 실행 파일을 다시 실행하고 현재 애플리케이션 종료
+        RestartApplication();
+#endif
+    }
+
+    /// <summary>
+    /// 애플리케이션을 다시 시작합니다.
+    /// </summary>
+    private void RestartApplication()
+    {
+        string applicationPath = GetApplicationPath();
+        if (string.IsNullOrEmpty(applicationPath))
         {
-            Debug.LogError("MoveUIImageUp: 다음 씬의 이름이 설정되지 않았습니다.");
-            yield break;
+            Debug.LogError("MoveUIImageUp: 애플리케이션 경로를 찾을 수 없습니다. 다시 시작할 수 없습니다.");
+            return;
         }
 
-        SceneManager.LoadScene(nextSceneName);
+        try
+        {
+            Debug.Log($"MoveUIImageUp: 애플리케이션을 다시 시작합니다. 경로: {applicationPath}");
+            Process.Start(applicationPath);
+            Application.Quit();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"MoveUIImageUp: 애플리케이션 재시작 중 오류 발생: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 현재 애플리케이션의 실행 파일 경로를 반환합니다.
+    /// </summary>
+    /// <returns>실행 파일의 전체 경로</returns>
+    private string GetApplicationPath()
+    {
+#if UNITY_STANDALONE_WIN
+        // Windows 플랫폼
+        return Application.dataPath.Replace("_Data", ".exe");
+#elif UNITY_STANDALONE_OSX
+        // macOS 플랫폼
+        return Application.dataPath.Replace(".app/Contents", "");
+#elif UNITY_STANDALONE_LINUX
+        // Linux 플랫폼
+        return Application.dataPath;
+#else
+        // 다른 플랫폼은 지원하지 않음
+        return string.Empty;
+#endif
     }
 
     /// <summary>

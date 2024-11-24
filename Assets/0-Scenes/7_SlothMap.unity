@@ -4191,7 +4191,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6282226016a66634897ae84a780e34ca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 512897e0dee8c19458f588afb400c5bc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7846,7 +7846,7 @@ PrefabInstance:
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2328123864751208083}
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -7864,6 +7864,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetDataButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: SetActive
       objectReference: {fileID: 0}
@@ -7874,6 +7878,10 @@ PrefabInstance:
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: NotPause
+      objectReference: {fileID: 0}
+    - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AddResetData, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2526288068335242236, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -8524,7 +8532,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6765628738457756873, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 665036220}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9208593209389240231, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2328123864751208083}
   m_SourcePrefab: {fileID: 100100000, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
 --- !u!1 &2328123864751208079 stripped
 GameObject:
@@ -8545,6 +8556,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 745c5037a77ce4845840cd0a8586b8a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2328123864751208082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9208593209389240231, guid: 43e6553cbf326b047b362bca119e744a, type: 3}
+  m_PrefabInstance: {fileID: 2328123864751208078}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2328123864751208083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328123864751208082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f7fdfa0c3163f419b9b53ab3514501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3304890574903122591
@@ -9370,6 +9398,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 434854232}
     - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
+      propertyPath: MapTextPanel
+      value: 
+      objectReference: {fileID: 665036219}
+    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: mapCoverPanel
       value: 
       objectReference: {fileID: 143121183}
@@ -9393,6 +9425,10 @@ PrefabInstance:
       propertyPath: warningSoundEvent.WwiseObjectReference
       value: 
       objectReference: {fileID: 11400000, guid: c01e22780aaed91438e41fd2d2a68b44, type: 2}
+    - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
+      propertyPath: warningStopSoundEvent.WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: 83971eefc67bf6d4cb3eb27f14f8a67b, type: 2}
     - target: {fileID: 1952123588393209503, guid: 41554f86b8d5ffa4fbba534adc142faa, type: 3}
       propertyPath: OnBossAppeared.m_PersistentCalls.m_Calls.Array.size
       value: 2

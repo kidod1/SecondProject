@@ -109,6 +109,7 @@ public class SceneChangeSkeleton : MonoBehaviour
             Debug.LogError("Target Scene Name이 설정되지 않았습니다.");
             return;
         }
+        Time.timeScale = 1;
 
         gameObject.SetActive(true); // 오브젝트 활성화
         targetSceneName = sceneName;
@@ -141,7 +142,7 @@ public class SceneChangeSkeleton : MonoBehaviour
             Debug.LogError("Open 애니메이션 이름이 설정되지 않았습니다.");
             return;
         }
-
+        Time.timeScale = 1;
         isAnimating = true;
         isOpening = true;
         gameObject.SetActive(true); // 오브젝트 활성화

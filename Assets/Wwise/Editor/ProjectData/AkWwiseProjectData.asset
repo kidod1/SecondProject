@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 8f6baf2309a32546b495ea6077bfce04
     GuidInternal: 
-    m_lastTime: -8584693499120703605
+    m_lastTime: -8584695118309276835
     List: []
   - PhysicalPath: Virtual Acoustics\Factory Acoustic Textures.wwu
     PathAndIcons:
@@ -37,7 +37,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Factory Acoustic Textures
     guid: 6b663d46a83ca54f8b4a5fef12b883f6
     GuidInternal: 
-    m_lastTime: -8584693499120415324
+    m_lastTime: -8584695118308910257
     List:
     - name: Acoustic_Banner
       guid: f2532d2fccda8e408b8898b1b52a26d6
@@ -303,7 +303,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: c46b0c1f224b0b44a324af369cedf6d1
     GuidInternal: 
-    m_lastTime: -8584693499105526359
+    m_lastTime: -8584695118439024438
     List:
     - name: AMB_Bus
       guid: 86ba3dbf6ea8f046abde11a71ed8ba3c
@@ -399,7 +399,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: b527a3226a72ef478e7c2ca6105dd8e9
     GuidInternal: 
-    m_lastTime: -8584693499122195371
+    m_lastTime: -8584695118311035705
     List:
     - name: BGM_Default
       guid: e9b0ff3223c01c48889c3a22594015db
@@ -497,7 +497,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: d5cc17d81ce43c4cb1682bb4a400dd33
     GuidInternal: 
-    m_lastTime: -8584693499106802954
+    m_lastTime: -8584692387023515434
     List:
     - name: Ability_hover
       guid: bd8c064408430c4cb8bf15ded59d33db
@@ -777,8 +777,8 @@ MonoBehaviour:
         guid: c659d0dc84f85242ade8d4dcdfb88dfb
       Path: Events\Default Work Unit\SFX\Ablilty\Greed\Ablilty_Greed_CoinRain
       maxAttenuation: 0
-      maxDuration: 1.5560865
-      minDuration: 1.2350667
+      maxDuration: -1
+      minDuration: -1
     - name: Ablilty_Greed_Joker
       guid: 37b3d5577f7ebb4f833b41cc1d5a14f5
       id: 1545538756
@@ -4561,8 +4561,8 @@ MonoBehaviour:
         guid: 871ea6ab80edae48a436ee7cd5d71900
       Path: Events\Default Work Unit\UI\Synopsis
       maxAttenuation: 0
-      maxDuration: 156.38579
-      minDuration: 156.38579
+      maxDuration: -1
+      minDuration: -1
     - name: Synopsis
       guid: 5c8b34d4ded1b742a01647afb1c92078
       id: 128845783
@@ -5055,7 +5055,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 7fe0679caae7d64ab13bf1bbbe9bbc94
     GuidInternal: 
-    m_lastTime: -8584693499106493783
+    m_lastTime: -8584695118440202049
     List:
     - name: AMB_Volume
       guid: 18ad938ae260b14da0dd3932b6694d9b
@@ -5208,7 +5208,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Factory Soundseed Air Game Syncs
     guid: 5577163b42fb8b4598bf96f557afb3b9
     GuidInternal: 
-    m_lastTime: -8584693499106214533
+    m_lastTime: -8584695118439840503
     List:
     - name: SS_Air_Fear
       guid: 59062ef746431c4ea1b1dab46a05101e
@@ -5362,7 +5362,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: 61d1d8ebe1b2ef4f8d79ab72303581ea
     GuidInternal: 
-    m_lastTime: -8584693499121571916
+    m_lastTime: -8584695118310293078
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -5376,7 +5376,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: b4c5dc0c7f45f2479606183b545977cb
     GuidInternal: 
-    m_lastTime: -8584693499121274884
+    m_lastTime: -8584695118309960847
     List:
     - name: Foot
       guid: 4316d331828dea4592d122f70d20bb9d
@@ -5475,10 +5475,10 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: 069a30358e4f7a49964910bc7bc75bdb
     GuidInternal: 
-    m_lastTime: -8584693499120990938
+    m_lastTime: -8584695118309589530
     List: []
-  ExpandedFileSystemItemIds: 0200000003000000040000000600000008000000090000000d0000000e00000029000000350000003b000000460000006b00000077000000b0000000b1000000
-  ExpandedWaapiItemIds: 0500000006000000080000000d0000000e0000003b0000004200000046000000b0000000b1000000
+  ExpandedFileSystemItemIds: 0200000003000000040000009b000000
+  ExpandedWaapiItemIds: 
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
   currentDataSource: 1
