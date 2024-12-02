@@ -82,7 +82,7 @@ public class LustBoss : Monster
     private AK.Wwise.Event bossDeathSound; // 보스 사망 사운드 이벤트
 
     [SerializeField, Tooltip("보스 사망 후 전환할 씬의 이름")]
-    private string deathTransitionSceneName; // 보스 사망 후 전환할 씬 이름
+    private int deathTransitionSceneNum; // 보스 사망 후 전환할 씬 이름
 
 
     // 추가: PlayerUIManager 참조
@@ -236,7 +236,7 @@ public class LustBoss : Monster
         }
 
         // 보스 사망 시 페이드 인 및 씬 전환 코루틴 시작
-        if (fadeInImage != null && bossDeathSound != null && !string.IsNullOrEmpty(deathTransitionSceneName))
+        if (fadeInImage != null && bossDeathSound != null)
         {
             StartCoroutine(FadeInAndTransition());
         }
@@ -290,14 +290,8 @@ public class LustBoss : Monster
     /// </summary>
     private void LoadDeathScene()
     {
-        if (string.IsNullOrEmpty(deathTransitionSceneName))
-        {
-            Debug.LogError("LustBoss: DeathTransitionSceneName이 설정되지 않았습니다.");
-            return;
-        }
-
         // 씬 로드
-        UnityEngine.SceneManagement.SceneManager.LoadScene(deathTransitionSceneName);
+        PlayManager.I.ChangeScene(deathTransitionSceneNum);
     }
     /// <summary>
     /// 몬스터가 데미지를 받을 때 붉게 깜빡이는 효과를 처리하는 코루틴입니다.

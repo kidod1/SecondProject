@@ -7,7 +7,7 @@ using AK.Wwise; // WWISE 네임스페이스 추가
 public class StartDelaySceneChanged : MonoBehaviour
 {
     [SerializeField]
-    private string nextSceneName; // 다음 씬의 이름을 할당
+    private int nextSceneNumber; // 다음 씬의 이름을 할당
 
     [SerializeField]
     private Image fadeOutImage; // 페이드 아웃에 사용할 이미지
@@ -56,7 +56,7 @@ public class StartDelaySceneChanged : MonoBehaviour
         yield return StartCoroutine(FadeOut());
 
         // 다음 씬 로드
-        SceneManager.LoadScene(nextSceneName);
+        PlayManager.I.ChangeScene(nextSceneNumber);
     }
 
     private IEnumerator FadeOut()

@@ -335,8 +335,8 @@ public class GameManager : MonoBehaviour
         Debug.Log($"ÃÑ Á¡¼ö: {totalScoreText.text}");
     }
 
-    public void SceneChanageCloseAnimationAddLoad(string NextSceneName)
+    public void SceneChanageCloseAnimationAddLoad(int NextSceneNumber)
     {
-        chanageSkeleton.PlayCloseAnimation(NextSceneName);
+        chanageSkeleton.PlayCloseAnimation(NextSceneNumber);
     }
 }

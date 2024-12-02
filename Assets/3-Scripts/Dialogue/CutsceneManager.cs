@@ -54,7 +54,7 @@ public class CutsceneManager : MonoBehaviour
     public TMP_Text nameText;
     public TMP_Text dialogueText;
     public Image animationImage;
-    public string nextSceneName;
+    public int nextSceneNumber;
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
     [Header("UI Elements")]
@@ -406,7 +406,7 @@ public class CutsceneManager : MonoBehaviour
         if (sceneChangeSkeleton != null && !lastCut)
         {
             sceneChangeSkeleton.gameObject.SetActive(true);
-            sceneChangeSkeleton.PlayCloseAnimation(nextSceneName);
+            sceneChangeSkeleton.PlayCloseAnimation(nextSceneNumber);
         }
     }
 
@@ -414,7 +414,7 @@ public class CutsceneManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(delay);
         sceneChangeSkeleton.gameObject.SetActive(true);
-        sceneChangeSkeleton.PlayCloseAnimation(nextSceneName);
+        sceneChangeSkeleton.PlayCloseAnimation(nextSceneNumber);
     }
 
     private void Update()

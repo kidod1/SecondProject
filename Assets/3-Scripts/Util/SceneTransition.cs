@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class SceneTransition : MonoBehaviour
 {
     [Header("Scene Transition Settings")]
-    public string targetSceneName; // 이동할 씬의 이름
+    public int targetSceneNumber; // 이동할 씬의 이름
 
     private bool isTransitioning = false; // 중복 실행 방지용 플래그
 
@@ -50,7 +50,7 @@ public class SceneTransition : MonoBehaviour
                 {
                     sceneChangeSkeleton.gameObject.SetActive(true);
                     // SceneChangeSkeleton을 통해 씬 전환 애니메이션 재생
-                    sceneChangeSkeleton.PlayCloseAnimation(targetSceneName);
+                    sceneChangeSkeleton.PlayCloseAnimation(targetSceneNumber);
                 }
                 else
                 {
@@ -72,13 +72,7 @@ public class SceneTransition : MonoBehaviour
     /// </summary>
     private void LoadNextScene()
     {
-        if (string.IsNullOrEmpty(targetSceneName))
-        {
-            Debug.LogError("Target Scene Name이 설정되지 않았습니다.");
-            return;
-        }
-
         // 씬 로드
-        SceneManager.LoadScene(targetSceneName);
+        PlayManager.I.ChangeScene(targetSceneNumber);
     }
 }

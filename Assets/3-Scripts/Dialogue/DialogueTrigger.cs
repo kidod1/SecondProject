@@ -45,7 +45,7 @@ public class DialogueTrigger : MonoBehaviour
 
         if (nextSceneIndex >= 0 && nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
-            SceneManager.LoadScene(nextSceneIndex);
+            PlayManager.I.ChangeScene(nextSceneIndex);
         }
         else
         {

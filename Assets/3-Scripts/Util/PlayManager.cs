@@ -9,6 +9,7 @@ public class PlayManager : MonoBehaviour
     private Player player;
     public bool isPlayerDied = false;
     public bool isPause = false;
+
     private void Awake()
     {
         if (I == null)
@@ -80,10 +81,12 @@ public class PlayManager : MonoBehaviour
     {
         isPause = true;
     }
+
     public void NotPause()
     {
         isPause = false;
     }
+
     public void isPlayerDie()
     {
         isPlayerDied = true;
@@ -126,5 +129,14 @@ public class PlayManager : MonoBehaviour
         {
             Debug.LogWarning("Player is not assigned!");
         }
+    }
+
+    /// <summary>
+    /// 씬을 변경합니다.
+    /// </summary>
+    /// <param name="sceneIndex">전환할 씬의 인덱스입니다.</param>
+    public void ChangeScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
 }

@@ -32,7 +32,7 @@ public class UICutsceneManager : MonoBehaviour
     [SerializeField]
     private float initialDelay = 2f;     // 씬 시작 후 첫 컷 시작 전 지연 시간
     [SerializeField]
-    private string loadSceneName = "";   // 컷신 종료 후 로드할 씬 이름
+    private int loadSceneNumber;   // 컷신 종료 후 로드할 씬 이름
 
     [SerializeField]
     private SceneChangeSkeleton sceneChangeSkeleton; // SceneChangeSkeleton 참조 (인스펙터에서 할당)
@@ -248,18 +248,18 @@ public class UICutsceneManager : MonoBehaviour
 
     private void TransitionToScene()
     {
-        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        if (sceneChangeSkeleton != null)
         {
             // 씬 전환 전에 이벤트 호출
             InvokeBeforeSceneTransitionEvent();
 
             if (usePlayCloseAnimation)
             {
-                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneNumber);
             }
             else
             {
-                SceneManager.LoadScene(loadSceneName);
+                SceneManager.LoadScene(loadSceneNumber);
             }
 
             // 씬 전환 후 이벤트 호출 (씬 전환이 비동기적으로 일어나는 경우, 씬 로드 완료 후 호출하도록 수정할 수도 있습니다.)
@@ -329,18 +329,18 @@ public class UICutsceneManager : MonoBehaviour
     // 이를 통해 씬이 실제로 로드된 후 이벤트가 호출됩니다.
     private void TransitionToScene_correct()
     {
-        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        if (sceneChangeSkeleton != null)
         {
             // 씬 전환 전에 이벤트 호출
             InvokeBeforeSceneTransitionEvent();
 
             if (usePlayCloseAnimation)
             {
-                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneNumber);
             }
             else
             {
-                SceneManager.LoadScene(loadSceneName);
+                PlayManager.I.ChangeScene(loadSceneNumber);
             }
 
             // 기존의 AfterSceneTransition 이벤트 호출을 제거하고, OnSceneLoaded에서 호출하도록 합니다.
@@ -356,18 +356,18 @@ public class UICutsceneManager : MonoBehaviour
     /// </summary>
     private void TransitionToScene_final()
     {
-        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        if (sceneChangeSkeleton != null)
         {
             // 씬 전환 전에 이벤트 호출
             InvokeBeforeSceneTransitionEvent();
 
             if (usePlayCloseAnimation)
             {
-                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneNumber);
             }
             else
             {
-                SceneManager.LoadScene(loadSceneName);
+                PlayManager.I.ChangeScene(loadSceneNumber);
             }
 
             // OnSceneLoaded에서 AfterTransition 이벤트 호출
@@ -395,18 +395,18 @@ public class UICutsceneManager : MonoBehaviour
     /// </summary>
     private void TransitionToScene_correct_final()
     {
-        if (sceneChangeSkeleton != null && !string.IsNullOrEmpty(loadSceneName))
+        if (sceneChangeSkeleton != null)
         {
             // 씬 전환 전에 이벤트 호출
             InvokeBeforeSceneTransitionEvent();
 
             if (usePlayCloseAnimation)
             {
-                sceneChangeSkeleton.PlayCloseAnimation(loadSceneName);
+                sceneChangeSkeleton.PlayCloseAnimation(loadSceneNumber);
             }
             else
             {
-                SceneManager.LoadScene(loadSceneName);
+                PlayManager.I.ChangeScene(loadSceneNumber);
             }
 
             // AfterTransition 이벤트는 OnSceneLoaded에서 호출됩니다.

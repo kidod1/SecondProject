@@ -46,7 +46,7 @@ public class LustCutSceneManager : MonoBehaviour
 
     public Image animationImage; // animationImage는 개별적으로 관리
 
-    public string nextSceneName;
+    public int nextSceneNumber;
     public float textAnimationSpeed = 0.05f; // 텍스트 애니메이션 속도
 
     [Header("Cutscene Events")]
@@ -305,7 +305,7 @@ public class LustCutSceneManager : MonoBehaviour
         if (sceneChangeSkeleton != null && !lastCut)
         {
             sceneChangeSkeleton.gameObject.SetActive(true);
-            sceneChangeSkeleton.PlayCloseAnimation(nextSceneName);
+            sceneChangeSkeleton.PlayCloseAnimation(nextSceneNumber);
         }
     }
 

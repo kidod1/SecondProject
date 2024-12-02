@@ -8256,8 +8256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be74e08361c768478a22c3e4ae71e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextMap: 
-  skeleton: {fileID: 0}
+  nextMapNumber: 12
+  skeleton: {fileID: 152472775}
   onPortalEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -10250,6 +10250,10 @@ PrefabInstance:
     - target: {fileID: 4421104202693667318, guid: 5d055b76525fe3c4ba08ca575f82c1af, type: 3}
       propertyPath: attackAnimationName
       value: attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421104202693667318, guid: 5d055b76525fe3c4ba08ca575f82c1af, type: 3}
+      propertyPath: deathTransitionSceneNum
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4421104202693667318, guid: 5d055b76525fe3c4ba08ca575f82c1af, type: 3}
       propertyPath: deathTransitionSceneName

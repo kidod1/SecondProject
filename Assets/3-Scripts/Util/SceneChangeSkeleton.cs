@@ -19,8 +19,8 @@ public class SceneChangeSkeleton : MonoBehaviour
     [Tooltip("씬 전환 딜레이 (초)")]
     public float sceneChangeDelay = 0f;
 
-    [Tooltip("씬 이름")]
-    public string targetSceneName;
+    [Tooltip("씬 번호")]
+    public int targetSceneNumber;
 
     [Header("Unity Events")]
     [Tooltip("Close 애니메이션이 완료된 후 호출됩니다.")]
@@ -83,8 +83,8 @@ public class SceneChangeSkeleton : MonoBehaviour
     /// <summary>
     /// Close 애니메이션을 재생하고 씬을 변경합니다.
     /// </summary>
-    /// <param name="sceneName">전환할 씬의 이름</param>
-    public void PlayCloseAnimation(string sceneName)
+    /// <param name="sceneIndex">전환할 씬의 번호</param>
+    public void PlayCloseAnimation(int sceneIndex)
     {
         if (isAnimating)
         {
@@ -104,15 +104,15 @@ public class SceneChangeSkeleton : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(sceneName))
+        if (sceneIndex < 0)
         {
-            Debug.LogError("Target Scene Name이 설정되지 않았습니다.");
+            Debug.LogError("Target Scene Index가 올바르지 않습니다.");
             return;
         }
         Time.timeScale = 1;
 
         gameObject.SetActive(true); // 오브젝트 활성화
-        targetSceneName = sceneName;
+        targetSceneNumber = sceneIndex;
         isAnimating = true;
         isOpening = false;
         skeletonGraphic.AnimationState.SetAnimation(0, closeAnimationName, false);
@@ -170,12 +170,12 @@ public class SceneChangeSkeleton : MonoBehaviour
     }
 
     /// <summary>
-    /// Close 애니메이션 완료 후 2초 딜레이 후 Open 애니메이션을 재생합니다.
+    /// Close 애니메이션 완료 후 딜레이 후 Open 애니메이션을 재생합니다.
     /// </summary>
     /// <returns></returns>
     private IEnumerator HandleCloseAnimationComplete()
     {
-        // 2초 딜레이
+        // 딜레이
         yield return new WaitForSeconds(delayAfterClose);
 
         // isAnimating을 false로 설정하여 PlayOpenAnimation이 실행될 수 있도록 함
@@ -195,7 +195,7 @@ public class SceneChangeSkeleton : MonoBehaviour
         yield return new WaitForSeconds(sceneChangeDelay);
 
         // 씬 전환
-        SceneManager.LoadScene(targetSceneName);
+        PlayManager.I.ChangeScene(targetSceneNumber);
     }
 
     /// <summary>

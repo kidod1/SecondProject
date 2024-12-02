@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class TestPortal : MonoBehaviour
 {
     [SerializeField]
-    private string nextMap;
+    private int nextMapNumber;
     [SerializeField]
     private SceneChangeSkeleton skeleton;
     [SerializeField]
@@ -21,7 +21,7 @@ public class TestPortal : MonoBehaviour
             onPortalEnter?.Invoke();
 
             // 애니메이션 실행
-            skeleton.PlayCloseAnimation(nextMap);
+            skeleton.PlayCloseAnimation(nextMapNumber);
 
             // 플레이어 데이터 저장
             PlayerDataManager.Instance.SavePlayerData();

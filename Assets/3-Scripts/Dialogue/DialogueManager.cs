@@ -306,7 +306,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (nextSceneIndex >= 0) // 다음 씬이 지정되어 있는 경우 바로 씬 전환
         {
-            SceneManager.LoadScene(nextSceneIndex);
+            PlayManager.I.ChangeScene(nextSceneIndex);
             return;
         }
 

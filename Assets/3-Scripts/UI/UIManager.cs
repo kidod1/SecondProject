@@ -82,46 +82,6 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 씬 이름을 통해 즉시 씬을 변경하는 메서드
-    /// </summary>
-    /// <param name="sceneName">변경할 씬의 이름</param>
-    public void ChangeScene(string sceneName)
-    {
-        if (Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            SceneManager.LoadScene(sceneName);
-            Time.timeScale = 1;
-        }
-        else
-        {
-            Debug.LogError("Invalid scene name");
-        }
-    }
-
-    /// <summary>
-    /// 지정된 시간 후에 씬을 변경하는 메서드 (씬 이름 사용)
-    /// </summary>
-    /// <param name="sceneName">변경할 씬의 이름</param>
-    /// <param name="delaySeconds">지연 시간(초)</param>
-    public void DelayedChangeScene(string sceneName, float delaySeconds)
-    {
-        if (Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            StartCoroutine(ChangeSceneAfterDelay(sceneName, delaySeconds));
-        }
-        else
-        {
-            Debug.LogError("Invalid scene name");
-        }
-    }
-
-    private IEnumerator ChangeSceneAfterDelay(string sceneName, float delaySeconds)
-    {
-        yield return new WaitForSeconds(delaySeconds);
-        ChangeScene(sceneName);
-    }
-
-    /// <summary>
     /// 씬을 즉시 변경하는 래퍼 메서드 (매개변수 없음)
     /// </summary>
     public void ChangeSceneWrapper()

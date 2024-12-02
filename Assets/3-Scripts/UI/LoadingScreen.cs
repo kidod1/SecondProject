@@ -241,7 +241,7 @@ public class LoadingScreen : MonoBehaviour
             yield return new WaitForSeconds(1f); // 페이드 아웃 완료 후 1초 대기
         }
 
-        SceneManager.LoadScene(nextSceneIndex);
+        PlayManager.I.ChangeScene(nextSceneIndex);
         PlayManager.I.StopAllSounds();
     }
 
