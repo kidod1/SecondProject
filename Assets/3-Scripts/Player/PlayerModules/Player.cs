@@ -221,7 +221,6 @@ public class Player : MonoBehaviour
         spineAnimationState.Complete += OnSpineAnimationComplete;
     }
 
-
     /// <summary>
     /// 플레이어를 초기화하고 UI를 업데이트합니다.
     /// </summary>
@@ -242,6 +241,7 @@ public class Player : MonoBehaviour
         InitializePlayer();
         UpdateUI();
     }
+
     /// <summary>
     /// 랜덤한 게임 시작 애니메이션을 재생합니다.
     /// </summary>
@@ -253,7 +253,8 @@ public class Player : MonoBehaviour
 
         isGameStartAnimationPlaying = true;
 
-        DisableControls();
+        // 플레이어 움직임 제한
+        PlayManager.I.RestrictPlayerMovement();
         skeletonAnimation.enabled = false;
 
         int trackIndex = 1;
@@ -278,7 +279,8 @@ public class Player : MonoBehaviour
 
         skeletonAnimation.enabled = true;
 
-        EnableControls();
+        // 플레이어 움직임 허용
+        PlayManager.I.AllowPlayerMovement();
         if (!PlayManager.I.isPlayerDied)
         {
             OnStartPlayerAnimationComplete.Invoke();
@@ -290,7 +292,6 @@ public class Player : MonoBehaviour
         playerInput.Player.Shoot.canceled += OnShootCanceledInputAction;
 
         UpdateAnimation();
-
     }
 
     /// <summary>
@@ -357,6 +358,7 @@ public class Player : MonoBehaviour
             TryShoot();
         }
     }
+
     private void TryShoot()
     {
         if (isOverheated)
@@ -374,6 +376,7 @@ public class Player : MonoBehaviour
     {
         nextShootTime = Time.time + (1f / stat.currentAttackSpeed);
     }
+
     /// <summary>
     /// 물리 업데이트를 처리합니다.
     /// </summary>
@@ -878,6 +881,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(delaySeconds);
         OnPlayerDeathComplete?.Invoke();
     }
+
     /// <summary>
     /// 몬스터를 처치했을 때 호출됩니다.
     /// </summary>
@@ -951,7 +955,6 @@ public class Player : MonoBehaviour
 
         OnUIUpdated.Invoke(); // UI 업데이트 이벤트 호출
     }
-
 
     /// <summary>
     /// 플레이어의 스탯을 초기화합니다.
@@ -1045,6 +1048,7 @@ public class Player : MonoBehaviour
         OnPlayerStopShoot.Invoke(); // 공격 멈춤 이벤트 호출
         UpdateAnimation();
     }
+
     /// <summary>
     /// 주어진 방향으로 총알을 발사합니다.
     /// </summary>
@@ -1109,6 +1113,24 @@ public class Player : MonoBehaviour
         StunAbility stunAbility = abilityManager.GetAbilityOfType<StunAbility>();
 
         return stunAbility != null;
+    }
+
+    /// <summary>
+    /// 플레이어의 움직임 입력을 활성화합니다.
+    /// </summary>
+    public void EnableMovement()
+    {
+        // 이 부분을 PlayManager 메서드로 대체합니다.
+        PlayManager.I.AllowPlayerMovement();
+    }
+
+    /// <summary>
+    /// 플레이어의 움직임 입력을 비활성화합니다.
+    /// </summary>
+    public void DisableMovement()
+    {
+        // 이 부분을 PlayManager 메서드로 대체합니다.
+        PlayManager.I.RestrictPlayerMovement();
     }
 
     /// <summary>

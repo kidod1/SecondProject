@@ -97,4 +97,34 @@ public class PlayManager : MonoBehaviour
         // WWISE의 모든 사운드를 중지합니다.
         AkSoundEngine.StopAll();
     }
+
+    /// <summary>
+    /// 플레이어의 움직임을 제한합니다.
+    /// </summary>
+    public void RestrictPlayerMovement()
+    {
+        if (player != null)
+        {
+            player.DisableControls();
+        }
+        else
+        {
+            Debug.LogWarning("Player is not assigned!");
+        }
+    }
+
+    /// <summary>
+    /// 플레이어의 움직임을 허용합니다.
+    /// </summary>
+    public void AllowPlayerMovement()
+    {
+        if (player != null)
+        {
+            player.EnableControls();
+        }
+        else
+        {
+            Debug.LogWarning("Player is not assigned!");
+        }
+    }
 }
