@@ -121,24 +121,10 @@ public class GameManager : MonoBehaviour
         // 플레이 타임 업데이트
         playTime = Time.time - gameStartTime;
 
-        if (Input.GetKey(KeyCode.R))
-        {
-            restartTimer += Time.deltaTime;
-            if (restartTimer >= restartHoldTime && !isRestarting)
-            {
-                isRestarting = true;
-                RestartScene();
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.R))
         {
             restartTimer = 0f;
             isRestarting = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            TogglePause();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -147,10 +133,6 @@ public class GameManager : MonoBehaviour
             {
                 PauseGameByEscape();
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.T))
-        {
-            abilityUIManager.ShowAbilitySelection(); // T 키를 누르면 능력 선택 창을 띄운다
         }
 
         if (Time.timeScale == 0)
@@ -186,11 +168,6 @@ public class GameManager : MonoBehaviour
             pauseCanvas.SetActive(false);
             Time.timeScale = 1f;
         }
-    }
-
-    private void RestartScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void TogglePause()
