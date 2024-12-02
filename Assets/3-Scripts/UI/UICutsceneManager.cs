@@ -259,7 +259,7 @@ public class UICutsceneManager : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene(loadSceneNumber);
+                PlayManager.I.ChangeScene(loadSceneNumber);
             }
 
             // 씬 전환 후 이벤트 호출 (씬 전환이 비동기적으로 일어나는 경우, 씬 로드 완료 후 호출하도록 수정할 수도 있습니다.)
