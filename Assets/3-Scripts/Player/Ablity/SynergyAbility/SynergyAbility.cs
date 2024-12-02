@@ -7,6 +7,7 @@ public class SynergyAbility : Ability
 {
     public float cooldownDuration;
     public float lastUsedTime = 0;
+    public string assetName; // 에셋의 실제 이름을 저장하는 필드
 
     public AK.Wwise.Event ActiveSound;
     public bool IsReady => Time.time >= lastUsedTime + cooldownDuration;

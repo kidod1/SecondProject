@@ -752,44 +752,46 @@ public void ShowAbilitySelection()
             UpdateHighlightPosition();
         }
 
-        private void ApplySynergyAbility(SynergyAbility synergyAbility)
+    private void ApplySynergyAbility(SynergyAbility synergyAbility)
+    {
+        if (synergyAbility == null)
         {
-            if (synergyAbility == null)
-            {
-                Debug.LogError("AbilityManager: 적용할 SynergyAbility가 null입니다.");
-                return;
-            }
-
-            if (playerAbilityManager != null)
-            {
-                playerAbilityManager.ApplySynergyAbility(synergyAbility);
-                player.AcquireSynergyAbility(synergyAbility);
-                OnSynergyAbilityChanged.Invoke(synergyAbility);
-                Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
-            }
-            else
-            {
-                Debug.LogError("AbilityManager: PlayerAbilityManager가 초기화되지 않았습니다.");
-                return;
-            }
-
-            if (synergyAbilityPanel != null)
-            {
-                synergyAbilityPanel.SetActive(false);
-            }
-
-            if (uiManager != null)
-            {
-                uiManager.DisableDepthOfField();
-            }
-
-            Time.timeScale = 1f;
-        PlayManager.I.NotPause();
-        isAbilitySelectionActive = false;
-            isSynergyAbilityActive = false; // 시너지 능력 비활성화
+            Debug.LogError("AbilityManager: 적용할 SynergyAbility가 null입니다.");
+            return;
         }
 
-        public IEnumerator DelayedShowSynergyAbility(SynergyAbility synergyAbility)
+        if (playerAbilityManager != null)
+        {
+            playerAbilityManager.ApplySynergyAbility(synergyAbility);
+
+            // Synergy Ability 데이터 업데이트
+            playerAbilityManager.UpdateAbilitiesData();
+
+            Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
+        }
+        else
+        {
+            Debug.LogError("AbilityManager: PlayerAbilityManager가 초기화되지 않았습니다.");
+            return;
+        }
+
+        if (synergyAbilityPanel != null)
+        {
+            synergyAbilityPanel.SetActive(false);
+        }
+
+        if (uiManager != null)
+        {
+            uiManager.DisableDepthOfField();
+        }
+
+        Time.timeScale = 1f;
+        PlayManager.I.NotPause();
+        isAbilitySelectionActive = false;
+        isSynergyAbilityActive = false; // 시너지 능력 비활성화
+    }
+
+    public IEnumerator DelayedShowSynergyAbility(SynergyAbility synergyAbility)
         {
             // 기존 코루틴 중지
             if (delayedShowSynergyAbilityCoroutine != null)
@@ -887,7 +889,6 @@ public void ShowAbilitySelection()
 
                 if (ability is SynergyAbility synergyAbility)
                 {
-                    player.AcquireSynergyAbility(synergyAbility);
                     OnSynergyAbilityChanged.Invoke(synergyAbility);
                     Debug.Log($"Acquired synergy ability: {synergyAbility.abilityName}");
 

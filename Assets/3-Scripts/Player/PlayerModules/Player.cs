@@ -23,9 +23,6 @@ public class Player : MonoBehaviour
     [Tooltip("플레이어의 스탯 데이터")]
     public PlayerData stat;
 
-    [Tooltip("현재 시너지 능력")]
-    public SynergyAbility currentSynergyAbility;
-
     [Tooltip("오브젝트 풀")]
     public ObjectPool objectPool;
 
@@ -346,9 +343,9 @@ public class Player : MonoBehaviour
 
             if (Keyboard.current.rKey.wasPressedThisFrame)
             {
-                if (currentSynergyAbility != null)
+                if (abilityManager.currentSynergyAbility != null)
                 {
-                    currentSynergyAbility.Activate(this);
+                    abilityManager.ActivateSynergyAbility();
                 }
             }
         }
@@ -722,15 +719,6 @@ public class Player : MonoBehaviour
             default:
                 return walkStraightAnimName;
         }
-    }
-
-    /// <summary>
-    /// 새로운 시너지 능력을 획득합니다.
-    /// </summary>
-    /// <param name="newAbility">획득할 시너지 능력</param>
-    public void AcquireSynergyAbility(SynergyAbility newAbility)
-    {
-        currentSynergyAbility = newAbility;
     }
 
     /// <summary>

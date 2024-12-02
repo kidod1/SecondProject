@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 [System.Serializable]
 public class AbilityData
@@ -14,7 +15,7 @@ public class AbilityData
 [System.Serializable]
 public class SynergyAbilityData
 {
-    public string abilityName;
+    public string assetName;
     public int currentLevel;
     public string category;
 }
@@ -62,10 +63,18 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (scene.name == "11_LustMap")
         {
-            LoadPlayerData();
+            StartCoroutine(WaitAndLoadPlayerData());
         }
     }
+    private IEnumerator WaitAndLoadPlayerData()
+    {
+        while (FindObjectOfType<PlayerAbilityManager>() == null)
+        {
+            yield return null;
+        }
 
+        LoadPlayerData();
+    }
     public void SavePlayerData()
     {
         // 이진 파일로 저장
@@ -91,11 +100,11 @@ public class PlayerDataManager : MonoBehaviour
                 }
 
                 // synergyAbilityData 저장
-                bool hasSynergyAbility = synergyAbilityData != null && !string.IsNullOrEmpty(synergyAbilityData.abilityName);
+                bool hasSynergyAbility = (synergyAbilityData != null && !string.IsNullOrEmpty(synergyAbilityData.assetName));
                 writer.Write(hasSynergyAbility);
                 if (hasSynergyAbility)
                 {
-                    writer.Write(synergyAbilityData.abilityName);
+                    writer.Write(synergyAbilityData.assetName);
                     writer.Write(synergyAbilityData.currentLevel);
                     writer.Write(synergyAbilityData.category);
                 }
@@ -113,9 +122,11 @@ public class PlayerDataManager : MonoBehaviour
         Debug.Log("플레이어 데이터가 저장되었습니다.");
     }
 
+
     public void LoadPlayerData()
     {
         playerData.InitializeStats();
+
         if (File.Exists(saveFilePath))
         {
             using (FileStream fs = new FileStream(saveFilePath, FileMode.Open))
@@ -147,7 +158,7 @@ public class PlayerDataManager : MonoBehaviour
                     if (hasSynergyAbility)
                     {
                         synergyAbilityData = new SynergyAbilityData();
-                        synergyAbilityData.abilityName = reader.ReadString();
+                        synergyAbilityData.assetName = reader.ReadString();
                         synergyAbilityData.currentLevel = reader.ReadInt32();
                         synergyAbilityData.category = reader.ReadString();
                     }
@@ -165,6 +176,9 @@ public class PlayerDataManager : MonoBehaviour
                         int value = reader.ReadInt32();
                         synergyLevels.Add(key, value);
                     }
+
+                    // 모든 카테고리가 존재하도록 보장
+                    EnsureSynergyLevels();
                 }
             }
 
@@ -173,8 +187,13 @@ public class PlayerDataManager : MonoBehaviour
         else
         {
             Debug.LogWarning("저장된 플레이어 데이터가 없습니다.");
+
+            // 저장된 데이터가 없을 경우 synergyLevels를 초기화
+            synergyLevels = new Dictionary<string, int>();
+            EnsureSynergyLevels();
         }
     }
+
 
     public List<AbilityData> GetAbilitiesData()
     {
@@ -194,6 +213,18 @@ public class PlayerDataManager : MonoBehaviour
     public void SetSynergyLevels(Dictionary<string, int> levels)
     {
         synergyLevels = levels;
+    }
+
+    private void EnsureSynergyLevels()
+    {
+        var categories = new List<string> { "Lust", "Envy", "Sloth", "Gluttony", "Greed", "Wrath", "Pride", "Null" };
+        foreach (var category in categories)
+        {
+            if (!synergyLevels.ContainsKey(category))
+            {
+                synergyLevels[category] = 0;
+            }
+        }
     }
 
     public void ResetPlayerData()
