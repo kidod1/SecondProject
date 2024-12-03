@@ -7,6 +7,7 @@ using Spine.Unity;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using Spine;
+using Cinemachine; // Cinemachine 네임스페이스 추가
 
 public class MidBoss : Monster
 {
@@ -102,6 +103,14 @@ public class MidBoss : Monster
     // 애니메이션 재생이 끝났는지 확인하기 위한 이벤트
     private bool isAnimationPlaying = false;
 
+    // **추가된 부분**: Cinemachine 카메라 참조
+    [Header("Cinemachine Cameras")]
+    [SerializeField]
+    private CinemachineVirtualCamera playerCamera;
+
+    [SerializeField]
+    private CinemachineVirtualCamera bossCamera;
+
     protected override void Start()
     {
         base.Start();
@@ -167,11 +176,11 @@ public class MidBoss : Monster
             slothMapManager.OnDeathAnimationsCompleted += HandleDeathAnimationsCompleted;
         }
     }
+
     private void OnEnable()
     {
         // 애니메이션 이벤트 핸들러 등록 제거
     }
-
 
     private void Update()
     {
@@ -308,9 +317,8 @@ public class MidBoss : Monster
                 Debug.Log("SlothMapManager 활성화됨.");
             }
 
-            // DeathAnimationHandler의 이벤트는 SlothMapManager가 이미 구독하고 있음
-            gameManager.AddBossKill();
-            gameManager.AddFloorClear();
+            PlayManager.I.RestrictPlayerMovement();
+            StartCoroutine(CameraTransitionCoroutine());
 
             // 죽음 애니메이션 재생
             PlayAnimation(deathAnimationName, loop: false);
@@ -326,10 +334,8 @@ public class MidBoss : Monster
         }
     }
 
-
     private void WaitForDeathAnimation()
     {
-
         Debug.Log("Death 애니메이션 완료됨. Death 애니메이션 후 처리 시작.");
 
         // Death 애니메이션이 끝난 후 처리
@@ -351,7 +357,6 @@ public class MidBoss : Monster
         slothMapManager.PlayDeathAnimations();
     }
 
-
     private void HandleDeathAnimationsCompleted()
     {
         Debug.Log("HandleDeathAnimationsCompleted 호출됨. 포탈 활성화 및 보스 오브젝트 파괴.");
@@ -369,7 +374,6 @@ public class MidBoss : Monster
         Destroy(gameObject);
         Debug.Log("MidBoss 오브젝트 파괴됨.");
     }
-
 
     private IEnumerator ExecutePatterns()
     {
@@ -868,4 +872,53 @@ public class MidBoss : Monster
         Debug.Log($"PlayAnimation: 애니메이션 '{animationName}' 재생됨. Loop: {loop}");
     }
 
+    // **추가된 부분**: 카메라 전환 코루틴
+    private IEnumerator CameraTransitionCoroutine()
+    {
+        // 카메라 참조가 유효한지 확인
+        if (playerCamera == null || bossCamera == null)
+        {
+            Debug.LogError("CameraTransitionCoroutine: playerCamera 또는 bossCamera가 할당되지 않았습니다.");
+            yield break;
+        }
+
+        // 보스 카메라의 우선 순위를 높여 활성화
+        bossCamera.Priority = 20;
+        playerCamera.Priority = 10;
+
+        // 카메라 확대 (OrthographicSize 조절)
+        float originalSize = bossCamera.m_Lens.OrthographicSize;
+        float zoomedSize = originalSize * 0.8f; // 원하는 확대 배율로 조절
+        float zoomDuration = 2f; // 확대에 걸리는 시간
+        float elapsedTime = 0f;
+
+        // 카메라 확대 애니메이션
+        while (elapsedTime < zoomDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            bossCamera.m_Lens.OrthographicSize = Mathf.Lerp(originalSize, zoomedSize, elapsedTime / zoomDuration);
+            yield return null;
+        }
+        bossCamera.m_Lens.OrthographicSize = zoomedSize;
+
+        // 보스 사망 애니메이션 대기
+        yield return new WaitForSeconds(2f); // 필요한 대기 시간으로 조절
+
+        // 카메라 축소 애니메이션
+        elapsedTime = 0f;
+        while (elapsedTime < zoomDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            bossCamera.m_Lens.OrthographicSize = Mathf.Lerp(zoomedSize, originalSize, elapsedTime / zoomDuration);
+            yield return null;
+        }
+        bossCamera.m_Lens.OrthographicSize = originalSize;
+
+        // 플레이어 카메라의 우선 순위를 높여 다시 활성화
+        bossCamera.Priority = 10;
+        playerCamera.Priority = 20;
+
+        // 플레이어 움직임 허용
+        PlayManager.I.AllowPlayerMovement();
+    }
 }
