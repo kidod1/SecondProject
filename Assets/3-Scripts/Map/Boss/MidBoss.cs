@@ -346,7 +346,6 @@ public class MidBoss : Monster
         else
         {
             Debug.LogError("WaitForDeathAnimation: slothMapManager가 할당되지 않았습니다.");
-            Destroy(gameObject);
         }
     }
 
@@ -370,9 +369,6 @@ public class MidBoss : Monster
             slothMapManager.OnDeathAnimationsCompleted -= HandleDeathAnimationsCompleted;
             Debug.Log("SlothMapManager의 OnDeathAnimationsCompleted 이벤트 구독 해제됨.");
         }
-
-        Destroy(gameObject);
-        Debug.Log("MidBoss 오브젝트 파괴됨.");
     }
 
     private IEnumerator ExecutePatterns()
@@ -920,5 +916,6 @@ public class MidBoss : Monster
 
         // 플레이어 움직임 허용
         PlayManager.I.AllowPlayerMovement();
+        Destroy(gameObject);
     }
 }
